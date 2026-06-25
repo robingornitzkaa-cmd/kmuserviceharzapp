@@ -1,5 +1,38 @@
 # AI Worklog - Founder OS
 
+## 2026-06-26 01:10 – Implementierung Finanz-Cockpit & Einnahmen-Prognose (Feature A2)
+
+### Ziel
+Bereitstellung eines Einnahmen-Cockpits am oberen Rand des Dashboards (Tab 1), um Robins Auslastung, Pipeline und Stundensatz-Marge live und dynamisch aus dem CRM zu aggregieren.
+
+### Erstellt
+- Berechnungs-Logik vor der Dashboard-Renderschleife in `App.jsx`:
+  - **Aktives Volumen:** Aggregiert das Auftragsvolumen (`pricePackage`) aller Projekte, deren Leads aktuell auf Status "Umsetzung" stehen.
+  - **Umsatz-Pipeline:** Aggregiert das angebotene Auftragsvolumen (Leads in Stufe "Angebot") und berechnet die gewichtete Pipeline (50 % Conversion-Rate).
+  - **Erwarteter Gesamtumsatz:** Summiert das aktive Volumen und die gewichtete Pipeline.
+  - **Ø Stundensatz (Aktiv):** Dividiert das aktive Projektvolumen durch die tatsächlich erfassten Projektstunden (inklusive der aktuell live laufenden Stopwatch-Stunden).
+- UI-Komponente "Finanz-Cockpit & Einnahmen-Prognose" am Kopf des Dashboards mit vier KPI-Karten.
+
+### Geändert
+- [App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): Einbau der Daten-Aggregation und des Render-Blocks (KPI-Karten).
+- [index.css](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/index.css): Definition des KPI-Grids (vier Spalten auf Desktop, zwei Spalten auf Tablet, eine Spalte auf Mobile), Hover-Effekte auf KPI-Karten und Neon-Textschatten für die Einnahmenwerte.
+- [TODO.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md) (Finanz-Widget abgehakt).
+- [CHANGELOG.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md) (Ergänzt).
+
+### Warum
+Ein Dashboard dient als Steuerungszentrale. Durch die Verbindung des CRM (Lead-Status) und des Zeiterfassungstools entsteht ein vollautomatisches Controlling-Cockpit, das dem Gründer live zeigt, wie profitabel er arbeitet und welche Einnahmen in den nächsten Wochen zu erwarten sind.
+
+### Testen
+1. Navigiere zum Dashboard (Tab 1). Am oberen Rand siehst du das neue **"Finanz-Cockpit"** mit 4 Werten (Aktives Volumen, Pipeline, Gesamtumsatz, Ø Stundensatz).
+2. Wechsle zu Tab 3 ("CRM & Projekte") und ändere bei *Pflegedienst Harz* den Status auf **"Umsetzung"** ➔ Das Projekt wandert in die aktive Umsetzung.
+3. Kehre zum Dashboard zurück ➔ Das aktive Volumen hat sich um 2.450 € erhöht und die Prognosen haben sich automatisch angepasst.
+4. Starte bei einem Projekt den **Timer** und lass ihn ein paar Sekunden laufen. Das Dashboard zeigt dir den Stundensatz live an, der sich durch die neu erfassten Sekunden minimal anpasst.
+
+### Offene Punkte
+- Warten auf Freigabe des Gründers, um Schritt 3 (Wochen-Review & Archiv) zu starten.
+
+---
+
 ## 2026-06-26 01:00 – Implementierung CRM-Detailansicht / Kunden-Akte (Feature A1)
 
 ### Ziel

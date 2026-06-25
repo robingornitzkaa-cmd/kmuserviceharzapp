@@ -1603,6 +1603,67 @@ body {
   color: var(--text-secondary);
 }
 
+/* Financial Cockpit CSS */
+.financial-kpi-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  padding: 0.5rem 1.25rem 1.25rem 1.25rem;
+}
+
+@media (max-width: 1024px) {
+  .financial-kpi-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .financial-kpi-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.kpi-card {
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  transition: all var(--transition-fast);
+}
+
+.kpi-card:hover {
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.kpi-label {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+}
+
+.kpi-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.kpi-value.text-cyan { color: var(--accent-cyan); text-shadow: 0 0 10px rgba(6, 182, 212, 0.15); }
+.kpi-value.text-purple { color: var(--accent-purple); text-shadow: 0 0 10px rgba(139, 92, 246, 0.15); }
+.kpi-value.text-green { color: var(--accent-green); text-shadow: 0 0 10px rgba(16, 185, 129, 0.15); }
+.kpi-value.text-yellow { color: var(--accent-yellow); text-shadow: 0 0 10px rgba(245, 158, 11, 0.15); }
+
+.kpi-desc {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
 /* RESPONSIVE NAV FOR MOBILE */
 .mobile-nav-bar {
   display: none;

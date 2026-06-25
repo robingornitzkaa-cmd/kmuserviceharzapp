@@ -13,7 +13,7 @@
     - [x] Detail-Drawer/Seitenleiste für Kontakte entwerfen
     - [x] Eingabefelder für kundenbezogene Notizen und Dokumenten-Links integrieren
     - [x] Kontakthistorie (Aktivitäts-Log) aufzeichnen
-- [ ] **Schritt 2:** Feature A2 (Einnahmen-Widget & Umsatz-Vorschau) ➔ Warten auf Go.
+- [x] **Schritt 2:** Feature A2 (Einnahmen-Widget & Umsatz-Vorschau) ➔ Erledigt.
 - [ ] **Schritt 3:** Feature A3 (Wochen-Review & Archiv) ➔ Warten auf Go.
 - [ ] **Schritt 4:** Feature B1 (Interaktiver Make.com Simulator) ➔ Warten auf Go.
 - [ ] **Schritt 5:** Feature B2 ("Frag das Firmengehirn" Chat-Mock) ➔ Warten auf Go.

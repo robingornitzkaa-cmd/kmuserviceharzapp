@@ -1019,6 +1019,28 @@ function App() {
 
   const activeContact = contacts.find(c => c.id === selectedContactId);
 
+  // Calculations for Financial Cockpit (Dashboard v3)
+  const activeProjectsList = projects.filter(proj => {
+    const contact = contacts.find(c => c.company === proj.client);
+    return contact && contact.stage === 'umsetzung';
+  });
+  const activeUmsatz = activeProjectsList.reduce((sum, p) => sum + (p.pricePackage || 0), 0);
+  
+  const pipelineProjectsList = projects.filter(proj => {
+    const contact = contacts.find(c => c.company === proj.client);
+    return contact && contact.stage === 'angebot';
+  });
+  const pipelineUmsatz = pipelineProjectsList.reduce((sum, p) => sum + (p.pricePackage || 0), 0);
+  const weightedPipeline = Math.round(pipelineUmsatz * 0.5);
+  
+  const totalPrognose = activeUmsatz + weightedPipeline;
+  
+  const totalActiveHours = activeProjectsList.reduce((sum, p) => {
+    const elapsed = p.trackingStartTime ? (Date.now() - p.trackingStartTime) / (1000 * 60 * 60) : 0;
+    return sum + (p.trackedHours || 0) + elapsed;
+  }, 0);
+  const avgHourlyRate = totalActiveHours > 0 ? Math.round(activeUmsatz / totalActiveHours) : 0;
+
   return (
     <div className="app-container">
       {/* Confetti Overlay */}
@@ -1110,6 +1132,43 @@ function App() {
         {/* ==================== TAB 1: DASHBOARD ==================== */}
         {activeTab === 'dashboard' && (
           <div className="dashboard-grid">
+            
+            {/* Finanz-Cockpit Row (v3) */}
+            <div className="card financial-cockpit-section" style={{ gridColumn: 'span 2' }}>
+              <div className="card-header">
+                <h2 className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <DollarSign size={20} className="text-cyan-500" />
+                  Finanz-Cockpit & Einnahmen-Prognose
+                </h2>
+                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Dynamisch verknüpft mit CRM & Zeiterfassung</span>
+              </div>
+              
+              <div className="financial-kpi-container">
+                <div className="kpi-card">
+                  <span className="kpi-label">Aktives Projektvolumen</span>
+                  <span className="kpi-value text-cyan">{activeUmsatz.toLocaleString('de-DE')} €</span>
+                  <span className="kpi-desc">{activeProjectsList.length} {activeProjectsList.length === 1 ? 'aktives Projekt' : 'aktive Projekte'} in Umsetzung</span>
+                </div>
+                
+                <div className="kpi-card">
+                  <span className="kpi-label">Umsatz-Pipeline</span>
+                  <span className="kpi-value text-purple">{pipelineUmsatz.toLocaleString('de-DE')} €</span>
+                  <span className="kpi-desc">Gewichtet: {weightedPipeline.toLocaleString('de-DE')} € (50% Chance)</span>
+                </div>
+
+                <div className="kpi-card">
+                  <span className="kpi-label">Erwarteter Gesamtumsatz</span>
+                  <span className="kpi-value text-green">{totalPrognose.toLocaleString('de-DE')} €</span>
+                  <span className="kpi-desc">Laufend + gewichtete Pipeline</span>
+                </div>
+
+                <div className="kpi-card">
+                  <span className="kpi-label">Ø Stundensatz (Aktiv)</span>
+                  <span className="kpi-value text-yellow">{avgHourlyRate > 0 ? `${avgHourlyRate} €/h` : '—'}</span>
+                  <span className="kpi-desc">Berechnet aus erfasster Projektzeit</span>
+                </div>
+              </div>
+            </div>
             
             {/* Quick Capture */}
             <div className="card quick-capture-section">
