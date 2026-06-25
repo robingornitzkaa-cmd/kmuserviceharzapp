@@ -99,6 +99,65 @@ function App() {
   // Navigation State
   const [activeTab, setActiveTab] = useState('dashboard');
   
+  // Showcase Mode State
+  const [showcaseMode, setShowcaseMode] = useState(() => JSON.parse(localStorage.getItem('f_showcase_mode')) || false);
+  
+  // Mask helper function to blur/replace sensitive data when Showcase Mode is active
+  const mask = (text, type) => {
+    if (!showcaseMode) return text;
+    if (!text) return '';
+
+    const companyMap = {
+      'Dachdeckerei Müller': 'Muster-Bedachungen GmbH',
+      'Pflegedienst Harz': 'Seniorenpflege Musterstadt',
+      'GoClean Harz': 'SauberMann Gebäudedienste'
+    };
+    
+    const nameMap = {
+      'Hans Müller': 'Thomas Muster',
+      'Sabine Kraft': 'Erika Mustermann',
+      'Christian Gornitzka': 'Alexander Becker'
+    };
+    
+    const industryMap = {
+      'Handwerk': 'Gewerbe (Demo)',
+      'Gesundheit': 'Dienstleistung (Demo)',
+      'Dienstleistungen': 'Service (Demo)'
+    };
+    
+    const systemMap = {
+      'DATEV': 'Demo-ERP v1',
+      'Lexoffice': 'Muster-Buchhaltung',
+      'DATEV & Excel': 'Demo-ERP & Tabellen'
+    };
+
+    if (type === 'company') {
+      return companyMap[text] || text.replace(/[a-zA-Z]/g, (char, index) => index % 2 === 0 ? 'X' : 'x');
+    }
+    if (type === 'name') {
+      return nameMap[text] || 'Max Mustermann';
+    }
+    if (type === 'industry') {
+      return industryMap[text] || 'Branche (Demo)';
+    }
+    if (type === 'system') {
+      return systemMap[text] || 'ERP-System (Demo)';
+    }
+    if (type === 'calendar' || type === 'inbox') {
+      let masked = text;
+      Object.keys(companyMap).forEach(key => {
+        masked = masked.replace(new RegExp(key, 'g'), companyMap[key]);
+      });
+      Object.keys(nameMap).forEach(key => {
+        masked = masked.replace(new RegExp(key, 'g'), nameMap[key]);
+      });
+      masked = masked.replace(/Wernigerode/g, 'Musterstadt');
+      masked = masked.replace(/Niedersachsen/g, 'Muster-Bundesland');
+      return masked;
+    }
+    return text;
+  };
+  
   // Data States (loaded from localStorage or initial data)
   const [quickCapture, setQuickCapture] = useState('');
   const [inbox, setInbox] = useState(() => JSON.parse(localStorage.getItem('f_inbox')) || INITIAL_INBOX);
@@ -174,6 +233,9 @@ function App() {
   useEffect(() => {
     localStorage.setItem('f_active_sops', JSON.stringify(activeSops));
   }, [activeSops]);
+  useEffect(() => {
+    localStorage.setItem('f_showcase_mode', JSON.stringify(showcaseMode));
+  }, [showcaseMode]);
 
   // Quick Capture Handler
   const handleQuickCapture = (e) => {
@@ -418,13 +480,31 @@ function App() {
   return (
     <div className="app-container">
       {/* HEADER */}
-      <header className="app-header">
-        <div className="brand">
-          <div className="brand-logo">
-            <BrainCircuit size={20} />
+      <header className="app-header" style={{ flexWrap: 'wrap', gap: '1rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+          <div className="brand">
+            <div className="brand-logo">
+              <BrainCircuit size={20} />
+            </div>
+            <h1>Founder OS</h1>
+            <span className="brand-badge">KMU Service Harz</span>
           </div>
-          <h1>Founder OS</h1>
-          <span className="brand-badge">KMU Service Harz</span>
+          
+          <button 
+            className={`btn ${showcaseMode ? 'btn-primary' : 'btn-secondary'}`}
+            style={{ 
+              padding: '0.35rem 0.75rem', 
+              fontSize: '0.75rem', 
+              boxShadow: showcaseMode ? '0 0 15px rgba(6, 180, 210, 0.4)' : 'none',
+              borderColor: showcaseMode ? 'var(--accent-cyan)' : 'var(--border-color)',
+              background: showcaseMode ? 'linear-gradient(135deg, var(--accent-cyan), var(--accent-indigo))' : 'rgba(255, 255, 255, 0.05)',
+              color: 'white'
+            }}
+            onClick={() => setShowcaseMode(!showcaseMode)}
+            title="Schützt deine echten Kundendaten bei Präsentationen durch das automatische Einblenden von fiktiven Demodaten."
+          >
+            Showcase-Modus: {showcaseMode ? 'AKTIV' : 'AUS'}
+          </button>
         </div>
         
         {/* DESKTOP NAV TABS */}
@@ -495,21 +575,21 @@ function App() {
                 <div className="calendar-event">
                   <div className="event-time">09:00 - 10:30</div>
                   <div>
-                    <div className="event-title">Audit-Workshop: Dachdeckerei Müller</div>
+                    <div className="event-title">{mask("Audit-Workshop: Dachdeckerei Müller", "calendar")}</div>
                     <div className="event-desc">Prozessanalyse & ROI-Kalkulation vor Ort</div>
                   </div>
                 </div>
                 <div className="calendar-event" style={{ borderLeftColor: 'var(--accent-purple)' }}>
                   <div className="event-time">13:00 - 14:00</div>
                   <div>
-                    <div className="event-title">Review-Termin: GoClean Harz</div>
+                    <div className="event-title">{mask("Review-Termin: GoClean Harz", "calendar")}</div>
                     <div className="event-desc">Online-Präsentation der ersten Make-Workflows</div>
                   </div>
                 </div>
                 <div className="calendar-event">
                   <div className="event-time">15:30 - 16:30</div>
                   <div>
-                    <div className="event-title">Wirtschaftsförderung WiReGo</div>
+                    <div className="event-title">{mask("Wirtschaftsförderung WiReGo", "calendar")}</div>
                     <div className="event-desc">Abstimmung über Kooperation zu Förderprogrammen</div>
                   </div>
                 </div>
@@ -599,7 +679,7 @@ function App() {
               <div className="inbox-list">
                 {inbox.map(item => (
                   <div key={item.id} className="inbox-item">
-                    <div className="inbox-content">{item.text}</div>
+                    <div className="inbox-content">{mask(item.text, 'inbox')}</div>
                     <div className="inbox-footer">
                       <span>Erfasst am {item.date}</span>
                       <div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -677,7 +757,7 @@ function App() {
                         onDragStart={(e) => handleDragStart(e, t.id)}
                       >
                         <span className={`card-priority priority-${t.priority}`}>{t.priority}</span>
-                        <div className="card-title-text">{t.title}</div>
+                        <div className="card-title-text">{mask(t.title, 'inbox')}</div>
                         <div className="card-meta">
                           <span>{t.date}</span>
                           <button onClick={() => deleteTask(t.id)} style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}>
@@ -708,7 +788,7 @@ function App() {
                         onDragStart={(e) => handleDragStart(e, t.id)}
                       >
                         <span className={`card-priority priority-${t.priority}`}>{t.priority}</span>
-                        <div className="card-title-text">{t.title}</div>
+                        <div className="card-title-text">{mask(t.title, 'inbox')}</div>
                         <div className="card-meta">
                           <span>{t.date}</span>
                           <button onClick={() => deleteTask(t.id)} style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}>
@@ -739,7 +819,7 @@ function App() {
                         onDragStart={(e) => handleDragStart(e, t.id)}
                       >
                         <span className={`card-priority priority-${t.priority}`}>{t.priority}</span>
-                        <div className="card-title-text">{t.title}</div>
+                        <div className="card-title-text">{mask(t.title, 'inbox')}</div>
                         <div className="card-meta">
                           <span>{t.date}</span>
                           <button onClick={() => deleteTask(t.id)} style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}>
@@ -771,7 +851,7 @@ function App() {
                         onDragStart={(e) => handleDragStart(e, t.id)}
                       >
                         <span className="card-priority" style={{ background: 'rgba(16, 185, 129, 0.1)', color: 'var(--accent-green)' }}>erledigt</span>
-                        <div className="card-title-text" style={{ textDecoration: 'line-through' }}>{t.title}</div>
+                        <div className="card-title-text" style={{ textDecoration: 'line-through' }}>{mask(t.title, 'inbox')}</div>
                         <div className="card-meta">
                           <span>{t.date}</span>
                           <button onClick={() => deleteTask(t.id)} style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}>
@@ -849,14 +929,14 @@ function App() {
                     <div key={c.id} className={`contact-card ${warning ? 'warning-lead' : ''}`}>
                       <div className="contact-main">
                         <div className="contact-avatar">
-                          {c.company.substring(0, 2).toUpperCase()}
+                          {mask(c.company, 'company').substring(0, 2).toUpperCase()}
                         </div>
                         <div className="contact-details">
-                          <h3>{c.company}</h3>
-                          <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Ansprechpartner: {c.name}</p>
+                          <h3>{mask(c.company, 'company')}</h3>
+                          <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Ansprechpartner: {mask(c.name, 'name')}</p>
                           <div className="contact-tags">
-                            <span className="badge badge-system">{c.industry || 'Keine Branche'}</span>
-                            <span className="badge badge-system" style={{ color: 'var(--accent-cyan)', background: 'var(--accent-cyan-glow)' }}>{c.system || 'Kein System'}</span>
+                            <span className="badge badge-system">{mask(c.industry, 'industry') || 'Keine Branche'}</span>
+                            <span className="badge badge-system" style={{ color: 'var(--accent-cyan)', background: 'var(--accent-cyan-glow)' }}>{mask(c.system, 'system') || 'Kein System'}</span>
                             <span className="badge badge-stage">{c.stage}</span>
                           </div>
                         </div>
@@ -903,7 +983,7 @@ function App() {
               <div className="project-list">
                 {projects.map(proj => (
                   <div key={proj.id} className="project-item">
-                    <div className="project-name">{proj.client}</div>
+                    <div className="project-name">{mask(proj.client, 'company')}</div>
                     <div className="project-steps">
                       <label className="project-step-checkbox">
                         <input 
@@ -1220,7 +1300,7 @@ function App() {
                         <div className="sop-head">
                           <div>
                             <span className="sop-title">{sop.name}</span>
-                            <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Kunde: <strong>{sop.client}</strong></div>
+                            <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Kunde: <strong>{mask(sop.client, 'company')}</strong></div>
                           </div>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                             <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{completedSteps}/{totalSteps}</span>
@@ -1238,7 +1318,7 @@ function App() {
                                 onChange={() => toggleActiveSopStep(sop.id, idx)}
                               />
                               <span style={{ textDecoration: step.done ? 'line-through' : 'none', color: step.done ? 'var(--text-muted)' : 'var(--text-primary)' }}>
-                                {step.text}
+                                {mask(step.text, 'inbox')}
                               </span>
                             </label>
                           ))}
