@@ -5,6 +5,7 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- Git-Repository initialisiert und den initialen Commit `feat: initial commit founder os prototype` erstellt.
 - Vite + React Projekt-Setup im aktuellen Verzeichnis initialisiert.
 - Installation von `lucide-react` für Icons.
 - Modernes, responsives Design-System in [index.css](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/index.css) mit Glassmorphism-Effekten, dunklem Anthrazit-Thema, Plus Jakarta Sans Schriftart und nahtlosem Mobile-Layout.

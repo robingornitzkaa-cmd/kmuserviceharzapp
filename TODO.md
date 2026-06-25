@@ -1,6 +1,8 @@
 # TODO - Founder OS
 
 ## Wichtig
+- [ ] Remote-GitHub-Repository-URL hinzufügen und Code pushen.
+- [ ] Vercel-Projekt erstellen und mit dem GitHub-Repository verbinden.
 - [ ] Erstes Feedback vom Gründer (Robin) zum UI/UX Design und den implementierten Standard-Features einholen.
 - [ ] Supabase-Projekt aufsetzen (entweder über MCP oder direkt auf supabase.com) und API-Verbindung konfigurieren.
 - [ ] Google Cloud Console Setup starten (für Google OAuth / Kalender und Drive Schnittstellen).

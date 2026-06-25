@@ -1,5 +1,26 @@
 # AI Worklog - Founder OS
 
+## 2026-06-25 23:50 – Git-Initialisierung & Vercel-Vorbereitung
+
+### Ziel
+Lokales Git-Repository initialisieren, alle Dateien hinzufügen und den ersten Commit erstellen, um die App für das Hosting auf Vercel vorzubereiten.
+
+### Erstellt
+- Lokales Git-Repository (Zweig `main`)
+- Initialer Commit `feat: initial commit founder os prototype`
+
+### Warum
+Um die App auf Vercel hosten zu können, muss der Code in ein GitHub-Repository gepusht werden. Vercel kann das Repository dann importieren und bei jedem Git-Push automatisch deployen.
+
+### Testen
+Prüfen, ob Git korrekt initialisiert wurde (`git status` und `git log`).
+
+### Offene Punkte
+- Remote-URL des GitHub-Repositorys hinzufügen und pushen.
+- Vercel-Projekt mit dem Repository verbinden.
+
+---
+
 ## 2026-06-24 20:00 – Projektkonzeption & Planung
 
 ### Ziel
