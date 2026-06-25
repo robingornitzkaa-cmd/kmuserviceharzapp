@@ -328,6 +328,12 @@ function App() {
   const [showConfetti, setShowConfetti] = useState(false);
   const [confettiParticles, setConfettiParticles] = useState([]);
   
+  // Wochen-Review & Archiv States (Feature A3)
+  const [weeklyArchive, setWeeklyArchive] = useState(() => {
+    return JSON.parse(localStorage.getItem('f_weekly_archive')) || {};
+  });
+  const [archiveOpen, setArchiveOpen] = useState(false);
+  
   // Persistent Storage Sync
   useEffect(() => {
     localStorage.setItem('f_inbox', JSON.stringify(inbox));
@@ -377,6 +383,160 @@ function App() {
   useEffect(() => {
     localStorage.setItem('f_habit_streak', habitStreak.toString());
   }, [habitStreak]);
+
+  // Wochen-Review & Archiv Logik & Sync (Feature A3)
+  useEffect(() => {
+    const today = new Date().toISOString().split('T')[0];
+    const completedFocus = focusTasks.filter(t => t.completed).map(t => t.text);
+    const completedHabs = habits.filter(h => h.completed).map(h => h.text);
+    
+    setWeeklyArchive(prev => {
+      const currentDayData = prev[today] || { focusTasks: [], completedHabits: [], reflection: '' };
+      
+      const focusChanged = JSON.stringify(currentDayData.focusTasks) !== JSON.stringify(completedFocus);
+      const habitsChanged = JSON.stringify(currentDayData.completedHabits) !== JSON.stringify(completedHabs);
+      
+      if (focusChanged || habitsChanged) {
+        const updated = {
+          ...prev,
+          [today]: {
+            ...currentDayData,
+            focusTasks: completedFocus,
+            completedHabits: completedHabs
+          }
+        };
+        localStorage.setItem('f_weekly_archive', JSON.stringify(updated));
+        return updated;
+      }
+      return prev;
+    });
+  }, [focusTasks, habits]);
+
+  const getLast7Days = () => {
+    const days = [];
+    const options = { weekday: 'long', day: '2-digit', month: '2-digit' };
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      const dateString = d.toISOString().split('T')[0];
+      const formatted = d.toLocaleDateString('de-DE', options);
+      days.push({ dateString, formatted });
+    }
+    return days;
+  };
+
+  const updateReflection = (dateString, text) => {
+    setWeeklyArchive(prev => {
+      const currentDayData = prev[dateString] || { focusTasks: [], completedHabits: [], reflection: '' };
+      const updated = {
+        ...prev,
+        [dateString]: {
+          ...currentDayData,
+          reflection: text
+        }
+      };
+      localStorage.setItem('f_weekly_archive', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  const generateWeeklyArchivePDF = () => {
+    const doc = new jsPDF();
+    
+    // Header Banner
+    doc.setFillColor(79, 70, 229); // indigo-600
+    doc.rect(0, 0, 210, 35, 'F');
+    
+    doc.setTextColor(255, 255, 255);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(22);
+    doc.text("FOUNDER OS - WOCHENREPORT", 20, 23);
+    
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    doc.text("Woechentliche Reflexion, Fokus-Aufgaben & Habits", 20, 29);
+    
+    doc.setFontSize(9);
+    doc.text("Erstellt von: Robin Gornitzka", 140, 18);
+    doc.text("Zeitraum: Letzte 7 Tage", 140, 23);
+    doc.text(`Datum: ${new Date().toLocaleDateString('de-DE')}`, 140, 28);
+    
+    doc.setTextColor(17, 24, 39);
+    doc.setFontSize(16);
+    doc.setFont("helvetica", "bold");
+    doc.text("ZUSAMMENFASSUNG DER LETZTEN 7 TAGE", 20, 50);
+    
+    doc.setDrawColor(229, 231, 235);
+    doc.line(20, 55, 190, 55);
+    
+    let yPos = 65;
+    const days = getLast7Days();
+    
+    days.forEach((day, index) => {
+      if (yPos > 230) {
+        doc.addPage();
+        yPos = 25;
+      }
+      
+      const dayData = weeklyArchive[day.dateString] || { focusTasks: [], completedHabits: [], reflection: '' };
+      
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(11);
+      doc.setTextColor(79, 70, 229);
+      doc.text(`${day.formatted} (${day.dateString})`, 20, yPos);
+      
+      yPos += 6;
+      
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(9);
+      doc.setTextColor(55, 65, 81);
+      doc.text("Erledigte Fokus-Tasks:", 25, yPos);
+      
+      doc.setFont("helvetica", "normal");
+      if (dayData.focusTasks && dayData.focusTasks.length > 0) {
+        dayData.focusTasks.forEach(task => {
+          yPos += 5;
+          doc.text(`- ${task}`, 30, yPos);
+        });
+      } else {
+        yPos += 5;
+        doc.text("Keine Fokus-Tasks erledigt.", 30, yPos);
+      }
+      
+      yPos += 6;
+      
+      doc.setFont("helvetica", "bold");
+      doc.text("Erfolgreiche Habits:", 25, yPos);
+      
+      doc.setFont("helvetica", "normal");
+      if (dayData.completedHabits && dayData.completedHabits.length > 0) {
+        yPos += 5;
+        doc.text(`- ${dayData.completedHabits.join(', ')}`, 30, yPos);
+      } else {
+        yPos += 5;
+        doc.text("Keine Habits abgehakt.", 30, yPos);
+      }
+      
+      yPos += 6;
+      
+      doc.setFont("helvetica", "bold");
+      doc.text("Tages-Reflexion & Notizen:", 25, yPos);
+      
+      doc.setFont("helvetica", "italic");
+      const reflectionText = dayData.reflection || "Keine Notiz erfasst.";
+      const splitReflection = doc.splitTextToSize(reflectionText, 150);
+      splitReflection.forEach(line => {
+        yPos += 5;
+        doc.text(line, 30, yPos);
+      });
+      
+      yPos += 12;
+      doc.setDrawColor(243, 244, 246);
+      doc.line(20, yPos - 6, 190, yPos - 6);
+    });
+    
+    doc.save(`FounderOS-Wochenreport-${new Date().toISOString().split('T')[0]}.pdf`);
+  };
 
   // Live Timer tick for active project time tracking
   useEffect(() => {
@@ -1319,6 +1479,143 @@ function App() {
                   </div>
                 ))}
               </div>
+            </div>
+
+            {/* Wochen-Review & Archiv erledigter Aufgaben (Feature A3) */}
+            <div className="card wochen-review-section" style={{ gridColumn: 'span 2' }}>
+              <div 
+                className="card-header" 
+                style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', userSelect: 'none' }}
+                onClick={() => setArchiveOpen(!archiveOpen)}
+              >
+                <h2 className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0 }}>
+                  <CheckCircle size={20} className="text-indigo-500" />
+                  Wochen-Review & Archiv (Letzte 7 Tage)
+                </h2>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                  {archiveOpen && (
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        generateWeeklyArchivePDF();
+                      }}
+                      className="btn btn-secondary"
+                      style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.25rem', height: '28px' }}
+                      title="Generiert einen formatierten PDF-Bericht der letzten 7 Tage"
+                    >
+                      <FileText size={14} /> PDF Exportieren
+                    </button>
+                  )}
+                  <span style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>
+                    {archiveOpen ? '▲ Einklappen' : '▼ Ausklappen'}
+                  </span>
+                </div>
+              </div>
+
+              {archiveOpen && (
+                <div className="archive-container" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', marginTop: '1rem' }}>
+                  <p style={{ fontSize: '0.825rem', color: 'var(--text-secondary)', margin: 0 }}>
+                    Hier siehst du deine Erfolge und abgehakten Fokus-Aufgaben der letzten 7 Tage. Ergänze Notizen oder eine Tages-Reflexion für dein wöchentliches Review.
+                  </p>
+                  
+                  <div className="archive-days-list" style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1rem' }}>
+                    {getLast7Days().map(day => {
+                      const dayData = weeklyArchive[day.dateString] || { focusTasks: [], completedHabits: [], reflection: '' };
+                      const isToday = day.dateString === new Date().toISOString().split('T')[0];
+                      
+                      return (
+                        <div 
+                          key={day.dateString} 
+                          className="archive-day-card" 
+                          style={{ 
+                            background: isToday ? 'rgba(99, 102, 241, 0.04)' : 'rgba(255, 255, 255, 0.01)',
+                            border: isToday ? '1px solid rgba(99, 102, 241, 0.25)' : '1px solid var(--border-color)',
+                            borderRadius: '0.5rem',
+                            padding: '1rem'
+                          }}
+                        >
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.75rem' }}>
+                            <span style={{ fontWeight: 700, color: isToday ? 'var(--accent-indigo)' : 'var(--text-primary)', fontSize: '0.875rem' }}>
+                              {day.formatted} {isToday && '(Heute)'}
+                            </span>
+                            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                              {day.dateString}
+                            </span>
+                          </div>
+
+                          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '0.75rem' }}>
+                            {/* Fokus Tasks Column */}
+                            <div>
+                              <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)', display: 'block', marginBottom: '0.35rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                                Erledigte Fokus-Tasks
+                              </span>
+                              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                                {dayData.focusTasks && dayData.focusTasks.length > 0 ? (
+                                  dayData.focusTasks.map((t, i) => (
+                                    <div key={i} style={{ fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.35rem', color: 'var(--text-primary)' }}>
+                                      <span style={{ color: 'var(--accent-green)', fontWeight: 'bold' }}>✓</span> {t}
+                                    </div>
+                                  ))
+                                ) : (
+                                  <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>
+                                    Keine Aufgaben erledigt
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Habits Column */}
+                            <div>
+                              <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)', display: 'block', marginBottom: '0.35rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                                Abgehakte Habits
+                              </span>
+                              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem' }}>
+                                {dayData.completedHabits && dayData.completedHabits.length > 0 ? (
+                                  dayData.completedHabits.map((h, i) => (
+                                    <span 
+                                      key={i} 
+                                      style={{ 
+                                        fontSize: '0.7rem', 
+                                        background: 'rgba(16, 185, 129, 0.08)', 
+                                        color: 'var(--accent-green)', 
+                                        padding: '0.15rem 0.45rem', 
+                                        borderRadius: '0.25rem',
+                                        border: '1px solid rgba(16, 185, 129, 0.15)',
+                                        fontWeight: 500
+                                      }}
+                                    >
+                                      {h}
+                                    </span>
+                                  ))
+                                ) : (
+                                  <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>
+                                    Keine Habits abgehakt
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Reflexions-Feld */}
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+                            <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)' }}>
+                              Reflexion & Tagesnotiz
+                            </label>
+                            <textarea 
+                              placeholder="Was lief heute gut? Welche Hindernisse gab es? Notizen eintragen..."
+                              className="input-field"
+                              rows={1}
+                              style={{ fontSize: '0.8rem', minHeight: '38px', resize: 'vertical' }}
+                              value={dayData.reflection || ''}
+                              onChange={(e) => updateReflection(day.dateString, e.target.value)}
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
 
           </div>
