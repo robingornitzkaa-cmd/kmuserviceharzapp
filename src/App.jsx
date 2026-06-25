@@ -255,6 +255,12 @@ function App() {
     setupFee: 2450,
     subsidyRegion: 'NDS' // NDS, LSA, BUND, NONE
   });
+
+  // WhatsApp Webhook & Simulation States
+  const [webhookUrl, setWebhookUrl] = useState(() => localStorage.getItem('f_whatsapp_webhook_url') || '');
+  const [simMessage, setSimMessage] = useState('Christian Gornitzka: 8 Stunden Arbeit bei GoClean erfasst. Material: 2x Dichtungen.');
+  const [isSimulating, setIsSimulating] = useState(false);
+  const [simStep, setSimStep] = useState(''); // "", "whisper", "gpt", "done"
   
   // Persistent Storage Sync
   useEffect(() => {
@@ -293,6 +299,9 @@ function App() {
   useEffect(() => {
     localStorage.setItem('f_showcase_mode', JSON.stringify(showcaseMode));
   }, [showcaseMode]);
+  useEffect(() => {
+    localStorage.setItem('f_whatsapp_webhook_url', webhookUrl);
+  }, [webhookUrl]);
 
   // Quick Capture Handler
   const handleQuickCapture = (e) => {
@@ -308,6 +317,56 @@ function App() {
     setInbox([newInboxItem, ...inbox]);
     setQuickCapture('');
     alert('Notiz in der Inbox gespeichert!');
+  };
+
+  // Handle WhatsApp simulation process (Feature 2a)
+  const triggerWhatsAppSimulation = async (e) => {
+    e.preventDefault();
+    if (!simMessage.trim() || isSimulating) return;
+
+    setIsSimulating(true);
+    setSimStep('whisper'); // Step 1: Whisper transcribes
+
+    setTimeout(() => {
+      setSimStep('gpt'); // Step 2: GPT analyzes and structures
+
+      setTimeout(async () => {
+        const newInboxItem = {
+          id: 'i_' + Date.now(),
+          text: `[WhatsApp] ${simMessage}`,
+          date: new Date().toISOString().split('T')[0]
+        };
+
+        setInbox(prevInbox => [newInboxItem, ...prevInbox]);
+        
+        // Trigger real webhook if URL is provided
+        if (webhookUrl.trim()) {
+          try {
+            await fetch(webhookUrl, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                message: simMessage,
+                sender: 'WhatsApp Simulator',
+                timestamp: new Date().toISOString()
+              })
+            });
+          } catch (err) {
+            console.warn("Real webhook call failed:", err);
+          }
+        }
+
+        setSimStep('done');
+        setIsSimulating(false);
+        alert('WhatsApp verarbeitet und Beleg in die Inbox gelegt!');
+        
+        setTimeout(() => {
+          setSimStep('');
+        }, 2000);
+
+      }, 1500);
+
+    }, 1500);
   };
 
   // Inbox & Task Operations
@@ -855,41 +914,135 @@ function App() {
         {/* ==================== TAB 2: INBOX & TASKS ==================== */}
         {activeTab === 'tasks' && (
           <div>
-            {/* The Inbox */}
-            <div className="card inbox-section">
-              <div className="card-header">
-                <h2 className="card-title"><Inbox size={20} className="text-purple-500" /> Die Inbox ({inbox.length} unkategorisierte Notizen)</h2>
+            {/* Style override for simulation spinner */}
+            <style dangerouslySetInnerHTML={{__html: `
+              @keyframes spin {
+                to { transform: rotate(360deg); }
+              }
+            `}} />
+
+            {/* The Inbox & WhatsApp Simulator Grid */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 2fr', gap: '1.5rem', marginBottom: '2rem' }}>
+              
+              {/* WhatsApp Simulator Card */}
+              <div className="card" style={{ height: 'fit-content' }}>
+                <div className="card-header">
+                  <h2 className="card-title" style={{ color: 'var(--accent-cyan)' }}>
+                    <BrainCircuit size={20} /> WhatsApp-Simulator
+                  </h2>
+                </div>
+                <form onSubmit={triggerWhatsAppSimulation} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                    Simuliere live, wie eine WhatsApp-Sprachnachricht oder Textnachricht deines Teams im System empfangen und strukturiert wird.
+                  </p>
+                  
+                  <div className="input-group">
+                    <label>Simulierte Nachricht</label>
+                    <textarea 
+                      className="input-field"
+                      rows={3}
+                      value={simMessage}
+                      onChange={(e) => setSimMessage(e.target.value)}
+                      disabled={isSimulating}
+                      required
+                    />
+                  </div>
+
+                  <div className="input-group">
+                    <label>Make Webhook URL (Optional)</label>
+                    <input 
+                      type="url"
+                      placeholder="https://hook.us2.make.com/..."
+                      className="input-field"
+                      value={webhookUrl}
+                      onChange={(e) => setWebhookUrl(e.target.value)}
+                      disabled={isSimulating}
+                    />
+                    <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', marginTop: '0.25rem', display: 'block' }}>
+                      Trage deine Make-Webhook-URL ein, um echte HTTP-POST-Daten live an dein Make-Szenario zu senden!
+                    </span>
+                  </div>
+
+                  {/* Simulations-Status / Loader */}
+                  {isSimulating && (
+                    <div style={{ 
+                      background: 'rgba(6, 182, 212, 0.05)', 
+                      border: '1px dashed rgba(6, 182, 212, 0.3)', 
+                      borderRadius: '0.5rem', 
+                      padding: '0.75rem',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '0.5rem',
+                      alignItems: 'center',
+                      textAlign: 'center'
+                    }}>
+                      <div className="loading-spinner" style={{ 
+                        width: '20px', 
+                        height: '20px', 
+                        border: '2px solid rgba(6, 182, 212, 0.2)', 
+                        borderTopColor: 'var(--accent-cyan)', 
+                        borderRadius: '50%',
+                        animation: 'spin 1s linear infinite'
+                      }} />
+                      <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--accent-cyan)' }}>
+                        {simStep === 'whisper' && 'Whisper: Transkribiere Audio...'}
+                        {simStep === 'gpt' && 'GPT-4: Extrahiere Daten & buche...'}
+                      </span>
+                    </div>
+                  )}
+
+                  <button 
+                    type="submit" 
+                    className="btn btn-primary"
+                    disabled={isSimulating}
+                    style={{ 
+                      background: 'linear-gradient(135deg, var(--accent-cyan), var(--accent-indigo))',
+                      boxShadow: 'var(--shadow-glow-cyan)'
+                    }}
+                  >
+                    <Play size={16} /> WhatsApp verarbeiten
+                  </button>
+                </form>
               </div>
-              <div className="inbox-list">
-                {inbox.map(item => (
-                  <div key={item.id} className="inbox-item">
-                    <div className="inbox-content">{mask(item.text, 'inbox')}</div>
-                    <div className="inbox-footer">
-                      <span>Erfasst am {item.date}</span>
-                      <div style={{ display: 'flex', gap: '0.5rem' }}>
-                        <button 
-                          onClick={() => convertInboxToTask(item)} 
-                          className="btn btn-secondary" 
-                          style={{ padding: '0.35rem 0.75rem', fontSize: '0.75rem' }}
-                        >
-                          Zu Aufgabe machen <ChevronRight size={12} />
-                        </button>
-                        <button 
-                          onClick={() => deleteInboxItem(item.id)} 
-                          className="btn-icon-only"
-                        >
-                          <Trash2 size={14} className="text-red-500" />
-                        </button>
+
+              {/* The Inbox List */}
+              <div className="card">
+                <div className="card-header">
+                  <h2 className="card-title"><Inbox size={20} className="text-purple-500" /> Die Inbox ({inbox.length} unkategorisierte Belege)</h2>
+                </div>
+                <div className="inbox-list" style={{ gridTemplateColumns: '1fr', maxHeight: '420px', overflowY: 'auto', gap: '0.75rem' }}>
+                  {inbox.map(item => (
+                    <div key={item.id} className="inbox-item" style={{ background: 'rgba(255,255,255,0.01)' }}>
+                      <div className="inbox-content" style={{ fontSize: '0.825rem' }}>{mask(item.text, 'inbox')}</div>
+                      <div className="inbox-footer" style={{ marginTop: '0.5rem' }}>
+                        <span>Erfasst am {item.date}</span>
+                        <div style={{ display: 'flex', gap: '0.35rem' }}>
+                          <button 
+                            onClick={() => convertInboxToTask(item)} 
+                            className="btn btn-secondary" 
+                            style={{ padding: '0.25rem 0.5rem', fontSize: '0.7rem' }}
+                          >
+                            Zu Aufgabe <ChevronRight size={10} />
+                          </button>
+                          <button 
+                            onClick={() => deleteInboxItem(item.id)} 
+                            className="btn-icon-only"
+                            style={{ padding: '0.25rem' }}
+                          >
+                            <Trash2 size={12} className="text-red-500" />
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-                {inbox.length === 0 && (
-                  <div style={{ gridColumn: 'span 3', textAlign: 'center', padding: '2rem', color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
-                    Glückwunsch! Deine Inbox ist leer. Nutze Quick Capture auf dem Dashboard, um Gedanken schnell festzuhalten.
-                  </div>
-                )}
+                  ))}
+                  {inbox.length === 0 && (
+                    <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
+                      Glueckwunsch! Deine Inbox ist leer. Nutze den WhatsApp-Simulator oder Quick Capture.
+                    </div>
+                  )}
+                </div>
               </div>
+
             </div>
 
             {/* Kanban Board */}
