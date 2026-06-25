@@ -96,12 +96,66 @@ const INITIAL_SOP_TEMPLATES = [
   ]}
 ];
 
+const PROCESSES = {
+  rechnung: {
+    title: "Eingangsrechnungen verarbeiten",
+    desc: "Vom Beleg-Chaos zur vollautomatischen DATEV-Bereitstellung.",
+    before: [
+      { step: "Post oeffnen & scannen", detail: "Manuelles Sortieren der Postbelege oder Herunterladen aus E-Mails." },
+      { step: "Daten abtippen", detail: "Rechnungsnummer, Datum und Betraege manuell erfassen." },
+      { step: "Ordner ablegen", detail: "Beleg manuell in Ordnerstruktur (lokal oder Cloud) speichern." },
+      { step: "DATEV-Uebertragung", detail: "Am Monatsende alle Belege haendisch an den Steuerberater uebermitteln." }
+    ],
+    after: [
+      { step: "E-Mail-Eingang", detail: "Make-Webhook faengt jede E-Mail mit Rechnungs-Anhang automatisch ab." },
+      { step: "KI-Extraktion", detail: "GPT-4 extrahiert alle Rechnungsdaten (IBAN, Netto, MwSt) vollautomatisch in Sekunden." },
+      { step: "GoBD Cloud-Archiv", detail: "GoBD-konforme, unveraenderbare Speicherung im Google Drive." },
+      { step: "DATEV Schnittstelle", detail: "Direkte, lautlose Uebertragung in das DATEV-Portal deines Steuerberaters." }
+    ]
+  },
+  stundenzettel: {
+    title: "Stundenzettel & Zeiterfassung",
+    desc: "Mitarbeiterzeiten direkt von der Baustelle in die Buchhaltung.",
+    before: [
+      { step: "Handschriftliche Zettel", detail: "Mitarbeiter fuellen Zettel auf der Baustelle aus." },
+      { step: "Sammeln & Suchen", detail: "Zettel verknumpeln im Auto oder gehen verloren." },
+      { step: "Excel-Abtippen", detail: "Chef tippt am Sonntagabend alle Zettel haendisch ab." },
+      { step: "Lohnbuchhaltung", detail: "Daten haendisch an Steuerberater senden." }
+    ],
+    after: [
+      { step: "WhatsApp-Sprachnachricht", detail: "Mitarbeiter spricht Zeiten ein: 'Mueller, 8 Stunden auf Baustelle X'." },
+      { step: "Whisper-Transkription", detail: "Sprachnachricht wird per KI in Text umgewandelt." },
+      { step: "GPT-4 Strukturierung", detail: "KI analysiert Name, Projekt, Dauer und schreibt Daten strukturiert." },
+      { step: "Lexoffice Eintrag", detail: "Eintrag erfolgt per Klick direkt im Buchhaltungssystem." }
+    ]
+  },
+  anfragen: {
+    title: "Kundenanfragen & Termine",
+    desc: "24/7-Assistent fuer Neukunden-Qualifizierung und Terminbuchung.",
+    before: [
+      { step: "Telefon klingelt", detail: "Chef muss Arbeit unterbrechen oder verpasst den Anruf." },
+      { step: "Zettelwirtschaft", detail: "Anfragedaten werden auf Notizzettel geschrieben." },
+      { step: "Kalender-Chaos", detail: "Kalender abgleichen, um freien Termin zu finden." },
+      { step: "Rueckruf-Versuche", detail: "Ewiges Hin und Her, bis der Termin steht." }
+    ],
+    after: [
+      { step: "AI-Chatbot", detail: "Website- oder WhatsApp-Bot nimmt Anfrage rund um die Uhr entgegen." },
+      { step: "Qualifizierung", detail: "Bot erfragt Gewerk, Ort und Budget und sortiert Spam aus." },
+      { step: "Google Calendar Sync", detail: "Bot zeigt freie Zeiten und bucht direkt im Kalender." },
+      { step: "SMS / WhatsApp Bestaetigung", detail: "Kunde und Chef erhalten automatische Bestaetigungen." }
+    ]
+  }
+};
+
 function App() {
   // Navigation State
   const [activeTab, setActiveTab] = useState('dashboard');
   
   // Showcase Mode State
   const [showcaseMode, setShowcaseMode] = useState(() => JSON.parse(localStorage.getItem('f_showcase_mode')) || false);
+  
+  // Use Case selector for Process Visualizer
+  const [selectedUseCase, setSelectedUseCase] = useState('rechnung');
   
   // Mask helper function to blur/replace sensitive data when Showcase Mode is active
   const mask = (text, type) => {
@@ -1544,6 +1598,114 @@ function App() {
                       Keine aktiven Checklisten. Starte eine aus einer Vorlage oben!
                     </p>
                   )}
+                </div>
+              </div>
+            </div>
+
+            {/* Zettel-zu-Code Visualisierer (Volle Breite) */}
+            <div className="card" style={{ gridColumn: 'span 2', marginTop: '1.5rem' }}>
+              <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+                <div>
+                  <h2 className="card-title" style={{ color: 'var(--accent-purple)' }}><BrainCircuit size={20} /> Zettel-zu-Code Prozess-Visualisierer</h2>
+                  <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>
+                    Visualisiere im Gespraech den direkten Unterschied zwischen Zettelwirtschaft und Automatisierung.
+                  </p>
+                </div>
+                
+                {/* Use Case Waehler Buttons */}
+                <div style={{ display: 'flex', gap: '0.5rem', background: 'rgba(17, 24, 39, 0.6)', padding: '0.25rem', borderRadius: '0.5rem', border: '1px solid var(--border-color)' }}>
+                  {Object.keys(PROCESSES).map(key => (
+                    <button 
+                      key={key} 
+                      className={`btn ${selectedUseCase === key ? 'btn-primary' : 'btn-secondary'}`}
+                      style={{ 
+                        padding: '0.35rem 0.75rem', 
+                        fontSize: '0.75rem', 
+                        borderRadius: '0.35rem',
+                        background: selectedUseCase === key ? 'var(--accent-purple)' : 'transparent',
+                        borderColor: 'transparent',
+                        color: selectedUseCase === key ? 'white' : 'var(--text-secondary)'
+                      }}
+                      onClick={() => setSelectedUseCase(key)}
+                    >
+                      {PROCESSES[key].title}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div style={{ marginTop: '1.5rem' }}>
+                <p style={{ fontSize: '0.9rem', fontStyle: 'italic', color: 'var(--text-primary)', marginBottom: '1.5rem', textAlign: 'center' }}>
+                  "{PROCESSES[selectedUseCase].desc}"
+                </p>
+                
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+                  
+                  {/* Vorher-Pfad (Zettelwirtschaft) */}
+                  <div style={{ background: 'rgba(239, 68, 68, 0.02)', border: '1px solid rgba(239, 68, 68, 0.12)', borderRadius: '0.75rem', padding: '1.25rem' }}>
+                    <h3 style={{ fontSize: '0.9rem', color: 'var(--accent-red)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <AlertTriangle size={16} /> Bisheriger Weg (Papier & Manuell)
+                    </h3>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', position: 'relative' }}>
+                      {PROCESSES[selectedUseCase].before.map((step, idx) => (
+                        <div key={idx} style={{ display: 'flex', gap: '0.75rem', position: 'relative' }}>
+                          <div style={{ 
+                            minWidth: '24px', 
+                            height: '24px', 
+                            borderRadius: '50%', 
+                            background: 'rgba(239, 68, 68, 0.1)', 
+                            border: '1px solid rgba(239, 68, 68, 0.3)', 
+                            color: 'var(--accent-red)', 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            fontSize: '0.75rem', 
+                            fontWeight: 700,
+                            justifyContent: 'center'
+                          }}>
+                            {idx + 1}
+                          </div>
+                          <div>
+                            <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-primary)' }}>{step.step}</h4>
+                            <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.15rem' }}>{step.detail}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Nachher-Pfad (Automatisiert) */}
+                  <div style={{ background: 'rgba(6, 182, 212, 0.02)', border: '1px solid rgba(6, 182, 212, 0.12)', borderRadius: '0.75rem', padding: '1.25rem', boxShadow: '0 0 15px rgba(6, 182, 212, 0.05)' }}>
+                    <h3 style={{ fontSize: '0.9rem', color: 'var(--accent-cyan)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <BrainCircuit size={16} /> Neuer Weg (Vollautomatisiert)
+                    </h3>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                      {PROCESSES[selectedUseCase].after.map((step, idx) => (
+                        <div key={idx} style={{ display: 'flex', gap: '0.75rem' }}>
+                          <div style={{ 
+                            minWidth: '24px', 
+                            height: '24px', 
+                            borderRadius: '50%', 
+                            background: 'rgba(6, 182, 212, 0.1)', 
+                            border: '1px solid rgba(6, 182, 212, 0.3)', 
+                            color: 'var(--accent-cyan)', 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            fontSize: '0.75rem', 
+                            fontWeight: 700,
+                            justifyContent: 'center',
+                            boxShadow: '0 0 10px rgba(6, 182, 212, 0.2)'
+                          }}>
+                            {idx + 1}
+                          </div>
+                          <div>
+                            <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--accent-cyan)' }}>{step.step}</h4>
+                            <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.15rem' }}>{step.detail}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  
                 </div>
               </div>
             </div>
