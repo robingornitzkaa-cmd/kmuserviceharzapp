@@ -5,6 +5,7 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **Feature 1a (Showcase-Modus):** Ein globaler Toggle-Button in der Kopfzeile blendet bei Bedarf alle echten Kunden- und Firmendaten aus und ersetzt sie durch fiktive, aber realistische Demodaten. Das ermöglicht Robin die App datenschutzkonform live beim Kunden zu präsentieren.
 - Git-Repository initialisiert und den initialen Commit `feat: initial commit founder os prototype` erstellt.
 - Vite + React Projekt-Setup im aktuellen Verzeichnis initialisiert.
 - Installation von `lucide-react` für Icons.

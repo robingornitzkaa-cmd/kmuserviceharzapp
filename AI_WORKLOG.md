@@ -1,5 +1,33 @@
 # AI Worklog - Founder OS
 
+## 2026-06-26 00:05 – Implementierung Showcase-Modus (1a)
+
+### Ziel
+Verschleierungs-Modus (Showcase-Modus) implementieren, um sensible Kunden- und Geschäftsdaten bei Live-Präsentationen durch fiktive Daten zu ersetzen.
+
+### Erstellt
+- Globale `mask`-Hilfsfunktion in `App.jsx`, die Datenstrukturen (Firmen, Namen, Branchen, IT-Systeme, Inbox und Kalendereinträge) maskiert, wenn der Showcase-Modus aktiv ist.
+- Toggle-Button "Showcase-Modus: AKTIV/AUS" im App-Header.
+
+### Geändert
+- [App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): Einbindung der `mask`-Hilfsfunktion in alle rendernden UI-Elemente der Tabs (Dashboard, Inbox, Kanban, CRM, Projekte, SOPs).
+- [TODO.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md) (Schritt 1 abgehakt).
+- [CHANGELOG.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md) (Ergänzt).
+
+### Warum
+Damit der Gründer bei Kundenterminen die echte App zeigen kann, ohne Datenschutz-Verstöße (DSGVO) bei der Darstellung anderer Kunden zu begehen.
+
+### Testen
+1. Starte `npm run dev` oder schaue auf dem Vercel-Deployment nach dem Push.
+2. Drücke oben im Header auf "Showcase-Modus: AUS" ➔ Er wechselt zu "AKTIV" (leuchtet blau).
+3. Wechsle in den Tab "CRM & Projekte" oder "Inbox & Tasks" ➔ Echte Kundennamen (z.B. Dachdeckerei Müller) werden durch Demos (z.B. Muster-Bedachungen GmbH) ersetzt.
+4. Schalte ihn wieder aus ➔ Die echten Daten werden wieder korrekt angezeigt.
+
+### Offene Punkte
+- Warten auf Freigabe des Gründers, um Schritt 2 (ROI-Rechner v2 mit PDF-Export) zu starten.
+
+---
+
 ## 2026-06-25 23:50 – Git-Initialisierung & Vercel-Vorbereitung
 
 ### Ziel
