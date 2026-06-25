@@ -1,5 +1,36 @@
 # AI Worklog - Founder OS
 
+## 2026-06-26 00:30 – Implementierung NotebookLM Live-Sync Status (2b)
+
+### Ziel
+Anzeige und Simulation des Synchronisationsstatus des Google Drive Ordners mit der NotebookLM-Wissensdatenbank in Tab 4 ("KI, Content & Wissens-Hub").
+
+### Erstellt
+- Neue Status-Zustände (`notebookLmSyncStatus`, `notebookLmLastSync`, `notebookLmSyncStep`, `notebookLmProgress`) in `App.jsx`.
+- Simulation der Synchronisation (`triggerNotebookLmSync`) mit einem 5-Schritt-Prozess über ca. 3,5 Sekunden (Drive scannen ➔ Datei-Hash abgleichen ➔ Vektor-Embeddings extrahieren ➔ Wissensbasis aktualisieren ➔ Erfolg).
+- Neues, hochpräzises UI-Panel "Digitales Firmengehirn (NotebookLM)" in Tab 4, das den Status, die Anzahl der Quellen, den Zeitpunkt des letzten Syncs und das berechnete Datenvolumen anzeigt. Es enthält einen Live-Fortschrittsbalken und einen manuellen Synchronisations-Button.
+- Automatischer Trigger: Sobald über die Google Drive-Simulation eine neue Datei hochgeladen wird, startet NotebookLM im Hintergrund vollautomatisch den Synchronisationsprozess und aktualisiert die Statistiken.
+
+### Geändert
+- [App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): Einbau der Logik, der Status-States und der UI-Karte. Dokumententitel in Showcase-Modus maskiert.
+- [index.css](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/index.css): Definition aller CSS-Klassen für die NotebookLM-Karte, Detail-Spalten, Pulsier-Animationen und das rotierende Refresh-Icon.
+- [TODO.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md) (Schritt 5 abgehakt).
+- [CHANGELOG.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md) (Ergänzt).
+
+### Warum
+Da NotebookLM keine API-Schnittstelle besitzt, muss die Synchronisation simuliert werden. Der automatische Trigger bei Google Drive Uploads zeigt potenziellen Kunden die nahtlose, wartungsfreie Integration von Unternehmensdaten in die KI.
+
+### Testen
+1. Navigiere in der App zu Tab 4 ("KI & Docs").
+2. Drücke auf den Button "NotebookLM jetzt synchronisieren" ➔ Der Ladebalken läuft durch und zeigt detaillierte Schritte an.
+3. Klicke im Bereich darüber auf "PDFs oder Bilder hochladen", gib einen Namen ein (z. B. "Stundenzettel-GoClean") und bestätige ➔ Nach dem Alert startet NotebookLM selbsttätig die Synchronisation.
+4. Schalte den Showcase-Modus im Header ein ➔ Die Google-Doc-Dateinamen in der Liste werden datenschutzkonform maskiert.
+
+### Offene Punkte
+- Warten auf Freigabe des Gründers, um Schritt 6 (Time-Tracker für Projekte & Marge) zu starten.
+
+---
+
 ## 2026-06-26 00:20 – Implementierung Zettel-zu-Code Visualisierer (1c)
 
 ### Ziel

@@ -5,8 +5,8 @@
 - [x] **Schritt 1:** Implementierung von **Feature 1a (Showcase-Modus / Datenschutz-Filter)** ➔ Erledigt.
 - [x] **Schritt 2:** Implementierung von **Feature 1b (ROI-Rechner v2 mit PDF-Export)** ➔ Erledigt.
 - [x] **Schritt 3:** Implementierung von **Feature 1c (Zettel-zu-Code Visualisierer)** ➔ Erledigt.
-- [ ] **Schritt 4:** Implementierung von **Feature 2a (WhatsApp-Gateway & Webhook-Simulation)** ➔ Warten auf Go.
-- [ ] **Schritt 5:** Implementierung von **Feature 2b (NotebookLM Live-Sync Status)** ➔ Warten auf Go.
+- [x] **Schritt 4:** Implementierung von **Feature 2a (WhatsApp-Gateway & Webhook-Simulation)** ➔ Erledigt.
+- [x] **Schritt 5:** Implementierung von **Feature 2b (NotebookLM Live-Sync Status)** ➔ Erledigt.
 - [ ] **Schritt 6:** Implementierung von **Feature 3a (Time-Tracker für Projekte & Marge)** ➔ Warten auf Go.
 - [ ] **Schritt 7:** Implementierung von **Feature 3b (Gamifizierter Habit-Tracker & CSS-Konfetti)** ➔ Warten auf Go.
 - [ ] Supabase-Projekt aufsetzen (entweder über MCP oder direkt auf supabase.com) und API-Verbindung konfigurieren.

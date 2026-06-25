@@ -261,6 +261,12 @@ function App() {
   const [simMessage, setSimMessage] = useState('Christian Gornitzka: 8 Stunden Arbeit bei GoClean erfasst. Material: 2x Dichtungen.');
   const [isSimulating, setIsSimulating] = useState(false);
   const [simStep, setSimStep] = useState(''); // "", "whisper", "gpt", "done"
+
+  // NotebookLM Sync States
+  const [notebookLmSyncStatus, setNotebookLmSyncStatus] = useState(() => localStorage.getItem('f_notebook_sync_status') || 'synced');
+  const [notebookLmLastSync, setNotebookLmLastSync] = useState(() => localStorage.getItem('f_notebook_last_sync') || 'Vor 2 Stunden');
+  const [notebookLmSyncStep, setNotebookLmSyncStep] = useState('');
+  const [notebookLmProgress, setNotebookLmProgress] = useState(100);
   
   // Persistent Storage Sync
   useEffect(() => {
@@ -302,6 +308,12 @@ function App() {
   useEffect(() => {
     localStorage.setItem('f_whatsapp_webhook_url', webhookUrl);
   }, [webhookUrl]);
+  useEffect(() => {
+    localStorage.setItem('f_notebook_sync_status', notebookLmSyncStatus);
+  }, [notebookLmSyncStatus]);
+  useEffect(() => {
+    localStorage.setItem('f_notebook_last_sync', notebookLmLastSync);
+  }, [notebookLmLastSync]);
 
   // Quick Capture Handler
   const handleQuickCapture = (e) => {
@@ -526,17 +538,62 @@ function App() {
     setContentPosts(contentPosts.filter(p => p.id !== id));
   };
 
+  // NotebookLM Sync Trigger
+  const triggerNotebookLmSync = (triggeredByFile = null) => {
+    if (notebookLmSyncStatus === 'syncing') return;
+    
+    setNotebookLmSyncStatus('syncing');
+    setNotebookLmProgress(0);
+    
+    const steps = [
+      { progress: 15, text: 'Google Drive Ordner scannen...' },
+      { progress: 40, text: triggeredByFile ? `Neue Datei "${triggeredByFile}" analysieren...` : 'Dokumenten-Hashes abgleichen...' },
+      { progress: 70, text: 'Text & Vektor-Embeddings extrahieren...' },
+      { progress: 90, text: 'NotebookLM Wissensdatenbank aktualisieren...' },
+      { progress: 100, text: 'Synchronisation erfolgreich!' }
+    ];
+    
+    let currentStep = 0;
+    setNotebookLmSyncStep(steps[0].text);
+    setNotebookLmProgress(steps[0].progress);
+    
+    const interval = setInterval(() => {
+      currentStep++;
+      if (currentStep < steps.length) {
+        setNotebookLmSyncStep(steps[currentStep].text);
+        setNotebookLmProgress(steps[currentStep].progress);
+      } else {
+        clearInterval(interval);
+        
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        const dateStr = 'Heute, ' + timeStr;
+        
+        setNotebookLmLastSync(dateStr);
+        setNotebookLmSyncStatus('synced');
+        setNotebookLmSyncStep('');
+      }
+    }, 850);
+  };
+
   // Google Drive Simulation (Upload)
   const handleFileUploadMock = () => {
     const fileTitle = prompt("Dateiname für den Upload in Google Drive:");
     if (!fileTitle) return;
+    
+    const formattedTitle = /\.[a-zA-Z0-9]+$/.test(fileTitle) ? fileTitle : fileTitle + '.pdf';
+    
     const newDoc = {
       id: 'd_' + Date.now(),
-      title: fileTitle + ' (Google Doc Link)',
+      title: formattedTitle,
       url: 'https://docs.google.com'
     };
+    
     setDocs([newDoc, ...docs]);
-    alert(`Die Datei "${fileTitle}" wurde erfolgreich in deinen "Founder OS" Google Drive Ordner geladen.`);
+    
+    setTimeout(() => {
+      triggerNotebookLmSync(formattedTitle);
+    }, 600);
   };
 
   // SOP Vorlagen kopieren
@@ -1517,12 +1574,96 @@ function App() {
                       <a key={doc.id} href={doc.url} className="doc-link-item" target="_blank" rel="noreferrer">
                         <div className="doc-info">
                           <FileText size={16} />
-                          <span className="doc-title">{doc.title}</span>
+                          <span className="doc-title">{mask(doc.title, 'inbox')}</span>
                         </div>
                         <ExternalLink size={12} className="text-muted" />
                       </a>
                     ))}
                   </div>
+                </div>
+              </div>
+
+              {/* Digitales Firmengehirn (NotebookLM) */}
+              <div className="card notebooklm-card">
+                <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <h2 className="card-title">
+                    <BrainCircuit size={20} className="text-purple-500" />
+                    Digitales Firmengehirn (NotebookLM)
+                  </h2>
+                  <span className={`sync-badge ${notebookLmSyncStatus}`}>
+                    {notebookLmSyncStatus === 'syncing' ? 'Synchronisiert...' : 'Bereit'}
+                  </span>
+                </div>
+                
+                <div className="notebooklm-body" style={{ marginTop: '0.75rem' }}>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
+                    Dieses Panel visualisiert den Abgleich deiner internen Dokumenten-Ablage mit dem KI-Firmengehirn in Google NotebookLM.
+                  </p>
+                  
+                  <div className="notebooklm-details-grid" style={{ marginBottom: '1rem' }}>
+                    <div className="detail-item">
+                      <span className="detail-label">Status</span>
+                      <span className="detail-value" style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                        {notebookLmSyncStatus === 'syncing' ? (
+                          <>
+                            <span className="sync-pulse-icon active"></span>
+                            Synchronisiert gerade
+                          </>
+                        ) : (
+                          <>
+                            <span className="sync-pulse-icon success"></span>
+                            Online & Aktiv
+                          </>
+                        )}
+                      </span>
+                    </div>
+                    <div className="detail-item">
+                      <span className="detail-label">Wissensquellen</span>
+                      <span className="detail-value">{docs.length} Dokumente</span>
+                    </div>
+                    <div className="detail-item">
+                      <span className="detail-label">Letzter Sync</span>
+                      <span className="detail-value">{notebookLmLastSync}</span>
+                    </div>
+                    <div className="detail-item">
+                      <span className="detail-label">Datenvolumen</span>
+                      <span className="detail-value">~{(docs.length * 312 + 424) >= 1024 ? ((docs.length * 312 + 424) / 1024).toFixed(2) + ' MB' : (docs.length * 312 + 424) + ' KB'}</span>
+                    </div>
+                  </div>
+
+                  {notebookLmSyncStatus === 'syncing' && (
+                    <div className="sync-progress-container" style={{ margin: '1rem 0', padding: '0.75rem', background: 'rgba(0, 0, 0, 0.2)', borderRadius: '0.5rem', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', marginBottom: '0.35rem' }}>
+                        <span style={{ color: 'var(--accent-purple)', fontWeight: 600 }}>{notebookLmSyncStep}</span>
+                        <span style={{ color: 'var(--text-secondary)' }}>{notebookLmProgress}%</span>
+                      </div>
+                      <div className="sync-progress-bar-bg" style={{ width: '100%', height: '6px', background: 'rgba(255, 255, 255, 0.1)', borderRadius: '3px', overflow: 'hidden' }}>
+                        <div className="sync-progress-bar-fill" style={{ width: `${notebookLmProgress}%`, height: '100%', background: 'linear-gradient(90deg, var(--accent-purple), var(--accent-cyan))', transition: 'width 0.4s ease-out' }}></div>
+                      </div>
+                    </div>
+                  )}
+
+                  <button 
+                    onClick={() => triggerNotebookLmSync()} 
+                    disabled={notebookLmSyncStatus === 'syncing'} 
+                    className="btn btn-secondary"
+                    style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem' }}
+                  >
+                    <svg 
+                      className={notebookLmSyncStatus === 'syncing' ? 'spin' : ''} 
+                      width="16" 
+                      height="16" 
+                      viewBox="0 0 24 24" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      strokeWidth="2" 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round"
+                    >
+                      <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+                    </svg>
+                    {notebookLmSyncStatus === 'syncing' ? 'Synchronisiere Wissensbasis...' : 'NotebookLM jetzt synchronisieren'}
+                  </button>
                 </div>
               </div>
 
