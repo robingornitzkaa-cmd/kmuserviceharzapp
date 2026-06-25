@@ -1,5 +1,37 @@
 # AI Worklog - Founder OS
 
+## 2026-06-26 00:15 – Implementierung ROI-Rechner v2 mit PDF-Export (1b)
+
+### Ziel
+Umfassenden Ausbau des ROI-Rechners vornehmen, um Kunden Fördermittel-Optionen (Niedersachsen, Sachsen-Anhalt, Bund) anzuzeigen, Zeit-Gegenüberstellungen zu visualisieren und die ROI-Kalkulation per Knopfdruck als professionelles PDF-Angebot zu exportieren.
+
+### Erstellt
+- PDF-Exportfunktion `generatePDFReport` mittels der installierten Bibliothek `jspdf`. Das PDF ist als druckfreundlicher Briefbogen strukturiert, mit Berechnungsboxen für manuelle/automatisierte Aufwände, Fördermittel-Zuschuss-Berechnungen und Amortisationszeit.
+- Neue UI-Komponenten im Tab 5:
+  - Input für Projekt-Festpreis.
+  - Dropdown für Fördermittel-Region (Niedersachsen, Sachsen-Anhalt, Bund, Keine).
+  - Zwei Balkendiagramme (Zeitaufwand Bisher vs. Automatisiert).
+  - PDF-Export-Button.
+
+### Geändert
+- [App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): Import von `jsPDF`, Erweiterung von `calcInputs` und Anpassung der ROI-Berechnungs- und Darstellungs-Logiken.
+- [TODO.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md) (Schritt 2 abgehakt).
+- [CHANGELOG.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md) (Ergänzt).
+
+### Warum
+Der Fördermittel-Hebel ist der stärkste Vertriebsturbo von Robin (KMU Service Harz). Durch die Live-Berechnung und den direkten PDF-Export kann er im Kundengespräch sofort ein überzeugendes, schriftliches ROI-Angebot aushändigen.
+
+### Testen
+1. Navigiere in der App zu Tab 5 ("Sales & SOPs").
+2. Verändere die Werte im ROI-Rechner (z.B. Stunden/Woche auf 8, Festpreis auf 3.000 €).
+3. Wähle ein anderes Bundesland aus (z.B. Sachsen-Anhalt 50%) ➔ Die Netto-Investition und die Amortisationszeit passen sich sofort in Echtzeit an.
+4. Klicke auf den Button "ROI-Analyse als PDF exportieren" ➔ Ein PDF-Download startet mit einem sauberen Briefbogen.
+
+### Offene Punkte
+- Warten auf Freigabe des Gründers, um Schritt 3 (Zettel-zu-Code Visualisierer) zu starten.
+
+---
+
 ## 2026-06-26 00:05 – Implementierung Showcase-Modus (1a)
 
 ### Ziel
