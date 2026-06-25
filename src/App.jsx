@@ -334,6 +334,11 @@ function App() {
   });
   const [archiveOpen, setArchiveOpen] = useState(false);
   
+  // Make.com Szenario-Simulator States (Feature B1)
+  const [makeSimRunning, setMakeSimRunning] = useState(false);
+  const [makeActiveNode, setMakeActiveNode] = useState(0);
+  const [makeLogs, setMakeLogs] = useState([]);
+  
   // Persistent Storage Sync
   useEffect(() => {
     localStorage.setItem('f_inbox', JSON.stringify(inbox));
@@ -536,6 +541,62 @@ function App() {
     });
     
     doc.save(`FounderOS-Wochenreport-${new Date().toISOString().split('T')[0]}.pdf`);
+  };
+
+  // Make.com Simulationssteuerung (Feature B1)
+  const startMakeSimulation = () => {
+    if (makeSimRunning) return;
+
+    setMakeSimRunning(true);
+    setMakeActiveNode(1);
+    
+    const getTimestamp = () => {
+      const now = new Date();
+      const ms = String(now.getMilliseconds()).padStart(3, '0').slice(0, 2);
+      return now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + '.' + ms;
+    };
+
+    setMakeLogs([`[${getTimestamp()}] ⚡ Make.com Webhook getriggert durch WhatsApp-Eingang.`]);
+
+    // Step 2: Whisper (nach 1.4s)
+    setTimeout(() => {
+      setMakeActiveNode(2);
+      setMakeLogs(prev => [
+        ...prev,
+        `[${getTimestamp()}] 🎙️ Whisper API: Verarbeite Sprachnachricht (Dauer: 6.2s)...`,
+        `[${getTimestamp()}] 🔍 Transkript: "Christian Gornitzka, 8 Stunden gearbeitet bei GoClean Harz. Material: Dichtungen."`
+      ]);
+    }, 1400);
+
+    // Step 3: GPT-4 (nach 2.8s)
+    setTimeout(() => {
+      setMakeActiveNode(3);
+      setMakeLogs(prev => [
+        ...prev,
+        `[${getTimestamp()}] 🧠 GPT-4: Analysiere und strukturiere Textdaten...`,
+        `[${getTimestamp()}] 🔍 Extrahiert: { Mitarbeiter: "Christian Gornitzka", Stunden: 8.0, Kunde: "GoClean Harz", Material: "Dichtungen" }`
+      ]);
+    }, 2800);
+
+    // Step 4: Lexoffice (nach 4.2s)
+    setTimeout(() => {
+      setMakeActiveNode(4);
+      setMakeLogs(prev => [
+        ...prev,
+        `[${getTimestamp()}] 📁 Lexoffice API: Sende erfassten Beleg & Zeiteintrag...`,
+        `[${getTimestamp()}] ✅ API-Antwort: Status 201 (Created) - Eintrag #LX-98241 angelegt.`
+      ]);
+    }, 4200);
+
+    // Done (nach 5.6s)
+    setTimeout(() => {
+      setMakeActiveNode(5);
+      setMakeLogs(prev => [
+        ...prev,
+        `[${getTimestamp()}] 🎉 Szenario-Ausführung erfolgreich beendet (Gesamtlaufzeit: 5.6s, geschätzte Kosten: 0.015 €).`
+      ]);
+      setMakeSimRunning(false);
+    }, 5600);
   };
 
   // Live Timer tick for active project time tracking
@@ -2757,6 +2818,154 @@ function App() {
                   </div>
                   
                 </div>
+              </div>
+            </div>
+
+            {/* Make.com Szenario-Simulator (Volle Breite) (Feature B1) */}
+            <div className="card" style={{ gridColumn: 'span 2', marginTop: '1.5rem' }}>
+              <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+                <div>
+                  <h2 className="card-title" style={{ color: 'var(--accent-cyan)' }}>
+                    <BrainCircuit size={20} /> Interaktiver Make.com Szenario-Simulator
+                  </h2>
+                  <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>
+                    Demonstriere live, wie Daten im Hintergrund durch Schnittstellen fließen.
+                  </p>
+                </div>
+                
+                <button 
+                  onClick={startMakeSimulation}
+                  disabled={makeSimRunning}
+                  className="btn btn-primary"
+                  style={{ 
+                    background: 'linear-gradient(135deg, #d946ef, #8b5cf6)', 
+                    boxShadow: '0 0 15px rgba(217, 70, 239, 0.4)',
+                    border: 'none',
+                    padding: '0.5rem 1rem',
+                    fontSize: '0.825rem',
+                    fontWeight: 600
+                  }}
+                >
+                  {makeSimRunning ? 'Simulation läuft...' : 'Szenario ausführen (Testen)'}
+                </button>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: '1.5rem', marginTop: '1.5rem' }} className="make-simulator-grid">
+                
+                {/* Linke Seite: Der Graph */}
+                <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                  <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
+                    Szenario-Ablaufplan (Make-Module)
+                  </label>
+                  
+                  <div className="make-scenario-graph">
+                    <div className={`make-node ${makeActiveNode === 1 ? 'active' : ''} ${makeActiveNode > 1 ? 'completed' : ''}`}>
+                      <Inbox size={22} />
+                      <span className="make-node-label">WhatsApp</span>
+                    </div>
+                    
+                    <div className={`make-connector ${makeActiveNode === 1 ? 'active' : ''} ${makeActiveNode > 1 ? 'completed' : ''}`} />
+                    
+                    <div className={`make-node ${makeActiveNode === 2 ? 'active' : ''} ${makeActiveNode > 2 ? 'completed' : ''}`}>
+                      <Clock size={22} />
+                      <span className="make-node-label">Whisper (KI)</span>
+                    </div>
+                    
+                    <div className={`make-connector ${makeActiveNode === 2 ? 'active' : ''} ${makeActiveNode > 2 ? 'completed' : ''}`} />
+                    
+                    <div className={`make-node ${makeActiveNode === 3 ? 'active' : ''} ${makeActiveNode > 3 ? 'completed' : ''}`}>
+                      <BrainCircuit size={22} />
+                      <span className="make-node-label">GPT-4 (KI)</span>
+                    </div>
+                    
+                    <div className={`make-connector ${makeActiveNode === 3 ? 'active' : ''} ${makeActiveNode > 3 ? 'completed' : ''}`} />
+                    
+                    <div className={`make-node ${makeActiveNode === 4 ? 'active' : ''} ${makeActiveNode > 4 ? 'completed' : ''}`}>
+                      <ClipboardCopy size={22} />
+                      <span className="make-node-label">Lexoffice</span>
+                    </div>
+                  </div>
+                  
+                  <div style={{ display: 'flex', gap: '1.5rem', marginTop: '1rem', fontSize: '0.75rem', color: 'var(--text-muted)', justifyContent: 'center' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--border-color)', display: 'inline-block' }}></span>
+                      Bereit
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--accent-cyan)', display: 'inline-block', boxShadow: '0 0 5px var(--accent-cyan)' }}></span>
+                      Aktiv
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--accent-green)', display: 'inline-block' }}></span>
+                      Erfolgreich
+                    </div>
+                  </div>
+                </div>
+
+                {/* Rechte Seite: Log Terminal */}
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
+                    Ausführungsprotokoll (Live-Log)
+                  </label>
+                  
+                  <div style={{ 
+                    background: '#090d16', 
+                    border: '1px solid var(--border-color)', 
+                    borderRadius: '0.5rem', 
+                    flexGrow: 1, 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    overflow: 'hidden',
+                    minHeight: '200px'
+                  }}>
+                    {/* Mac window header */}
+                    <div style={{ 
+                      background: 'rgba(255,255,255,0.03)', 
+                      borderBottom: '1px solid rgba(255,255,255,0.05)', 
+                      padding: '0.5rem 0.75rem', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      gap: '0.35rem' 
+                    }}>
+                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#ff5f56', display: 'inline-block' }}></span>
+                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#ffbd2e', display: 'inline-block' }}></span>
+                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#27c93f', display: 'inline-block' }}></span>
+                      <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontFamily: 'monospace', marginLeft: '0.5rem' }}>make-scenario-log.sh</span>
+                    </div>
+                    
+                    {/* Log lines */}
+                    <div style={{ 
+                      padding: '0.75rem', 
+                      fontFamily: 'monospace', 
+                      fontSize: '0.75rem', 
+                      color: '#38bdf8', 
+                      overflowY: 'auto', 
+                      display: 'flex', 
+                      flexDirection: 'column', 
+                      gap: '0.35rem',
+                      flexGrow: 1
+                    }}>
+                      {makeLogs.map((log, index) => {
+                        let color = '#38bdf8'; // cyan
+                        if (log.includes('✅') || log.includes('🎉')) color = '#4ade80'; // green
+                        if (log.includes('🎙️') || log.includes('🧠') || log.includes('⚡')) color = '#c084fc'; // purple
+                        if (log.includes('🔍')) color = '#e2e8f0'; // white
+                        
+                        return (
+                          <div key={index} style={{ color, wordBreak: 'break-all', whiteSpace: 'pre-wrap' }}>
+                            {log}
+                          </div>
+                        );
+                      })}
+                      {makeLogs.length === 0 && (
+                        <div style={{ color: 'var(--text-muted)', fontStyle: 'italic', textAlign: 'center', margin: 'auto' }}>
+                          Klicke auf "Szenario ausführen", um die Live-Datenübertragung zu veranschaulichen.
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
 

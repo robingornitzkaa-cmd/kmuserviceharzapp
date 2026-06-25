@@ -1724,3 +1724,116 @@ body {
     padding-bottom: 5rem; /* Add spacing at the bottom for mobile nav bar */
   }
 }
+
+/* ==========================================================================
+   MAKE.COM SCENARIO SIMULATOR STYLES
+   ========================================================================== */
+
+.make-scenario-graph {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2.25rem 1rem;
+  background: rgba(17, 24, 39, 0.4);
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.make-node {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.02);
+  border: 2px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--text-secondary);
+}
+
+.make-node-label {
+  position: absolute;
+  bottom: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.7rem;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--text-muted);
+  transition: color 0.3s ease;
+}
+
+.make-node.active {
+  background: rgba(6, 182, 212, 0.08);
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.35);
+  transform: scale(1.1);
+}
+
+.make-node.active .make-node-label {
+  color: var(--accent-cyan);
+}
+
+.make-node.completed {
+  background: rgba(16, 185, 129, 0.04);
+  border-color: var(--accent-green);
+  color: var(--accent-green);
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.15);
+}
+
+.make-node.completed .make-node-label {
+  color: var(--accent-green);
+}
+
+.make-connector {
+  flex-grow: 1;
+  height: 3px;
+  background: var(--border-color);
+  position: relative;
+  align-self: center;
+  margin: 0 -0.25rem;
+  z-index: 1;
+  transition: background 0.3s ease;
+}
+
+.make-connector.active {
+  background: var(--border-color);
+}
+
+.make-connector.active::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 12px;
+  background: var(--accent-cyan);
+  box-shadow: var(--shadow-glow-cyan);
+  border-radius: 50%;
+  animation: makePulse 1.4s infinite cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.make-connector.completed {
+  background: rgba(16, 185, 129, 0.4);
+}
+
+@keyframes makePulse {
+  0% { left: 0%; opacity: 0.2; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { left: 100%; opacity: 0.2; }
+}
+
+@media (max-width: 900px) {
+  .make-simulator-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
