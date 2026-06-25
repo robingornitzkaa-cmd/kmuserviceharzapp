@@ -1,5 +1,37 @@
 # AI Worklog - Founder OS
 
+## 2026-06-26 01:30 – Interaktiver Make.com Szenario-Simulator (Feature B1)
+
+### Ziel
+Entwurf und Implementierung eines interaktiven Make.com Szenario-Simulators im Sales-Tab (Tab 5), um die Live-Datenverarbeitung und den Ablauf typischer Integrationspfade (WhatsApp -> Whisper -> GPT-4 -> Lexoffice) für Kunden visuell verständlich und greifbar zu demonstrieren.
+
+### Erstellt
+- **State-Zustände:** `makeSimRunning` (Ausführungszustand), `makeActiveNode` (aktuell aktives Make-Modul, 0-5) und `makeLogs` (Live-Terminal-Logs) in `App.jsx`.
+- **Ablauf-Timer:** `startMakeSimulation` steuert über gestaffelte `setTimeout`-Verzögerungen den Fluss der Daten. Nach und nach leuchten die Module auf, während das Terminal präzise Logs im Millisekundenbereich ausgibt.
+- **Szenariograph (UI):** Ein visuelles Ablaufdiagramm mit vier Modulen (WhatsApp, Whisper, GPT-4, Lexoffice) und Verbindungslinien. Aktive Module leuchten cyanfarben und pulsieren, abgeschlossene Module werden grün hinterlegt.
+- **Wandernder Lichtimpuls:** Ein absolut positioniertes CSS-Element (`.make-connector.active::after`) animiert einen cyanfarbenen Lichtpunkt, der sich entlang der Linien von Knoten zu Knoten bewegt (`makePulse` Keyframes).
+- **Log Terminal:** Ein detailliertes Terminal-Fenster im Apple-Style (dunkler Hintergrund, farbige Fensterschaltflächen, monospace Code-Ausgabe) gibt die simulierten API-Antworten und Verarbeitungszeiten farblich hervorstechend aus.
+
+### Geändert
+- [App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): Einbindung der Steuerfunktion, Deklaration der States und Rendering des Simulators am Ende des Sales-Tabs.
+- [index.css](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/index.css): Styling des Graphen, der Module (Knoten), Verbindungslinien (Kanten) und Definition der CSS-Impuls-Keyframes sowie responsives Layout.
+- [TODO.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md) (Simulator abgehakt).
+- [CHANGELOG.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md) (Ergänzt).
+
+### Warum
+Make-Szenarien arbeiten unsichtbar im Hintergrund. Für potenzielle KMU-Kunden ist es extrem schwer zu verstehen, wie eine WhatsApp-Sprachnachricht zu einer fertigen Buchung im ERP wird. Der Simulator macht diese Prozesse in 6 Sekunden optisch und funktional erlebbar.
+
+### Testen
+1. Navigiere zu Tab 5 ("Sales & SOPs") und scrolle ganz nach unten zum **"Interaktiven Make.com Szenario-Simulator"**.
+2. Klicke auf den Button **"Szenario ausführen (Testen)"** oben rechts.
+3. Beobachte, wie der erste Knoten (WhatsApp) blau leuchtet, während ein Lichtimpuls über die Linie zum Whisper-Knoten wandert. Das Terminal rechts schreibt zeitgleich die Logs.
+4. Jedes Modul leuchtet nacheinander auf (und verbleibt im Erfolgs-Zustand Grün), bis die Ausführung mit einer Erfolgsmeldung und Kostenabrechnung im Log endet.
+
+### Offene Punkte
+- Warten auf Freigabe des Gründers, um Schritt 5 (Feature B2: KI-Chatbot-Mock "Frag das Firmengehirn") zu starten.
+
+---
+
 ## 2026-06-26 01:20 – Wochen-Review & Archiv erledigter Aufgaben (Feature A3)
 
 ### Ziel
