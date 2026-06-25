@@ -14,4 +14,7 @@
 - [ ] **Google Kalender Live-Sync:** Statt Mock-Events echte Tagestermine laden.
 
 ## Ideen
-- [ ] **Workshop-Audit-Eingabemaske:** Formular zur Strukturierten Analyse von KMU-Zettelwirtschaft direkt im Erstgespräch.
+- [ ] **WhatsApp Live-Gateway:** Über Make Sprachnachrichten live als Text in die Inbox fließen lassen (der ultimative Wow-Effekt im Kundengespräch).
+- [ ] **Profitabilitäts-Tracker (Zeiterfassung):** Integrierter Timer für Festpreisprojekte zur Ermittlung des tatsächlichen Stundensatzes.
+- [ ] **Zettel-zu-Code Visualisierer:** Interaktive Vorher/Nachher-Prozessgrafik, um Handwerkern die Angst vor Digitalisierung zu nehmen.
+- [ ] **Workshop-Audit-Eingabemaske:** Formular zur strukturierten Erfassung von KMU-Zettelwirtschaft direkt im Erstgespräch.
