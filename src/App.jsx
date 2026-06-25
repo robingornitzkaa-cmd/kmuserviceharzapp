@@ -270,6 +270,11 @@ function App() {
 
   // Time Tracker State
   const [timeTick, setTimeTick] = useState(0);
+
+  // Habit Streak & Confetti States
+  const [habitStreak, setHabitStreak] = useState(() => parseInt(localStorage.getItem('f_habit_streak')) || 0);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [confettiParticles, setConfettiParticles] = useState([]);
   
   // Persistent Storage Sync
   useEffect(() => {
@@ -317,6 +322,9 @@ function App() {
   useEffect(() => {
     localStorage.setItem('f_notebook_last_sync', notebookLmLastSync);
   }, [notebookLmLastSync]);
+  useEffect(() => {
+    localStorage.setItem('f_habit_streak', habitStreak.toString());
+  }, [habitStreak]);
 
   // Live Timer tick for active project time tracking
   useEffect(() => {
@@ -438,9 +446,41 @@ function App() {
     setFocusTasks(focusTasks.filter(t => t.id !== id));
   };
 
+  // Confetti Simulation Trigger
+  const triggerConfetti = () => {
+    setShowConfetti(true);
+    const colors = ['#8B5CF6', '#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#06B6D4'];
+    const particles = Array.from({ length: 80 }).map((_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      y: -10 - Math.random() * 20,
+      size: Math.random() * 8 + 6,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      delay: Math.random() * 1.5,
+      duration: Math.random() * 2 + 2,
+      rotation: Math.random() * 360,
+      shape: Math.random() > 0.5 ? 'circle' : 'square'
+    }));
+    setConfettiParticles(particles);
+    
+    setTimeout(() => {
+      setShowConfetti(false);
+      setConfettiParticles([]);
+    }, 4500);
+  };
+
   // Habit Tracker Toggle
   const toggleHabit = (id) => {
-    setHabits(habits.map(h => h.id === id ? { ...h, completed: !h.completed } : h));
+    const updatedHabits = habits.map(h => h.id === id ? { ...h, completed: !h.completed } : h);
+    setHabits(updatedHabits);
+
+    const allCompletedNow = updatedHabits.every(h => h.completed);
+    const wereAllCompletedBefore = habits.every(h => h.completed);
+
+    if (allCompletedNow && !wereAllCompletedBefore) {
+      setHabitStreak(prev => prev + 1);
+      triggerConfetti();
+    }
   };
 
   // Kanban Board Drag and Drop
@@ -838,6 +878,26 @@ function App() {
 
   return (
     <div className="app-container">
+      {/* Confetti Overlay */}
+      {showConfetti && (
+        <div className="confetti-container">
+          {confettiParticles.map(p => (
+            <div 
+              key={p.id} 
+              className={`confetti-particle ${p.shape}`}
+              style={{
+                left: `${p.x}%`,
+                top: `${p.y}%`,
+                width: `${p.size}px`,
+                height: `${p.size}px`,
+                backgroundColor: p.color,
+                animationDelay: `${p.delay}s`,
+                animationDuration: `${p.duration}s`
+              }}
+            />
+          ))}
+        </div>
+      )}
       {/* HEADER */}
       <header className="app-header" style={{ flexWrap: 'wrap', gap: '1rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
@@ -996,9 +1056,44 @@ function App() {
 
             {/* Habit Tracker (Gründer-Fokus) */}
             <div className="card" style={{ gridColumn: 'span 2' }}>
-              <div className="card-header">
-                <h2 className="card-title"><TrendingUp size={20} className="text-green-500" /> Gründer-Fokus Habit-Tracker</h2>
-                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Setzt sich täglich um Mitternacht zurück</span>
+              <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
+                <h2 className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <TrendingUp size={20} className="text-green-500" /> 
+                  Gründer-Fokus Habit-Tracker
+                </h2>
+                
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                  <div className="streak-display-panel">
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); setHabitStreak(prev => Math.max(0, prev - 1)); }} 
+                      className="streak-btn-adj"
+                      title="Streak verringern"
+                    >
+                      -
+                    </button>
+                    <span className="streak-badge-fire" title="Deine aktuelle tägliche Habit-Streak!">
+                      🔥 {habitStreak} {habitStreak === 1 ? 'Tag' : 'Tage'} Streak
+                    </span>
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); setHabitStreak(prev => prev + 1); }} 
+                      className="streak-btn-adj"
+                      title="Streak erhöhen"
+                    >
+                      +
+                    </button>
+                  </div>
+
+                  <button 
+                    onClick={triggerConfetti} 
+                    className="btn btn-secondary" 
+                    style={{ padding: '0.25rem 0.5rem', fontSize: '0.7rem', height: '24px', display: 'flex', alignItems: 'center', gap: '0.25rem' }}
+                    title="Simuliert die Konfetti-Belohnung bei 100% Habit-Abschluss"
+                  >
+                    🎉 Konfetti zünden
+                  </button>
+                  
+                  <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Täglicher Reset</span>
+                </div>
               </div>
               <div className="habit-list">
                 {habits.map(h => (

@@ -8,7 +8,7 @@
 - [x] **Schritt 4:** Implementierung von **Feature 2a (WhatsApp-Gateway & Webhook-Simulation)** ➔ Erledigt.
 - [x] **Schritt 5:** Implementierung von **Feature 2b (NotebookLM Live-Sync Status)** ➔ Erledigt.
 - [x] **Schritt 6:** Implementierung von **Feature 3a (Time-Tracker für Projekte & Marge)** ➔ Erledigt.
-- [ ] **Schritt 7:** Implementierung von **Feature 3b (Gamifizierter Habit-Tracker & CSS-Konfetti)** ➔ Warten auf Go.
+- [x] **Schritt 7:** Implementierung von **Feature 3b (Gamifizierter Habit-Tracker & CSS-Konfetti)** ➔ Erledigt.
 - [ ] Supabase-Projekt aufsetzen (entweder über MCP oder direkt auf supabase.com) und API-Verbindung konfigurieren.
 - [ ] Google Cloud Console Setup starten (für Google OAuth / Kalender und Drive Schnittstellen).
 
