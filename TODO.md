@@ -4,7 +4,7 @@
 - [ ] Freigabe des neuen [Implementierungsplans](file:///C:/Users/gorni/.gemini/antigravity/brain/26b62883-46ba-464b-8962-fb9c8b771cee/implementation_plan.md) abwarten.
 - [x] **Schritt 1:** Implementierung von **Feature 1a (Showcase-Modus / Datenschutz-Filter)** ➔ Erledigt.
 - [x] **Schritt 2:** Implementierung von **Feature 1b (ROI-Rechner v2 mit PDF-Export)** ➔ Erledigt.
-- [ ] **Schritt 3:** Implementierung von **Feature 1c (Zettel-zu-Code Visualisierer)** ➔ Warten auf Go.
+- [x] **Schritt 3:** Implementierung von **Feature 1c (Zettel-zu-Code Visualisierer)** ➔ Erledigt.
 - [ ] **Schritt 4:** Implementierung von **Feature 2a (WhatsApp-Gateway & Webhook-Simulation)** ➔ Warten auf Go.
 - [ ] **Schritt 5:** Implementierung von **Feature 2b (NotebookLM Live-Sync Status)** ➔ Warten auf Go.
 - [ ] **Schritt 6:** Implementierung von **Feature 3a (Time-Tracker für Projekte & Marge)** ➔ Warten auf Go.

@@ -1,5 +1,35 @@
 # AI Worklog - Founder OS
 
+## 2026-06-26 00:20 – Implementierung Zettel-zu-Code Visualisierer (1c)
+
+### Ziel
+Einen interaktiven Prozess-Visualisierer in Tab 5 ("Sales & SOPs") implementieren, um Kunden live den Vorher/Nachher-Zustand typischer KMU-Abläufe (Rechnungen, Stundenzettel, Kundenanfragen) zu veranschaulichen.
+
+### Erstellt
+- Use-Case-Datenstruktur `PROCESSES` in `App.jsx` für drei typische KMU-Szenarien.
+- Interaktives UI-Element im Tab 5:
+  - Toggle-Buttons zur Auswahl des Use Cases.
+  - Zweispaltiges Layout: Links der ineffiziente, rote "Bisherige Weg" mit Warn-Symbolen. Rechts der vollautomatisierte, cyane "Neue Weg" mit KI- und API-Symbolen.
+  - Beschreibungstexte und Detail-Erklärungen für jeden einzelnen Prozessschritt.
+
+### Geändert
+- [App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): State `selectedUseCase` definiert und Visualisierer-Markup am Ende der Sales-Seite integriert.
+- [TODO.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md) (Schritt 3 abgehakt).
+- [CHANGELOG.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md) (Ergänzt).
+
+### Warum
+Um Automatisierung und KI für KMU-Kunden (z. B. Handwerker), die oft Berührungsängste mit Technik haben, visuell greifbar und extrem verständlich darzustellen.
+
+### Testen
+1. Navigiere zu Tab 5 ("Sales & SOPs") und scrolle nach unten zum Bereich "Zettel-zu-Code Prozess-Visualisierer".
+2. Klicke auf die Buttons oben (z.B. *Stundenzettel & Zeiterfassung*) ➔ Die Vorher- und Nachher-Schrittketten passen sich sofort dynamisch an.
+3. Lies die Details, um den Live-Präsentationsablauf zu testen.
+
+### Offene Punkte
+- Warten auf Freigabe des Gründers, um Schritt 4 (WhatsApp-Gateway & Webhook-Simulation) zu starten.
+
+---
+
 ## 2026-06-26 00:15 – Implementierung ROI-Rechner v2 mit PDF-Export (1b)
 
 ### Ziel

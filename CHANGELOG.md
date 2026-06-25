@@ -5,6 +5,7 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **Feature 1c (Zettel-zu-Code Visualisierer):** Ein neuer interaktiver Bereich in Tab 5. Klick-Karten ermöglichen es, typische KMU-Use-Cases (Eingangsrechnungen, Stundenzettel, Kundenanfragen) auszuwählen. Gegenüberstellung des alten, manuellen Weges (rot schattiert mit Warn-Icons) und des neuen, automatisierten Weges (cyan schattiert mit KI-/Schnittstellen-Icons) zur pragmatischen Veranschaulichung der Digitalisierung im Kundengespräch.
 - **Feature 1b (ROI-Rechner v2 mit PDF-Export):** Umfassender Ausbau des Showcase-Rechners. Erfassung von Festpreisen und Bundesland-Fördermitteln (Digitalbonus 50 % o.ä.). Visuelle Balkendiagramme stellen den Zeitaufwand (Bisher vs. Automatisiert) gegenüber. Ein neuer PDF-Export-Button generiert mittels `jspdf` ein professionelles, druckfreundliches Angebot (ROI-Kalkulation) als PDF-Download.
 - **Feature 1a (Showcase-Modus):** Ein globaler Toggle-Button in der Kopfzeile blendet bei Bedarf alle echten Kunden- und Firmendaten aus und ersetzt sie durch fiktive, aber realistische Demodaten. Das ermöglicht Robin die App datenschutzkonform live beim Kunden zu präsentieren.
 - Git-Repository initialisiert und den initialen Commit `feat: initial commit founder os prototype` erstellt.
