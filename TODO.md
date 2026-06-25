@@ -9,6 +9,14 @@
 - [x] **Schritt 5:** Implementierung von **Feature 2b (NotebookLM Live-Sync Status)** ➔ Erledigt.
 - [x] **Schritt 6:** Implementierung von **Feature 3a (Time-Tracker für Projekte & Marge)** ➔ Erledigt.
 - [x] **Schritt 7:** Implementierung von **Feature 3b (Gamifizierter Habit-Tracker & CSS-Konfetti)** ➔ Erledigt.
+- [x] **Schritt 1:** Feature A1 (CRM-Detailansicht / Kunden-Akte) ➔ Erledigt.
+    - [x] Detail-Drawer/Seitenleiste für Kontakte entwerfen
+    - [x] Eingabefelder für kundenbezogene Notizen und Dokumenten-Links integrieren
+    - [x] Kontakthistorie (Aktivitäts-Log) aufzeichnen
+- [ ] **Schritt 2:** Feature A2 (Einnahmen-Widget & Umsatz-Vorschau) ➔ Warten auf Go.
+- [ ] **Schritt 3:** Feature A3 (Wochen-Review & Archiv) ➔ Warten auf Go.
+- [ ] **Schritt 4:** Feature B1 (Interaktiver Make.com Simulator) ➔ Warten auf Go.
+- [ ] **Schritt 5:** Feature B2 ("Frag das Firmengehirn" Chat-Mock) ➔ Warten auf Go.
 - [ ] Supabase-Projekt aufsetzen (entweder über MCP oder direkt auf supabase.com) und API-Verbindung konfigurieren.
 - [ ] Google Cloud Console Setup starten (für Google OAuth / Kalender und Drive Schnittstellen).
 

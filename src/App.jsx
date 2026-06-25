@@ -50,9 +50,57 @@ const INITIAL_TASKS = [
 ];
 
 const INITIAL_CONTACTS = [
-  { id: 'c1', name: 'Hans Müller', company: 'Dachdeckerei Müller', industry: 'Handwerk', system: 'DATEV', stage: 'gespräch', lastContact: '2026-06-08' }, // >14 days ago!
-  { id: 'c2', name: 'Sabine Kraft', company: 'Pflegedienst Harz', industry: 'Gesundheit', system: 'Lexoffice', stage: 'angebot', lastContact: '2026-06-20' },
-  { id: 'c3', name: 'Christian Gornitzka', company: 'GoClean Harz', industry: 'Dienstleistungen', system: 'DATEV & Excel', stage: 'umsetzung', lastContact: '2026-06-24' }
+  { 
+    id: 'c1', 
+    name: 'Hans Müller', 
+    company: 'Dachdeckerei Müller', 
+    industry: 'Handwerk', 
+    system: 'DATEV', 
+    stage: 'gespräch', 
+    lastContact: '2026-06-08',
+    notes: 'Interesse an automatisierter Rechnungsverarbeitung. Leidet unter Zettelwirtschaft im Büro am Wochenende.',
+    links: [
+      { id: 'l1', title: 'Google Drive Projektordner', url: 'https://drive.google.com' }
+    ],
+    activityLog: [
+      { id: 'al1', date: '2026-06-05 10:20', text: 'Lead im CRM erstellt' },
+      { id: 'al2', date: '2026-06-08 14:15', text: 'Erstgespräch geführt. Notizen ergänzt.' }
+    ]
+  },
+  { 
+    id: 'c2', 
+    name: 'Sabine Kraft', 
+    company: 'Pflegedienst Harz', 
+    industry: 'Gesundheit', 
+    system: 'Lexoffice', 
+    stage: 'angebot', 
+    lastContact: '2026-06-20',
+    notes: 'Angebot über WhatsApp-Schnittstelle zur Stundenzettel-Einreichung gesendet. Fördermittel Niedersachsen (Digitalbonus) eingeplant.',
+    links: [
+      { id: 'l2', title: 'Angebotsentwurf PDF', url: 'https://docs.google.com' }
+    ],
+    activityLog: [
+      { id: 'al3', date: '2026-06-18 09:30', text: 'Lead im CRM erstellt' },
+      { id: 'al4', date: '2026-06-20 11:00', text: 'Angebot gesendet (Festpreis 2.450 €)' }
+    ]
+  },
+  { 
+    id: 'c3', 
+    name: 'Christian Gornitzka', 
+    company: 'GoClean Harz', 
+    industry: 'Dienstleistungen', 
+    system: 'DATEV & Excel', 
+    stage: 'umsetzung', 
+    lastContact: '2026-06-24',
+    notes: 'In Umsetzung. WhatsApp-Gateway läuft stabil. Bisher 48 Stunden erfasst.',
+    links: [
+      { id: 'l3', title: 'Make-Szenario', url: 'https://make.com' }
+    ],
+    activityLog: [
+      { id: 'al5', date: '2026-06-22 08:00', text: 'Vertrag unterzeichnet' },
+      { id: 'al6', date: '2026-06-24 16:30', text: 'Projekt gestartet & WhatsApp-Gateway eingerichtet' }
+    ]
+  }
 ];
 
 const INITIAL_PROJECTS = [
@@ -238,6 +286,10 @@ function App() {
   const [docs, setDocs] = useState(() => JSON.parse(localStorage.getItem('f_docs')) || INITIAL_DOCS);
   const [sopTemplates, setSopTemplates] = useState(() => JSON.parse(localStorage.getItem('f_sop_templates')) || INITIAL_SOP_TEMPLATES);
   const [activeSops, setActiveSops] = useState(() => JSON.parse(localStorage.getItem('f_active_sops')) || []);
+
+  // CRM Detail Drawer State
+  const [selectedContactId, setSelectedContactId] = useState(null);
+  const [newLinkInput, setNewLinkInput] = useState({ title: '', url: '' });
 
   // Form states for adding items
   const [newFocusText, setNewFocusText] = useState('');
@@ -521,10 +573,19 @@ function App() {
     e.preventDefault();
     if (!newContact.name.trim() || !newContact.company.trim()) return;
     const newId = 'c_' + Date.now();
+    
+    const today = new Date().toISOString().split('T')[0];
+    const nowTime = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+    
     const contactToAdd = {
       id: newId,
       ...newContact,
-      lastContact: new Date().toISOString().split('T')[0]
+      lastContact: today,
+      notes: '',
+      links: [],
+      activityLog: [
+        { id: 'al_' + Date.now(), date: `${today} ${nowTime}`, text: 'Lead im CRM erstellt' }
+      ]
     };
     setContacts([contactToAdd, ...contacts]);
     
@@ -548,10 +609,90 @@ function App() {
   const deleteContact = (id, company) => {
     setContacts(contacts.filter(c => c.id !== id));
     setProjects(projects.filter(p => p.client !== company));
+    if (selectedContactId === id) setSelectedContactId(null);
   };
 
   const updateContactStage = (id, stage) => {
-    setContacts(contacts.map(c => c.id === id ? { ...c, stage, lastContact: new Date().toISOString().split('T')[0] } : c));
+    const today = new Date().toISOString().split('T')[0];
+    const nowTime = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+    const logText = `Status geändert auf '${stage}'`;
+    
+    setContacts(contacts.map(c => {
+      if (c.id === id) {
+        const newLog = {
+          id: 'al_' + Date.now(),
+          date: `${today} ${nowTime}`,
+          text: logText
+        };
+        const currentLogs = c.activityLog || [];
+        return { 
+          ...c, 
+          stage, 
+          lastContact: today,
+          activityLog: [...currentLogs, newLog]
+        };
+      }
+      return c;
+    }));
+  };
+
+  const updateContactNotes = (id, notes) => {
+    setContacts(contacts.map(c => c.id === id ? { ...c, notes } : c));
+  };
+
+  const addContactLink = (id, title, url) => {
+    if (!title.trim() || !url.trim()) return;
+    
+    // Auto prefix http if missing
+    const formattedUrl = /^(http|https):\/\//.test(url) ? url : 'https://' + url;
+    
+    setContacts(contacts.map(c => {
+      if (c.id === id) {
+        const newLink = { id: 'l_' + Date.now(), title, url: formattedUrl };
+        const currentLinks = c.links || [];
+        
+        const today = new Date().toISOString().split('T')[0];
+        const nowTime = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+        const newLog = {
+          id: 'al_' + Date.now(),
+          date: `${today} ${nowTime}`,
+          text: `Link hinzugefügt: ${title}`
+        };
+        const currentLogs = c.activityLog || [];
+        
+        return { 
+          ...c, 
+          links: [...currentLinks, newLink],
+          activityLog: [...currentLogs, newLog]
+        };
+      }
+      return c;
+    }));
+  };
+
+  const deleteContactLink = (id, linkId) => {
+    setContacts(contacts.map(c => {
+      if (c.id === id) {
+        const currentLinks = c.links || [];
+        const linkToDelete = currentLinks.find(l => l.id === linkId);
+        
+        const today = new Date().toISOString().split('T')[0];
+        const nowTime = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+        const newLog = {
+          id: 'al_' + Date.now(),
+          date: `${today} ${nowTime}`,
+          text: `Link entfernt: ${linkToDelete ? linkToDelete.title : 'Unbekannter Link'}`
+        };
+        const currentLogs = c.activityLog || [];
+        
+        return { 
+          ...c, 
+          links: currentLinks.filter(l => l.id !== linkId),
+          activityLog: [...currentLogs, newLog]
+        };
+      }
+      return c;
+    }));
   };
 
   const toggleProjectStep = (projId, stepKey) => {
@@ -875,6 +1016,8 @@ function App() {
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     return diffDays > 14;
   };
+
+  const activeContact = contacts.find(c => c.id === selectedContactId);
 
   return (
     <div className="app-container">
@@ -1475,7 +1618,12 @@ function App() {
                   const warning = isLeadInactive(c.lastContact) && c.stage !== 'umsetzung';
                   return (
                     <div key={c.id} className={`contact-card ${warning ? 'warning-lead' : ''}`}>
-                      <div className="contact-main">
+                      <div 
+                        className="contact-main" 
+                        onClick={() => setSelectedContactId(c.id)} 
+                        style={{ cursor: 'pointer' }}
+                        title="Kundenakte öffnen"
+                      >
                         <div className="contact-avatar">
                           {mask(c.company, 'company').substring(0, 2).toUpperCase()}
                         </div>
@@ -2299,6 +2447,148 @@ function App() {
           <span>Sales</span>
         </button>
       </nav>
+
+      {/* CRM Contact Details Drawer */}
+      <div className={`crm-drawer ${selectedContactId ? 'open' : ''}`}>
+        <div className="crm-drawer-backdrop" onClick={() => setSelectedContactId(null)}></div>
+        <div className="crm-drawer-content">
+          {activeContact && (
+            <>
+              {/* Drawer Header */}
+              <div className="crm-drawer-header">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <div className="contact-avatar" style={{ margin: 0 }}>
+                    {mask(activeContact.company, 'company').substring(0, 2).toUpperCase()}
+                  </div>
+                  <div>
+                    <h2 style={{ fontSize: '1.2rem', fontWeight: 700, margin: 0 }}>{mask(activeContact.company, 'company')}</h2>
+                    <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', margin: 0 }}>Ansprechpartner: {mask(activeContact.name, 'name')}</p>
+                  </div>
+                </div>
+                <button className="btn-icon-only close-drawer-btn" onClick={() => setSelectedContactId(null)}>
+                  ✕
+                </button>
+              </div>
+
+              {/* Drawer Body */}
+              <div className="crm-drawer-body">
+                {/* Meta info grid */}
+                <div className="drawer-section meta-grid">
+                  <div className="meta-item">
+                    <span className="meta-label">Branche</span>
+                    <span className="meta-value">{mask(activeContact.industry, 'industry') || 'Keine Branche'}</span>
+                  </div>
+                  <div className="meta-item">
+                    <span className="meta-label">IT-System</span>
+                    <span className="meta-value">{mask(activeContact.system, 'system') || 'Kein System'}</span>
+                  </div>
+                  <div className="meta-item">
+                    <span className="meta-label">Letzter Kontakt</span>
+                    <span className="meta-value">{activeContact.lastContact}</span>
+                  </div>
+                  <div className="meta-item">
+                    <span className="meta-label">Status</span>
+                    <select 
+                      className="input-field drawer-select" 
+                      value={activeContact.stage}
+                      onChange={(e) => updateContactStage(activeContact.id, e.target.value)}
+                    >
+                      <option value="erstkontakt">Erstkontakt</option>
+                      <option value="gespräch">Gespräch</option>
+                      <option value="angebot">Angebot</option>
+                      <option value="umsetzung">Umsetzung</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Custom Notes Section */}
+                <div className="drawer-section">
+                  <h3 className="section-title">Kunden-Notizen</h3>
+                  <textarea 
+                    className="input-field drawer-textarea"
+                    rows={4}
+                    placeholder="Wichtige Infos zu Terminen, Anforderungen, Preisen..."
+                    value={activeContact.notes || ''}
+                    onChange={(e) => updateContactNotes(activeContact.id, e.target.value)}
+                  />
+                </div>
+
+                {/* Document Links Section */}
+                <div className="drawer-section">
+                  <h3 className="section-title">Dokumenten-Links</h3>
+                  <div className="drawer-links-list" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '0.75rem' }}>
+                    {(activeContact.links || []).map(link => (
+                      <div key={link.id} className="drawer-link-item">
+                        <a href={link.url} target="_blank" rel="noreferrer" className="link-anchor">
+                          <FileText size={14} className="text-cyan-500" />
+                          <span>{link.title}</span>
+                        </a>
+                        <button 
+                          onClick={() => deleteContactLink(activeContact.id, link.id)} 
+                          className="btn-icon-only" 
+                          style={{ padding: '0.2rem' }}
+                        >
+                          <Trash2 size={12} className="text-red-500" />
+                        </button>
+                      </div>
+                    ))}
+                    {(activeContact.links || []).length === 0 && (
+                      <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontStyle: 'italic', margin: 0 }}>Keine Links hinterlegt.</p>
+                    )}
+                  </div>
+
+                  {/* Add link form */}
+                  <div style={{ display: 'flex', gap: '0.35rem', marginTop: '0.5rem' }}>
+                    <input 
+                      type="text" 
+                      placeholder="Titel (z.B. Drive)" 
+                      className="input-field tracker-input" 
+                      style={{ flex: 1, height: '28px', fontSize: '0.75rem' }}
+                      value={newLinkInput.title}
+                      onChange={(e) => setNewLinkInput({ ...newLinkInput, title: e.target.value })}
+                    />
+                    <input 
+                      type="text" 
+                      placeholder="https://..." 
+                      className="input-field tracker-input" 
+                      style={{ flex: 1.5, height: '28px', fontSize: '0.75rem' }}
+                      value={newLinkInput.url}
+                      onChange={(e) => setNewLinkInput({ ...newLinkInput, url: e.target.value })}
+                    />
+                    <button 
+                      onClick={() => {
+                        addContactLink(activeContact.id, newLinkInput.title, newLinkInput.url);
+                        setNewLinkInput({ title: '', url: '' });
+                      }}
+                      className="btn btn-primary"
+                      style={{ height: '28px', padding: '0 0.5rem', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.15rem' }}
+                    >
+                      Hinzufügen
+                    </button>
+                  </div>
+                </div>
+
+                {/* Activity Log Section */}
+                <div className="drawer-section">
+                  <h3 className="section-title">Aktivitäts-Log</h3>
+                  <div className="drawer-log-list">
+                    {(activeContact.activityLog || []).map(log => (
+                      <div key={log.id} className="log-item">
+                        <span className="log-date">{log.date}</span>
+                        <span className="log-text">{log.text}</span>
+                      </div>
+                    ))}
+                    {(activeContact.activityLog || []).length === 0 && (
+                      <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: 0 }}>Keine Einträge vorhanden.</p>
+                    )}
+                  </div>
+                </div>
+
+              </div>
+            </>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

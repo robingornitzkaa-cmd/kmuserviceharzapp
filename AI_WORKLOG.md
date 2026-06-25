@@ -1,5 +1,42 @@
 # AI Worklog - Founder OS
 
+## 2026-06-26 01:00 – Implementierung CRM-Detailansicht / Kunden-Akte (Feature A1)
+
+### Ziel
+Erstellung einer interaktiven Detailansicht (Drawer) für CRM-Kontakte, um Notizen, Dokumenten-Links und Aktivitätsprotokolle proaktiv pflegen zu können.
+
+### Erstellt
+- Drawer-Status-Zustände (`selectedContactId`, `newLinkInput`) in `App.jsx`.
+- Drawer-UI-Struktur am Ende des return-Renders der Hauptkomponente.
+- Funktionen `updateContactNotes`, `addContactLink` und `deleteContactLink` zur Verwaltung der Notizen und Links.
+- Automatischer Aktivitäts-Logger: Jedes Mal, wenn ein Kontakt im CRM neu angelegt wird, ein neuer Link hinzugefügt oder entfernt wird, oder der Status sich ändert, wird automatisch ein chronologischer Log-Eintrag (Aktivitäts-Log) mit Datum und Uhrzeit hinzugefügt.
+- Drawer-Layout in `index.css`:
+  - Drawer-Drawer schiebt sich flüssig von rechts herein.
+  - Abgedunkelter, weichgezeichneter Hintergrund (Backdrop), der den Drawer per Klick wieder schließt.
+  - Scrollbarer Inhaltsbereich mit Meta-Info-Grid, Textarea für Notizen, Links (mit Direkt-Hinzufügung und Löschung) und dem Aktivitäts-Log.
+
+### Geändert
+- [App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): Einbindung der Drawer-Zustände, CRM-Aktionen-Erweiterung, Klick-Listener auf `contact-main` und drawer-Rendering.
+- [index.css](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/index.css): Definition aller Stile für die Drawer-Seitenleiste, Drawer-Inhalte, Links, Activity-Logs und Draw-Backdrop.
+- [TODO.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md) (CRM-Akte abgehakt).
+- [CHANGELOG.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md) (Ergänzt).
+
+### Warum
+Ein CRM wird erst dann praxistauglich, wenn man kundenspezifische Details festhalten und Arbeitslinks hinterlegen kann. Durch das automatische Activity-Logging sieht der Nutzer sofort, wann er welche Vertriebsaktionen getätigt hat.
+
+### Testen
+1. Navigiere in der App zu Tab 3 ("CRM & Projekte").
+2. Klicke auf eine Kundenkarte (auf den Namen/Firma-Bereich) ➔ Die Seitenleiste (Drawer) schiebt sich von rechts flüssig ins Bild.
+3. Trage Notizen ein ➔ Sie werden live im Kontakt-State gespeichert.
+4. Füge einen Link hinzu (Titel eingeben, z.B. "Briefkopf", URL eintragen und auf Hinzufügen klicken) ➔ Der Link erscheint direkt in der Liste und wird im Aktivitäts-Log verzeichnet.
+5. Ändere den Status des Leads per Dropdown im Drawer ➔ Der Status aktualisiert sich und das Log dokumentiert die Statusänderung mit Uhrzeit.
+6. Klicke auf das "✕" oder den abgedunkelten Hintergrund, um die Akte wieder zu schließen.
+
+### Offene Punkte
+- Warten auf Freigabe des Gründers, um Schritt 2 (Einnahmen-Widget & Umsatz-Vorschau) zu starten.
+
+---
+
 ## 2026-06-26 00:50 – Implementierung Gamifizierter Habit-Tracker & CSS-Konfetti (3b)
 
 ### Ziel
