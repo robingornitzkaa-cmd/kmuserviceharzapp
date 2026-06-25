@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { jsPDF } from 'jspdf';
 import { 
   LayoutDashboard, 
   Inbox, 
@@ -196,7 +197,9 @@ function App() {
   const [calcInputs, setCalcInputs] = useState({
     taskName: 'Stundenzettel abtippen & Rechnungen schreiben',
     durationHours: 6,
-    hourlyRate: 85
+    hourlyRate: 85,
+    setupFee: 2450,
+    subsidyRegion: 'NDS' // NDS, LSA, BUND, NONE
   });
   
   // Persistent Storage Sync
@@ -456,17 +459,144 @@ function App() {
   const calculateSavings = () => {
     const hours = parseFloat(calcInputs.durationHours) || 0;
     const rate = parseFloat(calcInputs.hourlyRate) || 0;
+    const setupFee = parseFloat(calcInputs.setupFee) || 0;
+    
     const weeklySavingsEur = hours * rate;
     const yearlySavingsEur = weeklySavingsEur * 52;
     const yearlySavingsHours = hours * 52;
     
+    const subsidyRates = { NDS: 0.5, LSA: 0.5, BUND: 0.3, NONE: 0.0 };
+    const ratePct = subsidyRates[calcInputs.subsidyRegion] || 0;
+    
+    const subsidyAmount = setupFee * ratePct;
+    const netInvestment = setupFee - subsidyAmount;
+    
+    const monthlySavingsEur = yearlySavingsEur / 12;
+    const paybackMonths = monthlySavingsEur > 0 ? netInvestment / (monthlySavingsEur * 0.9) : 0;
+    
     return {
       euro: yearlySavingsEur.toLocaleString('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }),
-      hours: yearlySavingsHours.toLocaleString('de-DE')
+      hours: yearlySavingsHours.toLocaleString('de-DE'),
+      subsidyAmount: subsidyAmount.toLocaleString('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }),
+      netInvestment: netInvestment.toLocaleString('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }),
+      paybackMonths: paybackMonths.toFixed(1),
+      rawYearlyEur: yearlySavingsEur,
+      rawYearlyHours: yearlySavingsHours,
+      rawNetInvestment: netInvestment,
+      rawPaybackMonths: paybackMonths
     };
   };
 
   const savings = calculateSavings();
+
+  const generatePDFReport = () => {
+    const doc = new jsPDF();
+    
+    // Header Banner
+    doc.setFillColor(139, 92, 246);
+    doc.rect(0, 0, 210, 35, 'F');
+    
+    doc.setTextColor(255, 255, 255);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(22);
+    doc.text("KMU SERVICE HARZ", 20, 23);
+    
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    doc.text("Der pragmatische Prozess-Befreier fuer den lokalen Mittelstand", 20, 29);
+    
+    doc.setFontSize(9);
+    doc.text("Erstellt von: Robin Gornitzka", 140, 18);
+    doc.text("E-Mail: info@kmuserviceharz.de", 140, 23);
+    doc.text(`Datum: ${new Date().toLocaleDateString('de-DE')}`, 140, 28);
+    
+    doc.setTextColor(17, 24, 39);
+    doc.setFontSize(16);
+    doc.setFont("helvetica", "bold");
+    doc.text("WIRTSCHAFTLICHKEITSANALYSE & POTENZIAL-AUDIT", 20, 52);
+    
+    doc.setFontSize(11);
+    doc.setFont("helvetica", "normal");
+    doc.setTextColor(75, 85, 99);
+    doc.text(`Prozess-Automatisierung fuer: "${mask(calcInputs.taskName, 'inbox')}"`, 20, 59);
+    
+    doc.setDrawColor(229, 231, 235);
+    doc.line(20, 65, 190, 65);
+    
+    doc.setTextColor(17, 24, 39);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(13);
+    doc.text("1. Status Quo (Manueller Aufwand)", 20, 77);
+    
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    doc.setTextColor(55, 65, 81);
+    doc.text(`- Woechentlicher Zeitaufwand: ${calcInputs.durationHours} Stunden`, 25, 85);
+    doc.text(`- Kalkulatorischer Stundensatz: ${calcInputs.hourlyRate} EUR / Stunde`, 25, 91);
+    
+    doc.setFillColor(249, 250, 251);
+    doc.rect(20, 98, 170, 32, 'F');
+    doc.setDrawColor(229, 231, 235);
+    doc.rect(20, 98, 170, 32, 'D');
+    
+    doc.setTextColor(139, 92, 246);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(11);
+    doc.text(`Kosten pro Jahr (Manuell): ${(calcInputs.durationHours * calcInputs.hourlyRate * 52).toLocaleString('de-DE')} EUR`, 25, 108);
+    doc.text(`Arbeitszeit pro Jahr (Manuell): ${savings.hours} Stunden`, 25, 118);
+    
+    doc.setTextColor(17, 24, 39);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(13);
+    doc.text("2. Soll-Zustand (Automatisiert)", 20, 142);
+    
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    doc.setTextColor(55, 65, 81);
+    doc.text("- Erwartete Prozess-Optimierung: ca. 90% Zeiteinsparung", 25, 150);
+    doc.text("- Automatisierte Workflows laufen im Hintergrund (24/7)", 25, 156);
+    
+    doc.setFillColor(240, 253, 250);
+    doc.rect(20, 163, 170, 32, 'F');
+    doc.setDrawColor(186, 230, 224);
+    doc.rect(20, 163, 170, 32, 'D');
+    
+    doc.setTextColor(13, 148, 136);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(11);
+    doc.text(`Jaehrliche Zeit-Einsparung: ~ ${(calcInputs.durationHours * 52 * 0.9).toFixed(0)} Std.`, 25, 173);
+    doc.text(`Jaehrliche Geld-Einsparung: ~ ${(calcInputs.durationHours * calcInputs.hourlyRate * 52 * 0.9).toLocaleString('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 })}`, 25, 183);
+    
+    doc.setTextColor(17, 24, 39);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(13);
+    doc.text("3. Investition & Foerdermittel-Hebel", 20, 207);
+    
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    doc.setTextColor(55, 65, 81);
+    doc.text(`- Einmaliges Festpreis-Paket (Implementierung): ${calcInputs.setupFee.toLocaleString('de-DE')} EUR`, 25, 215);
+    
+    const subsidyNames = { NDS: 'Digitalbonus Niedersachsen (50% Zuschuss)', LSA: 'Digital Innovation Sachsen-Anhalt (50% Zuschuss)', BUND: 'go-digital Bundesfoerderung (30% Zuschuss)', NONE: 'Keine staatliche Foerderung gewaehlt' };
+    doc.text(`- Foerderprogramm: ${subsidyNames[calcInputs.subsidyRegion]}`, 25, 221);
+    doc.text(`- Staatliche Foerderung (nicht rueckzahlbar): - ${savings.subsidyAmount}`, 25, 227);
+    
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(13, 148, 136);
+    doc.text(`Effektive Netto-Investition: ${savings.netInvestment}`, 25, 237);
+    
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(17, 24, 39);
+    doc.text(`Amortisationszeit (Payback Period): ca. ${savings.paybackMonths} Monate`, 25, 245);
+    
+    doc.setFontSize(8);
+    doc.setTextColor(156, 163, 175);
+    doc.text("KMU Service Harz UG | Der pragmatische Prozess-Befreier", 20, 275);
+    doc.text("Hinweis: Diese ROI-Berechnung basiert auf den vom Kunden bereitgestellten Daten und stellt eine unverbindliche Schaetzung dar.", 20, 280);
+    doc.text("Antraege fuer Foerdermittel muessen zwingend vor Projektstart eingereicht werden.", 20, 284);
+    
+    doc.save(`ROI_Analyse_${mask(calcInputs.taskName, 'inbox').replace(/\s+/g, '_')}.pdf`);
+  };
 
   // Helper function to check if lead has not been contacted for > 14 days
   const isLeadInactive = (lastContactDate) => {
@@ -1239,11 +1369,94 @@ function App() {
                   </div>
                 </div>
 
-                <div className="calc-result-box">
-                  <div className="calc-result-label">Deine Ersparnis durch Automatisierung:</div>
-                  <div className="calc-result-value">{savings.euro} / Jahr</div>
-                  <div className="calc-result-sub">und {savings.hours} Stunden freigeschaufelte Zeit pro Jahr.</div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                  <div className="input-group">
+                    <label>Projekt-Festpreis (€)</label>
+                    <input 
+                      type="number" 
+                      className="input-field"
+                      value={calcInputs.setupFee}
+                      onChange={(e) => setCalcInputs({ ...calcInputs, setupFee: parseFloat(e.target.value) || 0 })}
+                    />
+                  </div>
+                  <div className="input-group">
+                    <label>Foerdermittel-Region</label>
+                    <select 
+                      className="input-field"
+                      value={calcInputs.subsidyRegion}
+                      onChange={(e) => setCalcInputs({ ...calcInputs, subsidyRegion: e.target.value })}
+                    >
+                      <option value="NDS">Niedersachsen (50%)</option>
+                      <option value="LSA">Sachsen-Anhalt (50%)</option>
+                      <option value="BUND">Bund / go-digital (30%)</option>
+                      <option value="NONE">Keine Foerderung (0%)</option>
+                    </select>
+                  </div>
                 </div>
+
+                {/* Visuelle Gegenueberstellung / Balkendiagramm */}
+                <div style={{ marginTop: '0.5rem', marginBottom: '0.5rem' }}>
+                  <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', display: 'block', marginBottom: '0.5rem' }}>
+                    Jaehrlicher Zeitaufwand im Vergleich:
+                  </label>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', marginBottom: '0.25rem' }}>
+                        <span>Manuell (Bisher)</span>
+                        <span style={{ color: 'var(--accent-red)', fontWeight: 700 }}>{savings.hours} Std. / Jahr</span>
+                      </div>
+                      <div style={{ width: '100%', height: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', overflow: 'hidden' }}>
+                        <div style={{ width: '100%', height: '100%', background: 'linear-gradient(to right, var(--accent-red), var(--accent-yellow))' }}></div>
+                      </div>
+                    </div>
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', marginBottom: '0.25rem' }}>
+                        <span>Automatisiert (Neu)</span>
+                        <span style={{ color: 'var(--accent-cyan)', fontWeight: 700 }}>~ {(savings.rawYearlyHours * 0.1).toFixed(0)} Std. / Jahr</span>
+                      </div>
+                      <div style={{ width: '100%', height: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', overflow: 'hidden' }}>
+                        <div style={{ width: '10%', height: '100%', background: 'linear-gradient(to right, var(--accent-cyan), var(--accent-indigo))', boxShadow: 'var(--shadow-glow-cyan)' }}></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="calc-result-box">
+                  <div className="calc-result-label">Erwartete Ersparnis durch Automatisierung:</div>
+                  <div className="calc-result-value" style={{ color: 'var(--accent-cyan)' }}>
+                    ~ {((savings.rawYearlyEur * 0.9)).toLocaleString('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 })} / Jahr
+                  </div>
+                  <div className="calc-result-sub" style={{ marginBottom: '1rem' }}>
+                    und ca. <strong>{(savings.rawYearlyHours * 0.9).toFixed(0)} Stunden</strong> freigestellte Arbeitszeit pro Jahr.
+                  </div>
+                  
+                  <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '0.75rem', marginTop: '0.75rem', textAlign: 'left', fontSize: '0.8rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <span>Projekt-Investition (Festpreis):</span>
+                      <span>{calcInputs.setupFee.toLocaleString('de-DE')} EUR</span>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--accent-cyan)' }}>
+                      <span>Staatlicher Zuschuss (Foerderung):</span>
+                      <span>- {savings.subsidyAmount}</span>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 700, color: 'var(--accent-green)', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '0.25rem' }}>
+                      <span>Deine Netto-Investition:</span>
+                      <span>{savings.netInvestment}</span>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 600, color: 'var(--text-primary)', marginTop: '0.25rem' }}>
+                      <span>Amortisationszeit:</span>
+                      <span>ca. {savings.paybackMonths} Monate</span>
+                    </div>
+                  </div>
+                </div>
+
+                <button 
+                  onClick={generatePDFReport} 
+                  className="btn btn-primary"
+                  style={{ width: '100%', marginTop: '0.5rem', background: 'linear-gradient(135deg, var(--accent-cyan), var(--accent-indigo))', boxShadow: 'var(--shadow-glow-cyan)' }}
+                >
+                  <FileText size={16} /> ROI-Analyse als PDF exportieren
+                </button>
               </div>
             </div>
 
