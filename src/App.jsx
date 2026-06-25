@@ -56,9 +56,9 @@ const INITIAL_CONTACTS = [
 ];
 
 const INITIAL_PROJECTS = [
-  { id: 'p1', client: 'Dachdeckerei Müller', offerSigned: true, subsidyApplied: true, subsidyApproved: false, ready: false },
-  { id: 'p2', client: 'Pflegedienst Harz', offerSigned: false, subsidyApplied: false, subsidyApproved: false, ready: false },
-  { id: 'p3', client: 'GoClean Harz', offerSigned: true, subsidyApplied: true, subsidyApproved: true, ready: true }
+  { id: 'p1', client: 'Dachdeckerei Müller', offerSigned: true, subsidyApplied: true, subsidyApproved: false, ready: false, pricePackage: 3500, trackedHours: 14.5, trackingStartTime: null },
+  { id: 'p2', client: 'Pflegedienst Harz', offerSigned: false, subsidyApplied: false, subsidyApproved: false, ready: false, pricePackage: 2450, trackedHours: 6.2, trackingStartTime: null },
+  { id: 'p3', client: 'GoClean Harz', offerSigned: true, subsidyApplied: true, subsidyApproved: true, ready: true, pricePackage: 4200, trackedHours: 48.0, trackingStartTime: null }
 ];
 
 const INITIAL_PROMPTS = [
@@ -267,6 +267,9 @@ function App() {
   const [notebookLmLastSync, setNotebookLmLastSync] = useState(() => localStorage.getItem('f_notebook_last_sync') || 'Vor 2 Stunden');
   const [notebookLmSyncStep, setNotebookLmSyncStep] = useState('');
   const [notebookLmProgress, setNotebookLmProgress] = useState(100);
+
+  // Time Tracker State
+  const [timeTick, setTimeTick] = useState(0);
   
   // Persistent Storage Sync
   useEffect(() => {
@@ -314,6 +317,17 @@ function App() {
   useEffect(() => {
     localStorage.setItem('f_notebook_last_sync', notebookLmLastSync);
   }, [notebookLmLastSync]);
+
+  // Live Timer tick for active project time tracking
+  useEffect(() => {
+    const activeProjects = projects.filter(p => p.trackingStartTime);
+    if (activeProjects.length === 0) return;
+
+    const interval = setInterval(() => {
+      setTimeTick(t => t + 1);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [projects]);
 
   // Quick Capture Handler
   const handleQuickCapture = (e) => {
@@ -481,7 +495,10 @@ function App() {
       offerSigned: false,
       subsidyApplied: false,
       subsidyApproved: false,
-      ready: false
+      ready: false,
+      pricePackage: 2500,
+      trackedHours: 0,
+      trackingStartTime: null
     };
     setProjects([...projects, projectToAdd]);
 
@@ -499,6 +516,48 @@ function App() {
 
   const toggleProjectStep = (projId, stepKey) => {
     setProjects(projects.map(p => p.id === projId ? { ...p, [stepKey]: !p[stepKey] } : p));
+  };
+
+  const startProjectTracking = (projId) => {
+    setProjects(projects.map(p => {
+      if (p.id === projId) {
+        return {
+          ...p,
+          trackingStartTime: Date.now()
+        };
+      }
+      if (p.trackingStartTime) {
+        const elapsed = (Date.now() - p.trackingStartTime) / (1000 * 60 * 60);
+        return {
+          ...p,
+          trackedHours: (p.trackedHours || 0) + elapsed,
+          trackingStartTime: null
+        };
+      }
+      return p;
+    }));
+  };
+
+  const stopProjectTracking = (projId) => {
+    setProjects(projects.map(p => {
+      if (p.id === projId && p.trackingStartTime) {
+        const elapsed = (Date.now() - p.trackingStartTime) / (1000 * 60 * 60);
+        return {
+          ...p,
+          trackedHours: (p.trackedHours || 0) + elapsed,
+          trackingStartTime: null
+        };
+      }
+      return p;
+    }));
+  };
+
+  const updateProjectHours = (projId, hours) => {
+    setProjects(projects.map(p => p.id === projId ? { ...p, trackedHours: Math.max(0, parseFloat(hours) || 0) } : p));
+  };
+
+  const updateProjectPrice = (projId, price) => {
+    setProjects(projects.map(p => p.id === projId ? { ...p, pricePackage: Math.max(0, parseInt(price) || 0) } : p));
   };
 
   // Prompt Vault Copier
@@ -1375,45 +1434,143 @@ function App() {
                 <h2 className="card-title"><TrendingUp size={20} className="text-cyan-500" /> Fördermittel & Projekte</h2>
               </div>
               <div className="project-list">
-                {projects.map(proj => (
-                  <div key={proj.id} className="project-item">
-                    <div className="project-name">{mask(proj.client, 'company')}</div>
-                    <div className="project-steps">
-                      <label className="project-step-checkbox">
-                        <input 
-                          type="checkbox" 
-                          checked={proj.offerSigned}
-                          onChange={() => toggleProjectStep(proj.id, 'offerSigned')}
-                        />
-                        <span>Angebot unterschrieben</span>
-                      </label>
-                      <label className="project-step-checkbox">
-                        <input 
-                          type="checkbox" 
-                          checked={proj.subsidyApplied}
-                          onChange={() => toggleProjectStep(proj.id, 'subsidyApplied')}
-                        />
-                        <span>Förderung beantragt</span>
-                      </label>
-                      <label className="project-step-checkbox">
-                        <input 
-                          type="checkbox" 
-                          checked={proj.subsidyApproved}
-                          onChange={() => toggleProjectStep(proj.id, 'subsidyApproved')}
-                        />
-                        <span>Förderung bewilligt</span>
-                      </label>
-                      <label className="project-step-checkbox">
-                        <input 
-                          type="checkbox" 
-                          checked={proj.ready}
-                          onChange={() => toggleProjectStep(proj.id, 'ready')}
-                        />
-                        <span>Startklar für Umsetzung</span>
-                      </label>
+                {projects.map(proj => {
+                  const elapsed = proj.trackingStartTime ? (Date.now() - proj.trackingStartTime) / (1000 * 60 * 60) : 0;
+                  const totalHours = (proj.trackedHours || 0) + elapsed;
+                  
+                  const getHourlyRateInfo = (price, hours) => {
+                    if (!hours || hours <= 0) return { rate: '—', status: 'neutral', label: 'Keine Stunden' };
+                    const rate = Math.round(price / hours);
+                    if (rate < 80) {
+                      return { rate: `${rate} €/h`, status: 'danger', label: 'Unrentabel (<80€)' };
+                    } else if (rate < 120) {
+                      return { rate: `${rate} €/h`, status: 'warning', label: 'Normal (80-120€)' };
+                    } else {
+                      return { rate: `${rate} €/h`, status: 'success', label: 'Profitabel (>120€)' };
+                    }
+                  };
+
+                  const rateInfo = getHourlyRateInfo(proj.pricePackage || 2500, totalHours);
+
+                  const formatStopwatch = (startTime) => {
+                    if (!startTime) return '00:00:00';
+                    const totalSec = Math.floor((Date.now() - startTime) / 1000);
+                    const hrs = Math.floor(totalSec / 3600).toString().padStart(2, '0');
+                    const mins = Math.floor((totalSec % 3600) / 60).toString().padStart(2, '0');
+                    const secs = (totalSec % 60).toString().padStart(2, '0');
+                    return `${hrs}:${mins}:${secs}`;
+                  };
+
+                  return (
+                    <div key={proj.id} className="project-item">
+                      <div className="project-info-section">
+                        <div className="project-name">{mask(proj.client, 'company')}</div>
+                        <div className="project-steps">
+                          <label className="project-step-checkbox">
+                            <input 
+                              type="checkbox" 
+                              checked={proj.offerSigned}
+                              onChange={() => toggleProjectStep(proj.id, 'offerSigned')}
+                            />
+                            <span>Angebot unterschrieben</span>
+                          </label>
+                          <label className="project-step-checkbox">
+                            <input 
+                              type="checkbox" 
+                              checked={proj.subsidyApplied}
+                              onChange={() => toggleProjectStep(proj.id, 'subsidyApplied')}
+                            />
+                            <span>Förderung beantragt</span>
+                          </label>
+                          <label className="project-step-checkbox">
+                            <input 
+                              type="checkbox" 
+                              checked={proj.subsidyApproved}
+                              onChange={() => toggleProjectStep(proj.id, 'subsidyApproved')}
+                            />
+                            <span>Förderung bewilligt</span>
+                          </label>
+                          <label className="project-step-checkbox">
+                            <input 
+                              type="checkbox" 
+                              checked={proj.ready}
+                              onChange={() => toggleProjectStep(proj.id, 'ready')}
+                            />
+                            <span>Startklar für Umsetzung</span>
+                          </label>
+                        </div>
+                      </div>
+
+                      <div className="project-tracker-section">
+                        <div className="tracker-row">
+                          <div className="tracker-field">
+                            <span className="field-label">Paketpreis</span>
+                            <div className="price-input-wrapper">
+                              <input 
+                                type="number" 
+                                className="input-field tracker-input" 
+                                value={proj.pricePackage || 2500} 
+                                onChange={(e) => updateProjectPrice(proj.id, e.target.value)} 
+                              />
+                              <span className="price-unit">€</span>
+                            </div>
+                          </div>
+
+                          <div className="tracker-field">
+                            <span className="field-label">Geleistete Zeit</span>
+                            {proj.trackingStartTime ? (
+                              <div className="stopwatch-active">
+                                <Clock size={14} className="spin-timer" />
+                                <span>{formatStopwatch(proj.trackingStartTime)}</span>
+                              </div>
+                            ) : (
+                              <div className="hours-input-wrapper">
+                                <input 
+                                  type="number" 
+                                  step="0.1"
+                                  className="input-field tracker-input" 
+                                  value={proj.trackedHours !== undefined ? parseFloat(proj.trackedHours.toFixed(1)) : 0} 
+                                  onChange={(e) => updateProjectHours(proj.id, e.target.value)} 
+                                />
+                                <span className="hours-unit">Std.</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="tracker-row" style={{ marginTop: '0.75rem', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '0.75rem' }}>
+                          <div className="tracker-margin-info">
+                            <span className="field-label">Effektiver Stundensatz:</span>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                              <span className={`rate-value text-${rateInfo.status}`}>{rateInfo.rate}</span>
+                              <span className={`margin-badge badge-${rateInfo.status}`}>{rateInfo.label}</span>
+                            </div>
+                          </div>
+                          
+                          <div className="tracker-controls">
+                            {proj.trackingStartTime ? (
+                              <button 
+                                onClick={() => stopProjectTracking(proj.id)} 
+                                className="btn btn-secondary stop-btn"
+                                style={{ background: 'rgba(239, 68, 68, 0.1)', color: 'rgb(239, 68, 68)', borderColor: 'rgba(239, 68, 68, 0.2)' }}
+                              >
+                                <Clock size={12} /> Stoppen
+                              </button>
+                            ) : (
+                              <button 
+                                onClick={() => startProjectTracking(proj.id)} 
+                                className="btn btn-primary start-btn"
+                              >
+                                <Play size={12} /> Starten
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
                 {projects.length === 0 && (
                   <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', textAlign: 'center' }}>
                     Lege im CRM einen Lead an, um einen Projekt-Tracker zu starten.

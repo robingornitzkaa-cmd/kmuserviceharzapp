@@ -1,5 +1,41 @@
 # AI Worklog - Founder OS
 
+## 2026-06-26 00:40 – Implementierung Time-Tracker für Projekte & Marge (3a)
+
+### Ziel
+Einbindung eines Stopuhr-Timers direkt neben jedem aktiven Projekt im CRM-Tab sowie die Erfassung des Paketpreises zur automatischen Ermittlung der Profitabilität (effektiver Stundensatz).
+
+### Erstellt
+- Handhabung des Live-Zeitinkrements (`timeTick`) in `App.jsx`, das sich über ein `useEffect`-Intervall steuert, sobald mindestens ein Projekt aktiv erfasst wird.
+- Funktionen `startProjectTracking`, `stopProjectTracking`, `updateProjectHours` und `updateProjectPrice` in `App.jsx` zur vollständigen Kontrolle des Timers, manuellen Zeiteingabe und Preisanpassung.
+- Detaillierter UI-Bereich für jedes Projekt im Card-Abschnitt "Fördermittel & Projekte":
+  - Zwei-Spalten-Layout (Desktop) bzw. Stapel-Layout (Mobile).
+  - Paketpreis-Eingabe und manuelle Stundenkorrektur.
+  - Live-Stopuhr bei aktivem Tracking.
+  - Live-Berechnung des effektiven Stundensatzes mit farblich markierter Marge (Rot: Unrentabel <80€, Orange: Normal 80-120€, Grün: Profitabel >120€).
+  - Timer-Aktionsbuttons (Starten/Stoppen).
+
+### Geändert
+- [App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): Einbau der Logik, States, Handler und der UI-Erweiterung im Tab 3.
+- [index.css](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/index.css): Styling der Eingabefelder, des Stopwatch-Panels, der Margen-Badges und der Pulsier-Animation des Timer-Icons.
+- [TODO.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md) (Schritt 6 abgehakt).
+- [CHANGELOG.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md) (Ergänzt).
+
+### Warum
+Robins Agentur arbeitet vorwiegend mit Productized Services (Festpreis-Paketen). Die Live-Margenberechnung hilft ihm zu sehen, ob er bei Projekten unrentabel wird, und dient als wichtiges internes Controlling-Tool.
+
+### Testen
+1. Navigiere in der App zu Tab 3 ("CRM & Projekte").
+2. Scrolle zum Bereich "Fördermittel & Projekte".
+3. Ändere den Paketpreis bei einem Projekt (z. B. auf 2.000 €) und die geleistete Zeit (z. B. auf 30 Std.) ➔ Der effektive Stundensatz aktualisiert sich sofort und zeigt die entsprechende Farbe/Zusammenfassung (z. B. "Unrentabel (<80€)").
+4. Klicke auf "Starten" bei einem Projekt ➔ Das Icon pulsiert violett und die Stoppuhr zählt im Sekundentakt hoch. Währenddessen wird der effektive Stundensatz live neu berechnet.
+5. Klicke auf "Stoppen" ➔ Die gemessene Zeit wird dem Projekt gutgeschrieben und im `localStorage` persistiert.
+
+### Offene Punkte
+- Warten auf Freigabe des Gründers, um Schritt 7 (Gamifizierter Habit-Tracker & CSS-Konfetti) zu starten.
+
+---
+
 ## 2026-06-26 00:30 – Implementierung NotebookLM Live-Sync Status (2b)
 
 ### Ziel

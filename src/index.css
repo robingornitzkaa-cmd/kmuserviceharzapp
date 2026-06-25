@@ -1010,6 +1010,171 @@ body {
   color: var(--accent-purple);
 }
 
+/* Time Tracker within Project Items */
+.project-item {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .project-item {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .project-info-section {
+    flex: 1.2;
+  }
+  .project-tracker-section {
+    flex: 1;
+    border-left: 1px solid var(--border-color);
+    padding-left: 1.25rem;
+    margin-left: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+@media (max-width: 767px) {
+  .project-tracker-section {
+    border-top: 1px solid var(--border-color);
+    padding-top: 1rem;
+    margin-top: 0.5rem;
+  }
+}
+
+.project-info-section {
+  width: 100%;
+}
+
+.project-tracker-section {
+  width: 100%;
+}
+
+.tracker-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.tracker-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.field-label {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.price-input-wrapper, .hours-input-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.tracker-input {
+  padding: 0.25rem 1.5rem 0.25rem 0.5rem !important;
+  font-size: 0.85rem !important;
+  height: 30px !important;
+  width: 100% !important;
+  background: rgba(0, 0, 0, 0.2) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 0.375rem !important;
+  color: var(--text-primary) !important;
+}
+
+.price-unit, .hours-unit {
+  position: absolute;
+  right: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  pointer-events: none;
+}
+
+.stopwatch-active {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: monospace;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--accent-purple);
+  background: rgba(139, 92, 246, 0.1);
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.375rem;
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  height: 30px;
+}
+
+.tracker-margin-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.rate-value {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.text-danger { color: #EF4444; }
+.text-warning { color: #F59E0B; }
+.text-success { color: #10B981; }
+.text-neutral { color: var(--text-secondary); }
+
+.margin-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.05rem 0.35rem;
+  border-radius: 0.25rem;
+  width: fit-content;
+}
+
+.badge-danger { background: rgba(239, 68, 68, 0.15); color: #EF4444; }
+.badge-warning { background: rgba(245, 158, 11, 0.15); color: #F59E0B; }
+.badge-success { background: rgba(16, 185, 129, 0.15); color: #10B981; }
+.badge-neutral { background: rgba(107, 114, 128, 0.15); color: var(--text-secondary); }
+
+.tracker-controls {
+  display: flex;
+  align-items: center;
+}
+
+.tracker-controls button {
+  padding: 0.4rem 0.75rem !important;
+  font-size: 0.75rem !important;
+  border-radius: 0.375rem !important;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.spin-timer {
+  animation: pulse-clock 1.5s infinite alternate;
+}
+
+@keyframes pulse-clock {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
 /* NotebookLM Card styles */
 .notebooklm-card {
   position: relative;
