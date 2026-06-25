@@ -1,5 +1,36 @@
 # AI Worklog - Founder OS
 
+## 2026-06-26 01:20 – Wochen-Review & Archiv erledigter Aufgaben (Feature A3)
+
+### Ziel
+Bereitstellung eines einklappbaren Archiv- und Wochen-Review-Panels auf dem Dashboard (Tab 1), das erledigte Fokus-Aufgaben und Habit-Erfolge der letzten 7 Tage speichert, Tagesreflexions-Notizen erlaubt und einen jsPDF-Wochenbericht-Export bereitstellt.
+
+### Erstellt
+- **State-Zustände:** `weeklyArchive` (geladen/gespeichert in `localStorage`) und `archiveOpen` (Boolean für das Panel) in `App.jsx`.
+- **Automatischer Sync:** Ein `useEffect`-Hook, der bei jeder Häkchen-Änderung in den Fokus-Aufgaben oder Habits die erledigten Einträge für das heutige Datum (YYYY-MM-DD) automatisch dem Archiv hinzufügt oder entfernt.
+- **Hilfsfunktionen:** `getLast7Days` (berechnet Wochentag & Datum der letzten 7 Tage) und `updateReflection` (speichert Reflexionstext pro Tag).
+- **PDF-Generierung:** `generateWeeklyArchivePDF` sammelt die Aktivitäten der letzten 7 Tage (erledigte Fokus-Tasks, Habits und die eingegebenen Reflexionstexte) und formatiert diese in ein sauberes, zweiseitiges PDF-Dokument mit farbigem Header, Wochentags-Sektionen und formatierten Listen.
+- **UI-Komponente:** Ein einklappbares Panel am Fuß des Dashboards mit Tageskarten (inkl. Status-Listen für Aufgaben/Habits und Textareas für Reflexionen) und dem PDF-Download-Button.
+
+### Geändert
+- [App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): Einbindung aller Hilfsfunktionen, States und Rendering des Review-Panels.
+- [TODO.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md) (Wochen-Review abgehakt).
+- [CHANGELOG.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md) (Ergänzt).
+
+### Warum
+Ein Gründer benötigt zum wöchentlichen Review eine lückenlose Dokumentation seiner Fokus-Ziele und Gewohnheiten. Da Habits täglich zurückgesetzt werden, sichert das Archiv diese Erfolge dauerhaft. Die Reflexion fördert das bewusste Lernen und der PDF-Export dokumentiert den Fortschritt für Buchungen oder zur eigenen Ablage.
+
+### Testen
+1. Navigiere auf dem Dashboard (Tab 1) ganz nach unten und klappe das neue Panel **"Wochen-Review & Archiv"** auf.
+2. Trage in das Textfeld für den heutigen Wochentag eine Reflexion oder Notiz ein (z. B. *"Guter Tag, viel erledigt"*).
+3. Hake im Fokus-Bereich oder im Habit-Tracker Aufgaben ab ➔ Sie erscheinen sofort live im Archiv-Card-Abschnitt des heutigen Tages.
+4. Klicke auf den Button **"PDF Exportieren"** ➔ Ein strukturierter PDF-Bericht der letzten 7 Tage wird heruntergeladen.
+
+### Offene Punkte
+- Warten auf Freigabe des Gründers, um Schritt 4 (Feature B1: Interaktiver Make.com Szenario-Simulator) zu starten.
+
+---
+
 ## 2026-06-26 01:10 – Implementierung Finanz-Cockpit & Einnahmen-Prognose (Feature A2)
 
 ### Ziel
