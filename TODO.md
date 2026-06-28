@@ -16,9 +16,12 @@
 - [x] **Schritt 2:** Feature A2 (Einnahmen-Widget & Umsatz-Vorschau) ➔ Erledigt.
 - [x] **Schritt 3:** Feature A3 (Wochen-Review & Archiv) ➔ Erledigt.
 - [x] **Schritt 4:** Feature B1 (Interaktiver Make.com Simulator) ➔ Erledigt.
-- [ ] **Schritt 5:** Feature B2 ("Frag das Firmengehirn" Chat-Mock) ➔ Anstehend (Warten auf Go).
-- [ ] Supabase-Projekt aufsetzen (entweder über MCP oder direkt auf supabase.com) und API-Verbindung konfigurieren.
-- [ ] Google Cloud Console Setup starten (für Google OAuth / Kalender und Drive Schnittstellen).
+- [x] **Phase v4 - Schritt 1:** Feature 1 (Visueller No-Code Automation Canvas) ➔ Erledigt.
+- [ ] **Phase v4 - Schritt 2:** Feature 2 (Kunden-Portal & White-Label Client Center) ➔ Anstehend (Warten auf Go).
+- [ ] **Phase v4 - Schritt 3:** Feature 3 (KI-Telefonagent / Voice-AI Simulator) ➔ Anstehend.
+- [ ] **Phase v4 - Schritt 4:** Feature 4 ("Frag das Firmengehirn" – RAG Knowledge Bot) ➔ Anstehend.
+- [ ] **Phase v4 - Schritt 5:** Feature 5 (E-Rechnungs & Angebotssystem - ZUGFeRD/XRechnung) ➔ Anstehend.
+- [ ] **Phase v4 - Schritt 6:** Feature 6 (Supabase Backend-Integration & Cloud Sync) ➔ Anstehend.
 
 ## Später
 - [ ] Google Drive Live-Sync: Mock-Dateien-Liste durch echte Datei-Uploads ersetzen.

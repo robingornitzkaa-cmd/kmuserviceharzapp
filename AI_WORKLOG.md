@@ -1,5 +1,34 @@
 # AI Worklog - Founder OS
 
+## 2026-06-28 17:25 – Visueller No-Code Automation Canvas (Feature 1 v4)
+
+### Ziel
+Entwurf und Implementierung eines interaktiven Drag-and-Drop / Klick-Workflow-Editors im Sales-Tab (Tab 5), mit dem Benutzer eigene Automatisierungspfade aus Triggern, KI-Knoten, ERP-Systemen und Benachrichtigungen zusammenstellen, konfigurieren und simulieren können.
+
+### Erstellt
+- **State-Zustände:** `canvasNodes` (Knotenliste mit Konfigurationen), `canvasConnections` (Verbindungskanten), `selectedCanvasNodeId` (Auswahl für Einstellungs-Panel), `canvasTestRunning`, `canvasTestActiveNode` und `canvasTestLogs`.
+- **Handhabungs-Funktionen:** `addCanvasNode` (Knoten hinzufügen mit Vorlagen für E-Mail, Claude/GPT, DATEV, Slack), `deleteCanvasNode` (Knoten entfernen), `updateCanvasNodeConfig` (Echtzeit-Konfiguration von Parametern) und `startCanvasTestRun` (End-to-End Testsimulation).
+- **UI-Komponente:** Ein vollwertiges Editor-Panel mit Toolbox, interaktiver Zeichenfläche (Grid-Background, Knoten-Karten mit Typ-Badges, Verbindungspfeilen), dynamischer Einstellungs-Sidebar und Ausführungs-Terminal.
+
+### Geändert
+- [App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): Einbindung aller Canvas-States, Handler, Persistence-Hooks und Render-Markup.
+- [TODO.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md) (Schritt 1 v4 als erledigt markiert).
+- [CHANGELOG.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md) (Ergänzt).
+
+### Warum
+Potenzielle KMU-Kunden möchten in Verkaufsgesprächen sehen, wie flexibel benutzerdefinierte Schnittstellen angepasst werden können. Der Canvas ermöglicht es Robin, live im Gespräch neue Bausteine hinzuzufügen und den Datenfluss sofort zu testen.
+
+### Testen
+1. Navigiere zu Tab 5 ("Sales & SOPs") und scrolle zum Bereich **"Visueller No-Code Automation Canvas"**.
+2. Klicke in der oberen Leiste z. B. auf **"+ Claude / GPT KI"** ➔ Ein neues Modul erscheint auf der Zeichenfläche und verbindet sich automatisch.
+3. Klicke auf eine beliebige Karte ➔ Auf der rechten Seite öffnet sich das Konfigurations-Panel. Ändere dort Titel oder Parameter.
+4. Klicke auf **"Workflow testen"** ➔ Die Module leuchten im Sekundentakt auf und das Terminal unten protokolliert die Ausführung live.
+
+### Offene Punkte
+- Warten auf Freigabe des Gründers ("Go"), um mit Schritt 2 (Kunden-Portal & White-Label Client Center) fortzufahren.
+
+---
+
 ## 2026-06-26 01:30 – Interaktiver Make.com Szenario-Simulator (Feature B1)
 
 ### Ziel
