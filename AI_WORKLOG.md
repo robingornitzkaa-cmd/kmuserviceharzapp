@@ -1,5 +1,37 @@
 # AI Worklog - Founder OS
 
+## 2026-06-28 17:40 – "Frag das Firmengehirn" RAG Knowledge Bot (Feature 4 v4)
+
+### Ziel
+Entwurf und Implementierung eines interaktiven RAG (Retrieval-Augmented Generation) Chat-Assistenten im KI- & Docs-Tab (Tab 4), mit dem der Gründer oder Kunde direkt Fragen an das im Google Drive abgelegte Unternehmenswissen stellen kann.
+
+### Erstellt
+- **State-Zustände:** `ragPersona` (Rollen-Modus: 🧠 *Firmengehirn Standard*, 🎯 *Pitch-Coach*, 🔒 *DSGVO & Legal*), `ragInput`, `ragGenerating` und `ragChat` (Chatverlauf mit Quellen-Zitaten) in `App.jsx`.
+- **RAG Abfrage-Engine:** `handleSendRagQuery` analysiert den eingegebenen Prompt oder verarbeitet vordefinierte Schnellfragen, simuliert eine semantische Vektorsuche und generiert strukturierte Antworten mit verifizierten Quellen-Links (z.B. *Businessplan SOP 1.4*, *Preispakete 2026*).
+- **UI-Komponenten:**
+  - Persona-Selector Bar im Karten-Header für rasches Umschalten des KI-Verhaltens.
+  - Schnellfragen-Buttons (Quick Prompts) für sekundenschnelle Demos in Präsentationen.
+  - Chat-Stream Fenster mit Lade-Animationen, Markdown-Zeilenumbrüchen und hervorgehobener Quellenleiste.
+
+### Geändert
+- [App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): Einbindung aller RAG-States, Suchlogik, Prompt-Shortcuts und Render-Markup.
+- [TODO.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md) (Schritt 4 v4 als erledigt markiert).
+- [CHANGELOG.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md) (Ergänzt).
+
+### Warum
+Fragen zum eigenen Unternehmen ("Was kosten unsere Pakete?", "Wie läuft das Onboarding?", "Was steht im AVV?") müssen im Kundengespräch oder im Alltag sofort präzise und mit Belegen beantwortet werden. Der RAG Bot beweist die volle Leistungsfähigkeit des digitalen Firmengehirns.
+
+### Testen
+1. Navigiere zu Tab 4 ("KI & Docs") und scrolle nach unten zum Bereich **"Frag das Firmengehirn" – RAG Knowledge Bot**.
+2. Klicke oben auf einen Schnellfragen-Button (z. B. **"⚡ Neukunden-Onboarding"**).
+3. Verfolge die Lade-Animation ➔ Die KI antwortet strukturiert und blendet unten die konkreten Google Drive Dokumenten-Quellen ein.
+4. Schalte oben auf **"🎯 Pitch-Coach"** oder **"🔒 DSGVO & Legal"** und stelle eigene Fragen im Textfeld.
+
+### Offene Punkte
+- Warten auf Freigabe des Gründers ("Go"), um mit Schritt 5 (E-Rechnungs & Angebotssystem - ZUGFeRD/XRechnung) fortzufahren.
+
+---
+
 ## 2026-06-28 17:35 – KI-Telefonagent & Voice-AI Simulator (Feature 3 v4)
 
 ### Ziel
