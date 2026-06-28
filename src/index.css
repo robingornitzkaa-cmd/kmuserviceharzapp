@@ -1837,3 +1837,41 @@ body {
   }
 }
 
+/* ==========================================================================
+   VOICE-AI TELEFONAGENT SIMULATOR STYLES
+   ========================================================================== */
+
+.voice-wave-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 40px;
+  margin: 1rem 0;
+}
+
+.voice-wave-bar {
+  width: 6px;
+  height: 12px;
+  background: var(--accent-cyan);
+  border-radius: 3px;
+  transition: height 0.2s ease;
+}
+
+.voice-wave-container.active .voice-wave-bar {
+  animation: voiceWavePulse 1.2s ease-in-out infinite alternate;
+  box-shadow: 0 0 10px var(--accent-cyan);
+}
+
+.voice-wave-container.active .voice-wave-bar:nth-child(1) { animation-delay: 0.1s; }
+.voice-wave-container.active .voice-wave-bar:nth-child(2) { animation-delay: 0.3s; }
+.voice-wave-container.active .voice-wave-bar:nth-child(3) { animation-delay: 0.5s; }
+.voice-wave-container.active .voice-wave-bar:nth-child(4) { animation-delay: 0.2s; }
+.voice-wave-container.active .voice-wave-bar:nth-child(5) { animation-delay: 0.4s; }
+
+@keyframes voiceWavePulse {
+  0% { height: 8px; background: var(--accent-cyan); }
+  50% { height: 36px; background: var(--accent-purple); }
+  100% { height: 14px; background: var(--accent-green); }
+}
+

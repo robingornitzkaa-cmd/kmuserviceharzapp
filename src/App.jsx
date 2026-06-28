@@ -26,7 +26,10 @@ import {
   Settings,
   Shield,
   LifeBuoy,
-  Send
+  Send,
+  Phone,
+  Mic,
+  Volume2
 } from 'lucide-react';
 
 // INITIAL DATA FOR FIRST LAUNCH
@@ -378,6 +381,13 @@ function App() {
   const [newTicketTitle, setNewTicketTitle] = useState('');
   const [newTicketDesc, setNewTicketDesc] = useState('');
   const [newTicketPriority, setNewTicketPriority] = useState('mittel');
+  
+  // KI-Telefonagent / Voice-AI Simulator States (Feature 3 - v4)
+  const [voiceScenario, setVoiceScenario] = useState('notdienst'); // 'notdienst', 'erstkontakt'
+  const [voiceCallActive, setVoiceCallActive] = useState(false);
+  const [voiceCallStep, setVoiceCallStep] = useState(0);
+  const [voiceTranscript, setVoiceTranscript] = useState([]);
+  const [voiceExtractedData, setVoiceExtractedData] = useState(null);
   
   // Persistent Storage Sync
   useEffect(() => {
@@ -782,6 +792,72 @@ function App() {
     setNewTicketTitle('');
     setNewTicketDesc('');
     alert(`Vielen Dank! Dein Support-Ticket für ${selectedClientCompany} wurde eingereicht und an KMU Service Harz übermittelt.`);
+  };
+
+  // KI-Telefonagent Handlers (Feature 3 - v4)
+  const startVoiceCallSimulation = () => {
+    if (voiceCallActive) return;
+
+    setVoiceCallActive(true);
+    setVoiceCallStep(1);
+    setVoiceTranscript([]);
+    setVoiceExtractedData(null);
+
+    const getTime = () => new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+    if (voiceScenario === 'notdienst') {
+      setVoiceTranscript([{ speaker: 'agent', text: '🤖 KI-Assistent: Guten Tag! KMU Service Harz Notfall-Zentrale. Ich höre mit. Was ist passiert?', time: getTime() }]);
+
+      setTimeout(() => {
+        setVoiceCallStep(2);
+        setVoiceTranscript(prev => [...prev, { speaker: 'caller', text: '🗣️ Anrufer (Dachdeckerei Müller): Hallo! Wir haben einen Rohrbruch im Hauptgebäude. Das Wasser steht schon 5cm hoch!', time: getTime() }]);
+      }, 1800);
+
+      setTimeout(() => {
+        setVoiceCallStep(3);
+        setVoiceTranscript(prev => [...prev, { speaker: 'agent', text: '🤖 KI-Assistent: Verstanden. Notfall "Rohrbruch" bei Dachdeckerei Müller. Ich löse sofort Alarmstufe 1 aus und benachrichtige Techniker Meyer per SMS.', time: getTime() }]);
+      }, 3800);
+
+      setTimeout(() => {
+        setVoiceCallStep(4);
+        const extracted = {
+          anrufer: 'Dachdeckerei Müller (Hans Müller)',
+          anliegen: 'Wasserrohrbruch im Hauptgebäude (Notfall)',
+          aktion: 'Notdienst-SMS versendet & Ticket #ND-402 im CRM angelegt'
+        };
+        setVoiceExtractedData(extracted);
+        setVoiceCallActive(false);
+
+        const today = new Date().toISOString().split('T')[0];
+        setInbox(prev => [{ id: 'i_' + Date.now(), text: `[KI-Telefonat NOTFALL] Dachdeckerei Müller: Wasserrohrbruch. Techniker benachrichtigt.`, date: today }, ...prev]);
+      }, 5800);
+    } else {
+      setVoiceTranscript([{ speaker: 'agent', text: '🤖 KI-Assistent: Herzlich willkommen bei KMU Service Harz! Wie kann ich Ihr Unternehmen automatisieren?', time: getTime() }]);
+
+      setTimeout(() => {
+        setVoiceCallStep(2);
+        setVoiceTranscript(prev => [...prev, { speaker: 'caller', text: '🗣️ Anrufer (Pflegedienst Harz): Guten Tag, Sabine Kraft hier. Wir möchten unsere Stundenzettel über WhatsApp digitalisieren.', time: getTime() }]);
+      }, 1800);
+
+      setTimeout(() => {
+        setVoiceCallStep(3);
+        setVoiceTranscript(prev => [...prev, { speaker: 'agent', text: '🤖 KI-Assistent: Ausgezeichnet! Ich trage das Projekt "WhatsApp-Zeiterfassung" für Pflegedienst Harz ein und sende Ihnen das ROI-Infopaket.', time: getTime() }]);
+      }, 3800);
+
+      setTimeout(() => {
+        setVoiceCallStep(4);
+        const extracted = {
+          anrufer: 'Pflegedienst Harz (Sabine Kraft)',
+          anliegen: 'Interesse an WhatsApp-Zeiterfassung & Fördermitteln',
+          aktion: 'Lead im CRM auf "Angebot" aktualisiert & Infomaterial versendet'
+        };
+        setVoiceExtractedData(extracted);
+        setVoiceCallActive(false);
+
+        const today = new Date().toISOString().split('T')[0];
+        setInbox(prev => [{ id: 'i_' + Date.now(), text: `[KI-Telefonat LEAD] Pflegedienst Harz hat Angebot angefordert.`, date: today }, ...prev]);
+      }, 5800);
+    }
   };
 
   // Live Timer tick for active project time tracking
@@ -3612,6 +3688,155 @@ function App() {
                 </div>
               )}
 
+            </div>
+
+            {/* KI-Telefonagent / Voice-AI Simulator (Feature 3 - v4) */}
+            <div className="card" style={{ gridColumn: 'span 2', marginTop: '1.5rem' }}>
+              <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+                <div>
+                  <h2 className="card-title" style={{ color: 'var(--accent-green)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <Phone size={20} /> KI-Telefonagent / Voice-AI Simulator (Retell / Vapi Mock)
+                  </h2>
+                  <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>
+                    Simuliere automatische KI-Telefonate für Notdienst-Abfragen oder Neukunden-Qualifizierung mit Live-Sprachtranskription.
+                  </p>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                  <select 
+                    className="input-field"
+                    style={{ fontSize: '0.75rem', padding: '0.35rem 0.6rem', width: 'auto' }}
+                    value={voiceScenario}
+                    onChange={(e) => setVoiceScenario(e.target.value)}
+                    disabled={voiceCallActive}
+                  >
+                    <option value="notdienst">Szenario 1: Handwerker Notdienst (Rohrbruch)</option>
+                    <option value="erstkontakt">Szenario 2: Neukunden Erstkontakt (Pflegedienst)</option>
+                  </select>
+
+                  <button 
+                    onClick={startVoiceCallSimulation}
+                    disabled={voiceCallActive}
+                    className="btn btn-primary"
+                    style={{ 
+                      background: voiceCallActive ? 'linear-gradient(135deg, #ef4444, #f59e0b)' : 'linear-gradient(135deg, var(--accent-green), var(--accent-cyan))', 
+                      boxShadow: voiceCallActive ? '0 0 15px rgba(239, 68, 68, 0.4)' : '0 0 15px rgba(16, 185, 129, 0.4)',
+                      border: 'none',
+                      padding: '0.5rem 1rem',
+                      fontSize: '0.825rem',
+                      fontWeight: 600,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.35rem'
+                    }}
+                  >
+                    <Phone size={14} /> {voiceCallActive ? 'Anruf läuft...' : 'Anruf starten (Simulieren)'}
+                  </button>
+                </div>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '1.5rem', marginTop: '1.5rem' }} className="make-simulator-grid">
+                
+                {/* Linke Seite: Telefonat Interface & Audio Wave */}
+                <div style={{ background: 'rgba(17, 24, 39, 0.6)', border: '1px solid var(--border-color)', borderRadius: '0.75rem', padding: '1.25rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                  <div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                      <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase' }}>
+                        Live Audio-Stream & Spracherkennung
+                      </span>
+                      <span style={{ 
+                        fontSize: '0.7rem', 
+                        padding: '0.15rem 0.5rem', 
+                        borderRadius: '0.25rem', 
+                        background: voiceCallActive ? 'rgba(239, 68, 68, 0.15)' : 'rgba(16, 185, 129, 0.15)',
+                        color: voiceCallActive ? 'var(--accent-red)' : 'var(--accent-green)',
+                        fontWeight: 700,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.25rem'
+                      }}>
+                        <Volume2 size={12} /> {voiceCallActive ? '● ANRUF AKTIV' : '○ BEREIT'}
+                      </span>
+                    </div>
+
+                    {/* Audio Soundwave Animation */}
+                    <div className={`voice-wave-container ${voiceCallActive ? 'active' : ''}`}>
+                      <div className="voice-wave-bar"></div>
+                      <div className="voice-wave-bar"></div>
+                      <div className="voice-wave-bar"></div>
+                      <div className="voice-wave-bar"></div>
+                      <div className="voice-wave-bar"></div>
+                    </div>
+
+                    {/* Transkript Stream */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', minHeight: '160px', maxHeight: '220px', overflowY: 'auto', background: 'rgba(0,0,0,0.2)', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid rgba(255,255,255,0.05)' }}>
+                      {voiceTranscript.map((item, index) => (
+                        <div key={index} style={{ 
+                          alignSelf: item.speaker === 'agent' ? 'flex-start' : 'flex-end',
+                          background: item.speaker === 'agent' ? 'rgba(139, 92, 246, 0.15)' : 'rgba(6, 182, 212, 0.15)',
+                          border: item.speaker === 'agent' ? '1px solid rgba(139, 92, 246, 0.3)' : '1px solid rgba(6, 182, 212, 0.3)',
+                          padding: '0.5rem 0.75rem',
+                          borderRadius: '0.5rem',
+                          maxWidth: '90%',
+                          fontSize: '0.8rem',
+                          color: 'var(--text-primary)'
+                        }}>
+                          <div>{item.text}</div>
+                          <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textAlign: 'right', marginTop: '0.15rem' }}>{item.time}</div>
+                        </div>
+                      ))}
+                      {voiceTranscript.length === 0 && (
+                        <div style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.8rem', margin: 'auto', fontStyle: 'italic' }}>
+                          Klicke auf "Anruf starten", um das KI-Telefonat live zu simulieren.
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Rechte Seite: Automatische Daten-Extraktion & CRM Ergebnisse */}
+                <div style={{ background: 'rgba(31, 41, 55, 0.6)', border: '1px solid var(--border-color)', borderRadius: '0.75rem', padding: '1.25rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                  <div>
+                    <h3 style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--accent-cyan)', display: 'flex', alignItems: 'center', gap: '0.35rem', marginBottom: '1rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>
+                      📊 KI-Ergebnis & CRM-Übernahme
+                    </h3>
+
+                    {voiceExtractedData ? (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+                        <div style={{ background: 'rgba(16, 185, 129, 0.08)', border: '1px solid rgba(16, 185, 129, 0.2)', padding: '0.75rem', borderRadius: '0.5rem' }}>
+                          <span style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--accent-green)', textTransform: 'uppercase', display: 'block', marginBottom: '0.25rem' }}>
+                            Erfasster Anrufer
+                          </span>
+                          <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'white' }}>{voiceExtractedData.anrufer}</span>
+                        </div>
+
+                        <div style={{ background: 'rgba(255, 255, 255, 0.02)', border: '1px solid var(--border-color)', padding: '0.75rem', borderRadius: '0.5rem' }}>
+                          <span style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', display: 'block', marginBottom: '0.25rem' }}>
+                            Extrahiertes Anliegen
+                          </span>
+                          <span style={{ fontSize: '0.8rem', color: 'var(--text-primary)' }}>{voiceExtractedData.anliegen}</span>
+                        </div>
+
+                        <div style={{ background: 'rgba(139, 92, 246, 0.08)', border: '1px solid rgba(139, 92, 246, 0.2)', padding: '0.75rem', borderRadius: '0.5rem' }}>
+                          <span style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--accent-purple)', textTransform: 'uppercase', display: 'block', marginBottom: '0.25rem' }}>
+                            Automatische Folge-Aktion
+                          </span>
+                          <span style={{ fontSize: '0.8rem', color: 'white', fontWeight: 500 }}>{voiceExtractedData.aktion}</span>
+                        </div>
+                      </div>
+                    ) : (
+                      <div style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.8rem', margin: 'auto', padding: '2rem 0', fontStyle: 'italic' }}>
+                        {voiceCallActive ? '⌛ KI analysiert das laufende Gespräch...' : 'Starte ein Telefonat, um die automatische Extraktion zu sehen.'}
+                      </div>
+                    )}
+                  </div>
+
+                  <div style={{ marginTop: '1rem', paddingTop: '0.75rem', borderTop: '1px solid rgba(255,255,255,0.05)', fontSize: '0.7rem', color: 'var(--text-muted)' }}>
+                    💡 Nach dem Telefonat wird das Ergebnis automatisch in deine Inbox & das CRM übertragen.
+                  </div>
+                </div>
+
+              </div>
             </div>
 
           </div>
