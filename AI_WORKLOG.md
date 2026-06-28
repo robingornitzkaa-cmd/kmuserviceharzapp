@@ -1,5 +1,39 @@
 # AI Worklog - Founder OS
 
+## 2026-06-28 17:45 – E-Rechnungs & Angebotssystem (ZUGFeRD / XRechnung) (Feature 5 v4)
+
+### Ziel
+Entwurf und Implementierung eines B2B E-Rechnungs & Angebotssystems im Finanz-Cockpit (Tab 1), mit dem der Gründer rechtskonforme elektronische Rechnungen (ZUGFeRD 2.0 Hybrid-PDF & XRechnung 3.0 Pure XML gemäß EU-Norm EN 16931) konfigurieren, als PDF herunterladen und direkt in Lexoffice/DATEV verbuchen kann.
+
+### Erstellt
+- **State-Zustände:** `invoiceClient`, `invoicePackage`, `invoiceAmount`, `invoiceFormat` (Umschaltung *ZUGFeRD* vs. *XRechnung*), `invoiceDiscount` (Skonto/Rabatt %) und `invoiceXmlPreview` in `App.jsx`.
+- **Rechnungs-Engine:**
+  - `generateEinvoicePdf`: Verwendet `jsPDF` zur dynamischen Erstellung einer professionellen B2B-Rechnung mit automatischem Rabatt- und MwSt.-Berechner, ZUGFeRD XML-Metadatenbox und DATEV-Compliance-Siegel.
+  - `bookInvoiceToLexoffice`: Übermittelt den Rechnungsbetrag an Lexoffice/DATEV und trägt die Buchung automatisch in der Inbox (Tab 2) ein.
+- **UI-Komponenten:**
+  - Konfigurator-Card im Finanz-Cockpit mit Kunden-Dropdown, Leistungseingabe und Rabattrechner.
+  - Interaktiver XML-Syntax-Validator mit Code-Highlighting zur Demonstration des ZUGFeRD/XRechnung Datenstroms.
+
+### Geändert
+- [App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): Einbindung aller Rechnungs-States, PDF/XML-Generatoren, Inbox-Verknüpfung und Render-Markup.
+- [TODO.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md) (Schritt 5 v4 als erledigt markiert).
+- [CHANGELOG.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md) (Ergänzt).
+
+### Warum
+Ab 2025/2026 gilt in Deutschland die E-Rechnungspflicht im B2B-Bereich. Ein integriertes E-Rechnungssystem macht KMU Service Harz zu 100% zukunftssicher und schließt die Lücke zwischen Vertrieb, ERP und Buchhaltung.
+
+### Testen
+1. Navigiere zu Tab 1 ("Dashboard") direkt unter das Finanz-Cockpit zum Bereich **"E-Rechnungs & Angebotssystem"**.
+2. Wähle einen Kunden (z.B. *Dachdeckerei Müller*), passe den Nettobetrag an und trage z.B. 5% Rabatt ein.
+3. Klicke auf **"🔍 XML-Syntax prüfen"** ➔ Das rechte Panel zeigt den konformen EN 16931 XML-Code.
+4. Klicke auf **"E-Rechnung (PDF/XML) herunterladen"** ➔ Eine professionelle PDF-Rechnung wird auf deinen Rechner heruntergeladen.
+5. Klicke auf **"In Lexoffice / DATEV buchen"** ➔ Die Einnahme wird bestätigt und automatisch in deiner Inbox registriert.
+
+### Offene Punkte
+- Warten auf Freigabe des Gründers ("Go"), um mit Schritt 6 (Supabase Backend-Integration & Cloud Sync) fortzufahren.
+
+---
+
 ## 2026-06-28 17:40 – "Frag das Firmengehirn" RAG Knowledge Bot (Feature 4 v4)
 
 ### Ziel
