@@ -23,7 +23,10 @@ import {
   FileText,
   Zap,
   Sliders,
-  Settings
+  Settings,
+  Shield,
+  LifeBuoy,
+  Send
 } from 'lucide-react';
 
 // INITIAL DATA FOR FIRST LAUNCH
@@ -363,6 +366,19 @@ function App() {
   const [canvasTestActiveNode, setCanvasTestActiveNode] = useState(null);
   const [canvasTestLogs, setCanvasTestLogs] = useState([]);
   
+  // Kunden-Portal & White-Label Client Center States (Feature 2 - v4)
+  const [clientPortalMode, setClientPortalMode] = useState(() => JSON.parse(localStorage.getItem('f_client_portal_mode')) || false);
+  const [selectedClientCompany, setSelectedClientCompany] = useState(() => localStorage.getItem('f_client_selected_company') || 'GoClean Harz');
+  const [clientTickets, setClientTickets] = useState(() => {
+    return JSON.parse(localStorage.getItem('f_client_tickets')) || [
+      { id: 'ct1', client: 'GoClean Harz', title: 'Neuen Mitarbeiter zum WhatsApp-Bot hinzufügen', status: 'offen', date: '2026-06-27', priority: 'hoch', desc: 'Bitte Max Mustermann für die Zeiterfassung im WhatsApp-Bot freischalten.' },
+      { id: 'ct2', client: 'Dachdeckerei Müller', title: 'Erweiterung Beleg-Extraktion für Tankbelege', status: 'in_arbeit', date: '2026-06-25', priority: 'mittel', desc: 'Sollen Shell & UTA Tankkarten-Belege automatisch verarbeitet werden?' }
+    ];
+  });
+  const [newTicketTitle, setNewTicketTitle] = useState('');
+  const [newTicketDesc, setNewTicketDesc] = useState('');
+  const [newTicketPriority, setNewTicketPriority] = useState('mittel');
+  
   // Persistent Storage Sync
   useEffect(() => {
     localStorage.setItem('f_inbox', JSON.stringify(inbox));
@@ -418,6 +434,15 @@ function App() {
   useEffect(() => {
     localStorage.setItem('f_canvas_connections', JSON.stringify(canvasConnections));
   }, [canvasConnections]);
+  useEffect(() => {
+    localStorage.setItem('f_client_portal_mode', JSON.stringify(clientPortalMode));
+  }, [clientPortalMode]);
+  useEffect(() => {
+    localStorage.setItem('f_client_selected_company', selectedClientCompany);
+  }, [selectedClientCompany]);
+  useEffect(() => {
+    localStorage.setItem('f_client_tickets', JSON.stringify(clientTickets));
+  }, [clientTickets]);
 
   // Wochen-Review & Archiv Logik & Sync (Feature A3)
   useEffect(() => {
@@ -724,6 +749,39 @@ function App() {
         }
       }, (idx + 1) * 1200);
     });
+  };
+
+  // Kunden-Portal Handlers (Feature 2 - v4)
+  const handleCreateClientTicket = (e) => {
+    e.preventDefault();
+    if (!newTicketTitle.trim()) return;
+
+    const today = new Date().toISOString().split('T')[0];
+    const newId = 'ct_' + Date.now();
+
+    const newTicket = {
+      id: newId,
+      client: selectedClientCompany,
+      title: newTicketTitle,
+      status: 'offen',
+      date: today,
+      priority: newTicketPriority,
+      desc: newTicketDesc || 'Keine detaillierte Beschreibung hinterlegt.'
+    };
+
+    setClientTickets([newTicket, ...clientTickets]);
+
+    // Automatically notify founder by inserting item into inbox!
+    const newInboxNotification = {
+      id: 'i_' + Date.now(),
+      text: `[Support-Ticket von ${selectedClientCompany}] ${newTicketTitle}: ${newTicketDesc}`,
+      date: today
+    };
+    setInbox(prev => [newInboxNotification, ...prev]);
+
+    setNewTicketTitle('');
+    setNewTicketDesc('');
+    alert(`Vielen Dank! Dein Support-Ticket für ${selectedClientCompany} wurde eingereicht und an KMU Service Harz übermittelt.`);
   };
 
   // Live Timer tick for active project time tracking
@@ -1412,14 +1470,23 @@ function App() {
         </div>
       )}
       {/* HEADER */}
+      {clientPortalMode && (
+        <div style={{ background: 'linear-gradient(90deg, #8b5cf6, #3b82f6)', padding: '0.4rem 1rem', textAlign: 'center', fontSize: '0.8rem', fontWeight: 600, color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '1rem' }}>
+          <span>👁️ Mandantenportal-Vorschau: Du siehst die App aus Sicht von <strong>{mask(selectedClientCompany, 'company')}</strong></span>
+          <button onClick={() => setClientPortalMode(false)} style={{ background: 'rgba(255,255,255,0.2)', border: 'none', borderRadius: '0.25rem', padding: '0.15rem 0.5rem', fontSize: '0.7rem', color: 'white', cursor: 'pointer' }}>
+            Zurück zu Gründer OS
+          </button>
+        </div>
+      )}
+
       <header className="app-header" style={{ flexWrap: 'wrap', gap: '1rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
           <div className="brand">
-            <div className="brand-logo">
-              <BrainCircuit size={20} />
+            <div className="brand-logo" style={{ background: clientPortalMode ? 'linear-gradient(135deg, #8b5cf6, #ec4899)' : undefined }}>
+              {clientPortalMode ? <Shield size={20} /> : <BrainCircuit size={20} />}
             </div>
-            <h1>Founder OS</h1>
-            <span className="brand-badge">KMU Service Harz</span>
+            <h1>{clientPortalMode ? 'Mandantenportal' : 'Founder OS'}</h1>
+            <span className="brand-badge">{clientPortalMode ? mask(selectedClientCompany, 'company') : 'KMU Service Harz'}</span>
           </div>
           
           <button 
@@ -1437,10 +1504,42 @@ function App() {
           >
             Showcase-Modus: {showcaseMode ? 'AKTIV' : 'AUS'}
           </button>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+            <button 
+              className={`btn ${clientPortalMode ? 'btn-primary' : 'btn-secondary'}`}
+              style={{ 
+                padding: '0.35rem 0.75rem', 
+                fontSize: '0.75rem', 
+                background: clientPortalMode ? 'linear-gradient(135deg, #8b5cf6, #ec4899)' : 'rgba(255, 255, 255, 0.05)',
+                borderColor: clientPortalMode ? '#8b5cf6' : 'var(--border-color)',
+                boxShadow: clientPortalMode ? '0 0 15px rgba(139, 92, 246, 0.4)' : 'none',
+                color: 'white'
+              }}
+              onClick={() => setClientPortalMode(!clientPortalMode)}
+              title="Wechselt in das White-Label Kunden-Portal."
+            >
+              Kunden-Portal: {clientPortalMode ? 'AKTIV' : 'AUS'}
+            </button>
+
+            {clientPortalMode && (
+              <select 
+                className="input-field"
+                style={{ padding: '0.35rem 0.5rem', fontSize: '0.75rem', width: 'auto' }}
+                value={selectedClientCompany}
+                onChange={(e) => setSelectedClientCompany(e.target.value)}
+              >
+                {contacts.map(c => (
+                  <option key={c.id} value={c.company}>{mask(c.company, 'company')}</option>
+                ))}
+              </select>
+            )}
+          </div>
         </div>
         
-        {/* DESKTOP NAV TABS */}
-        <nav className="nav-tabs">
+        {/* DESKTOP NAV TABS (Nur sichtbar wenn nicht im Kunden-Portal Modus) */}
+        {!clientPortalMode && (
+          <nav className="nav-tabs">
           <button 
             className={`nav-tab ${activeTab === 'dashboard' ? 'active' : ''}`}
             onClick={() => setActiveTab('dashboard')}
@@ -1469,14 +1568,219 @@ function App() {
             className={`nav-tab ${activeTab === 'sales' ? 'active' : ''}`}
             onClick={() => setActiveTab('sales')}
           >
-            <TrendingUp size={16} /> Sales & SOPs
           </button>
         </nav>
+        )}
       </header>
 
       {/* MAIN CONTENT */}
       <main className="main-content">
         
+        {/* ==================== CLIENT PORTAL MODE VIEW ==================== */}
+        {clientPortalMode ? (() => {
+          const currentContact = contacts.find(c => c.company === selectedClientCompany) || contacts[0];
+          const currentProject = projects.find(p => p.client === selectedClientCompany) || { pricePackage: 2500, trackedHours: 42.5, ready: true };
+          const companyTickets = clientTickets.filter(t => t.client === selectedClientCompany);
+          
+          const hoursSaved = (currentProject.trackedHours || 35).toFixed(0);
+          const eurSaved = Math.round(hoursSaved * 85);
+
+          return (
+            <div className="client-portal-container" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+              
+              {/* Client Hero Banner */}
+              <div className="card" style={{ background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(6, 182, 212, 0.15))', border: '1px solid rgba(139, 92, 246, 0.3)', padding: '1.5rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+                  <div>
+                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--accent-cyan)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                      Willkommen im Mandantenportal
+                    </span>
+                    <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'white', marginTop: '0.25rem' }}>
+                      {mask(selectedClientCompany, 'company')}
+                    </h2>
+                    <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>
+                      Ansprechpartner: <strong>{mask(currentContact?.name || 'Max Mustermann', 'name')}</strong> | System: <span className="tag tag-system">{mask(currentContact?.system || 'DATEV', 'system')}</span>
+                    </p>
+                  </div>
+                  <div style={{ textAlign: 'right' }}>
+                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block' }}>Betreut von:</span>
+                    <span style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--accent-purple)' }}>KMU Service Harz</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Client KPI Grid */}
+              <div className="financial-kpi-container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+                <div className="kpi-card" style={{ borderLeft: '3px solid var(--accent-cyan)' }}>
+                  <span className="kpi-label">Projekt-Status</span>
+                  <span className="kpi-value text-cyan" style={{ fontSize: '1.25rem' }}>
+                    {currentProject.ready ? '✅ In Betrieb' : '⚙️ In Umsetzung'}
+                  </span>
+                  <span className="kpi-desc">Systeme laufen automatisiert</span>
+                </div>
+
+                <div className="kpi-card" style={{ borderLeft: '3px solid var(--accent-green)' }}>
+                  <span className="kpi-label">Zeitersparnis (Gesamt)</span>
+                  <span className="kpi-value text-green" style={{ fontSize: '1.25rem' }}>~ {hoursSaved} Std.</span>
+                  <span className="kpi-desc">Freigestellte Bürozeit</span>
+                </div>
+
+                <div className="kpi-card" style={{ borderLeft: '3px solid var(--accent-purple)' }}>
+                  <span className="kpi-label">Kalkulatorische Ersparnis</span>
+                  <span className="kpi-value text-purple" style={{ fontSize: '1.25rem' }}>~ {eurSaved.toLocaleString('de-DE')} €</span>
+                  <span className="kpi-desc">Basierend auf 85 €/h Stundensatz</span>
+                </div>
+
+                <div className="kpi-card" style={{ borderLeft: '3px solid var(--accent-yellow)' }}>
+                  <span className="kpi-label">Support-Tickets</span>
+                  <span className="kpi-value text-yellow" style={{ fontSize: '1.25rem' }}>{companyTickets.filter(t => t.status === 'offen').length} Offen</span>
+                  <span className="kpi-desc">{companyTickets.length} Tickets insgesamt</span>
+                </div>
+              </div>
+
+              {/* Client Portal 2-Spalten Hauptbereich */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '1.5rem' }} className="make-simulator-grid">
+                
+                {/* Linke Spalte: Dokumente & SOPs */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                  
+                  {/* Freigegebene SOPs / Anleitungen */}
+                  <div className="card">
+                    <div className="card-header">
+                      <h3 className="card-title" style={{ fontSize: '1rem', color: 'var(--accent-purple)' }}>
+                        <CheckCircle size={18} /> Freigegebene SOPs & Anleitungen
+                      </h3>
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                      {sopTemplates.map((template, idx) => (
+                        <div key={idx} style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: '0.5rem', padding: '0.85rem' }}>
+                          <div style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--text-primary)', marginBottom: '0.35rem' }}>
+                            {template.name}
+                          </div>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                            {template.steps.slice(0, 2).map((step, sIdx) => (
+                              <div key={sIdx} style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                                <ChevronRight size={12} className="text-cyan-500" /> {mask(step, 'inbox')}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Projekt-Dokumente & Links */}
+                  <div className="card">
+                    <div className="card-header">
+                      <h3 className="card-title" style={{ fontSize: '1rem', color: 'var(--accent-cyan)' }}>
+                        <FileText size={18} /> Projekt-Dokumente & Ordner
+                      </h3>
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                      {currentContact?.links && currentContact.links.length > 0 ? (
+                        currentContact.links.map(link => (
+                          <a key={link.id} href={link.url} target="_blank" rel="noreferrer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.75rem', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: '0.5rem', textDecoration: 'none', color: 'var(--text-primary)', fontSize: '0.85rem' }}>
+                            <span>📁 {link.title}</span>
+                            <ExternalLink size={14} className="text-cyan-500" />
+                          </a>
+                        ))
+                      ) : (
+                        <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', italic: 'true' }}>
+                          Keine verknüpften Ordner vorhanden.
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                </div>
+
+                {/* Rechte Spalte: Support- & Änderungsticket System */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                  
+                  {/* Neuer Ticket Erstellen Formular */}
+                  <div className="card">
+                    <div className="card-header">
+                      <h3 className="card-title" style={{ fontSize: '1rem', color: 'var(--accent-green)' }}>
+                        <LifeBuoy size={18} /> Neues Support-Ticket einreichen
+                      </h3>
+                    </div>
+                    <form onSubmit={handleCreateClientTicket} style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+                      <div className="input-group">
+                        <label style={{ fontSize: '0.75rem' }}>Anliegen / Titel</label>
+                        <input 
+                          type="text" 
+                          className="input-field"
+                          placeholder="z.B. Neuentwickelten WhatsApp-Bot anpassen..."
+                          value={newTicketTitle}
+                          onChange={(e) => setNewTicketTitle(e.target.value)}
+                          required
+                        />
+                      </div>
+
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '0.75rem' }}>
+                        <div className="input-group">
+                          <label style={{ fontSize: '0.75rem' }}>Priorität</label>
+                          <select 
+                            className="input-field"
+                            value={newTicketPriority}
+                            onChange={(e) => setNewTicketPriority(e.target.value)}
+                          >
+                            <option value="hoch">Hoch (Dringend)</option>
+                            <option value="mittel">Mittel (Standard)</option>
+                            <option value="niedrig">Niedrig (Wunsch)</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div className="input-group">
+                        <label style={{ fontSize: '0.75rem' }}>Beschreibung</label>
+                        <textarea 
+                          className="input-field"
+                          rows={3}
+                          placeholder="Beschreibe deine Änderungswünsche oder Fragen..."
+                          value={newTicketDesc}
+                          onChange={(e) => setNewTicketDesc(e.target.value)}
+                        />
+                      </div>
+
+                      <button type="submit" className="btn btn-primary" style={{ background: 'linear-gradient(135deg, var(--accent-green), var(--accent-cyan))', border: 'none', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.35rem' }}>
+                        <Send size={14} /> Ticket absenden
+                      </button>
+                    </form>
+                  </div>
+
+                  {/* Bisherige Tickets Liste */}
+                  <div className="card">
+                    <div className="card-header">
+                      <h3 className="card-title" style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+                        Bisherige Support-Tickets ({companyTickets.length})
+                      </h3>
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', maxHeight: '280px', overflowY: 'auto' }}>
+                      {companyTickets.map(t => (
+                        <div key={t.id} style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: '0.5rem', padding: '0.75rem' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
+                            <span style={{ fontWeight: 700, fontSize: '0.8rem', color: 'var(--text-primary)' }}>{t.title}</span>
+                            <span className={`card-priority priority-${t.priority}`}>{t.priority}</span>
+                          </div>
+                          <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.35rem' }}>{t.desc}</p>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.7rem', color: 'var(--text-muted)' }}>
+                            <span>Erstellt: {t.date}</span>
+                            <span style={{ color: t.status === 'offen' ? 'var(--accent-yellow)' : 'var(--accent-green)', fontWeight: 600 }}>Status: {t.status}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+          );
+        })() : (
+          <>
         {/* ==================== TAB 1: DASHBOARD ==================== */}
         {activeTab === 'dashboard' && (
           <div className="dashboard-grid">
@@ -3312,47 +3616,51 @@ function App() {
 
           </div>
         )}
+        </>
+        )}
 
       </main>
 
       {/* MOBILE BOTTOM NAVIGATION BAR */}
-      <nav className="mobile-nav-bar">
-        <button 
-          className={`mobile-nav-tab ${activeTab === 'dashboard' ? 'active' : ''}`}
-          onClick={() => setActiveTab('dashboard')}
-        >
-          <LayoutDashboard size={20} />
-          <span>Dashboard</span>
-        </button>
-        <button 
-          className={`mobile-nav-tab ${activeTab === 'tasks' ? 'active' : ''}`}
-          onClick={() => setActiveTab('tasks')}
-        >
-          <Inbox size={20} />
-          <span>Tasks</span>
-        </button>
-        <button 
-          className={`mobile-nav-tab ${activeTab === 'crm' ? 'active' : ''}`}
-          onClick={() => setActiveTab('crm')}
-        >
-          <Users size={20} />
-          <span>CRM</span>
-        </button>
-        <button 
-          className={`mobile-nav-tab ${activeTab === 'hub' ? 'active' : ''}`}
-          onClick={() => setActiveTab('hub')}
-        >
-          <BrainCircuit size={20} />
-          <span>KI</span>
-        </button>
-        <button 
-          className={`mobile-nav-tab ${activeTab === 'sales' ? 'active' : ''}`}
-          onClick={() => setActiveTab('sales')}
-        >
-          <TrendingUp size={20} />
-          <span>Sales</span>
-        </button>
-      </nav>
+      {!clientPortalMode && (
+        <nav className="mobile-nav-bar">
+          <button 
+            className={`mobile-nav-tab ${activeTab === 'dashboard' ? 'active' : ''}`}
+            onClick={() => setActiveTab('dashboard')}
+          >
+            <LayoutDashboard size={20} />
+            <span>Dashboard</span>
+          </button>
+          <button 
+            className={`mobile-nav-tab ${activeTab === 'tasks' ? 'active' : ''}`}
+            onClick={() => setActiveTab('tasks')}
+          >
+            <Inbox size={20} />
+            <span>Tasks</span>
+          </button>
+          <button 
+            className={`mobile-nav-tab ${activeTab === 'crm' ? 'active' : ''}`}
+            onClick={() => setActiveTab('crm')}
+          >
+            <Users size={20} />
+            <span>CRM</span>
+          </button>
+          <button 
+            className={`mobile-nav-tab ${activeTab === 'hub' ? 'active' : ''}`}
+            onClick={() => setActiveTab('hub')}
+          >
+            <BrainCircuit size={20} />
+            <span>KI</span>
+          </button>
+          <button 
+            className={`mobile-nav-tab ${activeTab === 'sales' ? 'active' : ''}`}
+            onClick={() => setActiveTab('sales')}
+          >
+            <TrendingUp size={20} />
+            <span>Sales</span>
+          </button>
+        </nav>
+      )}
 
       {/* CRM Contact Details Drawer */}
       <div className={`crm-drawer ${selectedContactId ? 'open' : ''}`}>
