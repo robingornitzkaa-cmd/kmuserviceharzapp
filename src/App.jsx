@@ -20,7 +20,10 @@ import {
   Play,
   RotateCcw,
   CheckCircle,
-  FileText
+  FileText,
+  Zap,
+  Sliders,
+  Settings
 } from 'lucide-react';
 
 // INITIAL DATA FOR FIRST LAUNCH
@@ -339,6 +342,27 @@ function App() {
   const [makeActiveNode, setMakeActiveNode] = useState(0);
   const [makeLogs, setMakeLogs] = useState([]);
   
+  // Visueller No-Code Automation Canvas States (Feature 1 - v4)
+  const [canvasNodes, setCanvasNodes] = useState(() => {
+    return JSON.parse(localStorage.getItem('f_canvas_nodes')) || [
+      { id: 'cn1', type: 'trigger', category: 'Trigger', title: 'WhatsApp Webhook', icon: 'Inbox', x: 40, y: 110, config: { triggerName: 'Sprachnachricht empfangen', filterKeyword: 'Stundenzettel' } },
+      { id: 'cn2', type: 'ai', category: 'KI-Verarbeitung', title: 'Whisper Audio AI', icon: 'Clock', x: 250, y: 110, config: { model: 'whisper-large-v3', language: 'Deutsch' } },
+      { id: 'cn3', type: 'ai', category: 'KI-Verarbeitung', title: 'GPT-4 Extraktor', icon: 'BrainCircuit', x: 460, y: 110, config: { prompt: 'Extrahiere Mitarbeiter, Kunde & Stunden als JSON', temperature: '0.2' } },
+      { id: 'cn4', type: 'erp', category: 'ERP & Buchhaltung', title: 'Lexoffice Buchen', icon: 'ClipboardCopy', x: 670, y: 110, config: { targetAccount: 'Lohn & Gehalt', autoApprove: 'Ja' } }
+    ];
+  });
+  const [canvasConnections, setCanvasConnections] = useState(() => {
+    return JSON.parse(localStorage.getItem('f_canvas_connections')) || [
+      { from: 'cn1', to: 'cn2' },
+      { from: 'cn2', to: 'cn3' },
+      { from: 'cn3', to: 'cn4' }
+    ];
+  });
+  const [selectedCanvasNodeId, setSelectedCanvasNodeId] = useState('cn1');
+  const [canvasTestRunning, setCanvasTestRunning] = useState(false);
+  const [canvasTestActiveNode, setCanvasTestActiveNode] = useState(null);
+  const [canvasTestLogs, setCanvasTestLogs] = useState([]);
+  
   // Persistent Storage Sync
   useEffect(() => {
     localStorage.setItem('f_inbox', JSON.stringify(inbox));
@@ -388,6 +412,12 @@ function App() {
   useEffect(() => {
     localStorage.setItem('f_habit_streak', habitStreak.toString());
   }, [habitStreak]);
+  useEffect(() => {
+    localStorage.setItem('f_canvas_nodes', JSON.stringify(canvasNodes));
+  }, [canvasNodes]);
+  useEffect(() => {
+    localStorage.setItem('f_canvas_connections', JSON.stringify(canvasConnections));
+  }, [canvasConnections]);
 
   // Wochen-Review & Archiv Logik & Sync (Feature A3)
   useEffect(() => {
@@ -597,6 +627,103 @@ function App() {
       ]);
       setMakeSimRunning(false);
     }, 5600);
+  };
+
+  // No-Code Canvas Handlers (Feature 1 - v4)
+  const addCanvasNode = (templateType) => {
+    const templates = {
+      email: { type: 'trigger', category: 'Trigger', title: 'E-Mail Eingang (IMAP)', icon: 'Inbox', config: { triggerName: 'Rechnung im Anhang', filterKeyword: 'Rechnung' } },
+      openai: { type: 'ai', category: 'KI-Verarbeitung', title: 'Claude 3.5 Sonnet', icon: 'BrainCircuit', config: { prompt: 'Analysiere Vertrag und erstelle Zusammenfassung', temperature: '0.5' } },
+      datev: { type: 'erp', category: 'ERP & Buchhaltung', title: 'DATEV Unternehmen Online', icon: 'ClipboardCopy', config: { targetAccount: 'Eingangsrechnungen', autoApprove: 'Nein' } },
+      slack: { type: 'notify', category: 'Benachrichtigung', title: 'Slack Team-Alert', icon: 'Zap', config: { channel: '#prozesse-live', message: 'Neuer Beleg verarbeitet!' } }
+    };
+
+    const template = templates[templateType] || templates.email;
+    const newId = 'cn_' + Date.now();
+    const lastNode = canvasNodes[canvasNodes.length - 1];
+    const newX = lastNode ? lastNode.x + 210 : 40;
+    const newY = lastNode ? lastNode.y : 110;
+
+    const newNode = {
+      id: newId,
+      ...template,
+      x: newX,
+      y: newY
+    };
+
+    const updatedNodes = [...canvasNodes, newNode];
+    setCanvasNodes(updatedNodes);
+
+    if (lastNode) {
+      setCanvasConnections(prev => [...prev, { from: lastNode.id, to: newId }]);
+    }
+
+    setSelectedCanvasNodeId(newId);
+  };
+
+  const deleteCanvasNode = (nodeId) => {
+    if (canvasNodes.length <= 1) {
+      alert("Der Canvas muss mindestens einen Knoten enthalten!");
+      return;
+    }
+    const filteredNodes = canvasNodes.filter(n => n.id !== nodeId);
+    setCanvasNodes(filteredNodes);
+    setCanvasConnections(canvasConnections.filter(c => c.from !== nodeId && c.to !== nodeId));
+    if (selectedCanvasNodeId === nodeId) {
+      setSelectedCanvasNodeId(filteredNodes.length > 0 ? filteredNodes[0].id : null);
+    }
+  };
+
+  const updateCanvasNodeConfig = (nodeId, key, value) => {
+    setCanvasNodes(canvasNodes.map(n => {
+      if (n.id === nodeId) {
+        return {
+          ...n,
+          config: {
+            ...n.config,
+            [key]: value
+          }
+        };
+      }
+      return n;
+    }));
+  };
+
+  const startCanvasTestRun = () => {
+    if (canvasTestRunning || canvasNodes.length === 0) return;
+
+    setCanvasTestRunning(true);
+    setCanvasTestActiveNode(canvasNodes[0].id);
+
+    const getTimestamp = () => {
+      const now = new Date();
+      const ms = String(now.getMilliseconds()).padStart(3, '0').slice(0, 2);
+      return now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + '.' + ms;
+    };
+
+    setCanvasTestLogs([`[${getTimestamp()}] 🚀 Testlauf gestartet. Initialisiere Canvas mit ${canvasNodes.length} Knoten...`]);
+
+    canvasNodes.forEach((node, idx) => {
+      setTimeout(() => {
+        setCanvasTestActiveNode(node.id);
+        setCanvasTestLogs(prev => [
+          ...prev,
+          `[${getTimestamp()}] ⚙️ [Knoten ${idx + 1}/${canvasNodes.length}] ${node.title} (${node.category}) ausgeführt.`,
+          `[${getTimestamp()}] 📊 Konfiguration: ${JSON.stringify(node.config)}`
+        ]);
+
+        if (idx === canvasNodes.length - 1) {
+          setTimeout(() => {
+            setCanvasTestActiveNode(null);
+            setCanvasTestLogs(prev => [
+              ...prev,
+              `[${getTimestamp()}] 🎉 Custom Workflow erfolgreich abgeschlossen!`
+            ]);
+            setCanvasTestRunning(false);
+          }, 1000);
+        }
+      }, (idx + 1) * 1200);
+    });
   };
 
   // Live Timer tick for active project time tracking
@@ -2967,6 +3094,220 @@ function App() {
                 </div>
 
               </div>
+            </div>
+
+            {/* Visueller No-Code Automation Canvas (Feature 1 - v4) */}
+            <div className="card" style={{ gridColumn: 'span 2', marginTop: '1.5rem' }}>
+              <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+                <div>
+                  <h2 className="card-title" style={{ color: 'var(--accent-purple)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <Zap size={20} /> Visueller No-Code Automation Canvas
+                  </h2>
+                  <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>
+                    Erstelle benutzerdefinierte Automatisierungspfade, konfiguriere KI-Knoten und simuliere die End-to-End Ausführung.
+                  </p>
+                </div>
+
+                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  <button 
+                    onClick={startCanvasTestRun}
+                    disabled={canvasTestRunning}
+                    className="btn btn-primary"
+                    style={{ 
+                      background: 'linear-gradient(135deg, var(--accent-cyan), var(--accent-indigo))', 
+                      boxShadow: 'var(--shadow-glow-cyan)',
+                      border: 'none',
+                      padding: '0.5rem 1rem',
+                      fontSize: '0.825rem',
+                      fontWeight: 600,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.35rem'
+                    }}
+                  >
+                    <Play size={14} /> {canvasTestRunning ? 'Testlauf läuft...' : 'Workflow testen'}
+                  </button>
+                </div>
+              </div>
+
+              {/* Toolbar & Hinzufügen von Modulen */}
+              <div style={{ background: 'rgba(255, 255, 255, 0.02)', padding: '0.75rem 1rem', borderRadius: '0.5rem', border: '1px solid var(--border-color)', margin: '1rem 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem' }}>
+                <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  Knoten hinzufügen:
+                </span>
+                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  <button onClick={() => addCanvasNode('email')} className="btn btn-secondary" style={{ padding: '0.25rem 0.6rem', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                    <Plus size={12} /> E-Mail Trigger
+                  </button>
+                  <button onClick={() => addCanvasNode('openai')} className="btn btn-secondary" style={{ padding: '0.25rem 0.6rem', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                    <Plus size={12} /> Claude / GPT KI
+                  </button>
+                  <button onClick={() => addCanvasNode('datev')} className="btn btn-secondary" style={{ padding: '0.25rem 0.6rem', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                    <Plus size={12} /> DATEV Export
+                  </button>
+                  <button onClick={() => addCanvasNode('slack')} className="btn btn-secondary" style={{ padding: '0.25rem 0.6rem', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                    <Plus size={12} /> Slack Alert
+                  </button>
+                </div>
+              </div>
+
+              {/* Hauptbereich: Interactive Canvas Grid & Panel */}
+              <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.5rem' }} className="canvas-main-grid">
+                
+                {/* Canvas Zeichenfläche */}
+                <div style={{ 
+                  background: 'rgba(17, 24, 39, 0.6)', 
+                  border: '1px solid var(--border-color)', 
+                  borderRadius: '0.75rem', 
+                  padding: '1.5rem',
+                  minHeight: '260px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  overflowX: 'auto',
+                  position: 'relative',
+                  backgroundImage: 'radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 0)',
+                  backgroundSize: '20px 20px'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', width: '100%', padding: '1rem 0' }}>
+                    {canvasNodes.map((node, idx) => {
+                      const isSelected = selectedCanvasNodeId === node.id;
+                      const isActiveInTest = canvasTestActiveNode === node.id;
+
+                      return (
+                        <React.Fragment key={node.id}>
+                          <div 
+                            onClick={() => setSelectedCanvasNodeId(node.id)}
+                            style={{ 
+                              minWidth: '180px',
+                              background: isSelected ? 'rgba(139, 92, 246, 0.08)' : 'rgba(31, 41, 55, 0.8)',
+                              border: isActiveInTest 
+                                ? '2px solid var(--accent-cyan)' 
+                                : isSelected 
+                                  ? '2px solid var(--accent-purple)' 
+                                  : '1px solid var(--border-color)',
+                              borderRadius: '0.75rem',
+                              padding: '1rem',
+                              cursor: 'pointer',
+                              boxShadow: isActiveInTest 
+                                ? '0 0 20px rgba(6, 182, 212, 0.4)' 
+                                : isSelected 
+                                  ? '0 0 15px rgba(139, 92, 246, 0.3)' 
+                                  : 'none',
+                              transition: 'all 0.3s ease',
+                              transform: isSelected || isActiveInTest ? 'scale(1.03)' : 'scale(1)',
+                              position: 'relative'
+                            }}
+                          >
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                              <span style={{ 
+                                fontSize: '0.65rem', 
+                                padding: '0.15rem 0.4rem', 
+                                borderRadius: '0.25rem', 
+                                background: node.type === 'trigger' ? 'rgba(59, 130, 246, 0.15)' : node.type === 'ai' ? 'rgba(139, 92, 246, 0.15)' : 'rgba(16, 185, 129, 0.15)',
+                                color: node.type === 'trigger' ? 'var(--accent-cyan)' : node.type === 'ai' ? 'var(--accent-purple)' : 'var(--accent-green)',
+                                fontWeight: 700
+                              }}>
+                                {node.category}
+                              </span>
+                              <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>#{idx + 1}</span>
+                            </div>
+
+                            <h4 style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '0.35rem' }}>
+                              {node.title}
+                            </h4>
+
+                            <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', background: 'rgba(0,0,0,0.2)', padding: '0.35rem', borderRadius: '0.25rem', fontFamily: 'monospace', wordBreak: 'break-all' }}>
+                              {Object.entries(node.config)[0] ? `${Object.entries(node.config)[0][0]}: ${Object.entries(node.config)[0][1]}` : 'Keine Config'}
+                            </div>
+                          </div>
+
+                          {/* Verbindungs-Pfeil */}
+                          {idx < canvasNodes.length - 1 && (
+                            <div style={{ display: 'flex', alignItems: 'center', color: isActiveInTest ? 'var(--accent-cyan)' : 'var(--text-muted)' }}>
+                              <ChevronRight size={24} style={{ animation: isActiveInTest ? 'pulse 1s infinite' : 'none' }} />
+                            </div>
+                          )}
+                        </React.Fragment>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Rechte Seite: Konfigurations-Panel für den ausgewählten Knoten */}
+                <div style={{ background: 'rgba(31, 41, 55, 0.6)', border: '1px solid var(--border-color)', borderRadius: '0.75rem', padding: '1.25rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                  {selectedCanvasNodeId ? (() => {
+                    const selectedNode = canvasNodes.find(n => n.id === selectedCanvasNodeId);
+                    if (!selectedNode) return <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>Kein Knoten ausgewählt.</div>;
+
+                    return (
+                      <div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>
+                          <h3 style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--accent-purple)', display: 'flex', alignItems: 'center', gap: '0.35rem', margin: 0 }}>
+                            <Sliders size={16} /> Knoten-Einstellungen
+                          </h3>
+                          <button onClick={() => deleteCanvasNode(selectedNode.id)} className="btn-icon-only" title="Knoten löschen">
+                            <Trash2 size={14} className="text-red-500" />
+                          </button>
+                        </div>
+
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+                          <div className="input-group">
+                            <label style={{ fontSize: '0.75rem' }}>Knoten-Titel</label>
+                            <input 
+                              type="text" 
+                              className="input-field" 
+                              style={{ fontSize: '0.8rem', padding: '0.35rem 0.6rem' }}
+                              value={selectedNode.title} 
+                              onChange={(e) => {
+                                setCanvasNodes(canvasNodes.map(n => n.id === selectedNode.id ? { ...n, title: e.target.value } : n));
+                              }}
+                            />
+                          </div>
+
+                          {Object.entries(selectedNode.config).map(([key, val]) => (
+                            <div key={key} className="input-group">
+                              <label style={{ fontSize: '0.75rem', textTransform: 'capitalize' }}>{key}</label>
+                              <input 
+                                type="text" 
+                                className="input-field" 
+                                style={{ fontSize: '0.8rem', padding: '0.35rem 0.6rem' }}
+                                value={val} 
+                                onChange={(e) => updateCanvasNodeConfig(selectedNode.id, key, e.target.value)}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })() : (
+                    <div style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.8rem', margin: 'auto' }}>
+                      Klicke auf einen Knoten im Canvas, um seine Parameter zu konfigurieren.
+                    </div>
+                  )}
+
+                  <div style={{ marginTop: '1rem', paddingTop: '0.75rem', borderTop: '1px solid rgba(255,255,255,0.05)', fontSize: '0.7rem', color: 'var(--text-muted)' }}>
+                    💡 Änderungen werden automatisch im <code>localStorage</code> gesichert.
+                  </div>
+                </div>
+
+              </div>
+
+              {/* Unterer Bereich: Execution Terminal für Custom Canvas Testläufe */}
+              {canvasTestLogs.length > 0 && (
+                <div style={{ marginTop: '1.25rem', background: '#090d16', border: '1px solid var(--border-color)', borderRadius: '0.5rem', overflow: 'hidden' }}>
+                  <div style={{ background: 'rgba(255,255,255,0.03)', borderBottom: '1px solid rgba(255,255,255,0.05)', padding: '0.4rem 0.75rem', fontSize: '0.7rem', color: 'var(--accent-cyan)', fontFamily: 'monospace', fontWeight: 600 }}>
+                    ⚡ Custom Canvas Terminal Log
+                  </div>
+                  <div style={{ padding: '0.75rem', fontFamily: 'monospace', fontSize: '0.75rem', color: '#e2e8f0', maxHeight: '140px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                    {canvasTestLogs.map((log, i) => (
+                      <div key={i} style={{ color: log.includes('🎉') || log.includes('🚀') ? '#4ade80' : '#38bdf8' }}>
+                        {log}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
             </div>
 
           </div>
