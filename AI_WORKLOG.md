@@ -1,5 +1,39 @@
 # AI Worklog - Founder OS
 
+## 2026-06-28 17:35 – KI-Telefonagent & Voice-AI Simulator (Feature 3 v4)
+
+### Ziel
+Entwurf und Implementierung eines interaktiven Voice-AI Simulations-Widgets (Vapi / Retell AI Mock) im Sales-Tab (Tab 5), das Kunden live die Automatisierung von Notdienst-Anrufen oder Neukunden-Erstkontakten per Sprache demonstriert.
+
+### Erstellt
+- **State-Zustände:** `voiceScenario` (auswählbares Szenario: *Handwerker Notdienst* vs. *Neukunden Erstkontakt*), `voiceCallActive`, `voiceCallStep`, `voiceTranscript` (Echtzeit-Sprachprotokoll) und `voiceExtractedData` (KI-Extraktionsergebnisse).
+- **Simulations-Engine:** `startVoiceCallSimulation` steuert den gestaffelten Dialogablauf über Zeitintervalle. Bei Beendigung des Telefonats werden relevante Anruferdaten automatisch extrahiert.
+- **Benachrichtigungs-Integration:** Nach Anrufende generiert das System automatisch einen benachrichtigenden Notfall- oder Lead-Eintrag in der Gründer-Inbox (Tab 2).
+- **UI-Komponenten & Animations-CSS:**
+  - Phone-Call Interface im Sales-Tab mit Szenario-Auswahl und Start/Stopp-Button.
+  - Pulsierende Audio-Soundwave Animationen (`.voice-wave-container.active`) zur optischen Veranschaulichung des laufenden Sprach-Streams.
+  - Chat-Bubble Sprachtranskript mit Zeitstempeln und Ergebniskarte zur CRM-Übernahme.
+
+### Geändert
+- [App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): Einbindung aller Voice-States, Handler-Logik, Inbox-Integration und Render-Markup.
+- [index.css](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/index.css): Definition aller CSS-Keyframe-Animationen (`voiceWavePulse`) und Soundwave-Balken.
+- [TODO.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md) (Schritt 3 v4 als erledigt markiert).
+- [CHANGELOG.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md) (Ergänzt).
+
+### Warum
+Voice-AI ist einer der stärksten Zukunftsmärkte für Handwerker und Pflegedienste (Notdienst 24/7). Der Simulator macht dieses KI-Feature für Kunden sofort greifbar.
+
+### Testen
+1. Navigiere zu Tab 5 ("Sales & SOPs") und scrolle zum Bereich **"KI-Telefonagent / Voice-AI Simulator"**.
+2. Wähle im Szenario-Dropdown z.B. **"Szenario 1: Handwerker Notdienst (Rohrbruch)"**.
+3. Klicke auf **"Anruf starten (Simulieren)"** ➔ Die Audio-Balken beginnen bunte Wellen zu schlagen, während der Chat-Dialog live in Echtzeit abläuft.
+4. Nach Auflegen erscheint rechts die KI-Ergebniskarte und der Notfall wird automatisch in deine Inbox übertragen.
+
+### Offene Punkte
+- Warten auf Freigabe des Gründers ("Go"), um mit Schritt 4 ("Frag das Firmengehirn" – RAG Knowledge Bot) fortzufahren.
+
+---
+
 ## 2026-06-28 17:30 – Kunden-Portal & White-Label Client Center (Feature 2 v4)
 
 ### Ziel
