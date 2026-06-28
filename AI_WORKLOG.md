@@ -1,5 +1,37 @@
 # AI Worklog - Founder OS
 
+## 2026-06-28 17:30 – Kunden-Portal & White-Label Client Center (Feature 2 v4)
+
+### Ziel
+Entwurf und Implementierung eines eigenständigen White-Label Kunden-Portals (Client Center), mit dem der Gründer potenziellen oder bestehenden Kunden eine maßgeschneiderte Ansicht ihres Digitalisierungsprojekts (inkl. ROI-Statistiken, freigegebenen SOPs, Dokumenten und Ticket-System) demonstrieren kann.
+
+### Erstellt
+- **State-Zustände:** `clientPortalMode` (Boolean für Ansichtsmodus), `selectedClientCompany` (Ausgewählte Kundenfirma, z. B. *GoClean Harz*) und `clientTickets` (Liste von Support- und Änderungstickets) in `App.jsx`.
+- **Benachrichtigungssystem:** `handleCreateClientTicket` verarbeitet Ticket-Einreichungen von Kunden im Portal und erzeugt automatisch einen neuen Benachrichtigungs-Eintrag in der Inbox des Gründers.
+- **UI-Komponenten:**
+  - Header-Umschalter "Kunden-Portal: AKTIV/AUS" mit Firmenselektor-Dropdown und Benachrichtigungsbanner.
+  - White-Label Mandantenportal Dashboard mit kundenbezogenem Hero-Banner, 4 KPI-Karten (Projekt-Status, Zeitersparnis, Kalkulatorische Ersparnis, Support-Tickets).
+  - Interaktives 2-Spalten-Layout mit freigegebenen SOPs, Google Drive Projektordner-Links und einem Live-Ticket-Formular nebst Historie.
+
+### Geändert
+- [App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): Einbindung aller Portal-States, Handlers, Persistence-Hooks und bedingten Render-Blöcke.
+- [TODO.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md) (Schritt 2 v4 als erledigt markiert).
+- [CHANGELOG.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md) (Ergänzt).
+
+### Warum
+Kunden möchten nicht nur beim Auftragsabschluss ein gutes Gefühl haben, sondern auch während der Betreuung transparent sehen, welchen Gegenwert (stunden- und eurogenau) die Automatisierung bringt. Das Mandantenportal hebt KMU Service Harz auf SaaS-Niveau.
+
+### Testen
+1. Klicke im Header oben auf **"Kunden-Portal: AUS"** ➔ Der Button schaltet auf AKTIV, der Header verwandelt sich in das lila-blaue *Mandantenportal* und oben erscheint ein Vorschau-Banner.
+2. Wähle im Dropdown eine andere Firma (z. B. *Dachdeckerei Müller* oder *Pflegedienst Harz*) ➔ Das Dashboard aktualisiert sofort alle Projekt-Statuswerte, Dokumente und Tickets.
+3. Reiche auf der rechten Seite ein neues Support-Ticket ein (z. B. "Neuen WhatsApp-Bot Parameter anpassen") ➔ Das Ticket erscheint direkt in der Historie darunter.
+4. Schalte das Kunden-Portal oben wieder AUS und wechsle zu Tab 2 (Inbox) ➔ Das eben eingereichte Ticket liegt dort automatisch als benachrichtigende Notiz in deiner Gründer-Inbox.
+
+### Offene Punkte
+- Warten auf Freigabe des Gründers ("Go"), um mit Schritt 3 (KI-Telefonagent / Voice-AI Simulator) fortzufahren.
+
+---
+
 ## 2026-06-28 17:25 – Visueller No-Code Automation Canvas (Feature 1 v4)
 
 ### Ziel

@@ -17,8 +17,8 @@
 - [x] **Schritt 3:** Feature A3 (Wochen-Review & Archiv) ➔ Erledigt.
 - [x] **Schritt 4:** Feature B1 (Interaktiver Make.com Simulator) ➔ Erledigt.
 - [x] **Phase v4 - Schritt 1:** Feature 1 (Visueller No-Code Automation Canvas) ➔ Erledigt.
-- [ ] **Phase v4 - Schritt 2:** Feature 2 (Kunden-Portal & White-Label Client Center) ➔ Anstehend (Warten auf Go).
-- [ ] **Phase v4 - Schritt 3:** Feature 3 (KI-Telefonagent / Voice-AI Simulator) ➔ Anstehend.
+- [x] **Phase v4 - Schritt 2:** Feature 2 (Kunden-Portal & White-Label Client Center) ➔ Erledigt.
+- [ ] **Phase v4 - Schritt 3:** Feature 3 (KI-Telefonagent / Voice-AI Simulator) ➔ Anstehend (Warten auf Go).
 - [ ] **Phase v4 - Schritt 4:** Feature 4 ("Frag das Firmengehirn" – RAG Knowledge Bot) ➔ Anstehend.
 - [ ] **Phase v4 - Schritt 5:** Feature 5 (E-Rechnungs & Angebotssystem - ZUGFeRD/XRechnung) ➔ Anstehend.
 - [ ] **Phase v4 - Schritt 6:** Feature 6 (Supabase Backend-Integration & Cloud Sync) ➔ Anstehend.
