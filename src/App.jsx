@@ -389,6 +389,20 @@ function App() {
   const [voiceTranscript, setVoiceTranscript] = useState([]);
   const [voiceExtractedData, setVoiceExtractedData] = useState(null);
   
+  // "Frag das Firmengehirn" RAG Knowledge Bot States (Feature 4 - v4)
+  const [ragPersona, setRagPersona] = useState('brain'); // 'brain', 'sales', 'legal'
+  const [ragInput, setRagInput] = useState('');
+  const [ragGenerating, setRagGenerating] = useState(false);
+  const [ragChat, setRagChat] = useState([
+    { 
+      id: 'rag_init', 
+      sender: 'ai', 
+      persona: 'brain', 
+      text: 'Guten Tag! Ich bin das digitale Firmengehirn von KMU Service Harz. Ich habe alle verknüpften Unternehmensdokumente indiziert und stehe für Fragen bereit.', 
+      sources: [] 
+    }
+  ]);
+  
   // Persistent Storage Sync
   useEffect(() => {
     localStorage.setItem('f_inbox', JSON.stringify(inbox));
@@ -858,6 +872,48 @@ function App() {
         setInbox(prev => [{ id: 'i_' + Date.now(), text: `[KI-Telefonat LEAD] Pflegedienst Harz hat Angebot angefordert.`, date: today }, ...prev]);
       }, 5800);
     }
+  };
+
+  // RAG Knowledge Bot Handlers (Feature 4 - v4)
+  const handleSendRagQuery = (customQuery = null) => {
+    const query = typeof customQuery === 'string' ? customQuery : ragInput;
+    if (!query || !query.trim() || ragGenerating) return;
+
+    const userMsg = { id: 'rag_u_' + Date.now(), sender: 'user', text: query };
+    setRagChat(prev => [...prev, userMsg]);
+    if (typeof customQuery !== 'string') setRagInput('');
+    setRagGenerating(true);
+
+    setTimeout(() => {
+      let responseText = '';
+      let sources = [];
+
+      const qLower = query.toLowerCase();
+
+      if (ragPersona === 'sales') {
+        responseText = `🎯 **Vertriebs- & Pitch-Perspektive:**\n\nIm Kundengespräch solltest du betonen, dass der ROI bereits nach **1,5 Monaten** eintritt. Verweise darauf, dass manuelle Stundenzettel pro Mitarbeiter 15 Minuten pro Tag verschwenden.\n\n👉 **Empfohlenes Argument:** "Mit unserer WhatsApp-Lösung sparen Ihre Mitarbeiter täglich 15 Minuten und das Büro spart 5 Stunden Abtippen pro Woche."`;
+        sources = ['Preispakete & ROI-Modelle 2026', 'Showcase ROI-Matrix (Abschnitt 2.1)'];
+      } else if (ragPersona === 'legal') {
+        responseText = `🔒 **DSGVO- & Compliance-Prüfung:**\n\nAlle verarbeiteten Kundendaten und Sprachnachrichten werden Ende-zu-Ende verschlüsselt und auf ISO-27001 zertifizierten Servern in Frankfurt am Main verarbeitet. Es werden keine Daten zum Training öffentlicher KI-Modelle verwendet.`;
+        sources = ['DSGVO & Datenschutzkonzept v2', 'Auftragsverarbeitungsvertrag (AVV) Vorlage'];
+      } else {
+        // Standard Firmengehirn
+        if (qLower.includes('onboarding') || qLower.includes('ablauf') || qLower.includes('start')) {
+          responseText = `Das Neukunden-Onboarding gliedert sich in 3 Schritte:\n1. **Setup & Schnittstellen-Check** (DATEV / Lexoffice)\n2. **Mitarbeiter-Einweisung** (WhatsApp-Bot Testlauf)\n3. **Go-Live & Support-Freischaltung** im Mandantenportal.`;
+          sources = ['Businessplan - KMU Service Harz (SOP 1.4)', 'Kunden-Onboarding Leitfaden'];
+        } else if (qLower.includes('preis') || qLower.includes('kosten') || qLower.includes('paket')) {
+          responseText = `Unsere Standard-Pakete richten sich nach der Unternehmensgröße:\n• **Basis-Automatisierung:** ab 1.500 € (WhatsApp-Zeiterfassung)\n• **Enterprise-Workflow:** ab 3.500 € (Vollständige DATEV & CRM Anbindung).`;
+          sources = ['Preispakete & ROI-Modelle 2026'];
+        } else {
+          responseText = `Basierend auf deinen Unternehmensdokumenten betragen die durchschnittlichen Zeiteinsparungen bei Harzer KMUs rund **45 Stunden pro Monat**. Sämtliche Prozesse werden in Echtzeit mit deinen Buchhaltungssystemen synchronisiert.`;
+          sources = ['Businessplan - KMU Service Harz', 'Showcase ROI-Matrix'];
+        }
+      }
+
+      const aiMsg = { id: 'rag_a_' + Date.now(), sender: 'ai', persona: ragPersona, text: responseText, sources };
+      setRagChat(prev => [...prev, aiMsg]);
+      setRagGenerating(false);
+    }, 1200);
   };
 
   // Live Timer tick for active project time tracking
@@ -2990,9 +3046,136 @@ function App() {
                   </button>
                 </div>
               </div>
-
             </div>
 
+            {/* "Frag das Firmengehirn" RAG Knowledge Bot (Feature 4 - v4) */}
+            <div className="card" style={{ gridColumn: 'span 2', marginTop: '1rem' }}>
+              <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+                  <div>
+                    <h2 className="card-title" style={{ color: 'var(--accent-purple)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <BrainCircuit size={20} /> "Frag das Firmengehirn" – RAG Knowledge Bot
+                    </h2>
+                    <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>
+                      Stelle Fragen an deine indizierten Unternehmensdokumente. Die KI antwortet mit präzisen Quellenangaben.
+                    </p>
+                  </div>
+
+                  {/* Persona Selector Tabs */}
+                  <div style={{ display: 'flex', gap: '0.35rem', background: 'rgba(0,0,0,0.3)', padding: '0.25rem', borderRadius: '0.5rem', border: '1px solid var(--border-color)' }}>
+                    <button 
+                      className={`btn ${ragPersona === 'brain' ? 'btn-primary' : 'btn-secondary'}`}
+                      style={{ padding: '0.3rem 0.6rem', fontSize: '0.75rem', background: ragPersona === 'brain' ? 'var(--accent-purple)' : 'transparent', border: 'none' }}
+                      onClick={() => setRagPersona('brain')}
+                    >
+                      🧠 Firmengehirn
+                    </button>
+                    <button 
+                      className={`btn ${ragPersona === 'sales' ? 'btn-primary' : 'btn-secondary'}`}
+                      style={{ padding: '0.3rem 0.6rem', fontSize: '0.75rem', background: ragPersona === 'sales' ? 'var(--accent-cyan)' : 'transparent', border: 'none' }}
+                      onClick={() => setRagPersona('sales')}
+                    >
+                      🎯 Pitch-Coach
+                    </button>
+                    <button 
+                      className={`btn ${ragPersona === 'legal' ? 'btn-primary' : 'btn-secondary'}`}
+                      style={{ padding: '0.3rem 0.6rem', fontSize: '0.75rem', background: ragPersona === 'legal' ? 'var(--accent-yellow)' : 'transparent', border: 'none' }}
+                      onClick={() => setRagPersona('legal')}
+                    >
+                      🔒 DSGVO & Legal
+                    </button>
+                  </div>
+                </div>
+
+                {/* Quick Prompts Bar */}
+                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem', marginBottom: '1rem' }}>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', alignSelf: 'center' }}>Schnellfragen:</span>
+                  <button 
+                    onClick={() => handleSendRagQuery('Wie läuft das Neukunden-Onboarding ab?')}
+                    className="btn btn-secondary"
+                    style={{ padding: '0.25rem 0.6rem', fontSize: '0.75rem', borderRadius: '1rem' }}
+                  >
+                    ⚡ Neukunden-Onboarding
+                  </button>
+                  <button 
+                    onClick={() => handleSendRagQuery('Was kosten unsere Automatisierungs-Pakete?')}
+                    className="btn btn-secondary"
+                    style={{ padding: '0.25rem 0.6rem', fontSize: '0.75rem', borderRadius: '1rem' }}
+                  >
+                    ⚡ Preispakete & Kosten
+                  </button>
+                  <button 
+                    onClick={() => handleSendRagQuery('Welche Datenschutz-Standards gelten bei Sprachnachrichten?')}
+                    className="btn btn-secondary"
+                    style={{ padding: '0.25rem 0.6rem', fontSize: '0.75rem', borderRadius: '1rem' }}
+                  >
+                    ⚡ DSGVO & Sicherheit
+                  </button>
+                </div>
+
+                {/* Chat Stream Window */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', height: '260px', overflowY: 'auto', background: 'rgba(9, 13, 22, 0.7)', padding: '1rem', borderRadius: '0.75rem', border: '1px solid var(--border-color)', marginBottom: '1rem' }}>
+                  {ragChat.map((msg) => (
+                    <div 
+                      key={msg.id}
+                      style={{ 
+                        alignSelf: msg.sender === 'user' ? 'flex-end' : 'flex-start',
+                        maxWidth: '85%',
+                        background: msg.sender === 'user' ? 'linear-gradient(135deg, var(--accent-indigo), #3b82f6)' : 'rgba(31, 41, 55, 0.8)',
+                        border: msg.sender === 'user' ? 'none' : '1px solid var(--border-color)',
+                        padding: '0.85rem 1rem',
+                        borderRadius: '0.75rem',
+                        color: 'white',
+                        fontSize: '0.85rem'
+                      }}
+                    >
+                      <div style={{ whiteSpace: 'pre-line', lineHeight: 1.4 }}>{msg.text}</div>
+                      
+                      {/* Sources Citation List */}
+                      {msg.sources && msg.sources.length > 0 && (
+                        <div style={{ marginTop: '0.6rem', paddingTop: '0.4rem', borderTop: '1px solid rgba(255,255,255,0.1)', fontSize: '0.7rem', color: 'var(--accent-cyan)' }}>
+                          <span style={{ fontWeight: 700, display: 'block', marginBottom: '0.15rem' }}>📄 Verifizierte Quellen aus Google Drive:</span>
+                          {msg.sources.map((src, idx) => (
+                            <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                              <ChevronRight size={10} /> <span>{src}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                  {ragGenerating && (
+                    <div style={{ alignSelf: 'flex-start', color: 'var(--accent-cyan)', fontSize: '0.8rem', fontStyle: 'italic', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                      <BrainCircuit size={16} className="spin" /> Durchsuche Firmengehirn & generiere Antwort...
+                    </div>
+                  )}
+                </div>
+
+                {/* Input Form */}
+                <form 
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleSendRagQuery();
+                  }}
+                  style={{ display: 'flex', gap: '0.75rem' }}
+                >
+                  <input 
+                    type="text" 
+                    className="input-field"
+                    placeholder="Stelle eine Frage an dein Unternehmenswissen..."
+                    value={ragInput}
+                    onChange={(e) => setRagInput(e.target.value)}
+                    disabled={ragGenerating}
+                  />
+                  <button 
+                    type="submit" 
+                    className="btn btn-primary"
+                    disabled={ragGenerating || !ragInput.trim()}
+                    style={{ background: 'linear-gradient(135deg, var(--accent-purple), var(--accent-cyan))', border: 'none', padding: '0 1.25rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}
+                  >
+                    <Send size={14} /> Fragen
+                  </button>
+                </form>
+            </div>
           </div>
         )}
 
