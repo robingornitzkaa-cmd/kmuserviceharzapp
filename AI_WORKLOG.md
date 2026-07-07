@@ -1,5 +1,35 @@
 # AI Worklog - Founder OS
 
+## 2026-07-07 23:48 – Supabase Backend-Integration & Cloud Sync (Feature 6 v4)
+
+### Ziel
+Entwurf und Implementierung eines Cloud Sync Managers für Supabase im KI- & Docs-Tab (Tab 4), um den aktuellen Verbindungsstatus anzuzeigen, API-Konfigurationen zu spiegeln, Datenbanktabellen zu überwachen und eine manuelle "Jetzt Cloud-Synchronisieren" Simulation auszulösen.
+
+### Erstellt
+- **State-Zustände:** `supabaseSyncStatus` (Status: connected, syncing, error), `supabaseLastSync` (Letzter Sync-Zeitstempel aus localStorage), `supabaseConfig` (Spiegelung der API-Zugangsdaten), `supabaseLogs` (Terminal-Logs) und `supabaseLogsOpen` in `App.jsx`.
+- **Sync-Engine:** `triggerSupabaseSync` simuliert den Verbindungsaufbau, die Authentifizierung mit anon-key sowie das stufenweise Senden und Empfangen von Daten der lokalen Tabellen (`contacts`, `tasks`, `inbox`, `client_tickets`) mit integrierter Latenzberechnung.
+- **UI-Komponenten:**
+  - Supabase Cloud Sync Manager Card im Tab 4 mit farblichen Indikatoren für Verbindungs- und Sync-Zustände.
+  - Detail-Statistiken für jede Tabellenzeile und eine Logkonsole mit Live-Terminal-Ausgabe.
+
+### Geändert
+- [App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): Einbindung der Supabase-States, Sync-Simulation, Icons, localStorage persistence hooks und Render-Markup.
+- [TODO.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md) (Schritt 6 v4 als erledigt markiert).
+- [CHANGELOG.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md) (Ergänzt).
+
+### Warum
+Damit das Founder OS auf echten Cloud-Daten laufen kann, wird hiermit das visuelle Fundament der Supabase-Integration geschaffen. Es zeigt dem Anwender in Echtzeit, welche Tabellen-Datenbanken synchronisiert werden und wie stabil die Anbindung ist.
+
+### Testen
+1. Navigiere zu Tab 4 ("KI & Docs") und scrolle nach unten zur Karte **"Supabase Cloud Sync"**.
+2. Klicke auf **"Jetzt Cloud-Synchronisieren"** ➔ Der Button ändert seinen Text, das Icon rotiert und darunter öffnet sich das Terminal-Log, welches den stufenweisen Datenbankabgleich simuliert.
+3. Nach Beendigung wechselt das Statusfeld auf "Online" und der Sync-Zeitstempel aktualisiert sich sofort.
+
+### Offene Punkte
+- [ ] Vollständige Phase v4 abgeschlossen! Bitte um Feedback des Gründers.
+
+---
+
 ## 2026-06-28 17:45 – E-Rechnungs & Angebotssystem (ZUGFeRD / XRechnung) (Feature 5 v4)
 
 ### Ziel

@@ -21,7 +21,7 @@
 - [x] **Phase v4 - Schritt 3:** Feature 3 (KI-Telefonagent / Voice-AI Simulator) ➔ Erledigt.
 - [x] **Phase v4 - Schritt 4:** Feature 4 ("Frag das Firmengehirn" – RAG Knowledge Bot) ➔ Erledigt.
 - [x] **Phase v4 - Schritt 5:** Feature 5 (E-Rechnungs & Angebotssystem - ZUGFeRD/XRechnung) ➔ Erledigt.
-- [ ] **Phase v4 - Schritt 6:** Feature 6 (Supabase Backend-Integration & Cloud Sync) ➔ Anstehend (Warten auf Go).
+- [x] **Phase v4 - Schritt 6:** Feature 6 (Supabase Backend-Integration & Cloud Sync) ➔ Erledigt.
 
 ## Später
 - [ ] Google Drive Live-Sync: Mock-Dateien-Liste durch echte Datei-Uploads ersetzen.
