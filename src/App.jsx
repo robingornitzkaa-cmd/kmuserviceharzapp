@@ -314,6 +314,10 @@ function App() {
   });
   const [nlpCalendarInput, setNlpCalendarInput] = useState('');
 
+  // Speech-to-Text States (Feature 4 - v5)
+  const [isListeningQuickCapture, setIsListeningQuickCapture] = useState(false);
+  const [isListeningCrmNotes, setIsListeningCrmNotes] = useState(false);
+
   // CRM Detail Drawer State
   const [selectedContactId, setSelectedContactId] = useState(null);
   const [newLinkInput, setNewLinkInput] = useState({ title: '', url: '' });
@@ -1249,6 +1253,85 @@ function App() {
 
     setFocusTasks(newFocusTasks);
     alert("⚡ KI-Tagesplan erfolgreich synthetisiert! Dein Tagesfokus wurde basierend auf Kalender- & CRM-Daten aktualisiert.");
+  };
+
+  // Speech-to-Text via Web Speech API (Feature 4 - v5)
+  const handleQuickCaptureSpeech = () => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("Web Speech API wird von diesem Browser nicht unterstützt. Bitte nutze Google Chrome oder Microsoft Edge.");
+      return;
+    }
+
+    if (isListeningQuickCapture) return;
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'de-DE';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.onstart = () => {
+      setIsListeningQuickCapture(true);
+    };
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      setQuickCapture(prev => prev ? `${prev} ${transcript}` : transcript);
+    };
+
+    recognition.onerror = (event) => {
+      console.error("Speech recognition error", event.error);
+      setIsListeningQuickCapture(false);
+    };
+
+    recognition.onend = () => {
+      setIsListeningQuickCapture(false);
+    };
+
+    recognition.start();
+  };
+
+  const handleCrmNotesSpeech = (contactId) => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("Web Speech API wird von diesem Browser nicht unterstützt. Bitte nutze Google Chrome oder Microsoft Edge.");
+      return;
+    }
+
+    if (isListeningCrmNotes) return;
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'de-DE';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.onstart = () => {
+      setIsListeningCrmNotes(true);
+    };
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      setContacts(prev => prev.map(c => {
+        if (c.id === contactId) {
+          return {
+            ...c,
+            notes: c.notes ? `${c.notes} ${transcript}` : transcript
+          };
+        }
+        return c;
+      }));
+    };
+
+    recognition.onerror = (event) => {
+      console.error("Speech error", event.error);
+      setIsListeningCrmNotes(false);
+    };
+
+    recognition.onend = () => {
+      setIsListeningCrmNotes(false);
+    };
+
+    recognition.start();
   };
 
   // Handle WhatsApp simulation process (Feature 2a)
@@ -2580,15 +2663,37 @@ ${original}
               <div className="card-header">
                 <h2 className="card-title"><Plus size={20} className="text-purple-500" /> Neue Idee oder Notiz erfassen</h2>
               </div>
-              <form onSubmit={handleQuickCapture} className="quick-capture-box">
+              <form onSubmit={handleQuickCapture} className="quick-capture-box" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                 <input 
                   type="text" 
                   className="input-field" 
-                  placeholder="Schreibe eine schnelle Notiz (z.B. 'DATEV Schnittstelle prüfen' oder 'Akquise-Mail Entwurf'). Sie landet unstrukturiert in deiner Inbox..."
+                  style={{ flexGrow: 1 }}
+                  placeholder="Schreibe eine schnelle Notiz oder diktiere sie per Mikrofon-Button..."
                   value={quickCapture}
                   onChange={(e) => setQuickCapture(e.target.value)}
                 />
-                <button type="submit" className="btn btn-primary">Erfassen</button>
+                <button
+                  type="button"
+                  onClick={handleQuickCaptureSpeech}
+                  className={`btn-icon-only ${isListeningQuickCapture ? 'listening-pulse' : ''}`}
+                  style={{ 
+                    padding: '0.5rem', 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center', 
+                    height: '38px', 
+                    width: '38px',
+                    minWidth: '38px',
+                    background: isListeningQuickCapture ? 'rgba(239, 68, 68, 0.2)' : 'rgba(255,255,255,0.05)',
+                    border: isListeningQuickCapture ? '1px solid rgb(239, 68, 68)' : '1px solid var(--border-color)',
+                    color: isListeningQuickCapture ? '#ef4444' : 'var(--text-secondary)',
+                    cursor: 'pointer'
+                  }}
+                  title="Notiz per Sprache diktieren (Web Speech API)"
+                >
+                  <Mic size={16} />
+                </button>
+                <button type="submit" className="btn btn-primary" style={{ height: '38px' }}>Erfassen</button>
               </form>
             </div>
             )}
@@ -4967,7 +5072,29 @@ ${original}
 
                 {/* Custom Notes Section */}
                 <div className="drawer-section">
-                  <h3 className="section-title">Kunden-Notizen</h3>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                    <h3 className="section-title" style={{ margin: 0 }}>Kunden-Notizen</h3>
+                    <button
+                      type="button"
+                      onClick={() => handleCrmNotesSpeech(activeContact.id)}
+                      className={`btn-icon-only ${isListeningCrmNotes ? 'listening-pulse' : ''}`}
+                      style={{ 
+                        padding: '0.25rem 0.5rem', 
+                        fontSize: '0.7rem', 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        gap: '0.25rem',
+                        background: isListeningCrmNotes ? 'rgba(239, 68, 68, 0.2)' : 'rgba(255, 255, 255, 0.05)',
+                        border: isListeningCrmNotes ? '1px solid rgb(239, 68, 68)' : '1px solid var(--border-color)',
+                        borderRadius: '0.25rem',
+                        color: isListeningCrmNotes ? '#ef4444' : 'var(--text-secondary)',
+                        cursor: 'pointer'
+                      }}
+                      title="Notiz per Sprache eingeben (Web Speech API)"
+                    >
+                      <Mic size={12} /> {isListeningCrmNotes ? 'Höre zu...' : 'Diktieren'}
+                    </button>
+                  </div>
                   <textarea 
                     className="input-field drawer-textarea"
                     rows={4}
