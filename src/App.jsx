@@ -425,6 +425,7 @@ function App() {
   });
   const [supabaseLogs, setSupabaseLogs] = useState([]);
   const [supabaseLogsOpen, setSupabaseLogsOpen] = useState(false);
+  const [ollamaLoading, setOllamaLoading] = useState(false);
 
   // Persistent Storage Sync
   useEffect(() => {
@@ -1456,6 +1457,63 @@ function App() {
     };
     setPrompts([promptToAdd, ...prompts]);
     setNewPrompt({ title: '', category: 'Sales', text: '' });
+  };
+
+  const optimizePromptWithLocalAI = async () => {
+    if (!newPrompt.text.trim()) {
+      alert("Bitte gib zuerst einen Prompt-Entwurf in das Textfeld ein.");
+      return;
+    }
+    setOllamaLoading(true);
+    
+    try {
+      const controller = new AbortController();
+      const id = setTimeout(() => controller.abort(), 2000);
+      
+      const response = await fetch("http://localhost:11434/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        signal: controller.signal,
+        body: JSON.stringify({
+          model: "llama3",
+          prompt: `Optimiere diesen Prompt für ein LLM (mache ihn präzise, strukturiert und füge klare Anweisungen hinzu). Antworte NUR mit dem verbesserten Prompt-Text, ohne Einleitung oder Erklärung:\n\n${newPrompt.text}`,
+          stream: false
+        })
+      });
+      clearTimeout(id);
+      
+      if (response.ok) {
+        const data = await response.json();
+        if (data.response) {
+          setNewPrompt(prev => ({ ...prev, text: data.response.trim() }));
+          alert("🎉 Prompt erfolgreich per lokaler Ollama-KI (llama3) optimiert!");
+          setOllamaLoading(false);
+          return;
+        }
+      }
+    } catch (e) {
+      console.log("Ollama nicht erreichbar, nutze lokalen Fallback-Optimierer...", e);
+    }
+
+    setTimeout(() => {
+      const original = newPrompt.text;
+      const optimized = `[SYSTEM PROMPT]
+Du bist eine hochentwickelte KI mit Spezialisierung auf KMU-Prozesse und Effizienzsteigerung.
+
+[AUFGABE]
+${original}
+
+[ANWEISUNGEN]
+1. Analysiere das Problem tiefgehend und strukturiert.
+2. Nenne konkrete Praxisbeispiele oder direkt anwendbare Vorlagen.
+3. Verwende verständliche und überzeugende Formulierungen.
+4. Gib das Ergebnis in einer klaren Markdown-Struktur aus.
+5. Weise auf potenzielle Hürden oder Fehlerquellen hin.`;
+      
+      setNewPrompt(prev => ({ ...prev, text: optimized }));
+      alert("⚡ Ollama Offline. Prompt wurde mit dem integrierten Smart-Fallback-Optimierer verbessert!");
+      setOllamaLoading(false);
+    }, 1000);
   };
 
   const deletePrompt = (id) => {
@@ -3160,11 +3218,11 @@ function App() {
               </div>
               
               {/* Prompt hinzufügen */}
-              <form onSubmit={handleAddPrompt} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem' }}>
+              <form onSubmit={handleAddPrompt} style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', marginBottom: '1rem' }}>
                 <div style={{ display: 'flex', gap: '0.5rem' }}>
                   <input 
                     type="text" 
-                    placeholder="Titel" 
+                    placeholder="Titel des Prompts..." 
                     className="input-field"
                     value={newPrompt.title}
                     onChange={(e) => setNewPrompt({ ...newPrompt, title: e.target.value })}
@@ -3182,15 +3240,138 @@ function App() {
                     <option value="Strategie">Strategie</option>
                   </select>
                 </div>
+
+                {/* Prompt-Baukasten */}
+                <div style={{ background: 'rgba(255, 255, 255, 0.02)', border: '1px solid var(--border-color)', borderRadius: '0.5rem', padding: '0.75rem' }}>
+                  <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    🧩 Prompt-Baukasten (Bausteine zum Einfügen)
+                  </div>
+                  
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+                    {/* Rollen */}
+                    <div>
+                      <div style={{ fontSize: '0.65rem', color: '#a78bfa', fontWeight: 700, marginBottom: '0.25rem' }}>Prefix (Rolle):</div>
+                      <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
+                        {[
+                          { label: 'Marketing', text: 'Agiere als KMU-Marketing-Experte für den Harz. ' },
+                          { label: 'SEO', text: 'Agiere als SEO- & Google-Ranking-Spezialist. ' },
+                          { label: 'Copywriter', text: 'Agiere als Copywriting-Profi für Landingpages. ' },
+                          { label: 'DSGVO Legal', text: 'Agiere als DSGVO- & Legal-Prüfer für KMUs. ' },
+                          { label: 'Pitch Coach', text: 'Agiere als erfahrener Business- & Pitch-Coach. ' },
+                          { label: 'Finanzen', text: 'Agiere als DATEV- & Finanzbuchhaltungsexperte. ' }
+                        ].map((b, idx) => (
+                          <button 
+                            key={idx} 
+                            type="button" 
+                            className="tag" 
+                            style={{ cursor: 'pointer', border: 'none', background: 'rgba(139, 92, 246, 0.15)', color: '#a78bfa', fontSize: '0.65rem', padding: '0.2rem 0.45rem', borderRadius: '0.25rem' }}
+                            onClick={() => setNewPrompt(prev => ({ ...prev, text: b.text + prev.text }))}
+                          >
+                            ➕ {b.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Tonalität */}
+                    <div>
+                      <div style={{ fontSize: '0.65rem', color: '#22d3ee', fontWeight: 700, marginBottom: '0.25rem' }}>Tonalität & Stil:</div>
+                      <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
+                        {[
+                          { label: 'Locker & Du', text: '\nSchreibe in lockerem & nahbarem "Du"-Stil.' },
+                          { label: 'Professionell', text: '\nFormuliere professionell, sachlich und fachbezogen.' },
+                          { label: 'Prägnant', text: '\nSchreibe extrem prägnant, direkt und ohne Floskeln.' },
+                          { label: 'Verkaufsstark', text: '\nNutze einen begeisternden, verkaufsstarken Werbeton.' }
+                        ].map((b, idx) => (
+                          <button 
+                            key={idx} 
+                            type="button" 
+                            className="tag" 
+                            style={{ cursor: 'pointer', border: 'none', background: 'rgba(6, 182, 212, 0.15)', color: '#22d3ee', fontSize: '0.65rem', padding: '0.2rem 0.45rem', borderRadius: '0.25rem' }}
+                            onClick={() => setNewPrompt(prev => ({ ...prev, text: prev.text + b.text }))}
+                          >
+                            ➕ {b.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Format */}
+                    <div>
+                      <div style={{ fontSize: '0.65rem', color: '#34d399', fontWeight: 700, marginBottom: '0.25rem' }}>Ausgabeformat:</div>
+                      <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
+                        {[
+                          { label: 'Markdown Tabelle', text: '\nGib das Ergebnis als übersichtliche Markdown-Tabelle aus.' },
+                          { label: 'Emoji Bulletpoints', text: '\nStrukturiere die Antwort in Bulletpoints mit passenden Emojis.' },
+                          { label: 'Schritt-für-Schritt', text: '\nErstelle eine detaillierte Schritt-für-Schritt-Anleitung.' },
+                          { label: 'JSON Format', text: '\nAntworte ausschließlich im validen JSON-Format.' }
+                        ].map((b, idx) => (
+                          <button 
+                            key={idx} 
+                            type="button" 
+                            className="tag" 
+                            style={{ cursor: 'pointer', border: 'none', background: 'rgba(16, 185, 129, 0.15)', color: '#34d399', fontSize: '0.65rem', padding: '0.2rem 0.45rem', borderRadius: '0.25rem' }}
+                            onClick={() => setNewPrompt(prev => ({ ...prev, text: prev.text + b.text }))}
+                          >
+                            ➕ {b.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Suffix / Action */}
+                    <div>
+                      <div style={{ fontSize: '0.65rem', color: '#fbbf24', fontWeight: 700, marginBottom: '0.25rem' }}>Suffix (Aufforderung):</div>
+                      <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
+                        {[
+                          { label: '3 Rückfragen', text: '\nStelle mir am Ende 3 vertiefende Rückfragen zur Präzisierung.' },
+                          { label: 'Risikoanalyse', text: '\nFühre eine Risikoanalyse für die vorgeschlagene Lösung durch.' },
+                          { label: '3 Alternativen', text: '\nGib mir 3 alternative Headlines oder Einstiegsformulierungen.' },
+                          { label: 'Einfach erklärt', text: '\nErkläre es so einfach, als wäre ich 10 Jahre alt (ELI5).' }
+                        ].map((b, idx) => (
+                          <button 
+                            key={idx} 
+                            type="button" 
+                            className="tag" 
+                            style={{ cursor: 'pointer', border: 'none', background: 'rgba(245, 158, 11, 0.15)', color: '#fbbf24', fontSize: '0.65rem', padding: '0.2rem 0.45rem', borderRadius: '0.25rem' }}
+                            onClick={() => setNewPrompt(prev => ({ ...prev, text: prev.text + b.text }))}
+                          >
+                            ➕ {b.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 <textarea 
                   placeholder="Prompt Text..." 
                   className="input-field" 
-                  rows={2}
+                  rows={4}
                   value={newPrompt.text}
                   onChange={(e) => setNewPrompt({ ...newPrompt, text: e.target.value })}
                   required
                 />
-                <button type="submit" className="btn btn-primary"><Plus size={16} /> Prompt sichern</button>
+                
+                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                  <button type="submit" className="btn btn-primary" style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.35rem' }}>
+                    <Plus size={16} /> Prompt sichern
+                  </button>
+                  <button 
+                    type="button" 
+                    onClick={optimizePromptWithLocalAI} 
+                    disabled={ollamaLoading}
+                    className="btn btn-secondary" 
+                    style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.35rem' }}
+                  >
+                    <svg className={ollamaLoading ? 'spin' : ''} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                      <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                      <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                    </svg>
+                    {ollamaLoading ? 'Optimiert...' : 'Per lokaler KI verbessern (Ollama)'}
+                  </button>
+                </div>
               </form>
 
               <div className="prompt-vault">
