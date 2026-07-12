@@ -5,6 +5,7 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **Feature 5 v5 (Android WebView Wrapper & Push-Konzept):** Bereitstellung einer `capacitor.config.json` zur Android-Kompilierung. Erstellung eines detaillierten Android-Integrationsleitfadens mit Anbindung an das Firebase Cloud Messaging (FCM) Push-Gateway, Codebeispielen für Push-Listener in React sowie Supabase-Deno-Edge-Functions für automatisierte Benachrichtigungen.
 - **Feature 4 v5 (Sprach-zu-Text via Web Speech API):** Integration von Mikrofon-Diktierknöpfen im Quick Capture-Widget (Dashboard) sowie im CRM-Kunden-Notizenbereich. Ermöglicht offline-fähiges Diktieren von Notizen auf Deutsch mit visuellem Puls-Indikator.
 - **Feature 3 v5 (NLP-Kalenderschnellerfassung & KI-Tagesplaner):** Integration eines Freitext-NLP-Eingabefeldes im Google Kalender-Widget (Tab 1), um Termine per natürlicher Sprache ("Morgen 14 Uhr Müller") zu erstellen. Ergänzung eines "⚡ KI-Tagesplan" Buttons im Tagesfokus-Widget zur automatischen Generierung von To-Dos basierend auf heutigen Kalenderereignissen und CRM-Leads.
 - **Feature 2 v5 (Personalisierbares Dashboard):** Implementierung einer Layout-Steuerung am oberen Rand des Dashboards (Tab 1) mit einem "Layout anpassen" Einstellungs-Panel, über das Toggles für alle 6 Kern-Widgets (Finanz-Cockpit, E-Rechnungen, Quick Capture, Google Kalender, Habits, Wochen-Archiv) ein- und ausgeblendet werden können (inkl. LocalStorage-Persistierung).

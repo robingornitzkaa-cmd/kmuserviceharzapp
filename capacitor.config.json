@@ -1,0 +1,13 @@
+{
+  "appId": "de.kmuserviceharz.app",
+  "appName": "Founder OS",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "PushNotifications": {
+      "presentationOptions": ["badge", "sound", "alert"]
+    }
+  }
+}

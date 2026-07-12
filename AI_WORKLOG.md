@@ -1,5 +1,29 @@
 # AI Worklog - Founder OS
 
+## 2026-07-12 19:52 – Android WebView Wrapper & Push-Konzept (Feature 5 v5)
+
+### Ziel
+Bereitstellung der Konfigurationen und eines vollständigen Integrationsleitfadens, um die Webanwendung Founder OS als native Android-App (APK) über Capacitor zu verpacken und Push-Benachrichtigungen über das Firebase Cloud Messaging (FCM) Gateway zu empfangen.
+
+### Erstellt
+- **Capacitor Konfiguration:** [capacitor.config.json](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/capacitor.config.json) im Root-Verzeichnis zur Definition der App-ID `de.kmuserviceharz.app`, des App-Namens `Founder OS` und der Push-Optionen.
+- **Entwickler-Leitfaden:** [android_setup_guide.md](file:///C:/Users/gorni/.gemini/antigravity/brain/26b62883-46ba-464b-8962-fb9c8b771cee/android_setup_guide.md) in den Artifacts, der Schritt-für-Schritt die Capacitor-Befehle, die Android Studio Integration, die Platzierung von `google-services.json` sowie die Registrierungs-Listener im React-Code und Deno Edge-Functions für Supabase Webhooks beschreibt.
+
+### Geändert
+- [TODO.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md) (Schritt 5 v5 als erledigt markiert).
+- [CHANGELOG.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md) (Ergänzt).
+
+### Warum
+Erfüllt die Anforderung, dass der Gründer dringende Benachrichtigungen direkt auf sein Smartphone erhält. Da Android nativ Play Services bzw. das FCM-Gateway vorschreibt, liefert das Konzept eine saubere Anbindung, ohne dass die Anwendungsdaten von Supabase zu Firebase migriert werden müssen.
+
+### Testen
+1. Installiere Capacitor-Pakete: `npm install @capacitor/core @capacitor/cli @capacitor/android`.
+2. Initialisiere die Android-Plattform: `npx cap add android`.
+3. Öffne das Projekt in Android Studio und binde die `google-services.json` ein.
+4. Starte die App auf einem Android-Gerät ➔ Der Token wird abgefragt und registriert.
+
+---
+
 ## 2026-07-12 19:48 – Sprach-zu-Text via Web Speech API (Feature 4 v5)
 
 ### Ziel
