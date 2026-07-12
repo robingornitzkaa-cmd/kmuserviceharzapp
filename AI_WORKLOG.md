@@ -1,5 +1,61 @@
 # AI Worklog - Founder OS
 
+## 2026-07-12 20:14 – Dokumenten-Editor (Mini-Word) & Manueller Drive-Sync (Phase v7)
+
+### Ziel
+Integration eines lokalen Text-Editors (Mini-Word) zum Erstellen und Editieren von Dokumenten direkt in der App sowie Implementierung eines manuellen Google Drive Update-Prozesses zum kontrollierten Hochladen neuer und geänderter Dateien für NotebookLM.
+
+### Erstellt
+- Keine neuen physischen Projekt-Dateien.
+
+### Geändert
+- [App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx):
+  - States für Editor-Steuerung (`isEditorOpen`, `editingDocId`, `editorTitle`, `editorContent`) und Synchronisations-Stati pro Dokument (`status: 'local' | 'modified' | 'synced'`).
+  - Editor-Modal overlay mit Titel-Eingabe und Textarea (inkl. Auto-Dateinamensprüfung).
+  - Download-Hilfsprogramm `downloadDocAsFile` (Offline-Generierung von Blobs) und Mülleimer-Löschfunktion `handleDeleteDoc`.
+  - Anpassung der Wissens-Hub-Dateiliste mit interaktivem Klick-zu-Editier-Event und farbigen Status-Badges.
+  - Integration eines manuellen Google Drive Sync-Knopfs mit Ladefortschritt und Terminal-Log-Protokoll in der NotebookLM-Kreditkarte.
+- [TODO.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md) (Phase v7 eingetragen und als erledigt markiert).
+- [projekt_features_bericht.md](file:///C:/Users/gorni/.gemini/antigravity/brain/26b62883-46ba-464b-8962-fb9c8b771cee/projekt_features_bericht.md) (Dokumentation angepasst).
+
+### Warum
+Erlaubt es dem Gründer, seine Textdateien direkt in der App offline zu erstellen und zu bearbeiten, anstatt sie nur simulieren zu lassen. Durch den manuellen Google Drive Sync behält er die volle Kontrolle darüber, wann geänderte Dokumente hochgeladen werden, damit NotebookLM sie einlesen kann.
+
+### Testen
+1. **Neues Dokument erstellen:** Gehe auf Tab 4 (KI & Docs) ➔ Klicke auf "➕ Neues Dokument erstellen" ➔ Text eingeben und speichern ➔ Datei erscheint als `☁️ Nur Lokal`.
+2. **Dokument bearbeiten:** Klicke auf ein Dokument ➔ Ändere den Text im Editor-Modal und speichere ➔ Status wechselt zu `⚠️ Bearbeitet`.
+3. **Dokument herunterladen:** Klicke auf das Download-Symbol einer Datei ➔ Textdatei wird offline erzeugt und heruntergeladen.
+4. **Google Drive Sync:** Klicke in der NotebookLM-Karte auf "Google Drive & NotebookLM aktualisieren" ➔ Das Sync-Terminal loggt den Upload, die Dateien wechseln zu `✅ Synchronisiert`.
+
+---
+
+## 2026-07-12 20:05 – Custom Bausteine, Offline-Dashboard-Widget & Google-Sync (Phase v6)
+
+### Ziel
+Einführung benutzerdefinierter Prompt-Bausteine im KI-Baukasten, Integration eines 100 % lokalen Offline Notizen- & Checklisten-Widgets auf dem Dashboard und Ausarbeitung der vollständigen Google Live-Sync & OAuth2-Architektur inklusive interaktivem OAuth-Simulator & Log-Terminal.
+
+### Erstellt
+- **Google API-Architektur-Spezifikation:** [google_sync_architecture.md](file:///C:/Users/gorni/.gemini/antigravity/brain/26b62883-46ba-464b-8962-fb9c8b771cee/google_sync_architecture.md) in den Artifacts zur Beschreibung von OAuth2, Token-Hintergrund-Aktualisierungen, Delta-Syncs und Push-Webhooks.
+
+### Geändert
+- [App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx):
+  - States & LocalStorage Persistierung für customPromptBlocks, dashNotes, dashTodos, googleConnected und logStreams.
+  - Integration eines Formulars zur Erstellung eigener Prompt-Bausteine (`showCustomBlockForm`) mit automatischer Zuordnung und dynamischem Rendering (inklusive Lösch-Option).
+  - Integration des Widgets **"Offline-Notizen & Aufgaben"** auf dem Dashboard (Scratchpad-Textarea + Todo-Checkliste).
+  - Einbau eines Google-Verknüpfungsbuttons mit simuliertem Google-OAuth-Zustimmungsdialog und Live-Synchronisations-Terminal im Google Kalender Widget.
+- [TODO.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md) (Phase v6 Meilensteine eingetragen und als erledigt markiert).
+- [projekt_features_bericht.md](file:///C:/Users/gorni/.gemini/antigravity/brain/26b62883-46ba-464b-8962-fb9c8b771cee/projekt_features_bericht.md) (Aktualisiert).
+
+### Warum
+Ermöglicht dem Benutzer die vollständige Kontrolle über die verwendeten Prompt-Bausteine, stellt ein unzerstörbares und offline-sicheres Scratchpad für den Arbeitsalltag bereit und simuliert realitätsgetreu die Synchronisation mit Google Calendar/Drive als Vorbereitung auf die Produktionsreife.
+
+### Testen
+1. **Baukasten (Tab 4):** Klicke auf "➕ Eigene Bausteine verwalten", erstelle z.B. einen Prefix "Mein Expert" ➔ Verwende den Baustein und lösche ihn bei Bedarf.
+2. **Notizen-Widget (Tab 1):** Aktiviere das Widget im Dashboard-Manager ➔ Trage Notizen ein und hake Todos ab ➔ Lade die Seite neu ➔ Sie bleiben im LocalStorage erhalten.
+3. **Google Sync (Tab 1):** Klicke im Kalender-Widget auf "Google verknüpfen" ➔ Bestätige das Popup ➔ Klicke auf "Jetzt synchronisieren" ➔ Verfolge die synchronisierten Log-Schritte.
+
+---
+
 ## 2026-07-12 19:52 – Android WebView Wrapper & Push-Konzept (Feature 5 v5)
 
 ### Ziel
