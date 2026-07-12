@@ -23,6 +23,12 @@
 - [x] **Phase v4 - Schritt 5:** Feature 5 (E-Rechnungs & Angebotssystem - ZUGFeRD/XRechnung) ➔ Erledigt.
 - [x] **Phase v4 - Schritt 6:** Feature 6 (Supabase Backend-Integration & Cloud Sync) ➔ Erledigt.
 
+- [x] **Phase v5 - Schritt 1:** Feature 1 (Prompt-Baukasten & Ollama KI-Optimierer) ➔ Erledigt.
+- [ ] **Phase v5 - Schritt 2:** Feature 2 (Personalisierbares Dashboard) ➔ Anstehend (Warten auf Go).
+- [ ] **Phase v5 - Schritt 3:** Feature 3 (NLP-Kalender & KI-Tagesplaner) ➔ Anstehend.
+- [ ] **Phase v5 - Schritt 4:** Feature 4 (Sprach-zu-Text via Web Speech API) ➔ Anstehend.
+- [ ] **Phase v5 - Schritt 5:** Feature 5 (Android WebView Wrapper & Push-Konzept) ➔ Anstehend.
+
 ## Später
 - [ ] Google Drive Live-Sync: Mock-Dateien-Liste durch echte Datei-Uploads ersetzen.
 - [ ] Google Kalender Live-Sync: Statt Mock-Events echte Tagestermine laden.

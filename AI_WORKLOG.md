@@ -1,5 +1,34 @@
 # AI Worklog - Founder OS
 
+## 2026-07-12 19:40 – Prompt-Baukasten & Ollama KI-Optimierer (Feature 1 v5)
+
+### Ziel
+Entwurf und Implementierung eines Klick-Baukastensystems für den Prompt-Vault im KI- & Docs-Tab (Tab 4) sowie einer echten API-Anbindung an eine lokale Ollama-Instanz zur automatischen Prompt-Optimierung mit integriertem Client-Fallback.
+
+### Erstellt
+- **Prompt-Baukasten UI:** Ein strukturiertes Raster von Klick-Bausteinen im "Prompt hinzufügen" Formular, aufgeteilt nach:
+  - *Rollen/Prefixe:* Marketing-Experte, SEO, Copywriter, DSGVO Legal, Pitch Coach, Finanzen.
+  - *Tonalitäten:* Locker & Du, Professionell, Prägnant, Verkaufsstark.
+  - *Ausgabeformate:* Markdown-Tabelle, Emoji-Bulletpoints, Schritt-für-Schritt, JSON.
+  - *Suffixe/Aufforderungen:* 3 Rückfragen, Risikoanalyse, 3 Alternativen, Einfach erklärt.
+- **Ollama API-Client & Fallback:** Die Funktion `optimizePromptWithLocalAI` sendet einen POST-Request an `http://localhost:11434/api/generate` (Modell llama3). Falls Ollama nicht läuft (Connection Refused) oder das Timeout von 2 Sekunden greift, springt ein integrierter Client-seitiger "Smart Fallback"-Optimierer ein und formatiert den Prompt professionell vor.
+
+### Geändert
+- [App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): Einbindung des Baukasten-Markups, der Bausteinklick-Eventhandler, des `ollamaLoading`-States sowie der `optimizePromptWithLocalAI` Logik.
+- [TODO.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md) (Schritt 1 v5 als erledigt markiert).
+- [CHANGELOG.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md) (Ergänzt).
+
+### Warum
+Erleichtert dem Nutzer das schnelle Zusammenklicken komplexer System-Prompts, ohne alles manuell eintippen zu müssen. Die Ollama-Verbindung ermöglicht zudem datensicheres und kostenfreies Optimieren von Textentwürfen auf lokaler Hardware.
+
+### Testen
+1. Navigiere zu Tab 4 ("KI & Docs") ➔ "Prompt Vault (KI-Tresor)".
+2. Gib einen einfachen Titel (z. B. "Marketing Harz") ein.
+3. Klicke auf verschiedene Baukastenelemente (z. B. Rolle "Marketing", Ausgabeformat "Markdown Tabelle" und Suffix "3 Rückfragen") ➔ Die Texte werden direkt in die Textarea verkettet.
+4. Klicke auf **"Per lokaler KI verbessern (Ollama)"** ➔ Falls Ollama läuft, wird der optimierte Prompt geladen. Falls nicht, greift nach 1 Sekunde der Offline-Fallback und meldet dies per Dialogbox.
+
+---
+
 ## 2026-07-11 11:30 – Erstellung des Funktionsberichts
 
 ### Ziel
