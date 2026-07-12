@@ -299,6 +299,21 @@ function App() {
   const [sopTemplates, setSopTemplates] = useState(() => JSON.parse(localStorage.getItem('f_sop_templates')) || INITIAL_SOP_TEMPLATES);
   const [activeSops, setActiveSops] = useState(() => JSON.parse(localStorage.getItem('f_active_sops')) || []);
 
+  // Google Kalender & NLP Terminschnellerfassung States (Feature 3 - v5)
+  const [calendarEvents, setCalendarEvents] = useState(() => {
+    try {
+      const saved = localStorage.getItem('f_calendar_events');
+      return saved ? JSON.parse(saved) : [
+        { id: 'ev_1', time: '09:00 - 10:30', title: 'Audit-Workshop: Dachdeckerei Müller', desc: 'Prozessanalyse & ROI-Kalkulation vor Ort', date: new Date().toISOString().split('T')[0] },
+        { id: 'ev_2', time: '13:00 - 14:00', title: 'Review-Termin: GoClean Harz', desc: 'Online-Präsentation der ersten Make-Workflows', date: new Date().toISOString().split('T')[0] },
+        { id: 'ev_3', time: '15:30 - 16:30', title: 'Wirtschaftsförderung WiReGo', desc: 'Abstimmung über Kooperation zu Förderprogrammen', date: new Date().toISOString().split('T')[0] }
+      ];
+    } catch {
+      return [];
+    }
+  });
+  const [nlpCalendarInput, setNlpCalendarInput] = useState('');
+
   // CRM Detail Drawer State
   const [selectedContactId, setSelectedContactId] = useState(null);
   const [newLinkInput, setNewLinkInput] = useState({ title: '', url: '' });
@@ -456,6 +471,9 @@ function App() {
   useEffect(() => {
     localStorage.setItem('f_dashboard_widgets', JSON.stringify(dashboardWidgets));
   }, [dashboardWidgets]);
+  useEffect(() => {
+    localStorage.setItem('f_calendar_events', JSON.stringify(calendarEvents));
+  }, [calendarEvents]);
 
   useEffect(() => {
     localStorage.setItem('f_inbox', JSON.stringify(inbox));
@@ -1133,6 +1151,104 @@ function App() {
     setInbox([newInboxItem, ...inbox]);
     setQuickCapture('');
     alert('Notiz in der Inbox gespeichert!');
+  };
+
+  // NLP Kalender & KI-Tagesplaner Handlers (Feature 3 - v5)
+  const handleNlpCalendarSubmit = (e) => {
+    e.preventDefault();
+    if (!nlpCalendarInput.trim()) return;
+
+    let text = nlpCalendarInput;
+    let timeStr = '12:00';
+    let dateStr = new Date().toISOString().split('T')[0];
+
+    const timeRegex = /(\d{1,2})[:.]?(\d{2})?\s*(Uhr)?/i;
+    const timeMatch = text.match(timeRegex);
+    if (timeMatch) {
+      const hour = String(timeMatch[1]).padStart(2, '0');
+      const min = timeMatch[2] ? String(timeMatch[2]).padStart(2, '0') : '00';
+      timeStr = `${hour}:${min}`;
+      text = text.replace(timeMatch[0], '').trim();
+    }
+
+    const today = new Date();
+    if (/heute/i.test(text)) {
+      text = text.replace(/heute/i, '').trim();
+    } else if (/morgen/i.test(text)) {
+      const tomorrow = new Date(today);
+      tomorrow.setDate(today.getDate() + 1);
+      dateStr = tomorrow.toISOString().split('T')[0];
+      text = text.replace(/morgen/i, '').trim();
+    } else {
+      const weekdays = ['sonntag', 'montag', 'dienstag', 'mittwoch', 'donnerstag', 'freitag', 'samstag'];
+      for (let i = 0; i < 7; i++) {
+        const dayRegex = new RegExp(weekdays[i], 'i');
+        if (dayRegex.test(text)) {
+          const targetDay = i;
+          const currentDay = today.getDay();
+          let daysDiff = targetDay - currentDay;
+          if (daysDiff <= 0) daysDiff += 7;
+          const targetDate = new Date(today);
+          targetDate.setDate(today.getDate() + daysDiff);
+          dateStr = targetDate.toISOString().split('T')[0];
+          text = text.replace(dayRegex, '').trim();
+          break;
+        }
+      }
+    }
+
+    text = text.replace(/^(um|am|uhr|telefonat|meeting|treffen|mit)\s+/i, '').trim();
+    const eventTitle = text || 'Neuer Termin';
+
+    const startHour = parseInt(timeStr.split(':')[0]);
+    const endHour = String((startHour + 1) % 24).padStart(2, '0');
+    const timeRange = `${timeStr} - ${endHour}:${timeStr.split(':')[1]}`;
+
+    const newEvent = {
+      id: 'ev_' + Date.now(),
+      time: timeRange,
+      title: eventTitle,
+      desc: 'Per NLP erfasst',
+      date: dateStr
+    };
+
+    setCalendarEvents(prev => [...prev, newEvent]);
+    setNlpCalendarInput('');
+    alert(`📅 Termin erfasst: "${eventTitle}" am ${new Date(dateStr).toLocaleDateString('de-DE')} um ${timeStr} Uhr.`);
+  };
+
+  const deleteCalendarEvent = (id) => {
+    setCalendarEvents(prev => prev.filter(ev => ev.id !== id));
+  };
+
+  const generateDailyAiTasks = () => {
+    const todayStr = new Date().toISOString().split('T')[0];
+    const todaysEvents = calendarEvents.filter(ev => ev.date === todayStr).map(ev => ev.title);
+    const crmLeads = contacts.filter(c => c.status === 'lead' || c.status === 'kontakt').map(c => c.company);
+
+    const aiTasks = [];
+    if (todaysEvents.length > 0) {
+      aiTasks.push(`Vorbereitung: ${todaysEvents[0]}`);
+    } else {
+      aiTasks.push(`Akquise: 3 neue KMU-Leads im Harz kontaktieren`);
+    }
+
+    if (crmLeads.length > 0) {
+      aiTasks.push(`Follow-Up: Angebot für ${crmLeads[0]} nachfassen`);
+    } else {
+      aiTasks.push(`Notizbuch pflegen: Letzte Logbucheinträge synchronisieren`);
+    }
+
+    aiTasks.push(`DATEV/Lexoffice: Rechnungsabgleich & Einnahmen-Review`);
+
+    const newFocusTasks = aiTasks.map((t, idx) => ({
+      id: 'f_' + Date.now() + '_' + idx,
+      text: t,
+      completed: false
+    }));
+
+    setFocusTasks(newFocusTasks);
+    alert("⚡ KI-Tagesplan erfolgreich synthetisiert! Dein Tagesfokus wurde basierend auf Kalender- & CRM-Daten aktualisiert.");
   };
 
   // Handle WhatsApp simulation process (Feature 2a)
@@ -2481,30 +2597,42 @@ ${original}
             {dashboardWidgets.calendar && (
             <div className="card">
               <div className="card-header">
-                <h2 className="card-title"><Calendar size={20} className="text-cyan-500" /> Google Kalender (Heute)</h2>
+                <h2 className="card-title"><Calendar size={20} className="text-cyan-500" /> Google Kalender (NLP)</h2>
               </div>
-              <div className="calendar-list">
-                <div className="calendar-event">
-                  <div className="event-time">09:00 - 10:30</div>
-                  <div>
-                    <div className="event-title">{mask("Audit-Workshop: Dachdeckerei Müller", "calendar")}</div>
-                    <div className="event-desc">Prozessanalyse & ROI-Kalkulation vor Ort</div>
+              
+              <form onSubmit={handleNlpCalendarSubmit} style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
+                <input 
+                  type="text" 
+                  className="input-field" 
+                  placeholder="Schnell eintragen ('Morgen 14 Uhr Müller')..."
+                  value={nlpCalendarInput}
+                  onChange={(e) => setNlpCalendarInput(e.target.value)}
+                />
+                <button type="submit" className="btn btn-primary" style={{ padding: '0.35rem 0.75rem', fontSize: '0.8rem' }}>Eintragen</button>
+              </form>
+
+              <div className="calendar-list" style={{ maxHeight: '220px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                {calendarEvents.map(ev => (
+                  <div key={ev.id} className="calendar-event" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.5rem', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: '0.5rem' }}>
+                    <div>
+                      <div className="event-time" style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--accent-cyan)' }}>
+                        {ev.time} ({new Date(ev.date).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' })})
+                      </div>
+                      <div>
+                        <div className="event-title" style={{ fontSize: '0.8rem', fontWeight: 600 }}>{mask(ev.title, "calendar")}</div>
+                        <div className="event-desc" style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{ev.desc}</div>
+                      </div>
+                    </div>
+                    <button type="button" onClick={() => deleteCalendarEvent(ev.id)} className="btn-icon-only" style={{ padding: '0.25rem' }}>
+                      <Trash2 size={12} className="text-red-500" />
+                    </button>
                   </div>
-                </div>
-                <div className="calendar-event" style={{ borderLeftColor: 'var(--accent-purple)' }}>
-                  <div className="event-time">13:00 - 14:00</div>
-                  <div>
-                    <div className="event-title">{mask("Review-Termin: GoClean Harz", "calendar")}</div>
-                    <div className="event-desc">Online-Präsentation der ersten Make-Workflows</div>
+                ))}
+                {calendarEvents.length === 0 && (
+                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textAlign: 'center', padding: '1rem' }}>
+                    Keine Termine geplant.
                   </div>
-                </div>
-                <div className="calendar-event">
-                  <div className="event-time">15:30 - 16:30</div>
-                  <div>
-                    <div className="event-title">{mask("Wirtschaftsförderung WiReGo", "calendar")}</div>
-                    <div className="event-desc">Abstimmung über Kooperation zu Förderprogrammen</div>
-                  </div>
-                </div>
+                )}
               </div>
             </div>
             )}
@@ -2512,8 +2640,16 @@ ${original}
             {/* Tagesfokus */}
             {dashboardWidgets.habits && (
             <div className="card">
-              <div className="card-header">
-                <h2 className="card-title"><CheckSquare size={20} className="text-indigo-500" /> Tagesfokus (Max. 3 Aufgaben)</h2>
+              <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <h2 className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><CheckSquare size={20} className="text-indigo-500" /> Tagesfokus</h2>
+                <button 
+                  type="button" 
+                  onClick={generateDailyAiTasks}
+                  className="btn btn-secondary"
+                  style={{ padding: '0.2rem 0.5rem', fontSize: '0.7rem', height: '24px', display: 'flex', alignItems: 'center', gap: '0.25rem' }}
+                >
+                  ⚡ KI-Tagesplan
+                </button>
               </div>
               <form onSubmit={addFocusTask} style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
                 <input 
