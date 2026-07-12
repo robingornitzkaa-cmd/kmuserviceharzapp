@@ -427,7 +427,36 @@ function App() {
   const [supabaseLogsOpen, setSupabaseLogsOpen] = useState(false);
   const [ollamaLoading, setOllamaLoading] = useState(false);
 
+  // Dashboard Customization States (Feature 2 - v5)
+  const [dashboardWidgets, setDashboardWidgets] = useState(() => {
+    try {
+      const saved = localStorage.getItem('f_dashboard_widgets');
+      return saved ? JSON.parse(saved) : {
+        financial: true,
+        einvoice: true,
+        quickcapture: true,
+        calendar: true,
+        habits: true,
+        weekly: true
+      };
+    } catch {
+      return {
+        financial: true,
+        einvoice: true,
+        quickcapture: true,
+        calendar: true,
+        habits: true,
+        weekly: true
+      };
+    }
+  });
+  const [isEditingDashboard, setIsEditingDashboard] = useState(false);
+
   // Persistent Storage Sync
+  useEffect(() => {
+    localStorage.setItem('f_dashboard_widgets', JSON.stringify(dashboardWidgets));
+  }, [dashboardWidgets]);
+
   useEffect(() => {
     localStorage.setItem('f_inbox', JSON.stringify(inbox));
   }, [inbox]);
@@ -2135,10 +2164,80 @@ ${original}
           <>
         {/* ==================== TAB 1: DASHBOARD ==================== */}
         {activeTab === 'dashboard' && (
-          <div className="dashboard-grid">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', width: '100%' }}>
             
-            {/* Finanz-Cockpit Row (v3) */}
-            <div className="card financial-cockpit-section" style={{ gridColumn: 'span 2' }}>
+            {/* Dashboard Customization Header Bar */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(255, 255, 255, 0.02)', border: '1px solid var(--border-color)', borderRadius: '0.75rem', padding: '0.75rem 1.25rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <span style={{ display: 'flex', width: '8px', height: '8px', borderRadius: '50%', background: 'var(--accent-cyan)' }}></span>
+                <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                  Gründer-Cockpit: {Object.values(dashboardWidgets).filter(Boolean).length} von 6 Widgets aktiv
+                </span>
+              </div>
+              <button 
+                type="button"
+                onClick={() => setIsEditingDashboard(!isEditingDashboard)} 
+                className="btn btn-secondary"
+                style={{ fontSize: '0.75rem', padding: '0.35rem 0.75rem', display: 'flex', alignItems: 'center', gap: '0.35rem', border: isEditingDashboard ? '1px solid var(--accent-cyan)' : '1px solid var(--border-color)', height: '30px' }}
+              >
+                <Sliders size={12} /> {isEditingDashboard ? 'Layout fertigstellen' : 'Layout anpassen'}
+              </button>
+            </div>
+
+            {/* Customization Settings Drawer / Box */}
+            {isEditingDashboard && (
+              <div className="card" style={{ background: 'rgba(9, 13, 22, 0.95)', border: '1px dashed var(--accent-cyan)', animation: 'fadeIn 0.2s ease-out' }}>
+                <div className="card-header" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.5rem' }}>
+                  <h3 className="card-title" style={{ fontSize: '0.9rem', color: 'var(--accent-cyan)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                    <Settings size={16} /> Dashboard-Widgets konfigurieren
+                  </h3>
+                  <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Aktiviere oder deaktiviere die Widgets, um dein Dashboard anzupassen.</p>
+                </div>
+                
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '0.75rem', marginTop: '1rem' }}>
+                  {[
+                    { key: 'financial', label: 'Finanz-Cockpit & Pipeline', desc: 'Umsatzprognose & Ø Stundensätze' },
+                    { key: 'einvoice', label: 'E-Rechnung (ZUGFeRD)', desc: 'B2B Rechnungs- & XML Generator' },
+                    { key: 'quickcapture', label: 'Quick Capture', desc: 'Schnelle Notiz- & Idee-Erfassung' },
+                    { key: 'calendar', label: 'Google Kalender', desc: 'Tagestermine & Meetings' },
+                    { key: 'habits', label: 'Habit Tracker & Streak', desc: 'Gewohnheiten & CSS-Konfetti' },
+                    { key: 'weekly', label: 'Wochen-Review & Archiv', desc: 'Reflexionen & PDF-Wochenbericht' }
+                  ].map((w) => (
+                    <label 
+                      key={w.key} 
+                      style={{ 
+                        display: 'flex', 
+                        flexDirection: 'column', 
+                        gap: '0.25rem', 
+                        padding: '0.75rem', 
+                        background: dashboardWidgets[w.key] ? 'rgba(6, 182, 212, 0.05)' : 'rgba(255, 255, 255, 0.01)', 
+                        border: dashboardWidgets[w.key] ? '1px solid rgba(6, 182, 212, 0.3)' : '1px solid var(--border-color)', 
+                        borderRadius: '0.5rem', 
+                        cursor: 'pointer',
+                        transition: 'all 0.2s'
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <span style={{ fontSize: '0.8rem', fontWeight: 700, color: dashboardWidgets[w.key] ? 'white' : 'var(--text-secondary)' }}>{w.label}</span>
+                        <input 
+                          type="checkbox" 
+                          checked={dashboardWidgets[w.key]} 
+                          onChange={() => setDashboardWidgets(prev => ({ ...prev, [w.key]: !prev[w.key] }))}
+                          style={{ accentColor: 'var(--accent-cyan)', cursor: 'pointer' }}
+                        />
+                      </div>
+                      <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>{w.desc}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="dashboard-grid">
+              
+              {/* Finanz-Cockpit Row (v3) */}
+              {dashboardWidgets.financial && (
+                <div className="card financial-cockpit-section" style={{ gridColumn: 'span 2' }}>
               <div className="card-header">
                 <h2 className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <DollarSign size={20} className="text-cyan-500" />
@@ -2173,8 +2272,10 @@ ${original}
                 </div>
               </div>
             </div>
+            )}
             
             {/* E-Rechnungs & Angebotssystem (Feature 5 - v4) */}
+            {dashboardWidgets.einvoice && (
             <div className="card" style={{ gridColumn: 'span 2' }}>
               <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
                 <div>
@@ -2355,8 +2456,10 @@ ${original}
 
               </div>
             </div>
+            )}
             
             {/* Quick Capture */}
+            {dashboardWidgets.quickcapture && (
             <div className="card quick-capture-section">
               <div className="card-header">
                 <h2 className="card-title"><Plus size={20} className="text-purple-500" /> Neue Idee oder Notiz erfassen</h2>
@@ -2372,8 +2475,10 @@ ${original}
                 <button type="submit" className="btn btn-primary">Erfassen</button>
               </form>
             </div>
+            )}
 
             {/* Google Calendar Lese-Ansicht */}
+            {dashboardWidgets.calendar && (
             <div className="card">
               <div className="card-header">
                 <h2 className="card-title"><Calendar size={20} className="text-cyan-500" /> Google Kalender (Heute)</h2>
@@ -2402,8 +2507,10 @@ ${original}
                 </div>
               </div>
             </div>
+            )}
 
             {/* Tagesfokus */}
+            {dashboardWidgets.habits && (
             <div className="card">
               <div className="card-header">
                 <h2 className="card-title"><CheckSquare size={20} className="text-indigo-500" /> Tagesfokus (Max. 3 Aufgaben)</h2>
@@ -2441,8 +2548,10 @@ ${original}
                 )}
               </div>
             </div>
+            )}
 
             {/* Habit Tracker (Gründer-Fokus) */}
+            {dashboardWidgets.habits && (
             <div className="card" style={{ gridColumn: 'span 2' }}>
               <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
                 <h2 className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -2506,8 +2615,10 @@ ${original}
                 ))}
               </div>
             </div>
+            )}
 
             {/* Wochen-Review & Archiv erledigter Aufgaben (Feature A3) */}
+            {dashboardWidgets.weekly && (
             <div className="card wochen-review-section" style={{ gridColumn: 'span 2' }}>
               <div 
                 className="card-header" 
@@ -2643,8 +2754,10 @@ ${original}
                 </div>
               )}
             </div>
+            )}
 
           </div>
+        </div>
         )}
 
         {/* ==================== TAB 2: INBOX & TASKS ==================== */}
