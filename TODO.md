@@ -26,8 +26,8 @@
 - [x] **Phase v5 - Schritt 1:** Feature 1 (Prompt-Baukasten & Ollama KI-Optimierer) ➔ Erledigt.
 - [x] **Phase v5 - Schritt 2:** Feature 2 (Personalisierbares Dashboard) ➔ Erledigt.
 - [x] **Phase v5 - Schritt 3:** Feature 3 (NLP-Kalender & KI-Tagesplaner) ➔ Erledigt.
-- [ ] **Phase v5 - Schritt 4:** Feature 4 (Sprach-zu-Text via Web Speech API) ➔ Anstehend (Warten auf Go).
-- [ ] **Phase v5 - Schritt 5:** Feature 5 (Android WebView Wrapper & Push-Konzept) ➔ Anstehend.
+- [x] **Phase v5 - Schritt 4:** Feature 4 (Sprach-zu-Text via Web Speech API) ➔ Erledigt.
+- [ ] **Phase v5 - Schritt 5:** Feature 5 (Android WebView Wrapper & Push-Konzept) ➔ Anstehend (Warten auf Go).
 
 ## Später
 - [ ] Google Drive Live-Sync: Mock-Dateien-Liste durch echte Datei-Uploads ersetzen.

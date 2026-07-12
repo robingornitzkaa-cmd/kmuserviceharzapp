@@ -5,6 +5,7 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **Feature 4 v5 (Sprach-zu-Text via Web Speech API):** Integration von Mikrofon-Diktierknöpfen im Quick Capture-Widget (Dashboard) sowie im CRM-Kunden-Notizenbereich. Ermöglicht offline-fähiges Diktieren von Notizen auf Deutsch mit visuellem Puls-Indikator.
 - **Feature 3 v5 (NLP-Kalenderschnellerfassung & KI-Tagesplaner):** Integration eines Freitext-NLP-Eingabefeldes im Google Kalender-Widget (Tab 1), um Termine per natürlicher Sprache ("Morgen 14 Uhr Müller") zu erstellen. Ergänzung eines "⚡ KI-Tagesplan" Buttons im Tagesfokus-Widget zur automatischen Generierung von To-Dos basierend auf heutigen Kalenderereignissen und CRM-Leads.
 - **Feature 2 v5 (Personalisierbares Dashboard):** Implementierung einer Layout-Steuerung am oberen Rand des Dashboards (Tab 1) mit einem "Layout anpassen" Einstellungs-Panel, über das Toggles für alle 6 Kern-Widgets (Finanz-Cockpit, E-Rechnungen, Quick Capture, Google Kalender, Habits, Wochen-Archiv) ein- und ausgeblendet werden können (inkl. LocalStorage-Persistierung).
 - **Feature 1 v5 (Prompt-Baukasten & Ollama KI-Optimierer):** Erweiterung des Prompt-Vaults im KI-Tab (Tab 4) um ein modulares Klick-Bausteinsystem (Prefix-Rollen, Tonalität, Ausgabeformat, Suffix-Aktionen) zur schnellen Prompt-Synthese sowie direkte Integration eines API-Optimierers für eine lokale Ollama-Instanz (`localhost:11434` / llama3) mit automatischem Fallback bei Offline-Betrieb.

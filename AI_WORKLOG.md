@@ -1,5 +1,32 @@
 # AI Worklog - Founder OS
 
+## 2026-07-12 19:48 – Sprach-zu-Text via Web Speech API (Feature 4 v5)
+
+### Ziel
+Entwurf und Implementierung einer clientseitigen Sprach-zu-Text Diktierfunktion über die Web Speech API des Browsers, integriert in das Quick Capture-Widget (Dashboard) sowie die Kundennotizen (CRM-Drawer).
+
+### Erstellt
+- **State-Zustände:** `isListeningQuickCapture` und `isListeningCrmNotes` (Boolean zur Visualisierung des aktiven Diktier-Status) in `App.jsx`.
+- **Speech recognition Handlers:** `handleQuickCaptureSpeech` und `handleCrmNotesSpeech` initialisieren das native `webkitSpeechRecognition` / `SpeechRecognition` Objekt, setzen die Sprache auf Deutsch (`de-DE`) und hängen den transkribierten Text an die jeweiligen Textfelder/States an.
+- **Pulsierender Aufnahmeeffekt:** CSS-Klasse `.listening-pulse` und `@keyframes pulse-red` in `index.css` für einen eleganten, pulsierenden roten Ring um das Mikrofon-Symbol während der Aufnahme.
+
+### Geändert
+- [App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): Einbindung der Mikrofon-Diktierknöpfe, der Speech-States und der Diktierlogik im Quick-Capture-Widget und im CRM-Detail-Drawer.
+- [index.css](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/index.css): Definition der Animationskeyframes (`pulse-red`) und der CSS-Klasse `.listening-pulse`.
+- [TODO.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md) (Schritt 4 v5 als erledigt markiert).
+- [CHANGELOG.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md) (Ergänzt).
+
+### Warum
+Erlaubt dem vielbeschäftigten Gründer das freihändige Erfassen von Geistesblitzen (Notizen) auf dem Dashboard oder schnellem Kundenfeedback unterwegs per Knopfdruck, ohne tippen zu müssen. Die Technologie arbeitet komplett im Browser.
+
+### Testen
+1. Navigiere auf dem Desktop/Handy zu Tab 1 (Dashboard) oder Tab 3 (CRM ➔ Kunden-Drawer).
+2. Klicke auf das Mikrofon-Symbol (Quick Capture: neben dem Textfeld; CRM: oben rechts im Notizenbereich).
+3. Bestätige bei Nachfrage des Browsers den Zugriff auf das Mikrofon.
+4. Spreche deine Notiz ein (z. B. *"DATEV Belege prüfen"*) ➔ Das Diktieren stoppt automatisch bei Stille oder erneutem Knopfdruck, und der Text wird im Eingabefeld eingefügt.
+
+---
+
 ## 2026-07-12 19:45 – NLP-Kalenderschnellerfassung & KI-Tagesplaner (Feature 3 v5)
 
 ### Ziel
