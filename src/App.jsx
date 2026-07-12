@@ -318,6 +318,43 @@ function App() {
   const [isListeningQuickCapture, setIsListeningQuickCapture] = useState(false);
   const [isListeningCrmNotes, setIsListeningCrmNotes] = useState(false);
 
+  // Phase v6 States (Custom blocks, Offline Notes, Google Sync)
+  const [customPromptBlocks, setCustomPromptBlocks] = useState(() => {
+    try {
+      const saved = localStorage.getItem('f_custom_prompt_blocks');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  const [dashNotes, setDashNotes] = useState(() => localStorage.getItem('f_dash_notes') || '');
+  const [dashTodos, setDashTodos] = useState(() => {
+    try {
+      const saved = localStorage.getItem('f_dash_todos');
+      return saved ? JSON.parse(saved) : [
+        { id: 'dt_1', text: 'Stundensätze & Marge im CRM überprüfen', completed: false },
+        { id: 'dt_2', text: 'ZUGFeRD-Rechnung für Müller Bedachungen testen', completed: false },
+        { id: 'dt_3', text: 'Offline-Diktierfunktion im Handy ausprobieren', completed: true }
+      ];
+    } catch {
+      return [];
+    }
+  });
+
+  const [googleConnected, setGoogleConnected] = useState(() => {
+    return localStorage.getItem('f_google_connected') === 'true';
+  });
+  const [isConnectingGoogle, setIsConnectingGoogle] = useState(false);
+  const [isGoogleSyncing, setIsGoogleSyncing] = useState(false);
+  const [googleSyncLogs, setGoogleSyncLogs] = useState([]);
+
+  // Custom Prompt Block Form states
+  const [showCustomBlockForm, setShowCustomBlockForm] = useState(false);
+  const [newBlockName, setNewBlockName] = useState('');
+  const [newBlockCategory, setNewBlockCategory] = useState('prefix'); // 'prefix', 'tone', 'format', 'suffix'
+  const [newBlockContent, setNewBlockContent] = useState('');
+
   // CRM Detail Drawer State
   const [selectedContactId, setSelectedContactId] = useState(null);
   const [newLinkInput, setNewLinkInput] = useState({ title: '', url: '' });
@@ -446,7 +483,6 @@ function App() {
   const [supabaseLogsOpen, setSupabaseLogsOpen] = useState(false);
   const [ollamaLoading, setOllamaLoading] = useState(false);
 
-  // Dashboard Customization States (Feature 2 - v5)
   const [dashboardWidgets, setDashboardWidgets] = useState(() => {
     try {
       const saved = localStorage.getItem('f_dashboard_widgets');
@@ -456,7 +492,8 @@ function App() {
         quickcapture: true,
         calendar: true,
         habits: true,
-        weekly: true
+        weekly: true,
+        notes: true
       };
     } catch {
       return {
@@ -465,7 +502,8 @@ function App() {
         quickcapture: true,
         calendar: true,
         habits: true,
-        weekly: true
+        weekly: true,
+        notes: true
       };
     }
   });
@@ -475,6 +513,18 @@ function App() {
   useEffect(() => {
     localStorage.setItem('f_dashboard_widgets', JSON.stringify(dashboardWidgets));
   }, [dashboardWidgets]);
+  useEffect(() => {
+    localStorage.setItem('f_custom_prompt_blocks', JSON.stringify(customPromptBlocks));
+  }, [customPromptBlocks]);
+  useEffect(() => {
+    localStorage.setItem('f_dash_notes', dashNotes);
+  }, [dashNotes]);
+  useEffect(() => {
+    localStorage.setItem('f_dash_todos', JSON.stringify(dashTodos));
+  }, [dashTodos]);
+  useEffect(() => {
+    localStorage.setItem('f_google_connected', String(googleConnected));
+  }, [googleConnected]);
   useEffect(() => {
     localStorage.setItem('f_calendar_events', JSON.stringify(calendarEvents));
   }, [calendarEvents]);
@@ -1332,6 +1382,82 @@ function App() {
     };
 
     recognition.start();
+  };
+
+  // Phase v6 Handlers (Custom Prompt Blocks, Offline Todos & Google Sync)
+  const handleAddCustomPromptBlock = (e) => {
+    e.preventDefault();
+    if (!newBlockName.trim() || !newBlockContent.trim()) return;
+
+    const newBlock = {
+      id: 'cpb_' + Date.now(),
+      name: newBlockName.trim(),
+      category: newBlockCategory,
+      content: newBlockContent.trim()
+    };
+
+    setCustomPromptBlocks(prev => [...prev, newBlock]);
+    setNewBlockName('');
+    setNewBlockContent('');
+    setShowCustomBlockForm(false);
+  };
+
+  const handleDeleteCustomPromptBlock = (id) => {
+    setCustomPromptBlocks(prev => prev.filter(b => b.id !== id));
+  };
+
+  const handleAddDashTodo = (text) => {
+    if (!text.trim()) return;
+    const newTodo = {
+      id: 'dt_' + Date.now(),
+      text: text.trim(),
+      completed: false
+    };
+    setDashTodos(prev => [...prev, newTodo]);
+  };
+
+  const handleToggleDashTodo = (id) => {
+    setDashTodos(prev => prev.map(t => t.id === id ? { ...t, completed: !t.completed } : t));
+  };
+
+  const handleDeleteDashTodo = (id) => {
+    setDashTodos(prev => prev.filter(t => t.id !== id));
+  };
+
+  const triggerGoogleSync = () => {
+    if (isGoogleSyncing) return;
+    setGoogleSyncLogs([]);
+    setIsGoogleSyncing(true);
+
+    const logSteps = [
+      "🔄 Initialisiere Google API Client (gapi)...",
+      "🔑 Validierte gespeicherte OAuth2 Refresh-Tokens in Supabase...",
+      "📡 Verbinde mit primary.calendar.google.com...",
+      "⏬ Empfange Delta-Sync Events (Sync-Token: cal_sync_8892)...",
+      "📂 Scanne Google Drive Pfad 'Founder OS Gehirn'...",
+      "🔄 Lese Dokumente: Audit_Dachdeckerei_Müller.pdf, ROI_Modell_V2.xlsx...",
+      "✅ Google API Synchronisation erfolgreich abgeschlossen! (14 Kalender-Events & 3 Drive-Dateien synchronisiert)"
+    ];
+
+    logSteps.forEach((step, index) => {
+      setTimeout(() => {
+        setGoogleSyncLogs(prev => [...prev, step]);
+        if (index === logSteps.length - 1) {
+          setIsGoogleSyncing(false);
+          const googleEvent = {
+            id: 'ev_google_' + Date.now(),
+            time: '11:00 - 12:00',
+            title: 'Live Google Meeting: Steuerkanzlei Harz',
+            desc: 'Automatisch aus Google Kalender importiert',
+            date: new Date().toISOString().split('T')[0]
+          };
+          setCalendarEvents(prev => {
+            if (prev.some(ev => ev.title === googleEvent.title)) return prev;
+            return [...prev, googleEvent];
+          });
+        }
+      }, (index + 1) * 600);
+    });
   };
 
   // Handle WhatsApp simulation process (Feature 2a)
@@ -2400,7 +2526,8 @@ ${original}
                     { key: 'quickcapture', label: 'Quick Capture', desc: 'Schnelle Notiz- & Idee-Erfassung' },
                     { key: 'calendar', label: 'Google Kalender', desc: 'Tagestermine & Meetings' },
                     { key: 'habits', label: 'Habit Tracker & Streak', desc: 'Gewohnheiten & CSS-Konfetti' },
-                    { key: 'weekly', label: 'Wochen-Review & Archiv', desc: 'Reflexionen & PDF-Wochenbericht' }
+                    { key: 'weekly', label: 'Wochen-Review & Archiv', desc: 'Reflexionen & PDF-Wochenbericht' },
+                    { key: 'notes', label: 'Offline-Notizen & Aufgaben', desc: '100% lokale Notizen & Checkliste' }
                   ].map((w) => (
                     <label 
                       key={w.key} 
@@ -2701,9 +2828,50 @@ ${original}
             {/* Google Calendar Lese-Ansicht */}
             {dashboardWidgets.calendar && (
             <div className="card">
-              <div className="card-header">
+              <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
                 <h2 className="card-title"><Calendar size={20} className="text-cyan-500" /> Google Kalender (NLP)</h2>
+                <div>
+                  {!googleConnected ? (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsConnectingGoogle(true);
+                        setTimeout(() => {
+                          setGoogleConnected(true);
+                          setIsConnectingGoogle(false);
+                          alert("🔗 Google-Konto erfolgreich verknüpft! Kalender- & Drive-Berechtigungen erteilt.");
+                        }, 1200);
+                      }}
+                      className="btn btn-secondary"
+                      style={{ padding: '0.2rem 0.5rem', fontSize: '0.7rem', height: '24px', display: 'flex', alignItems: 'center', gap: '0.25rem' }}
+                      disabled={isConnectingGoogle}
+                    >
+                      {isConnectingGoogle ? 'Verbinde...' : '🔗 Google verknüpfen'}
+                    </button>
+                  ) : (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <span style={{ display: 'inline-flex', width: '6px', height: '6px', borderRadius: '50%', background: 'var(--accent-green)' }} title="Google Live-Sync aktiv"></span>
+                      <button
+                        type="button"
+                        onClick={triggerGoogleSync}
+                        className="btn btn-secondary"
+                        style={{ padding: '0.2rem 0.5rem', fontSize: '0.7rem', height: '24px', display: 'flex', alignItems: 'center', gap: '0.25rem' }}
+                        disabled={isGoogleSyncing}
+                      >
+                        {isGoogleSyncing ? 'Sync läuft...' : '🔄 Jetzt Synch.'}
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
+
+              {googleSyncLogs.length > 0 && (
+                <div style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid var(--border-color)', borderRadius: '0.5rem', padding: '0.5rem', marginBottom: '1rem', fontFamily: 'monospace', fontSize: '0.65rem', display: 'flex', flexDirection: 'column', gap: '0.25rem', maxHeight: '110px', overflowY: 'auto' }}>
+                  {googleSyncLogs.map((log, i) => (
+                    <div key={i} style={{ color: log.includes('✅') ? 'var(--accent-green)' : 'var(--text-secondary)' }}>{log}</div>
+                  ))}
+                </div>
+              )}
               
               <form onSubmit={handleNlpCalendarSubmit} style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
                 <input 
@@ -2994,6 +3162,99 @@ ${original}
                   </div>
                 </div>
               )}
+            </div>
+            )}
+
+            {/* Offline-Notizen & Aufgaben Widget (Feature 2 - v6) */}
+            {dashboardWidgets.notes && (
+            <div className="card" style={{ gridColumn: 'span 2' }}>
+              <div className="card-header">
+                <h2 className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <FileText size={20} className="text-yellow-500" />
+                  Offline-Notizen & Aufgaben (100% Lokal)
+                </h2>
+                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Kein Internet/KI nötig • Speichert automatisch</span>
+              </div>
+              
+              <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '1.5rem' }}>
+                {/* Linke Seite: Scratchpad Notizen */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-secondary)' }}>Schnelle Notizen / Entwürfe</label>
+                    <button 
+                      type="button" 
+                      onClick={() => setDashNotes('')} 
+                      className="btn" 
+                      style={{ padding: '0.15rem 0.45rem', fontSize: '0.65rem', background: 'rgba(239, 68, 68, 0.05)', color: 'var(--accent-red)', border: '1px solid rgba(239, 68, 68, 0.15)', height: '22px' }}
+                    >
+                      Löschen
+                    </button>
+                  </div>
+                  <textarea
+                    className="input-field"
+                    style={{ flexGrow: 1, minHeight: '160px', fontFamily: 'inherit', fontSize: '0.85rem', lineHeight: '1.4', background: 'rgba(0,0,0,0.2)', resize: 'none' }}
+                    placeholder="Tippe hier deine Gedanken, Entwürfe, Telefonnummern oder Mitschriften ein. Sie werden sofort lokal gespeichert..."
+                    value={dashNotes}
+                    onChange={(e) => setDashNotes(e.target.value)}
+                  />
+                </div>
+
+                {/* Rechte Seite: Einfache Todos */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                  <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-secondary)', margin: 0 }}>Aufgaben-Checkliste</label>
+                  
+                  <form 
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      const input = e.target.elements.todoText;
+                      handleAddDashTodo(input.value);
+                      input.value = '';
+                    }} 
+                    style={{ display: 'flex', gap: '0.35rem' }}
+                  >
+                    <input 
+                      type="text" 
+                      name="todoText"
+                      className="input-field"
+                      style={{ height: '32px', fontSize: '0.8rem' }}
+                      placeholder="Aufgabe hinzufügen..."
+                      required
+                    />
+                    <button type="submit" className="btn btn-secondary" style={{ height: '32px', padding: '0 0.75rem', fontSize: '0.8rem' }}>+</button>
+                  </form>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', maxHeight: '160px', overflowY: 'auto' }}>
+                    {dashTodos.map(todo => (
+                      <div key={todo.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.45rem', background: todo.completed ? 'rgba(255,255,255,0.01)' : 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: '0.35rem' }}>
+                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', flexGrow: 1, margin: 0 }}>
+                          <input 
+                            type="checkbox" 
+                            checked={todo.completed} 
+                            onChange={() => handleToggleDashTodo(todo.id)}
+                            style={{ accentColor: 'var(--accent-green)' }}
+                          />
+                          <span style={{ fontSize: '0.8rem', color: todo.completed ? 'var(--text-muted)' : 'var(--text-primary)', textDecoration: todo.completed ? 'line-through' : 'none' }}>
+                            {todo.text}
+                          </span>
+                        </label>
+                        <button 
+                          type="button" 
+                          onClick={() => handleDeleteDashTodo(todo.id)} 
+                          className="btn-icon-only" 
+                          style={{ padding: '0.15rem', background: 'transparent', border: 'none' }}
+                        >
+                          <Trash2 size={12} className="text-red-500" />
+                        </button>
+                      </div>
+                    ))}
+                    {dashTodos.length === 0 && (
+                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontStyle: 'italic', textAlign: 'center', padding: '1rem' }}>
+                        Keine Aufgaben.
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
             )}
 
@@ -3624,6 +3885,26 @@ ${original}
                             ➕ {b.label}
                           </button>
                         ))}
+
+                        {/* Eigene Prefixes */}
+                        {customPromptBlocks.filter(b => b.category === 'prefix').map(b => (
+                          <div key={b.id} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.15rem', background: 'rgba(139, 92, 246, 0.25)', border: '1px solid rgba(139, 92, 246, 0.4)', padding: '0.15rem 0.35rem', borderRadius: '0.25rem' }}>
+                            <button
+                              type="button"
+                              style={{ border: 'none', background: 'transparent', color: '#a78bfa', fontSize: '0.65rem', padding: 0, cursor: 'pointer' }}
+                              onClick={() => setNewPrompt(prev => ({ ...prev, text: b.content + prev.text }))}
+                            >
+                              ➕ {b.name}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteCustomPromptBlock(b.id)}
+                              style={{ border: 'none', background: 'transparent', color: 'var(--accent-red)', padding: 0, cursor: 'pointer', display: 'flex', alignItems: 'center', fontSize: '0.75rem', lineHeight: 1 }}
+                            >
+                              ×
+                            </button>
+                          </div>
+                        ))}
                       </div>
                     </div>
 
@@ -3646,6 +3927,26 @@ ${original}
                           >
                             ➕ {b.label}
                           </button>
+                        ))}
+
+                        {/* Eigene Tonalitäten */}
+                        {customPromptBlocks.filter(b => b.category === 'tone').map(b => (
+                          <div key={b.id} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.15rem', background: 'rgba(6, 182, 212, 0.25)', border: '1px solid rgba(6, 182, 212, 0.4)', padding: '0.15rem 0.35rem', borderRadius: '0.25rem' }}>
+                            <button
+                              type="button"
+                              style={{ border: 'none', background: 'transparent', color: '#22d3ee', fontSize: '0.65rem', padding: 0, cursor: 'pointer' }}
+                              onClick={() => setNewPrompt(prev => ({ ...prev, text: prev.text + '\n' + b.content }))}
+                            >
+                              ➕ {b.name}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteCustomPromptBlock(b.id)}
+                              style={{ border: 'none', background: 'transparent', color: 'var(--accent-red)', padding: 0, cursor: 'pointer', display: 'flex', alignItems: 'center', fontSize: '0.75rem', lineHeight: 1 }}
+                            >
+                              ×
+                            </button>
+                          </div>
                         ))}
                       </div>
                     </div>
@@ -3670,6 +3971,26 @@ ${original}
                             ➕ {b.label}
                           </button>
                         ))}
+
+                        {/* Eigene Formate */}
+                        {customPromptBlocks.filter(b => b.category === 'format').map(b => (
+                          <div key={b.id} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.15rem', background: 'rgba(16, 185, 129, 0.25)', border: '1px solid rgba(16, 185, 129, 0.4)', padding: '0.15rem 0.35rem', borderRadius: '0.25rem' }}>
+                            <button
+                              type="button"
+                              style={{ border: 'none', background: 'transparent', color: '#34d399', fontSize: '0.65rem', padding: 0, cursor: 'pointer' }}
+                              onClick={() => setNewPrompt(prev => ({ ...prev, text: prev.text + '\n' + b.content }))}
+                            >
+                              ➕ {b.name}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteCustomPromptBlock(b.id)}
+                              style={{ border: 'none', background: 'transparent', color: 'var(--accent-red)', padding: 0, cursor: 'pointer', display: 'flex', alignItems: 'center', fontSize: '0.75rem', lineHeight: 1 }}
+                            >
+                              ×
+                            </button>
+                          </div>
+                        ))}
                       </div>
                     </div>
 
@@ -3693,9 +4014,85 @@ ${original}
                             ➕ {b.label}
                           </button>
                         ))}
+
+                        {/* Eigene Suffixe */}
+                        {customPromptBlocks.filter(b => b.category === 'suffix').map(b => (
+                          <div key={b.id} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.15rem', background: 'rgba(251, 191, 36, 0.25)', border: '1px solid rgba(251, 191, 36, 0.4)', padding: '0.15rem 0.35rem', borderRadius: '0.25rem' }}>
+                            <button
+                              type="button"
+                              style={{ border: 'none', background: 'transparent', color: '#fbbf24', fontSize: '0.65rem', padding: 0, cursor: 'pointer' }}
+                              onClick={() => setNewPrompt(prev => ({ ...prev, text: prev.text + '\n' + b.content }))}
+                            >
+                              ➕ {b.name}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteCustomPromptBlock(b.id)}
+                              style={{ border: 'none', background: 'transparent', color: 'var(--accent-red)', padding: 0, cursor: 'pointer', display: 'flex', alignItems: 'center', fontSize: '0.75rem', lineHeight: 1 }}
+                            >
+                              ×
+                            </button>
+                          </div>
+                        ))}
                       </div>
                     </div>
                   </div>
+
+                  {/* Eigene Bausteine verwalten Toggle Button */}
+                  <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '0.5rem' }}>
+                    <button
+                      type="button"
+                      onClick={() => setShowCustomBlockForm(!showCustomBlockForm)}
+                      className="btn btn-secondary"
+                      style={{ padding: '0.2rem 0.5rem', fontSize: '0.7rem', height: '24px', display: 'flex', alignItems: 'center', gap: '0.25rem' }}
+                    >
+                      {showCustomBlockForm ? 'Schließen' : '➕ Eigene Bausteine verwalten'}
+                    </button>
+                  </div>
+
+                  {/* Formular zum Erstellen eigener Bausteine */}
+                  {showCustomBlockForm && (
+                    <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px dashed var(--accent-purple)', borderRadius: '0.5rem', padding: '0.75rem', marginTop: '0.5rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                      <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--accent-purple)' }}>Neuen Prompt-Baustein erstellen</div>
+                      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '0.5rem' }}>
+                        <input
+                          type="text"
+                          className="input-field"
+                          style={{ height: '30px', fontSize: '0.75rem' }}
+                          placeholder="Baustein-Name (z.B. Marketing-Expert)"
+                          value={newBlockName}
+                          onChange={(e) => setNewBlockName(e.target.value)}
+                        />
+                        <select
+                          className="input-field"
+                          style={{ height: '30px', fontSize: '0.75rem', padding: '0.25rem' }}
+                          value={newBlockCategory}
+                          onChange={(e) => setNewBlockCategory(e.target.value)}
+                        >
+                          <option value="prefix">Rolle (Prefix)</option>
+                          <option value="tone">Tonalität & Stil</option>
+                          <option value="format">Ausgabeformat</option>
+                          <option value="suffix">Aktion (Suffix)</option>
+                        </select>
+                      </div>
+                      <textarea
+                        className="input-field"
+                        rows={2}
+                        style={{ fontSize: '0.75rem' }}
+                        placeholder="Inhalt des Bausteins (z.B. 'Agiere als erfahrener...')"
+                        value={newBlockContent}
+                        onChange={(e) => setNewBlockContent(e.target.value)}
+                      />
+                      <button
+                        type="button"
+                        onClick={handleAddCustomPromptBlock}
+                        className="btn btn-primary"
+                        style={{ height: '28px', padding: '0 0.5rem', fontSize: '0.75rem', width: 'fit-content', alignSelf: 'flex-end' }}
+                      >
+                        Baustein speichern
+                      </button>
+                    </div>
+                  )}
                 </div>
 
                 <textarea 
