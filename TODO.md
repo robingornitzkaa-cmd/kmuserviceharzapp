@@ -29,6 +29,10 @@
 - [x] **Phase v5 - Schritt 4:** Feature 4 (Sprach-zu-Text via Web Speech API) ➔ Erledigt.
 - [x] **Phase v5 - Schritt 5:** Feature 5 (Android WebView Wrapper & Push-Konzept) ➔ Erledigt.
 
+- [x] **Phase v6 - Schritt 1:** Eigene Prompt-Bausteine verwalten ➔ Erledigt.
+- [x] **Phase v6 - Schritt 2:** 100 % lokales Offline Notizen & Todos Widget ➔ Erledigt.
+- [x] **Phase v6 - Schritt 3:** Google Kalender/Drive OAuth & Live-Sync Konzept ➔ Erledigt.
+
 ## Später
 - [ ] Google Drive Live-Sync: Mock-Dateien-Liste durch echte Datei-Uploads ersetzen.
 - [ ] Google Kalender Live-Sync: Statt Mock-Events echte Tagestermine laden.
