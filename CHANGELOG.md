@@ -5,6 +5,7 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **Feature 2 v5 (Personalisierbares Dashboard):** Implementierung einer Layout-Steuerung am oberen Rand des Dashboards (Tab 1) mit einem "Layout anpassen" Einstellungs-Panel, über das Toggles für alle 6 Kern-Widgets (Finanz-Cockpit, E-Rechnungen, Quick Capture, Google Kalender, Habits, Wochen-Archiv) ein- und ausgeblendet werden können (inkl. LocalStorage-Persistierung).
 - **Feature 1 v5 (Prompt-Baukasten & Ollama KI-Optimierer):** Erweiterung des Prompt-Vaults im KI-Tab (Tab 4) um ein modulares Klick-Bausteinsystem (Prefix-Rollen, Tonalität, Ausgabeformat, Suffix-Aktionen) zur schnellen Prompt-Synthese sowie direkte Integration eines API-Optimierers für eine lokale Ollama-Instanz (`localhost:11434` / llama3) mit automatischem Fallback bei Offline-Betrieb.
 - **Feature 6 v4 (Supabase Backend-Integration & Cloud Sync):** Implementierung eines interaktiven Cloud Sync Managers im KI- & Docs-Tab (Tab 4) mit Verbindung-Statistik-Dashboard, Latenzanzeige, Datenzeilen-Monitoring für Tabellen (`contacts`, `tasks`, `inbox`, `client_tickets`) und animiertem Live-Terminal für Sync-Vorgänge.
 - **Feature 5 v4 (E-Rechnungs & Angebotssystem - ZUGFeRD/XRechnung):** Integriertes E-Rechnungs-Modul im Finanz-Cockpit (Tab 1). Erlaubt die Konfiguration von B2B-Angeboten und EN 16931 konformen E-Rechnungen (ZUGFeRD 2.0 Hybrid-PDF & XRechnung XML). Bietet einen PDF-Generator mit DATEV-Siegel, einen XML-Syntax-Validator und direkte Buchung an Lexoffice/DATEV.

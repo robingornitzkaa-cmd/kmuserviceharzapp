@@ -1,5 +1,31 @@
 # AI Worklog - Founder OS
 
+## 2026-07-12 19:42 – Personalisierbares Dashboard (Widget Manager) (Feature 2 v5)
+
+### Ziel
+Entwurf und Implementierung eines Widget-Layout-Managers im Dashboard (Tab 1), um dem Gründer die Möglichkeit zu geben, die Anordnung und Sichtbarkeit aller Dashboard-Karten individuell anzupassen und zu speichern.
+
+### Erstellt
+- **State-Zustände:** `dashboardWidgets` (Objekt zur Steuerung der Sichtbarkeit der Widgets: `financial`, `einvoice`, `quickcapture`, `calendar`, `habits`, `weekly`) und `isEditingDashboard` (Boolean zur Umschaltung des Layout-Bearbeitungsmodus) in `App.jsx`.
+- **Einstellungs-Panel:** Ein per Knopfdruck ("⚙️ Layout anpassen") einblendbares Konfigurations-Panel oberhalb des Dashboards. Bietet Toggles/Checkboxen zur Aktivierung und Deaktivierung der 6 Kern-Widgets.
+- **Konditionales Rendering:** Kapselung aller Dashboard-Karten (Finanz-Cockpit, E-Rechnungen, Quick Capture, Google Kalender, Tagesfokus & Habits sowie Wochen-Review) in die entsprechenden Zustandswrapper.
+
+### Geändert
+- [App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): Einbindung der Toggles-States, Layout-Editor-Panels, wrapper-Klammern für alle 6 Karten sowie localStorage persistence hooks (`f_dashboard_widgets`).
+- [TODO.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md) (Schritt 2 v5 als erledigt markiert).
+- [CHANGELOG.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md) (Ergänzt).
+
+### Warum
+Ermöglicht dem Nutzer ein sauberes, ablenkungsfreies Arbeiten. Widgets, die temporär nicht gebraucht werden (z.B. E-Rechnungen im Daily-Scrum), lassen sich per Mausklick unsichtbar schalten.
+
+### Testen
+1. Navigiere zu Tab 1 ("Dashboard") ➔ Ganz oben siehst du den neuen Balken *"Gründer-Cockpit: X von 6 Widgets aktiv"*.
+2. Klicke auf **"Layout anpassen"** ➔ Das Einstellungs-Panel öffnet sich.
+3. Klicke z. B. auf "Finanz-Cockpit & Pipeline" oder "E-Rechnung (ZUGFeRD)" zum Deaktivieren ➔ Die entsprechenden Karten verschwinden sofort flüssig vom Dashboard.
+4. Klicke auf "Layout fertigstellen". Lade die Seite neu ➔ Das angepasste Layout bleibt dank LocalStorage erhalten.
+
+---
+
 ## 2026-07-12 19:40 – Prompt-Baukasten & Ollama KI-Optimierer (Feature 1 v5)
 
 ### Ziel
