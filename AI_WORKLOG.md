@@ -1,5 +1,30 @@
 # AI Worklog - Founder OS
 
+## 2026-07-12 19:45 – NLP-Kalenderschnellerfassung & KI-Tagesplaner (Feature 3 v5)
+
+### Ziel
+Entwurf und Implementierung einer intelligenten NLP-Terminschnellerfassung im Kalender-Widget sowie einer KI-basierten Tagesplan-Synthese, die Termine und CRM-Pipeline-Daten in tägliche Prioritäten (Tagesfokus) übersetzt.
+
+### Erstellt
+- **State-Zustände:** `calendarEvents` (initialisiert mit 3 Standard-Terminen und über localStorage synchronisiert) und `nlpCalendarInput` (Text zur Schnellerfassung) in `App.jsx`.
+- **NLP Kalender-Parser:** `handleNlpCalendarSubmit` liest Texteingaben aus, filtert Zeit- und Datumsangaben (z. B. "morgen", "heute", Wochentage wie "Montag" sowie Uhrzeiten wie "14 Uhr" oder "15:30") und trägt das Event automatisch am passenden Tag ein.
+- **KI-Tagesplaner-Synthese:** `generateDailyAiTasks` liest die heutigen Kalendertermine und CRM-Pipeline-Kontakte (Status "lead" oder "kontakt") aus und generiert 3 priorisierte, konkrete Fokus-Tagesaufgaben für den Habit-Fokus.
+
+### Geändert
+- [App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): Einbindung der Kalender-States, der NLP-Parserlogik, des "KI-Tagesplan" Buttons im Tagesfokus-Widget sowie der localStorage-Synchronisation (`f_calendar_events`).
+- [TODO.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md) (Schritt 3 v5 als erledigt markiert).
+- [CHANGELOG.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md) (Ergänzt).
+
+### Warum
+Erleichtert die Erfassung von Tagesterminen im Verkaufsgespräch oder Arbeitsalltag per Freitext-Eingabe. Die KI-Tagesplaner-Synthese löst das Problem des unstrukturierten Tagesbeginns, indem sie CRM-Aktivitäten und Termine direkt in handlungsorientierte To-Dos gießt.
+
+### Testen
+1. Navigiere zu Tab 1 ("Dashboard") ➔ Widget **"Google Kalender (NLP)"**.
+2. Tippe z.B. *"Morgen 14 Uhr Telefonat Müller"* in die Eingabe und klicke auf "Eintragen" ➔ Ein neuer Termin wird für morgen 14:00 Uhr generiert.
+3. Klicke im Tagesfokus-Widget daneben auf **"⚡ KI-Tagesplan"** ➔ Dein Tagesfokus füllt sich automatisch mit Aufgaben basierend auf deinen heutigen Kalenderterminen und den ersten CRM-Kundenkontakten.
+
+---
+
 ## 2026-07-12 19:42 – Personalisierbares Dashboard (Widget Manager) (Feature 2 v5)
 
 ### Ziel
