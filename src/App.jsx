@@ -134,9 +134,9 @@ const INITIAL_CONTENT = [
 ];
 
 const INITIAL_DOCS = [
-  { id: 'd1', title: 'Businessplan - KMU Service Harz', url: '#' },
-  { id: 'd2', title: 'Preispakete & ROI-Modelle 2026', url: '#' },
-  { id: 'd3', title: 'Kooperationsvertrag - Steuerberater', url: '#' }
+  { id: 'd1', title: 'Businessplan - KMU Service Harz.txt', content: 'Dies ist der offizielle Businessplan für KMU Service Harz. Wir bieten maßgeschneiderte Digitalisierungslösungen für KMUs im Harz an. Zielgruppe: Gärtnereien, Dachdecker, Pflegedienste.', status: 'synced', url: '#' },
+  { id: 'd2', title: 'Preispakete & ROI-Modelle 2026.txt', content: 'Übersicht der Tarife:\n- Basic CRM: 1.200€ Setup\n- Advanced Auto: 2.500€ Setup\nDer ROI-Hebel bei automatisierten Prozessen liegt im Schnitt bei 4.2x innerhalb des ersten Jahres.', status: 'synced', url: '#' },
+  { id: 'd3', title: 'Kooperationsvertrag - Steuerberater.txt', content: 'Kooperationsvereinbarung zwischen KMU Service Harz und der Steuerberatungskanzlei Harz. Regelmäßige Datenübergabe via DATEV-Schnittstellen.', status: 'synced', url: '#' }
 ];
 
 const INITIAL_SOP_TEMPLATES = [
@@ -353,7 +353,18 @@ function App() {
   const [showCustomBlockForm, setShowCustomBlockForm] = useState(false);
   const [newBlockName, setNewBlockName] = useState('');
   const [newBlockCategory, setNewBlockCategory] = useState('prefix'); // 'prefix', 'tone', 'format', 'suffix'
+
+  // Phase v7 Editor States
+  const [editingDocId, setEditingDocId] = useState(null);
+  const [editorTitle, setEditorTitle] = useState('');
+  const [editorContent, setEditorContent] = useState('');
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [newBlockContent, setNewBlockContent] = useState('');
+
+  // Phase v8 States
+  const [promptSearch, setPromptSearch] = useState('');
+  const [promptCategoryFilter, setPromptCategoryFilter] = useState('all');
+  const [crmStageFilter, setCrmStageFilter] = useState('all');
 
   // CRM Detail Drawer State
   const [selectedContactId, setSelectedContactId] = useState(null);
@@ -1928,24 +1939,156 @@ ${original}
     }, 850);
   };
 
-  // Google Drive Simulation (Upload)
+  // Phase v7 Editor & Sync Handlers
+  const handleOpenDocInEditor = (docId) => {
+    if (!docId) {
+      setEditingDocId(null);
+      setEditorTitle('unbenannt.txt');
+      setEditorContent('');
+    } else {
+      const doc = docs.find(d => d.id === docId);
+      if (!doc) return;
+      setEditingDocId(doc.id);
+      setEditorTitle(doc.title);
+      setEditorContent(doc.content || '');
+    }
+    setIsEditorOpen(true);
+  };
+
+  const handleSaveDocFromEditor = () => {
+    if (!editorTitle.trim()) {
+      alert("Bitte einen Dateinamen eingeben.");
+      return;
+    }
+    const formattedTitle = /\.[a-zA-Z0-9]+$/.test(editorTitle) ? editorTitle : editorTitle + '.txt';
+
+    if (editingDocId === null) {
+      const newDoc = {
+        id: 'd_' + Date.now(),
+        title: formattedTitle,
+        content: editorContent,
+        status: 'local',
+        url: '#'
+      };
+      setDocs(prev => [newDoc, ...prev]);
+    } else {
+      setDocs(prev => prev.map(doc => {
+        if (doc.id === editingDocId) {
+          return {
+            ...doc,
+            title: formattedTitle,
+            content: editorContent,
+            status: doc.status === 'synced' ? 'modified' : doc.status
+          };
+        }
+        return doc;
+      }));
+    }
+    setIsEditorOpen(false);
+    setEditingDocId(null);
+    setEditorTitle('');
+    setEditorContent('');
+  };
+
+  const triggerManualGoogleDriveSync = () => {
+    if (notebookLmSyncStatus === 'syncing') return;
+    
+    const pendingDocs = docs.filter(d => d.status === 'local' || d.status === 'modified');
+    if (pendingDocs.length === 0) {
+      alert("Alle Dokumente sind bereits auf dem neuesten Stand in Google Drive!");
+      return;
+    }
+
+    setNotebookLmSyncStatus('syncing');
+    setNotebookLmProgress(0);
+    setNotebookLmSyncStep('Verbindung mit Google Drive herstellen...');
+
+    const steps = [
+      { progress: 15, text: 'Google Drive Ordner "Founder OS" autorisieren...' },
+      ...pendingDocs.flatMap((doc, i) => [
+        { progress: 20 + i * 20, text: `Lese Datei ${doc.title} (Status: ${doc.status === 'local' ? 'Neu' : 'Bearbeitet'})...` },
+        { progress: 30 + i * 20, text: `Übertrage Datenstrom für ${doc.title} in Google Drive...` }
+      ]),
+      { progress: 85, text: 'Google Drive Datei-Indizierung abschließen...' },
+      { progress: 95, text: 'NotebookLM-Kopplung aktualisieren (Datenquellen neu einlesen)...' }
+    ];
+
+    let currentStep = 0;
+    const interval = setInterval(() => {
+      if (currentStep < steps.length - 1) {
+        setNotebookLmSyncStep(steps[currentStep].text);
+        setNotebookLmProgress(steps[currentStep].progress);
+        currentStep++;
+      } else {
+        clearInterval(interval);
+        
+        setDocs(prev => prev.map(d => ({ ...d, status: 'synced' })));
+        
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        const dateStr = 'Heute, ' + timeStr;
+        
+        setNotebookLmLastSync(dateStr);
+        setNotebookLmSyncStatus('synced');
+        setNotebookLmSyncStep('');
+        alert(`🎉 Google Drive erfolgreich aktualisiert! ${pendingDocs.length} Datei(en) wurden synchronisiert. NotebookLM ist bereit.`);
+      }
+    }, 900);
+  };
+
   const handleFileUploadMock = () => {
-    const fileTitle = prompt("Dateiname für den Upload in Google Drive:");
-    if (!fileTitle) return;
+    handleOpenDocInEditor(null);
+  };
+
+  const downloadDocAsFile = (doc, e) => {
+    e.stopPropagation();
+    const element = document.createElement("a");
+    const file = new Blob([doc.content || ''], {type: 'text/plain;charset=utf-8'});
+    element.href = URL.createObjectURL(file);
+    element.download = doc.title;
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+  };
+
+  const handleDeleteDoc = (docId, e) => {
+    e.stopPropagation();
+    if (!confirm("Möchtest du dieses Dokument wirklich löschen?")) return;
+    setDocs(prev => prev.filter(d => d.id !== docId));
+  };
+
+  // Phase v8 Handlers
+  const handleResetDemoData = () => {
+    if (!confirm("Möchtest du wirklich alle Daten und Einstellungen auf den Werkszustand zurücksetzen? Alle deine persönlichen Anpassungen, Widgets, Notizen und Termine gehen dabei verloren.")) return;
+    localStorage.clear();
+    window.location.reload();
+  };
+
+  const insertMarkdownIntoNotes = (syntax) => {
+    const textarea = document.getElementById('dash-scratchpad');
+    if (!textarea) return;
     
-    const formattedTitle = /\.[a-zA-Z0-9]+$/.test(fileTitle) ? fileTitle : fileTitle + '.pdf';
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = textarea.value;
+    const selected = text.substring(start, end);
     
-    const newDoc = {
-      id: 'd_' + Date.now(),
-      title: formattedTitle,
-      url: 'https://docs.google.com'
-    };
+    let replacement = "";
+    if (syntax === 'bold') {
+      replacement = `**${selected || 'Fettgedruckter Text'}**`;
+    } else if (syntax === 'italic') {
+      replacement = `*${selected || 'Kursiver Text'}*`;
+    } else if (syntax === 'list') {
+      replacement = `\n- ${selected || 'Listeneintrag'}`;
+    }
     
-    setDocs([newDoc, ...docs]);
+    const newText = text.substring(0, start) + replacement + text.substring(end);
+    setDashNotes(newText);
     
     setTimeout(() => {
-      triggerNotebookLmSync(formattedTitle);
-    }, 600);
+      textarea.focus();
+      textarea.setSelectionRange(start + replacement.length, start + replacement.length);
+    }, 50);
   };
 
   // SOP Vorlagen kopieren
@@ -2195,6 +2338,31 @@ ${original}
             <span className="brand-badge">{clientPortalMode ? mask(selectedClientCompany, 'company') : 'KMU Service Harz'}</span>
           </div>
           
+          <button
+            type="button"
+            className="btn btn-secondary"
+            style={{
+              padding: '0.35rem 0.75rem',
+              fontSize: '0.75rem',
+              background: 'rgba(239, 68, 68, 0.05)',
+              borderColor: 'rgba(239, 68, 68, 0.2)',
+              color: '#f87171',
+              marginRight: '0.35rem'
+            }}
+            onClick={handleResetDemoData}
+            title="Löscht alle vorgenommenen Änderungen und setzt die App komplett auf den Werkszustand zurück."
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(239, 68, 68, 0.15)';
+              e.currentTarget.style.borderColor = 'rgba(239, 68, 68, 0.4)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(239, 68, 68, 0.05)';
+              e.currentTarget.style.borderColor = 'rgba(239, 68, 68, 0.2)';
+            }}
+          >
+            🔄 Reset
+          </button>
+
           <button 
             className={`btn ${showcaseMode ? 'btn-primary' : 'btn-secondary'}`}
             style={{ 
@@ -3181,16 +3349,47 @@ ${original}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-secondary)' }}>Schnelle Notizen / Entwürfe</label>
-                    <button 
-                      type="button" 
-                      onClick={() => setDashNotes('')} 
-                      className="btn" 
-                      style={{ padding: '0.15rem 0.45rem', fontSize: '0.65rem', background: 'rgba(239, 68, 68, 0.05)', color: 'var(--accent-red)', border: '1px solid rgba(239, 68, 68, 0.15)', height: '22px' }}
-                    >
-                      Löschen
-                    </button>
+                    <div style={{ display: 'flex', gap: '0.25rem', alignItems: 'center' }}>
+                      <button
+                        type="button"
+                        onClick={() => insertMarkdownIntoNotes('bold')}
+                        className="btn btn-secondary"
+                        style={{ padding: '0.1rem 0.35rem', fontSize: '0.65rem', height: '22px', fontWeight: 'bold' }}
+                        title="Fettgedruckt"
+                      >
+                        B
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => insertMarkdownIntoNotes('italic')}
+                        className="btn btn-secondary"
+                        style={{ padding: '0.1rem 0.35rem', fontSize: '0.65rem', height: '22px', fontStyle: 'italic' }}
+                        title="Kursiv"
+                      >
+                        I
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => insertMarkdownIntoNotes('list')}
+                        className="btn btn-secondary"
+                        style={{ padding: '0.1rem 0.35rem', fontSize: '0.65rem', height: '22px' }}
+                        title="Aufzählungspunkt"
+                      >
+                        • Liste
+                      </button>
+                      <span style={{ color: 'rgba(255,255,255,0.15)', margin: '0 0.15rem' }}>|</span>
+                      <button 
+                        type="button" 
+                        onClick={() => setDashNotes('')} 
+                        className="btn" 
+                        style={{ padding: '0.15rem 0.45rem', fontSize: '0.65rem', background: 'rgba(239, 68, 68, 0.05)', color: 'var(--accent-red)', border: '1px solid rgba(239, 68, 68, 0.15)', height: '22px' }}
+                      >
+                        Löschen
+                      </button>
+                    </div>
                   </div>
                   <textarea
+                    id="dash-scratchpad"
                     className="input-field"
                     style={{ flexGrow: 1, minHeight: '160px', fontFamily: 'inherit', fontSize: '0.85rem', lineHeight: '1.4', background: 'rgba(0,0,0,0.2)', resize: 'none' }}
                     placeholder="Tippe hier deine Gedanken, Entwürfe, Telefonnummern oder Mitschriften ein. Sie werden sofort lokal gespeichert..."
@@ -3610,8 +3809,53 @@ ${original}
                 <button type="submit" className="btn btn-primary" style={{ gridColumn: 'span 1' }}><Plus size={16} /> Neu</button>
               </form>
 
+              {/* CRM Schnell-Filter Badges */}
+              <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.03)', paddingBottom: '0.75rem' }}>
+                {[
+                  { key: 'all', label: 'Alle', count: contacts.length },
+                  { key: 'erstkontakt', label: 'Erstkontakt', count: contacts.filter(c => c.stage === 'erstkontakt').length },
+                  { key: 'gespräch', label: 'Gespräch', count: contacts.filter(c => c.stage === 'gespräch').length },
+                  { key: 'angebot', label: 'Angebot', count: contacts.filter(c => c.stage === 'angebot').length },
+                  { key: 'umsetzung', label: 'Umsetzung', count: contacts.filter(c => c.stage === 'umsetzung').length }
+                ].map(pill => {
+                  const isActive = crmStageFilter === pill.key;
+                  return (
+                    <button
+                      key={pill.key}
+                      type="button"
+                      onClick={() => setCrmStageFilter(pill.key)}
+                      style={{
+                        padding: '0.25rem 0.6rem',
+                        fontSize: '0.75rem',
+                        fontWeight: isActive ? 700 : 500,
+                        borderRadius: '1rem',
+                        border: isActive ? '1px solid var(--accent-purple)' : '1px solid var(--border-color)',
+                        background: isActive ? 'rgba(139, 92, 246, 0.15)' : 'rgba(255,255,255,0.02)',
+                        color: isActive ? 'var(--accent-purple)' : 'var(--text-secondary)',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.25rem',
+                        transition: 'all 0.15s ease'
+                      }}
+                    >
+                      {pill.label} 
+                      <span style={{ 
+                        fontSize: '0.65rem', 
+                        padding: '0.05rem 0.3rem', 
+                        borderRadius: '0.5rem', 
+                        background: isActive ? 'var(--accent-purple)' : 'rgba(255,255,255,0.08)',
+                        color: isActive ? 'white' : 'var(--text-muted)'
+                      }}>
+                        {pill.count}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
               <div className="contact-list">
-                {contacts.map(c => {
+                {contacts.filter(c => crmStageFilter === 'all' || c.stage === crmStageFilter).map(c => {
                   const warning = isLeadInactive(c.lastContact) && c.stage !== 'umsetzung';
                   return (
                     <div key={c.id} className={`contact-card ${warning ? 'warning-lead' : ''}`}>
@@ -4125,8 +4369,61 @@ ${original}
                 </div>
               </form>
 
+              {/* Prompt-Suche & Filter */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.25rem', padding: '0.75rem', background: 'rgba(255,255,255,0.01)', border: '1px solid var(--border-color)', borderRadius: '0.5rem' }}>
+                <input
+                  type="text"
+                  className="input-field"
+                  style={{ height: '32px', fontSize: '0.8rem' }}
+                  placeholder="Prompts durchsuchen (Titel oder Inhalt)..."
+                  value={promptSearch}
+                  onChange={(e) => setPromptSearch(e.target.value)}
+                />
+                <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
+                  {[
+                    { key: 'all', label: 'Alle' },
+                    { key: 'Sales', label: 'Sales' },
+                    { key: 'Marketing', label: 'Marketing' },
+                    { key: 'Code', label: 'Code' },
+                    { key: 'Strategie', label: 'Strategie' }
+                  ].map(cat => {
+                    const isActive = promptCategoryFilter === cat.key;
+                    const count = cat.key === 'all' ? prompts.length : prompts.filter(p => p.category === cat.key).length;
+                    return (
+                      <button
+                        key={cat.key}
+                        type="button"
+                        onClick={() => setPromptCategoryFilter(cat.key)}
+                        style={{
+                          padding: '0.2rem 0.5rem',
+                          fontSize: '0.7rem',
+                          borderRadius: '0.25rem',
+                          border: isActive ? '1px solid var(--accent-cyan)' : '1px solid var(--border-color)',
+                          background: isActive ? 'rgba(6, 182, 212, 0.15)' : 'rgba(255, 255, 255, 0.02)',
+                          color: isActive ? 'var(--accent-cyan)' : 'var(--text-secondary)',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.2rem',
+                          transition: 'all 0.15s ease'
+                        }}
+                      >
+                        {cat.label}
+                        <span style={{ fontSize: '0.6rem', color: isActive ? 'white' : 'var(--text-muted)' }}>
+                          ({count})
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
               <div className="prompt-vault">
-                {prompts.map(p => (
+                {prompts.filter(p => {
+                  const matchesCategory = promptCategoryFilter === 'all' || p.category === promptCategoryFilter;
+                  const matchesSearch = p.title.toLowerCase().includes(promptSearch.toLowerCase()) || p.text.toLowerCase().includes(promptSearch.toLowerCase());
+                  return matchesCategory && matchesSearch;
+                }).map(p => (
                   <div key={p.id} className="prompt-card">
                     <div className="prompt-head">
                       <span className="prompt-title">{p.title}</span>
@@ -4211,30 +4508,97 @@ ${original}
 
               {/* Wissens-Hub & Google Docs */}
               <div className="card">
-                <div className="card-header">
-                  <h2 className="card-title"><FileText size={20} className="text-cyan-500" /> Wissens-Hub & Google Drive</h2>
+                <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <h2 className="card-title"><FileText size={20} className="text-cyan-500" /> Wissens-Hub (Dokumente)</h2>
+                  <button
+                    type="button"
+                    onClick={() => handleOpenDocInEditor(null)}
+                    className="btn btn-primary"
+                    style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.25rem', height: '28px' }}
+                  >
+                    ➕ Neues Dokument erstellen
+                  </button>
                 </div>
                 
-                <div className="upload-zone" onClick={handleFileUploadMock}>
-                  <Upload size={24} />
-                  <p style={{ fontSize: '0.875rem', fontWeight: 600 }}>PDFs oder Bilder hochladen</p>
-                  <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Wird direkt in den festgelegten "Founder OS" Google Drive Ordner geladen</p>
+                <div className="upload-zone" onClick={() => handleOpenDocInEditor(null)} style={{ border: '1px dashed var(--accent-cyan)', background: 'rgba(6, 182, 212, 0.02)', padding: '1rem', textAlign: 'center', cursor: 'pointer', borderRadius: '0.5rem', marginBottom: '1rem' }}>
+                  <Upload size={20} style={{ color: 'var(--accent-cyan)', marginBottom: '0.25rem' }} />
+                  <p style={{ fontSize: '0.8rem', fontWeight: 600, margin: 0 }}>Neues Dokument im Editor verfassen</p>
+                  <p style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', margin: 0 }}>Schreibe Texte oder kopiere Inhalte direkt in die App</p>
                 </div>
 
                 <div className="drive-section">
-                  <h3 style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', textTransform: 'uppercase', marginBottom: '0.5rem', letterSpacing: '0.05em' }}>
-                    Google Docs im Founder OS Ordner
+                  <h3 style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', textTransform: 'uppercase', marginBottom: '0.5rem', letterSpacing: '0.05em' }}>
+                    Dokumenten-Ablage (Lokal & Google Drive)
                   </h3>
-                  <div className="docs-list">
-                    {docs.map(doc => (
-                      <a key={doc.id} href={doc.url} className="doc-link-item" target="_blank" rel="noreferrer">
-                        <div className="doc-info">
-                          <FileText size={16} />
-                          <span className="doc-title">{mask(doc.title, 'inbox')}</span>
+                  <div className="docs-list" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    {docs.map(doc => {
+                      let badgeBg = 'rgba(59, 130, 246, 0.15)';
+                      let badgeColor = '#60a5fa';
+                      let badgeText = '☁️ Nur Lokal';
+
+                      if (doc.status === 'synced') {
+                        badgeBg = 'rgba(16, 185, 129, 0.15)';
+                        badgeColor = '#34d399';
+                        badgeText = '✅ Synchronisiert';
+                      } else if (doc.status === 'modified') {
+                        badgeBg = 'rgba(245, 158, 11, 0.15)';
+                        badgeColor = '#fbbf24';
+                        badgeText = '⚠️ Bearbeitet';
+                      }
+
+                      return (
+                        <div 
+                          key={doc.id} 
+                          className="doc-link-item"
+                          onClick={() => handleOpenDocInEditor(doc.id)}
+                          style={{ 
+                            display: 'flex', 
+                            justifyContent: 'space-between', 
+                            alignItems: 'center', 
+                            padding: '0.6rem 0.75rem', 
+                            background: 'rgba(255,255,255,0.02)', 
+                            border: '1px solid var(--border-color)', 
+                            borderRadius: '0.5rem',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s'
+                          }}
+                        >
+                          <div className="doc-info" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            <FileText size={16} className="text-cyan-500" />
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                              <span className="doc-title" style={{ fontSize: '0.8rem', fontWeight: 600 }}>{mask(doc.title, 'inbox')}</span>
+                              <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textAlign: 'left' }}>
+                                {doc.content ? `${doc.content.substring(0, 45)}...` : 'Kein Inhalt'}
+                              </span>
+                            </div>
+                          </div>
+
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            <span style={{ fontSize: '0.65rem', fontWeight: 600, padding: '0.15rem 0.35rem', borderRadius: '0.25rem', background: badgeBg, color: badgeColor }}>
+                              {badgeText}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={(e) => downloadDocAsFile(doc, e)}
+                              className="btn-icon-only"
+                              title="Als Textdatei herunterladen"
+                              style={{ padding: '0.2rem', background: 'transparent' }}
+                            >
+                              <Download size={13} className="text-cyan-500" />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={(e) => handleDeleteDoc(doc.id, e)}
+                              className="btn-icon-only"
+                              title="Dokument löschen"
+                              style={{ padding: '0.2rem', background: 'transparent' }}
+                            >
+                              <Trash2 size={13} className="text-red-500" />
+                            </button>
+                          </div>
                         </div>
-                        <ExternalLink size={12} className="text-muted" />
-                      </a>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
               </div>
@@ -4299,11 +4663,19 @@ ${original}
                     </div>
                   )}
 
+                  {docs.filter(d => d.status === 'local' || d.status === 'modified').length > 0 && (
+                    <div style={{ fontSize: '0.75rem', color: 'var(--accent-yellow)', background: 'rgba(245, 158, 11, 0.05)', border: '1px solid rgba(245, 158, 11, 0.15)', borderRadius: '0.35rem', padding: '0.5rem', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                      <AlertTriangle size={14} />
+                      Es gibt {docs.filter(d => d.status === 'local' || d.status === 'modified').length} Dokumente mit ausstehenden Änderungen.
+                    </div>
+                  )}
+
                   <button 
-                    onClick={() => triggerNotebookLmSync()} 
+                    type="button"
+                    onClick={triggerManualGoogleDriveSync} 
                     disabled={notebookLmSyncStatus === 'syncing'} 
                     className="btn btn-secondary"
-                    style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem' }}
+                    style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem', border: docs.filter(d => d.status === 'local' || d.status === 'modified').length > 0 ? '1px solid var(--accent-purple)' : '1px solid var(--border-color)' }}
                   >
                     <svg 
                       className={notebookLmSyncStatus === 'syncing' ? 'spin' : ''} 
@@ -4318,7 +4690,7 @@ ${original}
                     >
                       <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
                     </svg>
-                    {notebookLmSyncStatus === 'syncing' ? 'Synchronisiere Wissensbasis...' : 'NotebookLM jetzt synchronisieren'}
+                    {notebookLmSyncStatus === 'syncing' ? 'Synchronisiere Drive & NotebookLM...' : 'Google Drive & NotebookLM aktualisieren'}
                   </button>
                 </div>
               </div>
@@ -5577,6 +5949,98 @@ ${original}
           )}
         </div>
       </div>
+
+      {/* Dokumenten-Editor Modal (Mini-Word) */}
+      {isEditorOpen && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0, 0, 0, 0.75)',
+          backdropFilter: 'blur(4px)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 1000,
+          padding: '1.5rem'
+        }}>
+          <div className="card" style={{
+            width: '100%',
+            maxWidth: '650px',
+            background: 'var(--card-bg)',
+            border: '1px solid var(--border-color)',
+            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1rem',
+            padding: '1.5rem',
+            margin: 0
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.75rem' }}>
+              <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 700, color: 'var(--accent-cyan)' }}>
+                {editingDocId ? 'Dokument bearbeiten (Mini-Word)' : 'Neues Dokument erstellen'}
+              </h3>
+              <button 
+                type="button"
+                onClick={() => setIsEditorOpen(false)} 
+                style={{ background: 'transparent', border: 'none', color: 'var(--text-secondary)', fontSize: '1.5rem', cursor: 'pointer', lineHeight: 1, padding: 0 }}
+              >
+                ×
+              </button>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+              <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)' }}>Dateiname (z.B. sop_onboarding.txt)</label>
+              <input
+                type="text"
+                className="input-field"
+                placeholder="dokumentenname.txt"
+                value={editorTitle}
+                onChange={(e) => setEditorTitle(e.target.value)}
+              />
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', flexGrow: 1 }}>
+              <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)' }}>Textinhalt (Schreiben oder Kopieren)</label>
+              <textarea
+                className="input-field"
+                rows={12}
+                style={{
+                  fontFamily: 'inherit',
+                  fontSize: '0.85rem',
+                  lineHeight: '1.5',
+                  resize: 'vertical',
+                  background: 'rgba(0, 0, 0, 0.25)'
+                }}
+                placeholder="Füge deinen Text hier ein oder schreibe ein neues Dokument..."
+                value={editorContent}
+                onChange={(e) => setEditorContent(e.target.value)}
+              />
+            </div>
+
+            <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end', marginTop: '0.5rem' }}>
+              <button 
+                type="button" 
+                onClick={() => setIsEditorOpen(false)} 
+                className="btn btn-secondary"
+                style={{ height: '36px' }}
+              >
+                Abbrechen
+              </button>
+              <button 
+                type="button" 
+                onClick={handleSaveDocFromEditor} 
+                className="btn btn-primary"
+                style={{ height: '36px', display: 'flex', alignItems: 'center', gap: '0.35rem' }}
+              >
+                💾 Speichern
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
