@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { registerPlugin, Capacitor } from '@capacitor/core';
+
+const WidgetBridge = registerPlugin('WidgetBridge');
 import { jsPDF } from 'jspdf';
 import { 
   LayoutDashboard, 
@@ -533,6 +536,20 @@ function App() {
   useEffect(() => {
     localStorage.setItem('f_dash_todos', JSON.stringify(dashTodos));
   }, [dashTodos]);
+
+  // Phase v9: Sync to Android Widget
+  useEffect(() => {
+    if (Capacitor.isNativePlatform()) {
+      try {
+        WidgetBridge.updateWidgetData({
+          notes: dashNotes,
+          todos: JSON.stringify(dashTodos)
+        });
+      } catch (e) {
+        console.error("Widget update failed", e);
+      }
+    }
+  }, [dashNotes, dashTodos]);
   useEffect(() => {
     localStorage.setItem('f_google_connected', String(googleConnected));
   }, [googleConnected]);

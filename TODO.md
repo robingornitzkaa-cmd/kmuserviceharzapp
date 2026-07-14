@@ -41,6 +41,10 @@
 - [x] **Phase v8 - Schritt 3:** CRM-Schnellfilter nach Status-Pills ➔ Erledigt.
 - [x] **Phase v8 - Schritt 4:** Markdown-Formatierungshilfe für Offline-Notizen ➔ Erledigt.
 
+- [x] **Phase v9 - Schritt 1:** Native Android-Plattform via Capacitor initialisiert ➔ Erledigt.
+- [x] **Phase v9 - Schritt 2:** WidgetBridge Custom Capacitor Plugin & Activity Registrierung ➔ Erledigt.
+- [x] **Phase v9 - Schritt 3:** Natives Android-Homescreen-Widget (Java & Layout XML) implementiert ➔ Erledigt.
+
 ## Später
 - [ ] Google Drive Live-Sync: Mock-Dateien-Liste durch echte Datei-Uploads ersetzen.
 - [ ] Google Kalender Live-Sync: Statt Mock-Events echte Tagestermine laden.

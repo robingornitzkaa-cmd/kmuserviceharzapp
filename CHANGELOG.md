@@ -5,6 +5,7 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **Feature 1 v9 (Android App & native Startbildschirm-Widget):** Vollwertige Integration der nativen Android-Plattform via Capacitor. Enthält ein elegantes, dunkles native Android-Homescreen-Widget ("Founder OS • Notizen") zur offline-fähigen Live-Anzeige deiner Notizen und Aufgaben, gekoppelt über ein custom Java-Plugin (WidgetBridge).
 - **Feature 1 v8 (Prompt-Suche & Filter):** Live-Suchzeile und Kategorieregister im Prompt-Vault (Tab 4). Ermöglicht die Filterung nach Begriffen oder Kategorien (Sales, Marketing, Code, Strategie) inklusive Belegzählungen.
 - **Feature 2 v8 (Werksreset im Header):** Rote "Reset"-Schaltfläche im App-Header, die alle persönlichen Daten im LocalStorage löscht und die App augenblicklich auf den Standard-Demozustand zurücksetzt.
 - **Feature 3 v8 (CRM-Schnellfilter):** Filterleiste mit interaktiven Status-Schaltflächen über der Kundenliste im CRM-Tab (Tab 3). Zeigt Leads nach Vertriebsstufen und die jeweilige Anzahl an.

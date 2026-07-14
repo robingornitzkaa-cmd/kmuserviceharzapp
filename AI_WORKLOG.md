@@ -1,5 +1,44 @@
 # AI Worklog - Founder OS
 
+## 2026-07-14 09:00 – Android-Plattform & Native Homescreen-Widget (Phase v9)
+
+### Ziel
+Verpackung der Webanwendung als native Android-App mittels Capacitor und Bereitstellung eines echten, nativen Startbildschirm-Widgets ("Founder OS • Notizen") zur offline-fähigen Anzeige von Notizen und Aufgaben.
+
+### Erstellt
+- [WidgetBridgePlugin.java](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/android/app/src/main/java/de/kmuserviceharz/app/WidgetBridgePlugin.java): Custom Capacitor Plugin zur SharedPreferences-Übermittlung.
+- [MyWidgetProvider.java](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/android/app/src/main/java/de/kmuserviceharz/app/MyWidgetProvider.java): Nativer Android BroadcastReceiver zur Formatierung und Aktualisierung der Widget-Anzeige.
+- [widget_layout.xml](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/android/app/src/main/res/layout/widget_layout.xml): Android Layout-Ressource für das Startbildschirm-Widget.
+- [widget_info.xml](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/android/app/src/main/res/xml/widget_info.xml): Widget-Metadaten für Dimensionen und Skalierung.
+- [widget_background.xml](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/android/app/src/main/res/drawable/widget_background.xml): Form-Design für den dunklen Widget-Kartenhintergrund.
+- [widget_dot.xml](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/android/app/src/main/res/drawable/widget_dot.xml): Kreisförmiger Akzentpunkt in Cyan.
+
+### Geändert
+- [App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): Registrierung des Plugins `WidgetBridge` und Einbau des reactive `useEffect`-Hooks zur Übertragung geänderter Notizen und To-Dos.
+- [AndroidManifest.xml](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/android/app/src/main/AndroidManifest.xml): Registrierung des Widgets.
+- [package.json](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/package.json): Installation von `@capacitor/core`, `@capacitor/cli` und `@capacitor/android`.
+
+### Warum
+Ermöglicht dem Gründer den schnellen Zugriff auf seine wichtigsten Gedanken und Aufgaben direkt auf dem Handy-Startbildschirm, ohne die App erst starten zu müssen – voll funktionsfähig im Offline-Betrieb.
+
+---
+
+## 2026-07-14 08:20 – Usability-Erweiterungen & Reset (Phase v8)
+
+### Ziel
+Erhöhung des Bedienkomforts durch Suche/Filter bei Prompts und Kunden sowie ein einfacher Werksreset und Markdown-Formatierhilfen.
+
+### Geändert
+- [App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx):
+  - Einbau von `promptSearch` und `promptCategoryFilter` zur Prompt-Live-Filterung.
+  - Implementierung von `crmStageFilter` und Badge-Zählern im CRM-Tab.
+  - Hinzufügen der Formatierungsbrücke `insertMarkdownIntoNotes` im Notizenblock.
+  - Integration eines roten `Reset`-Buttons im Header zum Zurücksetzen des `localStorage`.
+- [TODO.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md): Dokumentation der Meilensteine v7 und v8.
+- [CHANGELOG.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md): Changelog-Einträge für Phase v8.
+
+---
+
 ## 2026-07-12 20:14 – Dokumenten-Editor (Mini-Word) & Manueller Drive-Sync (Phase v7)
 
 ### Ziel
