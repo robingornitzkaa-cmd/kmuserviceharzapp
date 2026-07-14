@@ -5,6 +5,10 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **Feature 1 v8 (Prompt-Suche & Filter):** Live-Suchzeile und Kategorieregister im Prompt-Vault (Tab 4). Ermöglicht die Filterung nach Begriffen oder Kategorien (Sales, Marketing, Code, Strategie) inklusive Belegzählungen.
+- **Feature 2 v8 (Werksreset im Header):** Rote "Reset"-Schaltfläche im App-Header, die alle persönlichen Daten im LocalStorage löscht und die App augenblicklich auf den Standard-Demozustand zurücksetzt.
+- **Feature 3 v8 (CRM-Schnellfilter):** Filterleiste mit interaktiven Status-Schaltflächen über der Kundenliste im CRM-Tab (Tab 3). Zeigt Leads nach Vertriebsstufen und die jeweilige Anzahl an.
+- **Feature 4 v8 (Markdown-Toolbar für Notizen):** Usability-Toolbar (Fett, Kursiv, Listenbullet) über dem Offline-Notizen-Widget auf dem Dashboard (Tab 1), um Textpassagen direkt mit Markdown-Syntax auszustatten.
 - **Feature 1 v7 (Integrierter Dokumenten-Editor / Mini-Word):** Schreib- und Editor-Overlay zur Erstellung und Modifikation von Textdokumenten direkt in der App. Bietet Offline-Downloads als Textdatei und einfaches Löschen per Mülleimer-Symbol.
 - **Feature 2 v7 (Manueller Google Drive Sync):** Implementierung einer Synchronisations-Schaltfläche ("Google Drive & NotebookLM aktualisieren") mit Live-Fortschrittsanimation im Terminal zur kontrollierten Übertragung bearbeiteter (⚠️) oder neuer (☁️) Dokumente an den NotebookLM-Speicherordner.
 - **Feature 1 v6 (Eigene Prompt-Bausteine verwalten):** Bereitstellung einer Verwaltungsoberfläche ("➕ Eigene Bausteine verwalten") im KI-Baukasten (Tab 4). Ermöglicht die freie Definition eigener Rollen, Stile, Formate und Suffixe mit LocalStorage-Speicherung und Löschfunktion.

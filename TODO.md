@@ -33,6 +33,14 @@
 - [x] **Phase v6 - Schritt 2:** 100 % lokales Offline Notizen & Todos Widget ➔ Erledigt.
 - [x] **Phase v6 - Schritt 3:** Google Kalender/Drive OAuth & Live-Sync Konzept ➔ Erledigt.
 
+- [x] **Phase v7 - Schritt 1:** Integrierter Dokumenten-Editor (Mini-Word) ➔ Erledigt.
+- [x] **Phase v7 - Schritt 2:** Manueller Google Drive Sync für geänderte Dateien ➔ Erledigt.
+
+- [x] **Phase v8 - Schritt 1:** Live-Suche & Filter für Prompts ➔ Erledigt.
+- [x] **Phase v8 - Schritt 2:** "Werksreset / Demodaten zurücksetzen" im Header ➔ Erledigt.
+- [x] **Phase v8 - Schritt 3:** CRM-Schnellfilter nach Status-Pills ➔ Erledigt.
+- [x] **Phase v8 - Schritt 4:** Markdown-Formatierungshilfe für Offline-Notizen ➔ Erledigt.
+
 ## Später
 - [ ] Google Drive Live-Sync: Mock-Dateien-Liste durch echte Datei-Uploads ersetzen.
 - [ ] Google Kalender Live-Sync: Statt Mock-Events echte Tagestermine laden.
