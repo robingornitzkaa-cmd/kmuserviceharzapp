@@ -5,6 +5,14 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **Lead- & Pain-Point-Tracker (Phase v13):** Ein brandneuer Navigations-Reiter "Lead-Tracker" wurde in die Desktop- und Mobilansicht integriert. Das Tool dient der Verwaltung und Protokollierung deiner Kaltakquise-Telefonate.
+  - **Suche & Filter:** Suche nach Firmennamen/Branchen und filtere nach Prioritäten (A/B/C) oder Status.
+  - **Click-to-Call:** Direkte Anrufe über `tel:` Links mit einem Klick auf "Jetzt anrufen".
+  - **Vorbereitungsbox:** Visualisiert die vorab vermuteten Einwände und Gesprächs-Aufhänger aus deiner Excel-Tabelle.
+  - **Gesprächs-Feedback Formular:** Erfassung von `Pain Point (Primär)`, `Dringlichkeit (1-5 Sterne Rating)`, `Eingangshürde/Einwand`, `Gesprächs-Aufhänger`, `Nächster Schritt` und `Bemerkungen`.
+  - **Live-Supabase REST-Sync:** Speichert die geänderten Daten sofort im lokalen Speicher sowie online über eine direkte API-Schnittstelle in der neuen Supabase-Tabelle `leads`.
+- **Excel-Import-Skript:** Ein robustes Python-Importskript (`import_leads.py`) wurde erstellt. Es liest deine Excel-Liste der Target-Unternehmen (`Unbenannte Tabelle (5).xlsx`) ein, dedupliziert die Einträge nach stabiler ID (MD5-Hash) und befüllt vollautomatisch die Supabase-Datenbank.
+- **6. Integrationstest:** Ergänzung eines automatisierten Tests für das Öffnen des Lead-Trackers, die Mock-Datenerfassung und die Speicherung des Feedbacks in der Vitest-Suite.
 - **Master-Logbuch Import:** Einbettung des vollständigen 25KB großen Master-Logbuchs (`📑 MASTER-LOGBUCH & COMMAND CENTER: KMU SERVICE HARZ`) in die "Dokumente & Sync"-Ansicht. Es steht dem Gründer nun permanent zur Bearbeitung und automatischen Speicherung zur Verfügung.
 - **Automatische Upgrade-Logik:** Entwicklung einer Migrationslogik im Dokumenten-State-Lader. Veraltete Platzhalter-Logbücher im lokalen Browserspeicher werden beim App-Start automatisch auf die neueste Fassung des echten Logbuchs aktualisiert, ohne Benutzerdaten zu überschreiben.
 

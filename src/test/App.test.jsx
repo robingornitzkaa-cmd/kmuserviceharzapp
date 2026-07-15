@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { describe, test, expect } from 'vitest'
 import App from '../App'
 
@@ -115,5 +115,48 @@ describe('Founder OS App - Integration Tests', () => {
 
     // Überprüfen, ob die Aufgabe im Kanban-Board erscheint
     expect(screen.getByText('CRM an DATEV-Schnittstelle anbinden')).toBeInTheDocument()
+  })
+
+  test('Lead-Tracker: Tab wechselt, zeigt Leads und speichert Feedback', async () => {
+    render(<App />)
+
+    // Leads Tab anklicken
+    const leadsTab = screen.getByRole('button', { name: /Lead-Tracker/i })
+    fireEvent.click(leadsTab)
+
+    // Überprüfen, ob die Titelzeile geladen wurde
+    expect(screen.getByText(/Kaltakquise-Kontakte/i)).toBeInTheDocument()
+
+    // Da der fetch mock asynchron ist, warten wir kurz auf das Element
+    const leadItem = await screen.findByText('Test SHK Betrieb')
+    expect(leadItem).toBeInTheDocument()
+
+    // Lead anklicken
+    fireEvent.click(leadItem)
+
+    // Überprüfen, ob die Vorbereitungshinweise geladen sind
+    expect(screen.getByText(/Gesprächs-Aufhänger:/i)).toBeInTheDocument()
+    expect(screen.getAllByText('Anrufen wegen SHK').length).toBe(2)
+
+    // Formular ausfüllen
+    const painPointSelect = screen.getByLabelText(/Pain Point \(Primär\)/i)
+    fireEvent.change(painPointSelect, { target: { value: 'Bürokratie / Papierkram' } })
+
+    const nextStepInput = screen.getByPlaceholderText(/z.B. Termin vereinbaren/i)
+    fireEvent.change(nextStepInput, { target: { value: 'Erstgespräch am Montag' } })
+
+    // Speichern auslösen
+    const saveBtn = screen.getByRole('button', { name: /Gesprächs-Feedback speichern/i })
+    
+    // window.alert mocken um Fehler zu vermeiden
+    const alertMock = vi.spyOn(window, 'alert').mockImplementation(() => {})
+    
+    fireEvent.click(saveBtn)
+
+    // Alert wurde getriggert (asynchron nach fetch)
+    await waitFor(() => {
+      expect(alertMock).toHaveBeenCalled()
+    })
+    alertMock.mockRestore()
   })
 })

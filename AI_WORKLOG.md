@@ -1,5 +1,41 @@
 # AI Worklog - Founder OS
 
+## 2026-07-15 19:48 – Lead- & Pain-Point-Tracker mit Excel-Import & Supabase REST-Sync (Phase v13)
+
+### Ziel
+Integration einer Kaltakquise-Feedbackmaske zur Erfassung von Branchen-Pain-Points während Telefonaten mit Target-Unternehmen aus Robins Excel-Tabelle.
+
+### Erstellt
+- [import_leads.py](file:///C:/Users/gorni/.gemini/antigravity/brain/26b62883-46ba-464b-8962-fb9c8b771cee/scratch/import_leads.py): Python-Skript zum Einlesen von `Unbenannte Tabelle (5).xlsx`, Filtern von Duplikaten nach ID-MD5-Hash und automatischem Upload der 90 Leads in die Supabase REST API.
+
+### Geändert
+- **Supabase-Datenbank:** Erstellung der Tabelle `leads` über SQL-Migration (RLS deaktiviert).
+- [App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx):
+  - Hinzufügen der Leads-States (`leads`, `activeLeadId`, Filter und Formular-States).
+  - Implementierung der Persistierung im LocalStorage (`f_leads`, `f_active_lead_id`).
+  - Hinzufügen eines useEffect-Blocks zur automatischen Lead-Initialisierung via Supabase REST API beim Seitenstart.
+  - Implementierung des `handleSaveLeadFeedback`-Handlers zur Speicherung der Formulardaten im lokalen State, LocalStorage und direkter PATCH-Aktualisierung in Supabase.
+  - Integration des **Lead-Tracker** Reiters in die Desktop- und Mobil-Navigation.
+  - Aufbau der Benutzeroberfläche: Linke Spalte mit Suchleiste, Filtern und Prio-Kennzeichnung der Firmen; Rechte Spalte mit Vorbereitungsdaten, wählbarem `tel:` Telefon-Link, interaktiver Sterne-Bewertung für die Dringlichkeit sowie vollständigem Feedback-Formular.
+  - Erweiterung des `triggerSupabaseSync` Logs und des Hintergrundabgleichs um die Leads-Tabelle.
+- [App.test.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/test/App.test.jsx):
+  - Hinzufügen des 6. Integrationstests zur Validierung des Tabs, der Lead-Auswahl, des Ausfüllens der Felder und des erfolgreichen Speicher-Alerts.
+- [setup.js](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/test/setup.js):
+  - Mocken der globalen `fetch` API, um Netzwerkfehler in Headless-Tests zu vermeiden und standardisierte Mock-Leads zurückzugeben.
+- [TODO.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md), [CHANGELOG.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md): Aktualisierung der Entwickler-Dokumentationen.
+
+### Warum
+Damit Robin direkt aus der App heraus seine Telefongespräche starten (Click-to-Call), sich mit den pre-analysierten Aufhängern vorbereiten und die Schmerzpunkte strukturiert digitalisieren kann. Alle Daten werden in Echtzeit in seiner Supabase Postgres Cloud-Datenbank gesichert.
+
+### Testen
+1. Öffne die App und wechsle auf den Reiter **Lead-Tracker**.
+2. Wähle eine Firma in der linken Spalte.
+3. Bereite dich mit der Vorbereitungsbox vor, klicke auf "Jetzt anrufen" und trage nach dem Telefonat das Feedback ein.
+4. Klicke auf "Speichern" und verifiziere, dass der Erfolgs-Alert erscheint.
+5. Führe `npm run test` im Terminal aus ➔ 6/6 Tests erfolgreich.
+
+---
+
 ## 2026-07-15 11:27 – Google Client ID Integration & UI (Phase v12c)
 
 ### Ziel

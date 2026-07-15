@@ -35,3 +35,38 @@ if (typeof window !== 'undefined') {
   window.SpeechRecognition = window.SpeechRecognition || vi.fn()
   window.webkitSpeechRecognition = window.webkitSpeechRecognition || vi.fn()
 }
+
+// Mock für globale fetch API (für Supabase-REST)
+global.fetch = vi.fn().mockImplementation((url) => {
+  if (url.includes('/rest/v1/leads')) {
+    return Promise.resolve({
+      ok: true,
+      json: () => Promise.resolve([
+        {
+          id: "lead_test_1",
+          company: "Test SHK Betrieb",
+          industry: "Handwerk",
+          city: "Quedlinburg",
+          street: "Teststr. 1",
+          phone: "03946 12345",
+          website: "www.test-shk.de",
+          segment: "Handwerk",
+          priority: "A",
+          status: "nicht kontaktiert",
+          expected_objection: "Keine Zeit",
+          call_hook: "Anrufen wegen SHK",
+          pain_point: "",
+          urgency: 0,
+          actual_objection: "",
+          conversation_hook: "",
+          next_step: "",
+          notes: ""
+        }
+      ])
+    });
+  }
+  return Promise.resolve({
+    ok: true,
+    json: () => Promise.resolve([])
+  });
+});

@@ -5,6 +5,7 @@
 - [x] **Phase v10 - Schritt 1:** Splitting von Tab 4 ("KI & Docs") in zwei eigenständige Menüpunkte ("KI Prompts" und "Dokumente & Sync") in Desktop- und Mobilansicht.
 - [x] **Test-Ausbau:** Integrationstests auf 5 Testfälle ausgebaut (inkl. Logbuch, Showcase-Modus und Kanban-Board) und alle erfolgreich ausgeführt.
 - [x] **Supabase Live-Anbindung:** Datenbanktabellen über die MCP-Integration angelegt, RLS deaktiviert und Standard-Verbindungsparameter in App.jsx hinterlegt.
+- [x] **Lead- & Pain-Point-Tracker (Phase v13):** Kaltakquise-Excel-Leads in Supabase-Tabelle `leads` importiert, UI-Tracker-Tab mit Klick-to-Call und Feedback-Formular implementiert.
 - [x] **Schritt 1:** Implementierung von **Feature 1a (Showcase-Modus / Datenschutz-Filter)** ➔ Erledigt.
 - [x] **Schritt 2:** Implementierung von **Feature 1b (ROI-Rechner v2 mit PDF-Export)** ➔ Erledigt.
 - [x] **Schritt 3:** Implementierung von **Feature 1c (Zettel-zu-Code Visualisierer)** ➔ Erledigt.
