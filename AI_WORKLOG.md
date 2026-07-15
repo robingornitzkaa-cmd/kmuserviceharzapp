@@ -1,5 +1,30 @@
 # AI Worklog - Founder OS
 
+## 2026-07-15 10:45 – Supabase Live-Anbindung & Git-Commit (Phase v12b)
+
+### Ziel
+Verbindung der App mit der echten Supabase-Datenbank und Erstellung eines lokalen Git-Commits.
+
+### Erstellt
+- 5 Datenbank-Tabellen in Supabase (`contacts`, `tasks`, `inbox`, `client_tickets`, `docs`).
+- Deaktivierung von RLS auf diesen Tabellen für eine unkomplizierte Entwicklung im Prototyp.
+
+### Geändert
+- [App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx):
+  - Standard-Verbindungsdaten für Supabase auf die echten Projektdaten des Nutzers aktualisiert (URL und Anon Key).
+- [TODO.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md):
+  - Supabase-Implementierung als abgeschlossen markiert.
+
+### Warum
+Damit die App direkt mit der Live-Datenbank kommunizieren kann, ohne dass der Nutzer manuell Zugangsdaten eingeben muss, und um den aktuellen Projektfortschritt versioniert abzusichern.
+
+### Testen
+1. Starte die App im Browser.
+2. Wechsle auf den Tab **Dokumente & Sync** und klicke auf "Supabase Cloud-Sync erzwingen".
+3. Die Protokolle zeigen den Verbindungsaufbau und Datenaustausch mit `https://ypqlssyrlykjzjnoyjoa.supabase.co` an.
+
+---
+
 ## 2026-07-15 10:10 – Testsuite-Erweiterung & erfolgreiche Verifikation (Phase v11b)
 
 ### Ziel
