@@ -6,7 +6,7 @@
 - [x] **Test-Ausbau:** Integrationstests auf 5 Testfälle ausgebaut (inkl. Logbuch, Showcase-Modus und Kanban-Board) und alle erfolgreich ausgeführt.
 - [x] **Supabase Live-Anbindung:** Datenbanktabellen über die MCP-Integration angelegt, RLS deaktiviert und Standard-Verbindungsparameter in App.jsx hinterlegt.
 - [x] **Lead- & Pain-Point-Tracker (Phase v13):** Kaltakquise-Excel-Leads in Supabase-Tabelle `leads` importiert, UI-Tracker-Tab mit Klick-to-Call und Feedback-Formular implementiert.
-- [x] **Modulare & Einfache Dashboard-Bausteine (Phase v14):** 5 neue einfache Widgets (Notizzettel, To-Dos, Terminplaner, Tagesziel, Quick-Links) im Anpassungs-Menü integriert.
+- [x] **Modulare & Einfache Dashboard-Bausteine & Mobile-Optimierung (Phase v14):** 5 neue einfache Widgets im Anpassungs-Menü integriert und die gesamte App mobil responsive optimiert (inkl. Zoom-Prävention, Spalten-Stapelmodus und CRM-Zurück-Button).
 - [x] **Schritt 1:** Implementierung von **Feature 1a (Showcase-Modus / Datenschutz-Filter)** ➔ Erledigt.
 - [x] **Schritt 2:** Implementierung von **Feature 1b (ROI-Rechner v2 mit PDF-Export)** ➔ Erledigt.
 - [x] **Schritt 3:** Implementierung von **Feature 1c (Zettel-zu-Code Visualisierer)** ➔ Erledigt.

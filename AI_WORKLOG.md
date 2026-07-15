@@ -1,32 +1,35 @@
 # AI Worklog - Founder OS
 
-## 2026-07-15 19:55 – Modulare & Einfache Dashboard-Bausteine (Phase v14)
+## 2026-07-15 22:42 – Modulare Dashboard-Bausteine & Mobile-Optimierung (Phase v14)
 
 ### Ziel
-Erweiterung der Dashboard-Anpassungsmöglichkeiten um 5 neue einfache, ablenkungsfreie Widgets (Haftnotiz, To-Dos, Terminplaner, Tagesziel, Link-Sammlung) für eine minimalistische Cockpit-Erfahrung.
+Erweiterung der Dashboard-Anpassungsmöglichkeiten um 5 neue einfache Widgets sowie umfassende Optimierung der gesamten Webapplikation für Mobilgeräte und Smartphones (UX-Verbesserung, responsive Spalten-Stapelung, Detail-Umschaltung im CRM, Zoom-Prävention auf iOS).
 
 ### Erstellt
 Keine neuen Dateien.
 
 ### Geändert
 - [App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx):
-  - Hinzufügen der Widget-Booleans (`simpleNotes`, `simpleTodos`, `simpleCalendar`, `simpleGoal`, `simpleLinks`) im standardmäßigen `dashboardWidgets` State.
-  - Implementierung der States für Haftnotiz-Farben (`stickyNoteColor`), Termineingabe (`simpleEventTime`, `simpleEventText`), Todo-Eingabe (`newDashTodoText`), Tagesziel (`dashboardGoal`) und Link-Sammlung (`dashboardLinks`).
-  - Einrichten von Persistierungs-Effekten zur automatischen Sicherung aller neuen States im `localStorage`.
-  - Integration von Handlern zur Steuerung einfacher Eingaben: `handleSimpleCalendarSubmit`, `handleAddSimpleDashTodoSubmit`, `handleAddQuickLink`, `handleDeleteQuickLink`.
-  - Anpassung des Konfigurations-Checklisten-Arrays im „Layout anpassen“-Drawer.
-  - Rendering der 5 neuen Widgets im Grid des Dashboards.
+  - Hinzufügen der Widget-Booleans und States für die 5 einfachen Widgets (Haftnotiz, To-Dos, Termine, Tagesziel, Link-Sammlung).
+  - Implementierung des `isMobile` States mit Fenster-Resize-Event-Listener zur dynamischen Layout-Erkennung.
+  - Implementierung der responsive CRM-Detail-Ansicht: Auf Mobilgeräten wird bei Auswahl eines Leads die Liste ausgeblendet und das Feedbackformular vollflächig gerendert.
+  - Einbau eines „← Zurück zur Lead-Liste“ Buttons im mobilen CRM-Formular zur schnellen Navigation.
+  - Umstellung der Grid-Container im Inbox-Tab und Wissens-Hub auf CSS-Klassen zur Ermöglichung responsiver Medienabfragen.
+- [index.css](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/index.css):
+  - Definition responsiver Gitter-Layouts für alle zweispaltigen Module (`.crm-grid`, `.leads-grid`, `.hub-grid`, `.canvas-main-grid`, `.make-simulator-grid`, `.inbox-tasks-grid`). Auf Bildschirmen < 900px stapeln sich die Kacheln einspaltig und breite Elemente (`span 2`) werden automatisch auf `span 1` gesetzt.
+  - iOS-Zoom-Prävention: Festlegen einer Mindestschriftgröße von `16px` für alle Eingabefelder auf Mobilgeräten.
+  - Reduzierung des Hauptseiten-Paddings auf Handys für optimale Flächenausnutzung.
 - [App.test.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/test/App.test.jsx):
   - Hinzufügen des 7. Integrationstests zur Überprüfung des Customizers und des manuellen Termin-Hinzufügens.
 - [TODO.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md), [CHANGELOG.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md): Aktualisierung der Entwicklungs-Protokolle.
 
 ### Warum
-Damit Robin sein Dashboard extrem einfach und sauber aufbauen kann, wenn er keine komplexen Analysen, ROI-Kalkulatoren oder Make-Simulatoren braucht, sondern nur schnelle Notizen, To-Dos und anstehende Tagestermine eintragen möchte.
+Damit Robin sein Dashboard einfach und sauber konfigurieren und die App bequem auf seinem Smartphone nutzen kann, ohne störenden Safari-Autozoom bei Formulareingaben zu haben und ohne unendlich weit durch CRM-Leads scrollen zu müssen.
 
 ### Testen
 1. Klicke auf dem Dashboard auf **Layout anpassen**.
 2. Wähle die neuen Widgets aus und stelle das Layout fertig.
-3. Teste das Ändern der Zettelfarbe, das Eintragen des Tagesziels, der To-Dos, Termine und Quick-Links.
+3. Teste das CRM-Tab auf einem schmalen Viewport (oder Smartphone) ➔ Wähle einen Lead aus und gehe mit dem Zurück-Button wieder zur Liste.
 4. Führe `npm run test` im Terminal aus ➔ 7/7 Tests erfolgreich.
 
 ---

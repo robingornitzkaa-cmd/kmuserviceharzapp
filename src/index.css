@@ -1885,3 +1885,72 @@ body {
   100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
 }
 
+/* ==========================================================================
+   MOBILE-FIRST UX OPTIMIZATIONS (Phase v14 - Mobil)
+   ========================================================================== */
+
+/* Zoom-Prävention auf iOS */
+@media (max-width: 768px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Reduziertes Seiten-Padding auf Mobilgeräten */
+@media (max-width: 768px) {
+  .app-container {
+    padding: 0 0.75rem !important;
+  }
+  .app-header {
+    padding: 1rem 0 !important;
+  }
+}
+
+/* Responsive Gitter-Layouts für alle zweispaltigen Dashboards und Tabs */
+.leads-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 1.5rem;
+}
+.hub-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 1.5rem;
+}
+.inbox-tasks-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 2fr;
+  gap: 1.5rem;
+}
+
+@media (max-width: 900px) {
+  /* Erzwinge einspaltigen Stapelmodus */
+  .crm-grid,
+  .leads-grid,
+  .hub-grid,
+  .canvas-main-grid,
+  .make-simulator-grid,
+  .inbox-tasks-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  /* Setze alle Spalten-Erweiterungen (span 2) auf 1 Spalte zurück */
+  .dashboard-grid > div,
+  .crm-grid > div,
+  .leads-grid > div,
+  .hub-grid > div,
+  .canvas-main-grid > div,
+  .make-simulator-grid > div,
+  .inbox-tasks-grid > div {
+    grid-column: span 1 !important;
+  }
+  
+  /* Scroll-Höhen auf mobilen CRM-Listen anpassen */
+  .docs-list,
+  .inbox-list,
+  .contact-list {
+    max-height: 40vh !important;
+  }
+}
+

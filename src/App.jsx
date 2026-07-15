@@ -409,6 +409,14 @@ function App() {
   // Navigation State
   const [activeTab, setActiveTab] = useState('dashboard');
   
+  // Mobile responsive detection state
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' ? window.innerWidth < 900 : false);
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 900);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  
   // Showcase Mode State
   const [showcaseMode, setShowcaseMode] = useState(() => JSON.parse(localStorage.getItem('f_showcase_mode')) || false);
   
@@ -4325,7 +4333,7 @@ ${original}
             `}} />
 
             {/* The Inbox & WhatsApp Simulator Grid */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 2fr', gap: '1.5rem', marginBottom: '2rem' }}>
+            <div className="inbox-tasks-grid" style={{ marginBottom: '2rem' }}>
               
               {/* WhatsApp Simulator Card */}
               <div className="card" style={{ height: 'fit-content' }}>
@@ -5488,7 +5496,7 @@ ${original}
 
         {/* ==================== TAB 4b: DOKUMENTE & SYNC ==================== */}
         {activeTab === 'hub' && (
-          <div className="hub-grid" style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '1.5rem' }}>
+          <div className="hub-grid">
             
             {/* Left Column: Dokumenten-Tresor & NotebookLM */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
@@ -6792,10 +6800,11 @@ ${original}
         )}
 
         {activeTab === 'leads' && (
-          <div className="crm-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: '1.5rem' }} id="leads-tab-content">
+          <div className="leads-grid" id="leads-tab-content">
             
             {/* Linke Spalte: Leads Liste */}
-            <div className="card" style={{ display: 'flex', flexDirection: 'column', height: 'fit-content', maxHeight: '80vh' }}>
+            {(!isMobile || !activeLeadId) && (
+              <div className="card" style={{ display: 'flex', flexDirection: 'column', height: 'fit-content', maxHeight: '80vh' }}>
               <div className="card-header" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', alignItems: 'stretch' }}>
                 <h2 className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0 }}>
                   <PhoneCall size={20} className="text-purple-500" />
@@ -6889,10 +6898,22 @@ ${original}
                 }
               </div>
             </div>
+            )}
 
             {/* Rechte Spalte: Lead-Protokoll & Anruf-Dashboard */}
-            <div className="card" style={{ height: 'fit-content' }}>
-              {activeLeadId ? (() => {
+            {(!isMobile || activeLeadId) && (
+              <div className="card" style={{ height: 'fit-content' }}>
+                {isMobile && activeLeadId && (
+                  <button
+                    type="button"
+                    onClick={() => setActiveLeadId(null)}
+                    className="btn btn-secondary"
+                    style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.25rem', padding: '0.4rem 0.8rem', fontSize: '0.8rem', width: 'fit-content' }}
+                  >
+                    ← Zurück zur Lead-Liste
+                  </button>
+                )}
+                {activeLeadId ? (() => {
                 const activeLead = leads.find(l => l.id === activeLeadId);
                 if (!activeLead) return null;
                 return (
@@ -7080,6 +7101,7 @@ ${original}
                 </div>
               )}
             </div>
+            )}
             
           </div>
         )}

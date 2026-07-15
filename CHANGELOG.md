@@ -5,12 +5,16 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
-- **Modulare & Einfache Dashboard-Bausteine (Phase v14):**
+- **Modulare & Einfache Dashboard-Bausteine & Mobile-Optimierung (Phase v14):**
   - **📌 Einfacher Notizzettel (Haftnotiz):** Modularer Block mit 5 auswählbaren Hintergrundfarben (Gelb, Blau, Grün, Pink, Lila) zur schnellen Ideenerfassung.
   - **✍️ Einfache Aufgabenliste (To-Do):** Eine saubere Kachel zum Eintragen, Abhaken und Löschen von Todos.
   - **📅 Einfacher Terminkalender:** Direkte Eingabe von Uhrzeit und Beschreibung zur manuellen Terminplanung, 100 % offline-fähig.
   - **🎯 Tages-Hauptziel (Fokus):** Ein großes Textfeld ganz oben auf dem Dashboard für das wichtigste Ziel des Tages.
   - **🔗 Quick-Links (Link-Sammlung):** Lesezeichen-Widget zum Hinzufügen, Aufrufen und Löschen wichtiger Web-Ressourcen.
+  - **Mobile Stapel-Automatik:** Alle zweispaltigen Grids (CRM, Leads, Wissens-Hub, Simulator) stapeln sich auf Mobilgeräten automatisch sauber in einer Spalte. Grid-Spans werden auf span 1 zurückgesetzt.
+  - **Kaltakquise Mobile UX:** Dynamische Einblendung des Feedback-Formulars auf Mobilgeräten nur bei ausgewähltem Lead, inklusive „← Zurück zur Lead-Liste“ Button, um langes Scrollen zu verhindern.
+  - **iOS Zoom-Prävention:** Erhöhung der Mindestschriftgröße von Eingabefeldern und Selects auf 16px auf Mobilgeräten, um den Safari Auto-Zoom zu verhindern.
+  - **Optimiertes Padding:** Reduziertes Seiten-Padding auf Mobilgeräten für bessere Platzausnutzung.
 - **Barrierefreie IDs:** Checkboxen und Labels im Anpassungs-Menü barrierefrei verknüpft.
 - **7. Integrationstest:** Automatisierte Validierung des Aktivierungs- und Buchungsprozesses in der Testsuite.
 - **Lead- & Pain-Point-Tracker (Phase v13):** Ein brandneuer Navigations-Reiter "Lead-Tracker" wurde in die Desktop- und Mobilansicht integriert. Das Tool dient der Verwaltung und Protokollierung deiner Kaltakquise-Telefonate.
