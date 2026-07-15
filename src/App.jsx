@@ -136,7 +136,200 @@ const INITIAL_CONTENT = [
   { id: 'co3', title: 'Warum IT-Systemhäuser deine Prozessprobleme im Büro nicht lösen', date: '2026-06-25', status: 'ready' }
 ];
 
+const MASTER_LOGBUCH_CONTENT = `# **📑 MASTER-LOGBUCH & COMMAND CENTER: KMU SERVICE HARZ**
+
+## **TEIL 1: DAS CORE-PROFIL (Aktueller fester Stand)**
+
+### **🏢 1. Unternehmens-Steckbrief**
+
+* **Unternehmensname:** KMU Service Harz.  
+* **Rechtsform:** Unternehmergesellschaft (haftungsbeschränkt) – UG in Gründung.  
+* **Gründer:** Robin.  
+* **Standort & Einzugsgebiet:** Wirtschaftsregion Harz (Landkreis Goslar, Langelsheim, Bad Harzburg, Wernigerode, Halberstadt, Blankenburg; länderübergreifend über Niedersachsen und Sachsen-Anhalt).  
+* **Arbeitskapazität:** Volle Kapazität des Gründers in Vollzeit (ca. 40 Stunden/Woke).  
+* **Finanzierungsmodell:** Striktes Bootstrapping (0 € Fremdkapital, kein Bankkredit). Die operative Finanzierung erfolgt vollständig aus laufenden Umsätzen. Die private Existenzsicherung sowie die Anschaffung der Erstausstattung in der Anlaufphase erfolgt über die Beantragung von staatlichen Gründungsförderungen (Einstiegsgeld / Gründungszuschuss / Sachmittelzuschuss vom Jobcenter).  
+* **Betriebliche Fixkosten:** Maximal 350 € pro Monat (bestehend aus essenziellen Software-Lizenzen, Google Workspace Business, eRecht24 Premium für Rechtstexte, IT-Haftpflichtversicherung und externer Buchhaltung).  
+* **Gewinnschwelle (Break-Even-Punkt):** Extrem niedrige 350 € Monatsumsatz. Das finanzielle Risiko ist minimiert; das Unternehmen arbeitet profitabel, sobald im Monat ein einziges Einstiegs-Audit verkauft wird.
+
+### **🎯 2. Positionierung & Zielgruppen-Fokus**
+
+* **Kern-Metaphern:** „Handwerker für digitale Infrastruktur“ und „Der pragmatische Prozess-Befreier“.  
+* **Zielgruppe:** Regionale Kleinunternehmen und ländlicher Mittelstand mit 1 bis 50 Mitarbeitenden, die keine eigene IT-Abteilung besitzen und unter erdrückender bürokratischer Last leiden.  
+* **Fokussegmente:** Lokales Handwerk, Baugewerbe, bau- und anlagentechnische Betriebe sowie lokale Dienstleister (z. B. Gebäudereinigung) und medizinische/therapeutische Praxen.  
+* **Der Kundenschmerz (Pain Point):** Betriebe verschwenden im Durchschnitt 7 % ihrer gesamten Arbeitszeit – rund 32 unproduktive Stunden pro Monat – mit administrativer Zettelwirtschaft, manuellen Doppeleingaben und der Aufarbeitung von Belegen. Dies führt zu unbezahlter Wochenendarbeit („Bürosonntagen“).  
+* **Akuter Markttreiber:** Hoher gesetzlicher Handlungs- und Prüfungsdruck bei den Betrieben durch die gesetzliche B2B-E-Rechnungspflicht.  
+* **Das Kernversprechen (USP):** Wir automatisieren zeitfressende Büro-, Beleg- und Dokumentenworkflows lautlos im Hintergrund, *ohne* dass der Kunde seine gewohnte Software wechseln muss. Wir kommunizieren auf Augenhöhe, verzichten vollständig auf komplizierten IT-Jargon („Buzzwords“) und arbeiten mit transparenten Festpreisen statt offenen Stundensätzen.
+
+### **💰 3. Angebotsarchitektur & Preistreppe (Productized Services)**
+
+* **Stufe 1: Das Einstiegs-Audit (Potenzialanalyse)**  
+  * *Inhalt:* Initiale Prozessanalyse vor Ort oder digital, Identifikation von Medienbrüchen und das Aufzeigen von digitalen Quick-Wins (z. B. Optimierung der Belegübergabe).  
+  * *Preis:* 500 € Festpreis. (Dient gleichzeitig als strategischer Hebel zur Umgehung von Fördermittel-Wartezeiten, da es aus der Portokasse gezahlt werden kann).  
+* **Stufe 2: Das Setup-Projekt (Technische Umsetzung)**  
+  * *Inhalt Konzeption:* fehlerfreie Verknüpfung und Live-Einrichtung automatisierter Workflows (z. B. automatisierte Verarbeitung von Angebot zu Auftrag zu Rechnung, DATEV- und Lexoffice-Schnittstellenanbindungen).  
+  * *Preis:* Im Schnitt 2.000 € Festpreis (skaliert je nach Komplexität: Starter-Setup 1.500 €–2.500 € / Premium-Setup 3.500 €–5.000 €).  
+* **Stufe 3: Managed Automation / Automation-as-a-Service (AaaS)**  
+  * *Inhalt:* Laufender sicherer Systembetrieb, Fehlermonitoring (Schnittstellen-Fehler beheben, bevor der Kunde es merkt), Server-Hosting, DSGVO-Sicherheits-Updates und 1 Inklusivstunde Support pro Monat. Sichert planbare, wiederkehrende Umsätze (MRR).  
+  * *Preis:* 200 € pro Monat (wiederkehrend).
+
+## **TEIL 2: DAS TECHNISCHE & RECHTLICHE PROFIL (Tech-Stack & Compliance)**
+
+### **🛠️ 1. Definierter Tech-Stack (Der Werkzeugkasten)**
+
+* **Prozess-Orchestrierung:** Fokus auf **No-Code/Low-Code-Automatisierung via Make.com** statt zeitaufwendigem Custom Coding. Dadurch minimieren wir Wartungsaufwand bei API-Änderungen von Drittanbietern drastisch.  
+* **Betriebliches Backend (Infrastruktur):** **Google Workspace Business** als zentrale Cloud-Umgebung (E-Mail, Kalender, Drive). Einfache App-Ententwicklungen für interne oder Kundenzwecke erfolgen primär über **Google AppSheet** mit Google Sheets als Datenbank.  
+* **Kern-Schnittstellen beim KMU-Kunden:** Primäre B2B-Anbindungen erfolgen an **Lexoffice** (Cloud-Buchhaltung) und das **DATEV-Ökosystem** (insb. DATEV Unternehmen Online / DUO) via die offiziellen DATEV-Datenservices (APIs).  
+* **Künstliche Intelligenz:** Pragmatische Prozess-Integrationen über die **OpenAI API** (GPT-Modelle) unter striktem Verzicht auf das Training mit Kundendaten.
+
+### **⚖️ 2. DSGVO-Compliance & IT-Sicherheits-Leitplanken**
+
+* **Die Sandbox-Teststrategie (Eiserne Regel):** Es wird im Entwicklungs- und Testprozess **niemals mit echten Kundendaten** gearbeitet. Für alle Szenarien in Make.com werden isolierte Entwickler-Umgebungen (Sandbox-Zugänge) von Lexoffice, DATEV und Co. verwendet, um Haftungsrisiken auf null zu reduzieren.  
+* **Server-Standorte & AVV-Kette:** Für Make.com ist die **EU-Server-Option zwingend** vorgeschrieben. Mit allen Kern-Tools (Google, Make, OpenAI) werden lückenlose Auftragsverarbeitungsverträge (AVV) abgeschlossen, um die gesetzliche Datenschutz-Kette zum B2B-Kunden zu sichern.  
+* **Rechtstexte & AGB-Schutzschild:** Absicherung über **eRecht24 Premium**. In den AGB wird eine strikte Haftungsbeschränkung für den Ausfall von Drittanbieter-APIs (z. B. Lexoffice-Störung) oder KI-Fehlentscheidungen (Halluzinationen) verankert.  
+* **Hardware-Infrastruktur:** In der Initialphase Nutzung des privaten Laptops ausschließlich über einen **strikt getrennten, separat verschlüsselten Benutzer-Account**. Mit sensiblen Daten wird erst nach Bewilligung und Anschaffung des dedizierten, hardwareverschlüsselten Business-Laptops hantiert.
+
+### **🏦 3. Schufa-unabhängiges Banken-Setup (UG-Schutzwall)**
+
+* **Ausgangslage:** Aufgrund der privaten Verschuldung und der geplanten Privatinsolvenz des Gründers liegt ein negatives Schufa-Profil vor.  
+* **Banken-Strategie:** Da die UG eine eigenständige juristische Person ist, blockiert die private Schufa die Gründung nicht zwingend, klassische Filialbanken lehnen die Kontoeröffnung jedoch oft ab.  
+* **Fokus-Fintechs:** Die Eröffnung des UG-Geschäftskontos zur Einzahlung des Stammkapitals wird gezielt über schufa-freundliche B2B-Fintech-Plattformen wie **Finom oder Qonto** abgewickelt, die in der Gründungs-Praxis bei dieser Konstellation die geringsten Hürden aufweisen.
+
+## **TEIL 3: DIE SHOWCASE- & PARTNER-PIPELINE (Vertriebs-Hebel)**
+
+### **🧼 1. Das Pilotprojekt „GoClean Harz“ (Proof Asset #1)**
+
+* **Das Pilot-Unternehmen:** Das Gebäubedienstleistungsunternehmen (Unterhaltsreinigung, Gartenpflege, Winterdienst) des Bruders des Gründers („GoClean Harz“ im Raum Langelsheim/Goslar).  
+* **Die strategische Rolle („Dogfooding“):** Dient als internes, geschütztes Testfeld, um ohne Risiko für Fremdkunden reale Automatisierungs-Architekturen live zu implementieren, Fehler abzufangen und n8n/Make-Szenarien zu optimieren.  
+* **Der geplante Fokus-Workflow:** Vollautomatischer, mobiler Beleg- und Leistungsnachweis-Workflow für Reinigungskräfte und Winterdienst-Mitarbeiter vor Ort. Die Mitarbeiter tragen Daten per Smartphone ein; das System erstellt im Hintergrund fehlerfreie Lexoffice-Rechnungsentwürfe und stößt die GoBD-konforme Archivierung an.  
+* **Das Ziel-Asset (Case Study):** Generierung einer harten, unanfechtbaren Vorher-Nachher-Fallstudie (z. B. *„Büroaufwand von 5 Stunden pro Woche auf 10 Minuten reduziert“*). Dieses visuelle Proof Asset wird auf dem Tablet bei der Kaltakquise als unschlagbarer Vertrauensbeweis genutzt.
+
+### **📊 2. Die Multiplikatoren-Strategie (Steuerberater-Hebel)**
+
+* **Das Kanzlei-Problem:** Regional ansässige Steuerberater im Harz leiden massiv unter unvollständigen, unstrukturierten oder verspätet eingereichten Belegen ihrer Handwerker- und KMU-Mandanten. Dies erzeugt in den Kanzleien einen enormen, unproduktiven Nacharbeits-, Prüfungs- und Korrekturaufwand in der Fibu.  
+* **Unser Lösungsangebot für Kanzleien:** „KMU Service Harz“ korrigiert das Problem direkt an der Wurzel – im Betrieb des Mandanten. Wir automatisieren die vorbereitende Buchhaltung über Schnittstellen so, dass Daten und Belegbilder vollautomatisch und lückenlos über die DATEV Datenservices (APIs) nach *DATEV Unternehmen Online (DUO)* fließen.  
+* **Das ICP der Partner-Kanzleien:** Gezielte Ansprache von Kanzleien in Goslar, Wernigerode und Halberstadt, die offensiv mit *DATEV Unternehmen Online* werben oder als „Digitale Kanzlei“ zertifiziert sind.  
+* **Die Win-Win-Logik:** Der Steuerberater wird von administrativem Chaos befreit und empfiehlt uns im Gegenzug als regionalen, verlässlichen Umsetzungspartner aktiv an seine Mandanten weiter.
+
+## **TEIL 4: VERKAUFS-PHILOSOPHIE & EINWAND-LEITFADEN (Sales-Schutzschild)**
+
+### **🤝 1. Unsere Vertriebs-Philosophie**
+
+* **Auf Augenhöhe statt IT-Elite:** Wir verkaufen keine abstrakten Technologie-Konzepte („Künstliche Intelligenz“, „Digitale Transformation“), sondern die Beseitigung von bürokratischem Frust. Wir sprechen die bodenständige Sprache des Harzer Handwerks, arbeiten mit Festpreisen und verzichten vollständig auf manipulative Vertriebstricks.
+
+### **🛡️ 2. Die Top 3 Handwerker-Einwände & psychologischen Konter**
+
+* **Einwand 1: „Ich habe keine Zeit / Land unter im Betrieb.“**  
+  * *Hintergrund:* Akuter Fachkräftemangel führt dazu, dass Inhaber selbst auf der Baustelle stehen und Sonntage im Büro verbringen.  
+  * *Strategischer Konter:* Wertschätzung zeigen. *„Genau deshalb melde ich mich. Mein Ziel ist nicht, Ihnen ein neues Software-Projekt aufzuhalsen, für das Sie wochenlang geschult werden müssen. Wir klinken uns lautlos in Ihre bestehenden Tools ein, um genau diese 30 Stunden Papierkram im Monat von Ihren Schultern zu holen.“*  
+* **Einwand 2: „Wir sind ein kleiner Familienbetrieb, wir brauchen sowas nicht.“**  
+  * *Hintergrund:* Angst vor überdimensionierter Konzern-IT und unkalkulierbaren Kosten.  
+  * *Strategischer Konter:* Fokus auf Gesetzesdruck. *„Verständlich. Uns geht es nicht um Großkonzern-Systeme. Aber ab 2025/2026 trifft die gesetzliche E-Rechnungspflicht im B2B jeden Betrieb im Harz, egal wie klein. Wir sorgen mit kleinen Festpreis-Quick-Wins dafür, dass Ihr Betrieb formell sicher bleibt, ohne dass Sie Ihren Alltag umstellen müssen.“*  
+* **Einwand 3: „Schicken Sie mir erst mal Infomaterial / eine E-Mail.“**  
+  * *Hintergrund:* Klassischer höflicher Abwimmel-Einwand, um Zeit zu gewinnen.  
+  * *Strategischer Konter:* Umlenkung auf das Audit. *„Das mache ich gern. Da wir aber keine Standard-Software von der Stange verkaufen, steht in den Broschüren nur Allgemeines. Lassen Sie uns stattdessen kurz 10 Minuten unverbindlich auf Ihre aktuellen Workflows schauen – danach wissen Sie präzise, an welchen Stellen Ihr Betrieb konkret Zeit verliert.“*
+
+## **TEIL 5: INTERNES TECH-SETUP & „FOUNDER OS“-APP (Eigene Organisation)**
+
+### **📱 1. Das Konzept deiner Steuerungs-Anwendung**
+
+* **Das Projekt:** Um das eigene Business fehlerfrei zu steuern und Routineaufgaben als Gründer zu minimieren, wird im Modus des „Vibe Coding“ über Google AI Studio / Project IDX eine maßgeschneiderte Steuerungs-App gebaut.  
+* **Kernmodule der Anwendung:**  
+  * *Zentrales Dashboard:* Tägliche Übersicht der anstehenden Aufgaben, aktuellen Termine und Status-Pipelines.  
+  * *Prompt- & Code-Vault:* Eine strukturierte Verwaltung, um funktionierende System-Prompts und n8n/Make-Codebausteine zu speichern, geräteübergreifend abzurufen und kontinuierlich zu verfeinern.  
+  * *Brain-Dump & Action-Plan:* Eine geräteübergreifende (PC & Smartphone) Notiz- und To-Do-Funktion zur sofortigen Erfassung von Ideen und deren Überführung in konkrete Tagesprioritäten.  
+  * *Local Network CRM:* Abbildung der Kunden-Pipeline (Erstgespräch → Ist-Analyse → Angebot → Fördermittelantrag → Umsetzung) sowie ein Verzeichnis regionaler Multiplikatoren (DATEV-Kanzleien).
+
+### **🤖 2. Lokale KI-Infrastruktur & API-Kosten-Optimierung**
+
+* **Die Hybrid-Lösung:** Einfache Texttransformationen, Logbuch-Vorsortierungen und Prompt-Voroptimierungen werden über ein **lokales KI-Modell** direkt auf der Hardware des Gründers (MSI Thin 12BU Laptop) ausgeführt. Die kostenpflichtige Cloud-API wird nur für hochkomplexe, geschäftskritische Logik-Anfragen zugeschaltet.
+
+## **TEIL 6: DIE MEILENSTEIN-MATRIX (Operativer Status Quo)**
+
+### **✅ 1. Erledigte Meilensteine (Das Fundament steht)**
+
+* **Umfassende Markt- & Zielgruppenanalyse:** Potenzial im ländlichen Mittelstand (speziell Handwerk, Praxen, Gebäudedienstleister) im Harz validiert.  
+* **Wettbewerbs- & White-Space-Analyse:** Trennscharfe Abgrenzung zu klassischen IT-Systemhäusern vollzogen; Positionierung als „Der pragmatische Prozess-Befreier“ steht.  
+* **Angebots- & Pricing-Design:** Das dreistufige Modell der produktisierten Dienstleistungen (*Productized Services* via Audit, Setup und Managed-Automation-Retainer) ist finalisiert.  
+* **Businessplan (Textteil):** Die strategische Ausarbeitung inklusive Executive Summary und Go-to-Market-Plan ist zu 100 % abgeschlossen.  
+* **Finanzplanung (Roh-Kalkulation):** Konservatives Wachstumsszenario berechnet und die extrem schlanke Fixkostenstruktur von maximal 350 €/Monat definiert.
+
+### **⚠️ 2. Aktuelle Blockaden & Blinde Flecken (Die ehrliche Realität)**
+
+* **Die „Analysis Paralysis“-Falle:** Gefahr des Verettelns in immer tieferen theoretischen Recherchen und Konzeptschleifen, statt die operative PS auf die Straße zu bringen.  
+* **Formelle Compliance (Jobcenter):** Aufgrund der gesetzlichen Bedingungen für das Einstiegsgeld und den Gründungszuschuss darf der formelle, gewerbliche Markteintritt noch nicht vollzogen werden, bis die Freigabe erteilt ist.  
+* **Die Cashflow-Falle (Vorzeitiger Maßnahmebeginn):** Bei Kundenprojekten, die über Landes-Digitalboni gefördert werden sollen, drohen wochenlange Wartezeiten bis zur Bewilligung. Es besteht die Gefahr einer Liquiditätsblockade, wenn kein ungefördertes Einstiegsangebot („Quick-Win“) vorgeschaltet wird.  
+* **Hardware-Verschlüsselung & DSGVO-Risiko:** Der finale Start mit echten Kundendaten (DATEV/Lexoffice) erfordert ein dediziertes, hardwareverschlüsselten Business-Notebook. Der geplante Sachmittelzuschuss des Jobcents steht hierfür noch aus.
+
+## **TEIL 7: OPERATIVE TO-DO-LISTE (Sachen, die zu erledigen sind)**
+
+* **[ ] [Prio 1] Argumentations-Übersicht für den Coach erstellen (UG vs. Einzelunternehmen):** Knallharte Gegenüberstellung ausarbeiten, warum ein Einzelunternehmen wegen der privaten Verschuldung/Insolvenz-Thematik das Business sofort killen würde und warum die UG der einzig tragfähige Schutzwall ist. *(Hausaufgabe für den Coach!)*  
+* **[ ] [Prio 2] Pricing-Sparring vorbereiten:** Da der Coach die Preistreppe (500 € / 2.000 € / 200 €) im Erstgespräch gesehen, aber noch nicht tiefergehend besprochen hat, muss hierzu ein roter Faden für das nächste Meeting gelegt werden.  
+* **[ ] [Prio 3] Jobcenter-Sachmittel-Spezifikation:** Exakte Begründung formulieren, warum für die Arbeit mit DATEV- und Lexoffice-Kundendaten ein dedizierter, hardwareverschlüsselter Business-Laptop rechtlich zwingend nötig ist (Sachmittelzuschuss).
+
+## **TEIL 8: CHRONOLOGISCHES GRÜNDUNGS-LOGBUCH**
+
+### **📝 Eintrag vom 11.07.2026: Erstes Beratungsgespräch mit dem Gründungscoach**
+
+* **Status Quo der Besprechung:** Das grundlegende Konzept von „KMU Service Harz“ wurde dem Coach vorgestellt. Er hat die vorgeschlagene Angebots- und Preisstruktur bereits visuell wahrgenommen, eine inhaltliche Diskussion und Detailprüfung der Preise steht jedoch beim nächsten Termin noch aus.  
+* **Zentraler Diskussionspunkt (Rechtsform):** Es kam die kritische Frage auf, warum die Gründung als UG und nicht als einfaches Einzelunternehmen geplant ist. Da hier im Termin noch kein detaillierter, rechtssicherer Konsens gefunden wurde, wurde dies als Kernaufgabe definiert.  
+* **Definierte Next Steps / Vereinbarte Hausaufgaben:**  
+  1. Ausarbeitung einer unanfechtbaren Übersicht zur Rechtsformwahl im Kontext einer privaten Verschuldung/Insolvenz.  
+  2. Vorbereitung des tiefergehenden Pricing-Sparrings für den Folgetermin.
+
+## **TEIL 9: DYNAMISCHE STRATEGIE-VARIABLEN (Noch auszufüllen)**
+
+*Hinweis für die KI: Die folgenden Felder spiegeln Variablen wider, die sich im Laufe der operativen Umsetzung konkretisieren und schrittweise im Dokument überschrieben werden.*
+
+### **⏳ 1. Offene Variablen zur Angebots- & Preisstruktur (Teil 1)**
+
+* **Preisanpassungen nach Coach-Sparring:** \`[Fokus für das nächste Meeting: Werden die Sätze von 500 € / 2.000 € / 200 € vom Berater freigegeben oder angepasst?]\`  
+* **Geplantes Gründungsdatum (Gewerbe-Anmeldung):** \`[Hier das exakte Datum eintragen, sobald das Jobcenter grünes Licht gibt]\`  
+* **Definiertes Stammkapital der UG:** \`[Echtes Stammkapital bei Bar-Einbringung eintragen – z. B. 500 € oder 1.000 €]\`
+
+### **⏳ 2. Offene Variablen zu Behörden & formellem Setup (Teil 2)**
+
+* **Gewähltes B2B-Geschäftskonto:** \`[Noch offen – engere Auswahl: Finom oder Qonto (wird nach Notartermin fixiert)]\`  
+* **Beauftragtes Notariat:** \`[Name der Kanzlei und Ort eintragen, sobald der Termin zur UG-Errichtung steht]\`  
+* **Gewerbeamt / Handelsregister-Aktenzeichen:** \`[HRB-Nummer nach Eintragung durch das Amtsgericht eintragen]\`  
+* **Gewerbliche IT-Betriebshaftpflicht:** \`[Name des Versicherers und monatliche Prämie nach Abschluss hinterlegen]\`
+
+### **⏳ 3. Offene Variablen zum Pilotprojekt „GoClean Harz“ (Teil 3)**
+
+* **Konkrete Software-Infrastruktur des Bruders:** \`[Name der Reinigungs-/Handwerkersoftware eintragen, die dort aktuell für Angebote und Rechnungen genutzt wird]\`  
+* **Reale Zeitersparnis im Workflow:** \`[Hier nach Live-Gang messen und eintragen – z. B.: Zeitbedarf für Fibu sank von 4 Std./Woche auf 15 Min./Woche]\`  
+* **Kunden-Feedback / Zitat des Bruders:** \`[Hier ein echtes, bodenständiges Lob eintragen, das du auf Webseiten und Flyern zitieren kannst]\`
+
+### **⏳ 4. Offene Variablen zur regionalen Kanzlei- & Vertriebs-Pipeline (Teil 3/4)**
+
+* **Fokus-Kanzleien (DATEV-Multiplikatoren in der Region Harz):**  
+  * Kanzlei 1: \`[Name / Standort]\` | Status: \`[Noch nicht kontaktiert / Erstkontakt vorbereiten]\`  
+  * Kanzlei 2: \`[Name / Standort]\` | Status: \`[Noch nicht kontaktiert]\`  
+  * Kanzlei 3: \`[Name / Standort]\` | Status: \`[Noch nicht kontaktiert]\`  
+* **Unerwartete Kundeneinwände aus der Praxis:** \`[Hier im operativen Vertrieb neu auftauchende Bedenken von Handwerkern eintragen, um im Chat maßgeschneiderte, druckfreie Konter-Skripte zu entwickeln]\`
+
+### **⏳ 5. Offene Variablen zum formellen Gründungsfortschritt (Teil 6)**
+
+* **Status Beantragung Einstiegsgeld:** \`[Beantragt am: Datum]\` | Status: \`[In Vorbereitung / In Prüfung]\`  
+* **Status Tragfähigkeitsbescheinigung:** \`[Ausgestellt durch fachkundige Stelle: Name/Institution]\` | Status: \`[In Bearbeitung – Businessplan liegt vor]\`  
+* **Status Jobcenter-Sachmittelzuschuss (Verschlüsseltes Notebook):** \`[Beantragt am: Datum]\` | Status: \`[Warten auf Bewilligung]\`
+
+#### **TEIL 10: OPEN QUESTIONS & BRAIN-DUMP (Der schnelle Notizzettel)**
+
+*Ergänze hier einfach eine Liste von Fragen, die dir zwischendurch einfallen, damit du sie nicht vergisst.*
+
+* *Frage:* „Wie genau stelle ich die DATEV-Schnittstelle für meinen Bruder sicher?“  
+* *Idee:* „Eventuell als Zweit-Modul eine KI-Sprachnotiz-App für Handwerker bauen, die direkt auf die Baustelle passt?“  
+* *Notiz:* „Checken, ob X ein passender Partner ist.“
+
+#### **TEIL 11: „SKILL-VAULT“ (Technisches & Prompt-Archiv)**
+
+*Hier speicherst du deine besten Prompts und technischen Anleitungen.*
+
+* **Top-Prompts:** „Wie ich mein Audit verkaufe“, „Einwandbehandlung Handwerker“.  
+* **Technische Anleitungen:** Schritt-für-Schritt Anleitung, wie du ein neues Make-Szenario für einen Kunden sauber aufsetzt.`;
+
 const INITIAL_DOCS = [
+  { id: 'master-logbuch', title: 'masterLogbuch.txt', content: MASTER_LOGBUCH_CONTENT, status: 'local', url: '#' },
   { id: 'd1', title: 'Businessplan - KMU Service Harz.txt', content: 'Dies ist der offizielle Businessplan für KMU Service Harz. Wir bieten maßgeschneiderte Digitalisierungslösungen für KMUs im Harz an. Zielgruppe: Gärtnereien, Dachdecker, Pflegedienste.', status: 'synced', url: '#' },
   { id: 'd2', title: 'Preispakete & ROI-Modelle 2026.txt', content: 'Übersicht der Tarife:\n- Basic CRM: 1.200€ Setup\n- Advanced Auto: 2.500€ Setup\nDer ROI-Hebel bei automatisierten Prozessen liegt im Schnitt bei 4.2x innerhalb des ersten Jahres.', status: 'synced', url: '#' },
   { id: 'd3', title: 'Kooperationsvertrag - Steuerberater.txt', content: 'Kooperationsvereinbarung zwischen KMU Service Harz und der Steuerberatungskanzlei Harz. Regelmäßige Datenübergabe via DATEV-Schnittstellen.', status: 'synced', url: '#' }
@@ -298,7 +491,31 @@ function App() {
   const [projects, setProjects] = useState(() => JSON.parse(localStorage.getItem('f_projects')) || INITIAL_PROJECTS);
   const [prompts, setPrompts] = useState(() => JSON.parse(localStorage.getItem('f_prompts')) || INITIAL_PROMPTS);
   const [contentPosts, setContentPosts] = useState(() => JSON.parse(localStorage.getItem('f_content')) || INITIAL_CONTENT);
-  const [docs, setDocs] = useState(() => JSON.parse(localStorage.getItem('f_docs')) || INITIAL_DOCS);
+  const [docs, setDocs] = useState(() => {
+    try {
+      const saved = localStorage.getItem('f_docs');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        const hasLogbuch = parsed.some(d => d.id === 'master-logbuch');
+        if (!hasLogbuch) {
+          return [
+            { id: 'master-logbuch', title: 'masterLogbuch.txt', content: MASTER_LOGBUCH_CONTENT, status: 'local', url: '#' },
+            ...parsed
+          ];
+        } else {
+          return parsed.map(d => {
+            if (d.id === 'master-logbuch' && (d.content.startsWith('=== MASTER-LOGBUCH ===') || d.content.trim() === '')) {
+              return { ...d, content: MASTER_LOGBUCH_CONTENT };
+            }
+            return d;
+          });
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    return INITIAL_DOCS;
+  });
   const [sopTemplates, setSopTemplates] = useState(() => JSON.parse(localStorage.getItem('f_sop_templates')) || INITIAL_SOP_TEMPLATES);
   const [activeSops, setActiveSops] = useState(() => JSON.parse(localStorage.getItem('f_active_sops')) || []);
 
@@ -489,8 +706,8 @@ function App() {
   const [supabaseLastSync, setSupabaseLastSync] = useState(() => localStorage.getItem('f_sb_last_sync') || 'Noch nie');
   const [supabaseConfig, setSupabaseConfig] = useState(() => {
     return JSON.parse(localStorage.getItem('f_sb_config')) || {
-      url: 'https://kmuserviceharz.supabase.co',
-      anonKey: 'anon-key-placeholder-jwt-token'
+      url: 'https://ypqlssyrlykjzjnoyjoa.supabase.co',
+      anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwcWxzc3lybHlranpqbm95am9hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzMTc5OTYsImV4cCI6MjA5Nzg5Mzk5Nn0.l1gbcQkrgjGJyTsRp3cjCqYIVrme9M48sbqUILhoAes'
     };
   });
   const [supabaseLogs, setSupabaseLogs] = useState([]);
@@ -2431,36 +2648,43 @@ ${original}
         {/* DESKTOP NAV TABS (Nur sichtbar wenn nicht im Kunden-Portal Modus) */}
         {!clientPortalMode && (
           <nav className="nav-tabs">
-          <button 
-            className={`nav-tab ${activeTab === 'dashboard' ? 'active' : ''}`}
-            onClick={() => setActiveTab('dashboard')}
-          >
-            <LayoutDashboard size={16} /> Dashboard
-          </button>
-          <button 
-            className={`nav-tab ${activeTab === 'tasks' ? 'active' : ''}`}
-            onClick={() => setActiveTab('tasks')}
-          >
-            <Inbox size={16} /> Inbox & Tasks
-          </button>
-          <button 
-            className={`nav-tab ${activeTab === 'crm' ? 'active' : ''}`}
-            onClick={() => setActiveTab('crm')}
-          >
-            <Users size={16} /> CRM & Projekte
-          </button>
-          <button 
-            className={`nav-tab ${activeTab === 'hub' ? 'active' : ''}`}
-            onClick={() => setActiveTab('hub')}
-          >
-            <BrainCircuit size={16} /> KI & Docs
-          </button>
-          <button 
-            className={`nav-tab ${activeTab === 'sales' ? 'active' : ''}`}
-            onClick={() => setActiveTab('sales')}
-          >
-          </button>
-        </nav>
+            <button 
+              className={`nav-tab ${activeTab === 'dashboard' ? 'active' : ''}`}
+              onClick={() => setActiveTab('dashboard')}
+            >
+              <LayoutDashboard size={16} /> Dashboard
+            </button>
+            <button 
+              className={`nav-tab ${activeTab === 'tasks' ? 'active' : ''}`}
+              onClick={() => setActiveTab('tasks')}
+            >
+              <Inbox size={16} /> Inbox & Tasks
+            </button>
+            <button 
+              className={`nav-tab ${activeTab === 'crm' ? 'active' : ''}`}
+              onClick={() => setActiveTab('crm')}
+            >
+              <Users size={16} /> CRM & Projekte
+            </button>
+            <button 
+              className={`nav-tab ${activeTab === 'prompts' ? 'active' : ''}`}
+              onClick={() => setActiveTab('prompts')}
+            >
+              <BrainCircuit size={16} /> KI Prompts
+            </button>
+            <button 
+              className={`nav-tab ${activeTab === 'hub' ? 'active' : ''}`}
+              onClick={() => setActiveTab('hub')}
+            >
+              <FileText size={16} /> Dokumente & Sync
+            </button>
+            <button 
+              className={`nav-tab ${activeTab === 'sales' ? 'active' : ''}`}
+              onClick={() => setActiveTab('sales')}
+            >
+              <TrendingUp size={16} /> Sales & SOPs
+            </button>
+          </nav>
         )}
       </header>
 
@@ -4083,9 +4307,9 @@ ${original}
           </div>
         )}
 
-        {/* ==================== TAB 4: KI, CONTENT & WISSENS-HUB ==================== */}
-        {activeTab === 'hub' && (
-          <div className="hub-grid">
+        {/* ==================== TAB 4a: KI PROMPTS & CONTENT ==================== */}
+        {activeTab === 'prompts' && (
+          <div className="hub-grid" style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '1.5rem' }}>
             
             {/* Prompt Vault */}
             <div className="card">
@@ -4123,7 +4347,7 @@ ${original}
                     🧩 Prompt-Baukasten (Bausteine zum Einfügen)
                   </div>
                   
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
                     {/* Rollen */}
                     <div>
                       <div style={{ fontSize: '0.65rem', color: '#a78bfa', fontWeight: 700, marginBottom: '0.25rem' }}>Prefix (Rolle):</div>
@@ -4305,7 +4529,7 @@ ${original}
                       type="button"
                       onClick={() => setShowCustomBlockForm(!showCustomBlockForm)}
                       className="btn btn-secondary"
-                      style={{ padding: '0.2rem 0.5rem', fontSize: '0.7rem', height: '24px', display: 'flex', alignItems: 'center', gap: '0.25rem' }}
+                      style={{ padding: '0.25rem 0.5rem', fontSize: '0.65rem', height: '22px' }}
                     >
                       {showCustomBlockForm ? 'Schließen' : '➕ Eigene Bausteine verwalten'}
                     </button>
@@ -4464,9 +4688,8 @@ ${original}
               </div>
             </div>
 
-            {/* Content-Planer & Docs Hub */}
+            {/* Right Column: Content Planer & RAG Knowledge Bot */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-              
               {/* Content-Planer */}
               <div className="card">
                 <div className="card-header">
@@ -4523,6 +4746,140 @@ ${original}
                 </div>
               </div>
 
+              {/* "Frag das Firmengehirn" RAG Knowledge Bot */}
+              <div className="card">
+                <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+                    <div>
+                      <h2 className="card-title" style={{ color: 'var(--accent-purple)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <BrainCircuit size={20} /> "Frag das Firmengehirn" – RAG Knowledge Bot
+                      </h2>
+                      <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Dokumenten-basiertes KI-Wissen abrufen</span>
+                    </div>
+                    
+                    <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
+                      <button 
+                        className={`btn ${ragPersona === 'brain' ? 'btn-primary' : 'btn-secondary'}`}
+                        style={{ padding: '0.3rem 0.6rem', fontSize: '0.75rem', background: ragPersona === 'brain' ? 'var(--accent-purple)' : 'transparent', border: 'none' }}
+                        onClick={() => setRagPersona('brain')}
+                      >
+                        🧠 &nbsp;Firmengehirn
+                      </button>
+                      <button 
+                        className={`btn ${ragPersona === 'sales' ? 'btn-primary' : 'btn-secondary'}`}
+                        style={{ padding: '0.3rem 0.6rem', fontSize: '0.75rem', background: ragPersona === 'sales' ? 'var(--accent-cyan)' : 'transparent', border: 'none' }}
+                        onClick={() => setRagPersona('sales')}
+                      >
+                        🎯 &nbsp;Pitch-Coach
+                      </button>
+                      <button 
+                        className={`btn ${ragPersona === 'legal' ? 'btn-primary' : 'btn-secondary'}`}
+                        style={{ padding: '0.3rem 0.6rem', fontSize: '0.75rem', background: ragPersona === 'legal' ? 'var(--accent-yellow)' : 'transparent', border: 'none' }}
+                        onClick={() => setRagPersona('legal')}
+                      >
+                        🔒 &nbsp;DSGVO
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Quick Prompts Bar */}
+                  <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem', marginBottom: '1rem' }}>
+                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', alignSelf: 'center' }}>Schnellfragen:</span>
+                    <button 
+                      onClick={() => handleSendRagQuery('Wie läuft das Neukunden-Onboarding ab?')}
+                      className="btn btn-secondary"
+                      style={{ padding: '0.25rem 0.6rem', fontSize: '0.75rem', borderRadius: '1rem' }}
+                    >
+                      ⚡ Neukunden-Onboarding
+                    </button>
+                    <button 
+                      onClick={() => handleSendRagQuery('Was kosten unsere Automatisierungs-Pakete?')}
+                      className="btn btn-secondary"
+                      style={{ padding: '0.25rem 0.6rem', fontSize: '0.75rem', borderRadius: '1rem' }}
+                    >
+                      ⚡ Preispakete & Kosten
+                    </button>
+                    <button 
+                      onClick={() => handleSendRagQuery('Welche Datenschutz-Standards gelten bei Sprachnachrichten?')}
+                      className="btn btn-secondary"
+                      style={{ padding: '0.25rem 0.6rem', fontSize: '0.75rem', borderRadius: '1rem' }}
+                    >
+                      ⚡ DSGVO & Sicherheit
+                    </button>
+                  </div>
+
+                  {/* Chat Stream Window */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', height: '260px', overflowY: 'auto', background: 'rgba(9, 13, 22, 0.7)', padding: '1rem', borderRadius: '0.75rem', border: '1px solid var(--border-color)', marginBottom: '1rem' }}>
+                    {ragChat.map((msg) => (
+                      <div key={msg.id} style={{ display: 'flex', flexDirection: 'column', alignSelf: msg.sender === 'user' ? 'flex-end' : 'flex-start', maxWidth: '85%' }}>
+                        <div style={{
+                          padding: '0.65rem 0.85rem',
+                          borderRadius: '0.75rem',
+                          fontSize: '0.85rem',
+                          lineHeight: '1.45',
+                          background: msg.sender === 'user' ? 'linear-gradient(135deg, var(--accent-purple), var(--accent-cyan))' : 'rgba(255, 255, 255, 0.04)',
+                          color: '#f4f4f5',
+                          border: msg.sender === 'user' ? 'none' : '1px solid rgba(255,255,255,0.05)'
+                        }}>
+                          {msg.text}
+                        </div>
+                        {msg.sources && msg.sources.length > 0 && (
+                          <div style={{ display: 'flex', gap: '0.25rem', marginTop: '0.25rem', flexWrap: 'wrap' }}>
+                            <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>Quellen:</span>
+                            {msg.sources.map((s, idx) => (
+                              <span key={idx} style={{ fontSize: '0.65rem', color: 'var(--accent-cyan)', background: 'rgba(6, 182, 212, 0.1)', padding: '0.05rem 0.25rem', borderRadius: '0.25rem' }}>
+                                📄 {s}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                    {ragGenerating && (
+                      <div style={{ display: 'flex', gap: '0.35rem', alignSelf: 'flex-start', background: 'rgba(255,255,255,0.04)', padding: '0.65rem 0.85rem', borderRadius: '0.75rem', border: '1px solid rgba(255,255,255,0.05)' }}>
+                        <span className="dot-pulse" style={{ background: 'var(--accent-purple)' }}></span>
+                        <span className="dot-pulse" style={{ background: 'var(--accent-cyan)', animationDelay: '0.2s' }}></span>
+                        <span className="dot-pulse" style={{ background: 'var(--accent-purple)', animationDelay: '0.4s' }}></span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Input Form */}
+                  <form 
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      handleSendRagQuery();
+                    }} 
+                    style={{ display: 'flex', gap: '0.5rem' }}
+                  >
+                    <input 
+                      type="text" 
+                      className="input-field" 
+                      style={{ flexGrow: 1 }}
+                      placeholder={`Frage das Firmengehirn (Persona: ${ragPersona === 'brain' ? 'Firmengehirn' : ragPersona === 'sales' ? 'Pitch-Coach' : 'DSGVO & Legal'})...`}
+                      value={ragInput}
+                      onChange={(e) => setRagInput(e.target.value)}
+                      disabled={ragGenerating}
+                    />
+                    <button 
+                      type="submit" 
+                      className="btn btn-primary"
+                      disabled={ragGenerating || !ragInput.trim()}
+                      style={{ background: 'linear-gradient(135deg, var(--accent-purple), var(--accent-cyan))', border: 'none', padding: '0 1.25rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}
+                    >
+                      <Send size={14} /> Fragen
+                    </button>
+                  </form>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ==================== TAB 4b: DOKUMENTE & SYNC ==================== */}
+        {activeTab === 'hub' && (
+          <div className="hub-grid" style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '1.5rem' }}>
+            
+            {/* Left Column: Dokumenten-Tresor & NotebookLM */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
               {/* Wissens-Hub & Google Docs */}
               <div className="card">
                 <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -4711,6 +5068,44 @@ ${original}
                   </button>
                 </div>
               </div>
+            </div>
+
+            {/* Right Column: Supabase Cloud Sync Manager */}
+            <div>
+              {/* Master-Logbuch (masterLogbuch.txt) */}
+              <div className="card" style={{ marginBottom: '1.5rem' }}>
+                <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <h2 className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--accent-purple)' }}>
+                    <FileText size={20} className="text-purple-500" />
+                    masterLogbuch.txt (Immer offen)
+                  </h2>
+                  <span style={{ fontSize: '0.7rem', padding: '0.15rem 0.5rem', borderRadius: '0.25rem', background: 'rgba(163, 116, 255, 0.15)', color: 'var(--accent-purple)', fontWeight: 700 }}>
+                    ✍️ Direkt-Bearbeitung
+                  </span>
+                </div>
+                <div style={{ marginTop: '0.75rem' }}>
+                  <textarea
+                    className="input-field"
+                    style={{ width: '100%', height: '200px', fontFamily: 'monospace', fontSize: '0.8rem', resize: 'vertical', lineHeight: '1.4', background: 'rgba(0,0,0,0.2)' }}
+                    placeholder="Schreibe hier deinen aktuellen Stand hinein..."
+                    value={docs.find(d => d.id === 'master-logbuch')?.content || ''}
+                    onChange={(e) => {
+                      const newContent = e.target.value;
+                      setDocs(prev => prev.map(d => 
+                        d.id === 'master-logbuch' 
+                          ? { ...d, content: newContent, status: d.status === 'synced' ? 'modified' : d.status } 
+                          : d
+                      ));
+                    }}
+                  />
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.5rem', fontSize: '0.7rem', color: 'var(--text-muted)' }}>
+                    <span>Zeichen: {(docs.find(d => d.id === 'master-logbuch')?.content || '').length}</span>
+                    <span style={{ color: docs.find(d => d.id === 'master-logbuch')?.status === 'synced' ? 'var(--accent-green)' : 'var(--accent-yellow)' }}>
+                      Status: {docs.find(d => d.id === 'master-logbuch')?.status === 'synced' ? '✅ Synchronisiert' : '☁️ Nur Lokal (Ungespeichert)'}
+                    </span>
+                  </div>
+                </div>
+              </div>
 
               {/* Supabase Cloud Sync Manager (Feature 6 - v4) */}
               <div className="card">
@@ -4738,35 +5133,52 @@ ${original}
 
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', background: 'rgba(0,0,0,0.15)', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid var(--border-color)' }}>
                     <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Letzter Sync:</div>
-                    <div style={{ fontSize: '0.75rem', color: 'white', fontWeight: 600, textAlign: 'right' }}>{supabaseLastSync}</div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 600 }}>{supabaseLastSync}</div>
+                    
+                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Tabellen-Status:</div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--accent-cyan)', fontWeight: 600 }}>
+                      4 Tabellen aktiv
+                    </div>
+                    
                     <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Latenz:</div>
-                    <div style={{ fontSize: '0.75rem', color: 'var(--accent-green)', fontWeight: 600, textAlign: 'right' }}>18 ms</div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--accent-green)', fontWeight: 600 }}>18 ms</div>
                   </div>
 
-                  <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                    <span className="tag tag-system" style={{ fontSize: '0.65rem' }}>contacts ({contacts.length})</span>
-                    <span className="tag tag-system" style={{ fontSize: '0.65rem' }}>tasks ({tasks.length})</span>
-                    <span className="tag tag-system" style={{ fontSize: '0.65rem' }}>inbox ({inbox.length})</span>
-                    <span className="tag tag-system" style={{ fontSize: '0.65rem' }}>tickets ({clientTickets.length})</span>
+                  <div style={{ marginTop: '0.5rem' }}>
+                    <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.25rem', fontWeight: 600 }}>MONITORING (DATENZEILEN):</span>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+                      {[
+                        { name: 'contacts (CRM-Kunden)', count: contacts.length },
+                        { name: 'tasks (To-Dos)', count: tasks.length },
+                        { name: 'inbox (Posteingang)', count: inbox.length },
+                        { name: 'client_tickets (Support)', count: clientTickets.length }
+                      ].map((t, idx) => (
+                        <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.7rem', padding: '0.25rem 0.5rem', background: 'rgba(255,255,255,0.02)', borderRadius: '0.25rem', border: '1px solid rgba(255,255,255,0.03)' }}>
+                          <span style={{ color: 'var(--text-secondary)', fontFamily: 'monospace' }}>{t.name}</span>
+                          <span style={{ fontWeight: 700, color: 'var(--accent-cyan)' }}>{t.count} Zeilen</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
 
-                  <button 
-                    onClick={triggerSupabaseSync} 
-                    disabled={supabaseSyncStatus === 'syncing'} 
-                    className="btn btn-primary"
-                    style={{ background: 'linear-gradient(135deg, #10b981, #06b6d4)', border: 'none', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.35rem' }}
-                  >
-                    <RefreshCw size={14} className={supabaseSyncStatus === 'syncing' ? 'spin' : ''} />
-                    {supabaseSyncStatus === 'syncing' ? 'Synchronisiere Cloud Database...' : 'Jetzt Cloud-Synchronisieren'}
-                  </button>
+                  <div style={{ marginTop: '0.5rem' }}>
+                    <button
+                      type="button"
+                      onClick={triggerSupabaseSync}
+                      disabled={supabaseSyncStatus === 'syncing'}
+                      className="btn btn-secondary"
+                      style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.35rem', border: '1px solid rgba(16, 185, 129, 0.3)' }}
+                    >
+                      <svg className={supabaseSyncStatus === 'syncing' ? 'spin' : ''} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+                      </svg>
+                      {supabaseSyncStatus === 'syncing' ? 'Synchronisiere Cloud...' : 'Supabase Cloud-Sync erzwingen'}
+                    </button>
+                  </div>
 
-                  {/* Sync Logs terminal */}
-                  {supabaseLogsOpen && (
-                    <div style={{ marginTop: '0.5rem', background: '#090d16', border: '1px solid var(--border-color)', borderRadius: '0.5rem', overflow: 'hidden' }}>
-                      <div style={{ background: 'rgba(255,255,255,0.03)', borderBottom: '1px solid rgba(255,255,255,0.05)', padding: '0.35rem 0.5rem', fontSize: '0.65rem', color: 'var(--accent-green)', fontFamily: 'monospace', fontWeight: 600, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <span>⚡ Supabase Database Stream Logs</span>
-                        <button onClick={() => setSupabaseLogsOpen(false)} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: '0.65rem' }}>Schließen</button>
-                      </div>
+                  {supabaseLogs.length > 0 && (
+                    <div style={{ marginTop: '0.5rem', background: '#090d16', border: '1px solid var(--border-color)', borderRadius: '0.5rem', padding: '0.5rem' }}>
+                      <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontWeight: 'bold', marginBottom: '0.25rem', textTransform: 'uppercase' }}>Cloud Sync Terminal logs:</div>
                       <div style={{ padding: '0.5rem', fontFamily: 'monospace', fontSize: '0.7rem', color: '#e2e8f0', maxHeight: '110px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
                         {supabaseLogs.map((log, i) => (
                           <div key={i} style={{ color: log.includes('🎉') ? '#4ade80' : log.includes('🔄') ? '#facc15' : '#38bdf8' }}>
@@ -4778,11 +5190,6 @@ ${original}
                   )}
                 </div>
               </div>
-
-            </div>
-
-            {/* "Frag das Firmengehirn" RAG Knowledge Bot (Feature 4 - v4) */}
-            <div className="card" style={{ gridColumn: 'span 2', marginTop: '1rem' }}>
               <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
                   <div>
                     <h2 className="card-title" style={{ color: 'var(--accent-purple)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -5787,11 +6194,18 @@ ${original}
             <span>CRM</span>
           </button>
           <button 
+            className={`mobile-nav-tab ${activeTab === 'prompts' ? 'active' : ''}`}
+            onClick={() => setActiveTab('prompts')}
+          >
+            <BrainCircuit size={20} />
+            <span>Prompts</span>
+          </button>
+          <button 
             className={`mobile-nav-tab ${activeTab === 'hub' ? 'active' : ''}`}
             onClick={() => setActiveTab('hub')}
           >
-            <BrainCircuit size={20} />
-            <span>KI</span>
+            <FileText size={20} />
+            <span>Docs</span>
           </button>
           <button 
             className={`mobile-nav-tab ${activeTab === 'sales' ? 'active' : ''}`}

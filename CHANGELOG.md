@@ -5,6 +5,14 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **Master-Logbuch Import:** Einbettung des vollständigen 25KB großen Master-Logbuchs (`📑 MASTER-LOGBUCH & COMMAND CENTER: KMU SERVICE HARZ`) in die "Dokumente & Sync"-Ansicht. Es steht dem Gründer nun permanent zur Bearbeitung und automatischen Speicherung zur Verfügung.
+- **Automatische Upgrade-Logik:** Entwicklung einer Migrationslogik im Dokumenten-State-Lader. Veraltete Platzhalter-Logbücher im lokalen Browserspeicher werden beim App-Start automatisch auf die neueste Fassung des echten Logbuchs aktualisiert, ohne Benutzerdaten zu überschreiben.
+
+### Changed
+- **Feature 1 v10 (Menü-Tab-Splitting für KI & Docs):** Aufteilung des früheren "KI & Docs"-Tabs (Tab 4) in zwei dedizierte Menüregister: "KI Prompts" (Prompt Vault, Content-Planer und RAG Knowledge Bot) und "Dokumente & Sync" (Wissens-Hub mit Text-Editor, Google Drive/NotebookLM Sync und Supabase Cloud Sync). Ermöglicht getrennte Bedienung und deutlich mehr Übersicht auf Desktop- und Mobilgeräten.
+
+### Added
+- **Feature 1 v11 (Automatisierte Tests & Vitest Integration):** Einrichtung von Vitest und React Testing Library mit jsdom. Beinhaltet Mocks für Capacitor, jsPDF und Web Speech APIs sowie Integrationstests für das Rendering des Dashboards, den ROI-Rechner, das Tab-Menü-Routing, den Showcase-Anonymisierungsmodus und das Kanban-Board. Die Testsuite wurde auf insgesamt 5 umfassende Integrationstests ausgebaut.
 - **Feature 1 v9 (Android App & native Startbildschirm-Widget):** Vollwertige Integration der nativen Android-Plattform via Capacitor. Enthält ein elegantes, dunkles native Android-Homescreen-Widget ("Founder OS • Notizen") zur offline-fähigen Live-Anzeige deiner Notizen und Aufgaben, gekoppelt über ein custom Java-Plugin (WidgetBridge).
 - **Feature 1 v8 (Prompt-Suche & Filter):** Live-Suchzeile und Kategorieregister im Prompt-Vault (Tab 4). Ermöglicht die Filterung nach Begriffen oder Kategorien (Sales, Marketing, Code, Strategie) inklusive Belegzählungen.
 - **Feature 2 v8 (Werksreset im Header):** Rote "Reset"-Schaltfläche im App-Header, die alle persönlichen Daten im LocalStorage löscht und die App augenblicklich auf den Standard-Demozustand zurücksetzt.

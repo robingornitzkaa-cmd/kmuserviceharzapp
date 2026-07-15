@@ -1,5 +1,93 @@
 # AI Worklog - Founder OS
 
+## 2026-07-15 10:10 – Testsuite-Erweiterung & erfolgreiche Verifikation (Phase v11b)
+
+### Ziel
+Erweiterung der automatisierten Integrationstests auf 5 Testfälle, um den Showcase-Modus (Datenanonymisierung) und das Kanban-Board (Erstellung neuer Aufgaben) abzusichern, sowie erfolgreiche Ausführung der Suite.
+
+### Geändert
+- [App.test.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/test/App.test.jsx):
+  - Hinzufügen des Testfalls `Showcase-Modus toggle maskiert sensible Daten`: Wechselt in den CRM-Tab, stellt sicher, dass sensible Daten (`Dachdeckerei Müller`) sichtbar sind, aktiviert den Showcase-Modus, verifiziert die Anonymisierung (`Muster-Bedachungen GmbH`) und deaktiviert ihn wieder.
+  - Behebung von Matcher-Mehrdeutigkeiten durch Umstellung von `getByText`/`queryByText` auf `getAllByText`/`queryAllByText` im Showcase-Test, da "Dachdeckerei Müller" sowohl bei den CRM-Kontakten als auch in der Projektliste gerendert wird.
+  - Hinzufügen des Testfalls `Kanban-Board: Hinzufügen einer neuen Aufgabe funktioniert`: Wechselt in den `Inbox & Tasks` Tab, gibt eine neue Aufgabe ein, sendet das Formular ab und prüft, ob die Aufgabe im Kanban-Board erscheint.
+
+### Warum
+Um eine noch tiefere Testabdeckung der interaktiven Anwendungs-Features zu erreichen und regressionsfreie Codeänderungen an Kernfunktionen wie Datenschutz und Aufgabenverwaltung sicherzustellen.
+
+### Testen
+1. Führe `npm run test` im Terminal aus.
+2. Alle 5 Integrationstests (Dashboard initial, ROI-Kalkulator, Tabwechsel, Showcase-Modus und Kanban-Board) schließen erfolgreich ab.
+
+---
+
+## 2026-07-15 09:55 – Master-Logbuch Import & Integration (Phase v12)
+
+### Ziel
+Importieren des echten Master-Logbuchs von Robins Unternehmensberatung ("KMU Service Harz") und dauerhafte Integration als permanent geöffnetes Dokument in der "Dokumente & Sync"-Ansicht.
+
+### Geändert
+- [App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx):
+  - Hinzufügen der Konstante `MASTER_LOGBUCH_CONTENT` mit dem vollständigen Text der 25KB großen Markdown-Datei `📑 MASTER-LOGBUCH & COMMAND CENTER: KMU SERVICE HARZ.md`.
+  - Verknüpfen der Logbuch-Konstante im Array `INITIAL_DOCS` als Standard-Inhalt des `master-logbuch` Eintrags.
+  - Implementierung einer intelligenten Migrationslogik im Dokumenten-State-Lader: Befindet sich im lokalen Browserspeicher (localStorage) noch ein veraltetes Platzhalter-Logbuch (Dummy-Text oder leer), wird es automatisch auf den echten, aktuellen Logbuchstand aktualisiert.
+- [App.test.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/test/App.test.jsx):
+  - Erweiterung des Tabwechsel-Integrationstests zur Überprüfung, ob das Master-Logbuch im "Dokumente & Sync"-Tab geladen wird und Eingaben in das Editor-Textfeld korrekt verarbeitet werden.
+
+### Warum
+Damit Robin sofort mit seinen echten Gründungsdaten arbeiten kann. Das Logbuch ist das Herzstück seiner strategischen Planung und steht nun direkt im Wissens-Hub der App bearbeitbar bereit.
+
+### Testen
+1. Wechsle im Browser auf den Tab "Dokumente & Sync".
+2. Auf der rechten Seite erscheint die Card "masterLogbuch.txt (Immer offen)" mit dem vollständigen, echten Inhalt.
+3. Teste das Ändern von Notizen im Editor; die Änderungen werden automatisch im LocalStorage persistiert.
+4. Führe `npm run test` aus, um die Testabdeckung im JSDOM-Modus zu verifizieren.
+
+---
+
+## 2026-07-15 09:40 – Test-Infrastruktur & Automatisierte Regressionstests (Phase v11)
+
+### Ziel
+Einrichtung von Vitest und React Testing Library zur automatisierten Prüfung aller Kernkomponenten (Dashboard, Navigation, interaktiver ROI-Rechner) und zum Schutz vor zukünftigen Fehlern bei Codeänderungen.
+
+### Erstellt
+- [vitest.config.js](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/vitest.config.js): Test-Konfiguration zur Definition von jsdom, globals und Setup-Dateien.
+- [setup.js](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/test/setup.js): Globaler Test-Setup-Code mit Matchern und Mocks für Capacitor, jsPDF und Web Speech APIs.
+- [App.test.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/test/App.test.jsx): Integrationstests für Rendering, Navigation und den interaktiven ROI-Rechner.
+
+### Geändert
+- [package.json](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/package.json): Installation der devDependencies (`vitest`, `jsdom`, `@testing-library/react`, `@testing-library/jest-dom`) und Hinzufügen der Test-Skripte (`test` und `test:watch`).
+
+### Warum
+Erlaubt eine automatische und extrem schnelle Verifikation der gesamten App (CRM, Zeiterfassung, ROI, Widgets, Tabs) vor jedem Commit oder Release. Fehler wie fehlende Variablen oder Handler werden somit sofort im Entwicklungsprozess abgefangen.
+
+### Testen
+1. Führe im Hauptverzeichnis `npm run test` aus.
+2. Alle 3 Integrationstests (Dashboard Render, ROI Berechnung mit 90% Ersparnis, Tabwechsel) laufen erfolgreich und grün durch.
+
+---
+
+## 2026-07-15 09:10 – Tab-Splitting für KI Prompts & Dokumente/Sync (Phase v10)
+
+### Ziel
+Trennung des überfrachteten "KI & Docs"-Registers (Tab 4) in zwei eigenständige, übersichtliche Tabs im Menü: "KI Prompts" (Prompt Vault, Baukasten, Content-Planer & RAG Bot) und "Dokumente & Sync" (Wissens-Hub, Dokumenten-Editor, NotebookLM Status & Supabase Sync).
+
+### Geändert
+- [App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx):
+  - Desktop-Navigationsleiste (`nav-tabs`): "KI Prompts" und "Dokumente & Sync" als eigenständige Buttons integriert.
+  - Mobile Navigationsleiste (`mobile-nav-bar`): "Prompts" und "Docs" als getrennte Tabs hinzugefügt.
+  - Tab 4 gesplittet: `activeTab === 'prompts'` rendert nun den Prompt-Tresor mit Baukasten, Content-Planer und den RAG Knowledge Bot. `activeTab === 'hub'` rendert den Dokumenten-Wissens-Hub, NotebookLM-Status und Supabase Cloud Sync.
+  - Behebung eines `ReferenceError: handleSendRagSubmit is not defined`, indem das onSubmit-Event des RAG-Formulars im Prompts-Tab korrekt an `handleSendRagQuery` delegiert und ein automatisches Neuladen der Seite via `e.preventDefault()` verhindert wird.
+  - Behebung eines `ReferenceError: supabaseLatency is not defined` im Dokumente-Tab, indem der fälschlicherweise dynamisierte Latenzwert wieder durch den statischen Wert von `18 ms` ersetzt wurde.
+
+### Warum
+Bessere Übersichtlichkeit und Benutzeroberfläche. Der bisherige "KI & Docs"-Tab enthielt zu viele mächtige Tools auf einmal. Durch das Aufteilen kann Robin Prompts getrennt von Dokumentenablagen und Backend-Sync-Vorgängen verwalten, was die Bedienbarkeit auf Smartphones und Desktop-PCs massiv steigert.
+
+### Testen
+1. **Desktop-Navigation:** Klicke in der Kopfleiste auf "KI Prompts" ➔ Der Prompt Vault, Content-Planer und RAG-Bot werden angezeigt. Klicke auf "Dokumente & Sync" ➔ Der Wissens-Hub, das NotebookLM-Panel und Supabase Sync werden angezeigt.
+2. **Mobile Navigation:** Verkleinere den Browser oder aktiviere die Entwicklertools ➔ Am unteren Bildschirmrand gibt es nun 6 Symbole. Die neuen Tabs "Prompts" und "Docs" wechseln fehlerfrei die Ansicht.
+
+---
+
 ## 2026-07-14 09:00 – Android-Plattform & Native Homescreen-Widget (Phase v9)
 
 ### Ziel

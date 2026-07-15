@@ -1,7 +1,10 @@
 # TODO - Founder OS
 
 ## Wichtig
-- [ ] Freigabe des neuen [Implementierungsplans](file:///C:/Users/gorni/.gemini/antigravity/brain/26b62883-46ba-464b-8962-fb9c8b771cee/implementation_plan.md) abwarten.
+- [x] **Master-Logbuch:** Echtes Logbuch aus `📑 MASTER-LOGBUCH & COMMAND CENTER: KMU SERVICE HARZ` importiert und permanent in der "Dokumente & Sync"-Ansicht integriert.
+- [x] **Phase v10 - Schritt 1:** Splitting von Tab 4 ("KI & Docs") in zwei eigenständige Menüpunkte ("KI Prompts" und "Dokumente & Sync") in Desktop- und Mobilansicht.
+- [x] **Test-Ausbau:** Integrationstests auf 5 Testfälle ausgebaut (inkl. Logbuch, Showcase-Modus und Kanban-Board) und alle erfolgreich ausgeführt.
+- [ ] Freigabe des neuen [Implementierungsplans](file:///C:/Users/gorni/.gemini/antigravity/brain/26b62883-46ba-464b-8962-fb9c8b771cee/implementation_plan.md) abwarten (insb. Supabase Live-Anbindung).
 - [x] **Schritt 1:** Implementierung von **Feature 1a (Showcase-Modus / Datenschutz-Filter)** ➔ Erledigt.
 - [x] **Schritt 2:** Implementierung von **Feature 1b (ROI-Rechner v2 mit PDF-Export)** ➔ Erledigt.
 - [x] **Schritt 3:** Implementierung von **Feature 1c (Zettel-zu-Code Visualisierer)** ➔ Erledigt.
