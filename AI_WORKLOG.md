@@ -1,5 +1,25 @@
 # AI Worklog - Founder OS
 
+## 2026-07-15 11:27 – Google Client ID Integration & UI (Phase v12c)
+
+### Ziel
+Integration der echten Google-Client-ID des Nutzers in die App und Bereitstellung eines Konfigurationsfelds in der UI.
+
+### Geändert
+- [App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx):
+  - Hinzufügen des States `googleClientId` mit der echten ID des Nutzers als Standardwert.
+  - Implementierung eines Eingabefeldes für die Google OAuth Client-ID im "Digitales Firmengehirn (NotebookLM)"-Panel.
+  - Persistierung der Client-ID im `localStorage`.
+
+### Warum
+Damit der Nutzer seine Client-ID einsehen und bei Bedarf live in der App ändern kann.
+
+### Testen
+1. Starte die App und wechsle auf den Tab **Dokumente & Sync**.
+2. Das Feld für die **Google OAuth Client-ID** ist mit deiner echten ID befüllt und editierbar.
+
+---
+
 ## 2026-07-15 10:45 – Supabase Live-Anbindung & Git-Commit (Phase v12b)
 
 ### Ziel
