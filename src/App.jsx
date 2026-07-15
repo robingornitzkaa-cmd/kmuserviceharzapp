@@ -17,6 +17,7 @@ import {
   ChevronRight, 
   Upload, 
   ExternalLink, 
+  Target,
   DollarSign, 
   Clock, 
   AlertTriangle,
@@ -776,7 +777,12 @@ function App() {
         calendar: true,
         habits: true,
         weekly: true,
-        notes: true
+        notes: true,
+        simpleNotes: false,
+        simpleTodos: false,
+        simpleCalendar: false,
+        simpleGoal: false,
+        simpleLinks: false
       };
     } catch {
       return {
@@ -786,16 +792,60 @@ function App() {
         calendar: true,
         habits: true,
         weekly: true,
-        notes: true
+        notes: true,
+        simpleNotes: false,
+        simpleTodos: false,
+        simpleCalendar: false,
+        simpleGoal: false,
+        simpleLinks: false
       };
     }
   });
   const [isEditingDashboard, setIsEditingDashboard] = useState(false);
 
+  // Modus & Custom-States für einfache Bausteine (Phase v14)
+  const [dashboardMode, setDashboardMode] = useState(() => {
+    return localStorage.getItem('f_dashboard_mode') || 'detailed';
+  });
+  const [stickyNoteColor, setStickyNoteColor] = useState(() => {
+    return localStorage.getItem('f_sticky_note_color') || '#fef08a';
+  });
+  const [simpleEventTime, setSimpleEventTime] = useState('');
+  const [simpleEventText, setSimpleEventText] = useState('');
+  const [newDashTodoText, setNewDashTodoText] = useState('');
+  const [dashboardGoal, setDashboardGoal] = useState(() => {
+    return localStorage.getItem('f_dashboard_goal') || '';
+  });
+  const [dashboardLinks, setDashboardLinks] = useState(() => {
+    try {
+      const saved = localStorage.getItem('f_dashboard_links');
+      return saved ? JSON.parse(saved) : [
+        { id: 'l1', title: 'Google Drive Ablage', url: 'https://drive.google.com' },
+        { id: 'l2', title: 'Supabase Console', url: 'https://supabase.com/dashboard' }
+      ];
+    } catch {
+      return [];
+    }
+  });
+  const [newLinkTitle, setNewLinkTitle] = useState('');
+  const [newLinkUrl, setNewLinkUrl] = useState('');
+
   // Persistent Storage Sync
   useEffect(() => {
     localStorage.setItem('f_dashboard_widgets', JSON.stringify(dashboardWidgets));
   }, [dashboardWidgets]);
+  useEffect(() => {
+    localStorage.setItem('f_dashboard_mode', dashboardMode);
+  }, [dashboardMode]);
+  useEffect(() => {
+    localStorage.setItem('f_sticky_note_color', stickyNoteColor);
+  }, [stickyNoteColor]);
+  useEffect(() => {
+    localStorage.setItem('f_dashboard_goal', dashboardGoal);
+  }, [dashboardGoal]);
+  useEffect(() => {
+    localStorage.setItem('f_dashboard_links', JSON.stringify(dashboardLinks));
+  }, [dashboardLinks]);
   useEffect(() => {
     localStorage.setItem('f_custom_prompt_blocks', JSON.stringify(customPromptBlocks));
   }, [customPromptBlocks]);
@@ -1613,6 +1663,53 @@ function App() {
     setInbox([newInboxItem, ...inbox]);
     setQuickCapture('');
     alert('Notiz in der Inbox gespeichert!');
+  };
+
+  // Phase v14: Handlers für einfache Dashboard-Widgets
+  const handleSimpleCalendarSubmit = (e) => {
+    e.preventDefault();
+    if (!simpleEventTime.trim() || !simpleEventText.trim()) return;
+    const newEvent = {
+      id: 'ev_' + Date.now(),
+      title: simpleEventText,
+      date: new Date().toISOString().split('T')[0],
+      time: simpleEventTime
+    };
+    setCalendarEvents(prev => [...prev, newEvent]);
+    setSimpleEventTime('');
+    setSimpleEventText('');
+    alert(`📅 Termin hinzugefügt: "${simpleEventText}" um ${simpleEventTime} Uhr.`);
+  };
+
+  const handleAddSimpleDashTodoSubmit = (e) => {
+    e.preventDefault();
+    if (!newDashTodoText.trim()) return;
+    handleAddDashTodo(newDashTodoText);
+    setNewDashTodoText('');
+  };
+
+  const handleAddQuickLink = (e) => {
+    e.preventDefault();
+    if (!newLinkTitle.trim() || !newLinkUrl.trim()) return;
+    
+    // Einfache URL-Validierung / Protokoll hinzufügen falls fehlend
+    let url = newLinkUrl.trim();
+    if (!/^https?:\/\//i.test(url)) {
+      url = 'https://' + url;
+    }
+    
+    const newLink = {
+      id: 'link_' + Date.now(),
+      title: newLinkTitle.trim(),
+      url: url
+    };
+    setDashboardLinks(prev => [...prev, newLink]);
+    setNewLinkTitle('');
+    setNewLinkUrl('');
+  };
+
+  const handleDeleteQuickLink = (id) => {
+    setDashboardLinks(prev => prev.filter(l => l.id !== id));
   };
 
   // NLP Kalender & KI-Tagesplaner Handlers (Feature 3 - v5)
@@ -3074,7 +3171,7 @@ ${original}
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <span style={{ display: 'flex', width: '8px', height: '8px', borderRadius: '50%', background: 'var(--accent-cyan)' }}></span>
                 <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-                  Gründer-Cockpit: {Object.values(dashboardWidgets).filter(Boolean).length} von 6 Widgets aktiv
+                  Gründer-Cockpit: {Object.values(dashboardWidgets).filter(Boolean).length} von {Object.keys(dashboardWidgets).length} Widgets aktiv
                 </span>
               </div>
               <button 
@@ -3105,10 +3202,16 @@ ${original}
                     { key: 'calendar', label: 'Google Kalender', desc: 'Tagestermine & Meetings' },
                     { key: 'habits', label: 'Habit Tracker & Streak', desc: 'Gewohnheiten & CSS-Konfetti' },
                     { key: 'weekly', label: 'Wochen-Review & Archiv', desc: 'Reflexionen & PDF-Wochenbericht' },
-                    { key: 'notes', label: 'Offline-Notizen & Aufgaben', desc: '100% lokale Notizen & Checkliste' }
+                    { key: 'notes', label: 'Offline-Notizen & Aufgaben', desc: '100% lokale Notizen & Checkliste' },
+                    { key: 'simpleNotes', label: '📌 Einfacher Notizzettel (Haftnotiz)', desc: 'Einfacher Zettel mit Farbwahl' },
+                    { key: 'simpleTodos', label: '✍️ Einfache Aufgabenliste', desc: 'Schlanke To-Do-Checkliste' },
+                    { key: 'simpleCalendar', label: '📅 Einfacher Terminkalender', desc: 'Tagesagenda ohne Google-Sync' },
+                    { key: 'simpleGoal', label: '🎯 Tages-Hauptziel (Fokus)', desc: 'Fokus-Feld für die wichtigste Aufgabe' },
+                    { key: 'simpleLinks', label: '🔗 Quick-Links (Link-Sammlung)', desc: 'Deine Lesezeichen-Sammlung' }
                   ].map((w) => (
                     <label 
                       key={w.key} 
+                      htmlFor={`widget-check-${w.key}`}
                       style={{ 
                         display: 'flex', 
                         flexDirection: 'column', 
@@ -3124,6 +3227,7 @@ ${original}
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                         <span style={{ fontSize: '0.8rem', fontWeight: 700, color: dashboardWidgets[w.key] ? 'white' : 'var(--text-secondary)' }}>{w.label}</span>
                         <input 
+                          id={`widget-check-${w.key}`}
                           type="checkbox" 
                           checked={dashboardWidgets[w.key]} 
                           onChange={() => setDashboardWidgets(prev => ({ ...prev, [w.key]: !prev[w.key] }))}
@@ -3139,6 +3243,345 @@ ${original}
 
             <div className="dashboard-grid">
               
+              {/* Tages-Hauptziel (Phase v14) */}
+              {dashboardWidgets.simpleGoal && (
+                <div className="card" style={{ gridColumn: 'span 2', background: 'rgba(6, 182, 212, 0.03)', border: '1px solid rgba(6, 182, 212, 0.2)' }}>
+                  <div className="card-header" style={{ borderBottom: 'none', paddingBottom: 0 }}>
+                    <h2 className="card-title" style={{ color: 'var(--accent-cyan)', display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0 }}>
+                      <Target size={20} /> Tages-Hauptziel (Fokus des Tages)
+                    </h2>
+                  </div>
+                  <div style={{ padding: '0.75rem 1.25rem 1.25rem' }}>
+                    <input
+                      type="text"
+                      className="input-field"
+                      placeholder="Was ist dein #1 wichtigstes Ziel für heute? (z.B. Steuerberater kontaktieren)"
+                      value={dashboardGoal}
+                      onChange={(e) => setDashboardGoal(e.target.value)}
+                      style={{
+                        width: '100%',
+                        fontSize: '1.25rem',
+                        fontWeight: 700,
+                        textAlign: 'center',
+                        color: 'white',
+                        background: 'rgba(0,0,0,0.2)',
+                        border: '1px solid var(--border-color)',
+                        borderRadius: '0.5rem',
+                        padding: '0.75rem',
+                        boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.3)',
+                        outline: 'none'
+                      }}
+                    />
+                    {dashboardGoal && (
+                      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.35rem', marginTop: '0.5rem', color: 'var(--accent-cyan)', fontSize: '0.8rem', fontWeight: 600 }}>
+                        <span>⚡ Bleib fokussiert! Arbeite an diesem Ziel, bevor du dich anderem widmest.</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Einfacher Notizzettel / Haftnotiz (Phase v14) */}
+              {dashboardWidgets.simpleNotes && (
+                <div className="card" style={{ 
+                  background: stickyNoteColor, 
+                  color: '#1e293b', 
+                  boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.3)',
+                  transition: 'background 0.3s ease',
+                  border: 'none',
+                  display: 'flex',
+                  flexDirection: 'column'
+                }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(0, 0, 0, 0.08)', paddingBottom: '0.5rem', marginBottom: '0.75rem' }}>
+                    <h3 style={{ fontSize: '0.95rem', fontWeight: 800, color: '#0f172a', margin: 0, display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                      📌 Notizzettel
+                    </h3>
+                    
+                    {/* Farbwähler */}
+                    <div style={{ display: 'flex', gap: '0.35rem' }}>
+                      {[
+                        { color: '#fef08a', label: 'Gelb' },
+                        { color: '#bfdbfe', label: 'Blau' },
+                        { color: '#bbf7d0', label: 'Grün' },
+                        { color: '#fbcfe8', label: 'Pink' },
+                        { color: '#e9d5ff', label: 'Lila' }
+                      ].map(item => (
+                        <button
+                          key={item.color}
+                          type="button"
+                          onClick={() => setStickyNoteColor(item.color)}
+                          style={{
+                            width: '14px',
+                            height: '14px',
+                            borderRadius: '50%',
+                            background: item.color,
+                            border: stickyNoteColor === item.color ? '2px solid #0f172a' : '1px solid rgba(0,0,0,0.15)',
+                            cursor: 'pointer',
+                            padding: 0
+                          }}
+                          title={item.label}
+                        />
+                      ))}
+                    </div>
+                  </div>
+
+                  <textarea
+                    style={{
+                      width: '100%',
+                      minHeight: '160px',
+                      background: 'transparent',
+                      border: 'none',
+                      resize: 'vertical',
+                      color: '#0f172a',
+                      fontSize: '0.9rem',
+                      fontFamily: 'inherit',
+                      outline: 'none',
+                      lineHeight: '1.4'
+                    }}
+                    value={dashNotes}
+                    onChange={(e) => setDashNotes(e.target.value)}
+                    placeholder="Schreibe hier deine schnellen Notizen oder Entwürfe auf..."
+                  />
+                </div>
+              )}
+
+              {/* Einfache Aufgabenliste (Phase v14) */}
+              {dashboardWidgets.simpleTodos && (
+                <div className="card" style={{ display: 'flex', flexDirection: 'column' }}>
+                  <div className="card-header" style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.05)', paddingBottom: '0.5rem', marginBottom: '0.75rem' }}>
+                    <h3 className="card-title" style={{ fontSize: '0.95rem', color: 'var(--accent-purple)', display: 'flex', alignItems: 'center', gap: '0.35rem', margin: 0 }}>
+                      <CheckCircle size={18} /> Einfache To-Do-Liste
+                    </h3>
+                  </div>
+
+                  {/* Todo Eingabe */}
+                  <form onSubmit={handleAddSimpleDashTodoSubmit} style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
+                    <input
+                      type="text"
+                      className="input-field"
+                      placeholder="Neue Aufgabe hinzufügen..."
+                      value={newDashTodoText}
+                      onChange={(e) => setNewDashTodoText(e.target.value)}
+                      style={{ fontSize: '0.85rem', flexGrow: 1 }}
+                      required
+                    />
+                    <button type="submit" className="btn btn-primary" style={{ padding: '0 0.75rem', height: '38px' }}>
+                      <Plus size={16} />
+                    </button>
+                  </form>
+
+                  {/* Todo Items */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', overflowY: 'auto', maxHeight: '180px' }}>
+                    {dashTodos.map(todo => (
+                      <div 
+                        key={todo.id} 
+                        style={{ 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          justifyContent: 'space-between', 
+                          background: 'rgba(255,255,255,0.02)', 
+                          border: '1px solid var(--border-color)', 
+                          borderRadius: '0.5rem', 
+                          padding: '0.5rem 0.75rem' 
+                        }}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexGrow: 1 }}>
+                          <input
+                            type="checkbox"
+                            checked={todo.completed}
+                            onChange={() => handleToggleDashTodo(todo.id)}
+                            style={{ accentColor: 'var(--accent-purple)', cursor: 'pointer' }}
+                          />
+                          <span style={{ 
+                            fontSize: '0.85rem', 
+                            color: todo.completed ? 'var(--text-muted)' : 'var(--text-primary)',
+                            textDecoration: todo.completed ? 'line-through' : 'none'
+                          }}>
+                            {todo.text}
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteDashTodo(todo.id)}
+                          className="btn-icon-only text-red-500"
+                          style={{ padding: '0.2rem', minWidth: 'auto', minHeight: 'auto', background: 'none' }}
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    ))}
+                    {dashTodos.length === 0 && (
+                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontStyle: 'italic', textAlign: 'center', padding: '1rem' }}>
+                        Keine Aufgaben vorhanden.
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Einfacher Terminkalender (Phase v14) */}
+              {dashboardWidgets.simpleCalendar && (
+                <div className="card">
+                  <div className="card-header" style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.05)', paddingBottom: '0.5rem', marginBottom: '0.75rem' }}>
+                    <h3 className="card-title" style={{ fontSize: '0.95rem', color: 'var(--accent-cyan)', display: 'flex', alignItems: 'center', gap: '0.35rem', margin: 0 }}>
+                      <Calendar size={18} /> Einfacher Terminkalender
+                    </h3>
+                  </div>
+
+                  {/* Kalendereintrag erstellen */}
+                  <form onSubmit={handleSimpleCalendarSubmit} style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
+                    <input
+                      type="text"
+                      className="input-field"
+                      placeholder="Uhrzeit (z.B. 10:30)"
+                      value={simpleEventTime}
+                      onChange={(e) => setSimpleEventTime(e.target.value)}
+                      style={{ flex: '0.3', fontSize: '0.85rem' }}
+                      required
+                    />
+                    <input
+                      type="text"
+                      className="input-field"
+                      placeholder="Beschreibung"
+                      value={simpleEventText}
+                      onChange={(e) => setSimpleEventText(e.target.value)}
+                      style={{ flex: '1', fontSize: '0.85rem' }}
+                      required
+                    />
+                    <button type="submit" className="btn btn-primary" style={{ padding: '0 0.5rem', height: '38px', fontSize: '0.75rem' }}>
+                      + Hinzufügen
+                    </button>
+                  </form>
+
+                  {/* Termine Liste */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', overflowY: 'auto', maxHeight: '180px' }}>
+                    {calendarEvents.map(event => (
+                      <div 
+                        key={event.id}
+                        style={{ 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          justifyContent: 'space-between', 
+                          background: 'rgba(255,255,255,0.02)', 
+                          border: '1px solid var(--border-color)', 
+                          borderRadius: '0.5rem', 
+                          padding: '0.5rem 0.75rem' 
+                        }}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                          <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--accent-cyan)', background: 'rgba(6, 182, 212, 0.1)', padding: '0.15rem 0.4rem', borderRadius: '0.25rem', fontFamily: 'monospace' }}>
+                            {event.time}
+                          </span>
+                          <span style={{ fontSize: '0.8rem', color: 'var(--text-primary)' }}>
+                            {event.title}
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => deleteCalendarEvent(event.id)}
+                          className="btn-icon-only text-red-500"
+                          style={{ padding: '0.2rem', minWidth: 'auto', minHeight: 'auto', background: 'none' }}
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    ))}
+                    {calendarEvents.length === 0 && (
+                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontStyle: 'italic', textAlign: 'center', padding: '1rem' }}>
+                        Keine Termine eingetragen.
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Quick-Links (Phase v14) */}
+              {dashboardWidgets.simpleLinks && (
+                <div className="card">
+                  <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255, 255, 255, 0.05)', paddingBottom: '0.5rem', marginBottom: '0.75rem' }}>
+                    <h3 className="card-title" style={{ fontSize: '0.95rem', color: 'var(--accent-green)', display: 'flex', alignItems: 'center', gap: '0.35rem', margin: 0 }}>
+                      <ExternalLink size={18} /> Quick-Links
+                    </h3>
+                  </div>
+
+                  {/* Lesezeichen Liste */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem', overflowY: 'auto', maxHeight: '180px' }}>
+                    {dashboardLinks.map(link => (
+                      <div 
+                        key={link.id} 
+                        style={{ 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          justifyContent: 'space-between', 
+                          background: 'rgba(255,255,255,0.02)', 
+                          border: '1px solid var(--border-color)', 
+                          borderRadius: '0.5rem', 
+                          padding: '0.5rem 0.75rem' 
+                        }}
+                      >
+                        <a 
+                          href={link.url} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          style={{ 
+                            fontSize: '0.85rem', 
+                            color: 'var(--accent-green)', 
+                            fontWeight: 600,
+                            textDecoration: 'none',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.35rem'
+                          }}
+                          className="hover-underline"
+                        >
+                          🌐 {link.title}
+                        </a>
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteQuickLink(link.id)}
+                          className="btn-icon-only text-red-500"
+                          style={{ padding: '0.2rem', minWidth: 'auto', minHeight: 'auto', background: 'none' }}
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    ))}
+                    {dashboardLinks.length === 0 && (
+                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontStyle: 'italic', textAlign: 'center', padding: '1rem' }}>
+                        Keine Quick-Links vorhanden.
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Formular zum Link hinzufügen */}
+                  <form onSubmit={handleAddQuickLink} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', background: 'rgba(0,0,0,0.15)', padding: '0.5rem', borderRadius: '0.35rem', border: '1px solid var(--border-color)' }}>
+                    <div style={{ display: 'flex', gap: '0.35rem' }}>
+                      <input
+                        type="text"
+                        className="input-field"
+                        placeholder="Name (z.B. Make)"
+                        value={newLinkTitle}
+                        onChange={(e) => setNewLinkTitle(e.target.value)}
+                        style={{ fontSize: '0.75rem', height: '30px', flex: 1 }}
+                        required
+                      />
+                      <input
+                        type="text"
+                        className="input-field"
+                        placeholder="URL (make.com)"
+                        value={newLinkUrl}
+                        onChange={(e) => setNewLinkUrl(e.target.value)}
+                        style={{ fontSize: '0.75rem', height: '30px', flex: 1.5 }}
+                        required
+                      />
+                    </div>
+                    <button type="submit" className="btn btn-secondary" style={{ padding: '0.25rem 0.5rem', fontSize: '0.7rem', height: '26px' }}>
+                      + Link hinzufügen
+                    </button>
+                  </form>
+                </div>
+              )}
+
               {/* Finanz-Cockpit Row (v3) */}
               {dashboardWidgets.financial && (
                 <div className="card financial-cockpit-section" style={{ gridColumn: 'span 2' }}>

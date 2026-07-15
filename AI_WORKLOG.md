@@ -1,5 +1,36 @@
 # AI Worklog - Founder OS
 
+## 2026-07-15 19:55 – Modulare & Einfache Dashboard-Bausteine (Phase v14)
+
+### Ziel
+Erweiterung der Dashboard-Anpassungsmöglichkeiten um 5 neue einfache, ablenkungsfreie Widgets (Haftnotiz, To-Dos, Terminplaner, Tagesziel, Link-Sammlung) für eine minimalistische Cockpit-Erfahrung.
+
+### Erstellt
+Keine neuen Dateien.
+
+### Geändert
+- [App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx):
+  - Hinzufügen der Widget-Booleans (`simpleNotes`, `simpleTodos`, `simpleCalendar`, `simpleGoal`, `simpleLinks`) im standardmäßigen `dashboardWidgets` State.
+  - Implementierung der States für Haftnotiz-Farben (`stickyNoteColor`), Termineingabe (`simpleEventTime`, `simpleEventText`), Todo-Eingabe (`newDashTodoText`), Tagesziel (`dashboardGoal`) und Link-Sammlung (`dashboardLinks`).
+  - Einrichten von Persistierungs-Effekten zur automatischen Sicherung aller neuen States im `localStorage`.
+  - Integration von Handlern zur Steuerung einfacher Eingaben: `handleSimpleCalendarSubmit`, `handleAddSimpleDashTodoSubmit`, `handleAddQuickLink`, `handleDeleteQuickLink`.
+  - Anpassung des Konfigurations-Checklisten-Arrays im „Layout anpassen“-Drawer.
+  - Rendering der 5 neuen Widgets im Grid des Dashboards.
+- [App.test.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/test/App.test.jsx):
+  - Hinzufügen des 7. Integrationstests zur Überprüfung des Customizers und des manuellen Termin-Hinzufügens.
+- [TODO.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md), [CHANGELOG.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md): Aktualisierung der Entwicklungs-Protokolle.
+
+### Warum
+Damit Robin sein Dashboard extrem einfach und sauber aufbauen kann, wenn er keine komplexen Analysen, ROI-Kalkulatoren oder Make-Simulatoren braucht, sondern nur schnelle Notizen, To-Dos und anstehende Tagestermine eintragen möchte.
+
+### Testen
+1. Klicke auf dem Dashboard auf **Layout anpassen**.
+2. Wähle die neuen Widgets aus und stelle das Layout fertig.
+3. Teste das Ändern der Zettelfarbe, das Eintragen des Tagesziels, der To-Dos, Termine und Quick-Links.
+4. Führe `npm run test` im Terminal aus ➔ 7/7 Tests erfolgreich.
+
+---
+
 ## 2026-07-15 19:48 – Lead- & Pain-Point-Tracker mit Excel-Import & Supabase REST-Sync (Phase v13)
 
 ### Ziel

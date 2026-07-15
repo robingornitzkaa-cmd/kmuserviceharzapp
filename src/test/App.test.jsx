@@ -159,4 +159,47 @@ describe('Founder OS App - Integration Tests', () => {
     })
     alertMock.mockRestore()
   })
+
+  test('Dashboard-Bausteine: Aktivieren von einfachen Widgets und Hinzufügen eines Termins', async () => {
+    render(<App />)
+
+    // Layout-Editor öffnen
+    const customizeBtn = screen.getByRole('button', { name: /Layout anpassen/i })
+    fireEvent.click(customizeBtn)
+
+    // Finde Checkboxen für Haftnotiz und Terminkalender
+    const notesCheckbox = screen.getByLabelText(/📌 Einfacher Notizzettel \(Haftnotiz\)/i)
+    const calCheckbox = screen.getByLabelText(/📅 Einfacher Terminkalender/i)
+    
+    // Beide Widgets aktivieren
+    fireEvent.click(notesCheckbox)
+    fireEvent.click(calCheckbox)
+
+    // Layout fertigstellen
+    const doneBtn = screen.getByRole('button', { name: /Layout fertigstellen/i })
+    fireEvent.click(doneBtn)
+
+    // Prüfen, ob Widgets auf dem Dashboard gerendert werden
+    expect(screen.getByText('📌 Notizzettel')).toBeInTheDocument()
+    expect(screen.getByText('Einfacher Terminkalender')).toBeInTheDocument()
+
+    // Formular im einfachen Terminkalender ausfüllen
+    const timeInput = screen.getByPlaceholderText('Uhrzeit (z.B. 10:30)')
+    const textInput = screen.getByPlaceholderText('Beschreibung')
+    
+    fireEvent.change(timeInput, { target: { value: '15:45' } })
+    fireEvent.change(textInput, { target: { value: 'Kaffeeklatsch' } })
+
+    const addBtn = screen.getByRole('button', { name: /\+ Hinzufügen/i })
+    const alertMock = vi.spyOn(window, 'alert').mockImplementation(() => {})
+
+    fireEvent.click(addBtn)
+
+    // Alert wurde getriggert und Termin wird gerendert
+    expect(alertMock).toHaveBeenCalled()
+    expect(screen.getByText('15:45')).toBeInTheDocument()
+    expect(screen.getAllByText('Kaffeeklatsch').length).toBe(2)
+
+    alertMock.mockRestore()
+  })
 })

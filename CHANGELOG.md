@@ -5,6 +5,14 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **Modulare & Einfache Dashboard-Bausteine (Phase v14):**
+  - **📌 Einfacher Notizzettel (Haftnotiz):** Modularer Block mit 5 auswählbaren Hintergrundfarben (Gelb, Blau, Grün, Pink, Lila) zur schnellen Ideenerfassung.
+  - **✍️ Einfache Aufgabenliste (To-Do):** Eine saubere Kachel zum Eintragen, Abhaken und Löschen von Todos.
+  - **📅 Einfacher Terminkalender:** Direkte Eingabe von Uhrzeit und Beschreibung zur manuellen Terminplanung, 100 % offline-fähig.
+  - **🎯 Tages-Hauptziel (Fokus):** Ein großes Textfeld ganz oben auf dem Dashboard für das wichtigste Ziel des Tages.
+  - **🔗 Quick-Links (Link-Sammlung):** Lesezeichen-Widget zum Hinzufügen, Aufrufen und Löschen wichtiger Web-Ressourcen.
+- **Barrierefreie IDs:** Checkboxen und Labels im Anpassungs-Menü barrierefrei verknüpft.
+- **7. Integrationstest:** Automatisierte Validierung des Aktivierungs- und Buchungsprozesses in der Testsuite.
 - **Lead- & Pain-Point-Tracker (Phase v13):** Ein brandneuer Navigations-Reiter "Lead-Tracker" wurde in die Desktop- und Mobilansicht integriert. Das Tool dient der Verwaltung und Protokollierung deiner Kaltakquise-Telefonate.
   - **Suche & Filter:** Suche nach Firmennamen/Branchen und filtere nach Prioritäten (A/B/C) oder Status.
   - **Click-to-Call:** Direkte Anrufe über `tel:` Links mit einem Klick auf "Jetzt anrufen".
