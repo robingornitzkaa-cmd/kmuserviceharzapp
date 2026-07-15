@@ -565,6 +565,9 @@ function App() {
   const [googleConnected, setGoogleConnected] = useState(() => {
     return localStorage.getItem('f_google_connected') === 'true';
   });
+  const [googleClientId, setGoogleClientId] = useState(() => {
+    return localStorage.getItem('f_google_client_id') || '481297122516-m7hgprfvc28si5cj3cuqd6aocgogsv9q.apps.googleusercontent.com';
+  });
   const [isConnectingGoogle, setIsConnectingGoogle] = useState(false);
   const [isGoogleSyncing, setIsGoogleSyncing] = useState(false);
   const [googleSyncLogs, setGoogleSyncLogs] = useState([]);
@@ -770,6 +773,9 @@ function App() {
   useEffect(() => {
     localStorage.setItem('f_google_connected', String(googleConnected));
   }, [googleConnected]);
+  useEffect(() => {
+    localStorage.setItem('f_google_client_id', googleClientId);
+  }, [googleClientId]);
   useEffect(() => {
     localStorage.setItem('f_calendar_events', JSON.stringify(calendarEvents));
   }, [calendarEvents]);
@@ -5066,6 +5072,20 @@ ${original}
                     </svg>
                     {notebookLmSyncStatus === 'syncing' ? 'Synchronisiere Drive & NotebookLM...' : 'Google Drive & NotebookLM aktualisieren'}
                   </button>
+
+                  <div style={{ marginTop: '1.25rem', paddingTop: '1rem', borderTop: '1px solid var(--border-color)' }}>
+                    <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.25rem', fontWeight: 600 }}>
+                      Google OAuth Client-ID
+                    </label>
+                    <input 
+                      type="text" 
+                      className="input-field" 
+                      style={{ fontSize: '0.75rem', padding: '0.35rem 0.5rem', height: 'auto', fontFamily: 'monospace' }}
+                      value={googleClientId} 
+                      onChange={(e) => setGoogleClientId(e.target.value)} 
+                      placeholder="Deine Google Cloud Client-ID..."
+                    />
+                  </div>
                 </div>
               </div>
             </div>
