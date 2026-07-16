@@ -1,6 +1,8 @@
 # TODO - Founder OS
 
 ## Wichtig
+- [x] **Kunden-Onboarding-Playbook Modul (Phase v15):** Volle Integration der Playbook-Fragen, Wizard-Oberfläche, Supabase-Sync über CRM-Notes-Kommentare und Docs-Export.
+- [x] **Glassmorphic Sidebar Navigation (Phase v15):** Umstellung der App-Navigation auf einklappbare Desktop-Seitenleiste und mobilen Drawer.
 - [x] **Master-Logbuch:** Echtes Logbuch aus `📑 MASTER-LOGBUCH & COMMAND CENTER: KMU SERVICE HARZ` importiert und permanent in der "Dokumente & Sync"-Ansicht integriert.
 - [x] **Phase v10 - Schritt 1:** Splitting von Tab 4 ("KI & Docs") in zwei eigenständige Menüpunkte ("KI Prompts" und "Dokumente & Sync") in Desktop- und Mobilansicht.
 - [x] **Test-Ausbau:** Integrationstests auf 5 Testfälle ausgebaut (inkl. Logbuch, Showcase-Modus und Kanban-Board) und alle erfolgreich ausgeführt.
@@ -53,3 +55,8 @@
 ## Später
 - [ ] Google Drive Live-Sync: Mock-Dateien-Liste durch echte Datei-Uploads ersetzen.
 - [ ] Google Kalender Live-Sync: Statt Mock-Events echte Tagestermine laden.
+- [ ] **Onboarding-Erweiterungen:**
+  - Live Digitalisierungs-Score (interaktive Regler zur sofortigen Berechnung des No-Code-Einsparpotenzials)
+  - Priorisierungs-Matrix (Drag-and-Drop Priorisierung der identifizierten Pain Points)
+  - KI-gestützte Notiz-Strukturierung & Audio-Transkription (Web Speech API Anbindung)
+  - Automatisierter PDF-Angebot-Generator auf Basis der erfassten Notizen

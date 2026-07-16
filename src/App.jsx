@@ -15,6 +15,9 @@ import {
   CheckSquare, 
   ClipboardCopy, 
   ChevronRight, 
+  ChevronLeft,
+  Menu,
+  X,
   Upload, 
   ExternalLink, 
   Target,
@@ -28,6 +31,7 @@ import {
   Zap,
   Sliders,
   Settings,
+  HelpCircle,
   Shield,
   LifeBuoy,
   Send,
@@ -405,9 +409,230 @@ const PROCESSES = {
   }
 };
 
+// ONBOARDING QUESTIONNAIRE DATA STRUCTURES
+const ONBOARDING_PLAYBOOKS = {
+  master: {
+    title: "📘 MASTER-PLAYBOOK: Onboarding KMU-Service Harz",
+    phases: [
+      {
+        name: "Phase 1: Eisbrecher & Big Picture",
+        description: "Vertrauen aufbauen, den wahren Schmerz finden und Vision verstehen.",
+        questions: [
+          {
+            id: "m1",
+            question: "1. \"Wenn ich mit einem Fingerschnipsen eine einzige Aufgabe in deinem Büro für immer verschwinden lassen könnte – welche wäre das?\"",
+            why: "Bricht das Eis und zeigt sofort den größten emotionalen Schmerzpunkt.",
+            followup: "\"Wie viel Zeit kostet dich das aktuell pro Woche? Machst du das abends oder am Wochenende?\"",
+            warning: "\"Ich mache die Buchhaltung sonntags.\" -> Starker Hebel für Automatisierung.",
+            quickwin: "Schmerzablösung durch automatisierten Rechnungs- oder Beleg-Empfang.",
+            placeholder: "z.B. Sonntagsarbeit Buchhaltung, Belege sortieren, Angebote abtippen..."
+          },
+          {
+            id: "m2",
+            question: "2. \"Wo möchtest du mit deinem Betrieb in 3 Jahren stehen?\"",
+            why: "Definiert das Ziel (Wachstum vs. Zeitersparnis).",
+            followup: "\"Verhindert die aktuelle Büroarbeit dieses Wachstum?\"",
+            warning: "Wachstumswunsch, aber gebremst durch Administration.",
+            quickwin: "Skalierung durch automatisierte Lead-Erfassung oder standardisierte SOPs.",
+            placeholder: "z.B. Umsatz verdoppeln, 2 neue Mitarbeiter, weniger Stress im Alltag..."
+          }
+        ]
+      },
+      {
+        name: "Phase 2: Kundengewinnung & Kommunikation",
+        description: "Den Weg des Kunden vom Erstkontakt bis zum fertigen Angebot nachverfolgen.",
+        questions: [
+          {
+            id: "m3",
+            question: "3. \"Wie genau kommen neue Anfragen bei dir rein und wie organisierst du sie?\"",
+            why: "Deckt Kommunikations-Chaos und Medienbrüche auf.",
+            followup: "\"Nutzt du WhatsApp geschäftlich auf deinem privaten Handy? Wie überführst du eine WhatsApp-Anfrage in ein Angebot?\"",
+            warning: "\"Kunden schreiben per WhatsApp, ich schreibe es auf einen Zettel und tippe es abends in Word ab.\"",
+            quickwin: "WhatsApp Business API / Automatisierte Lead-Erfassung ins CRM.",
+            placeholder: "z.B. E-Mail, WhatsApp, Anrufe gemischt auf privatem Handy..."
+          },
+          {
+            id: "m4",
+            question: "4. \"Wie lange dauert es im Schnitt von der Anfrage bis der Kunde das Angebot hat?\"",
+            why: "Lange Dauer bedeutet oft verlorene Aufträge. Prüft Effizienz.",
+            followup: "\"Schreibst du Angebote in Word/Excel oder in einer Branchensoftware? Hast du Standardpakete?\"",
+            warning: "Angebote in Word/Excel. Keine Textbausteine.",
+            quickwin: "Dringender Bedarf an einer Handwerkersoftware (z.B. Lexoffice, Plancraft).",
+            placeholder: "z.B. 3 bis 5 Tage, da Angebote abends händisch in Word geschrieben werden..."
+          },
+          {
+            id: "m5",
+            question: "5. \"Wie organisierst du deine Termine (Besichtigungen, Ausführung)?\"",
+            why: "Termin-Ping-Pong am Telefon ist ein massiver, unsichtbarer Zeitfresser.",
+            followup: "\"Nutzt du einen digitalen Kalender (Google/Apple)? Können Kunden online buchen?\"",
+            warning: "Papierkalender im Auto oder im Büro an der Wand.",
+            quickwin: "Einführung von Calendly/TidyCal Anbindungen.",
+            placeholder: "z.B. Papierkalender im Auto, Terminvereinbarung nur telefonisch..."
+          }
+        ]
+      },
+      {
+        name: "Phase 3: Auftragsabwicklung & Betrieb",
+        description: "Verstehen, wie die eigentliche Arbeit dokumentiert und abgerechnet wird.",
+        questions: [
+          {
+            id: "m6",
+            question: "6. \"Wie erfassen du und deine Mitarbeiter Arbeitszeiten und Material?\"",
+            why: "Größtes Leck für entgangenen Umsatz. Ungenaue Erfassung = unbezahlte Arbeit.",
+            followup: "\"Gibt es Stundenzettel aus Papier? Werden die oft unleserlich oder zu spät abgegeben?\"",
+            warning: "Papier-Stundenzettel, die am Monatsende händisch abgetippt werden.",
+            quickwin: "Digitale Zeiterfassungs-App mit direkter Schnittstelle zur Lohnbuchhaltung.",
+            placeholder: "z.B. Mitarbeiter geben wöchentlich Stundenzettel aus Papier ab..."
+          },
+          {
+            id: "m7",
+            question: "7. \"Wie dokumentierst du Baustellen / Objekte (Fotos, Checklisten)?\"",
+            why: "Wichtig für Haftung, Reklamationen und spätere Abrechnung.",
+            followup: "\"Wo landen die Fotos vom Handy? Musst du die abends manuell in Kundenordner auf dem PC sortieren?\"",
+            warning: "\"Fotos bleiben in der privaten Handy-Galerie oder im WhatsApp-Chat.\"",
+            quickwin: "Automatischer Foto-Upload via Make.com in Google Drive/OneDrive.",
+            placeholder: "z.B. Fotos werden mit privatem Handy gemacht und bleiben in WhatsApp..."
+          }
+        ]
+      },
+      {
+        name: "Phase 4: Back-Office, Finanzen & IT",
+        description: "Die kritische Infrastruktur und Datenflüsse analysieren.",
+        questions: [
+          {
+            id: "m8",
+            question: "8. \"Wie schreibst du Rechnungen und wie kommen Eingangsbelege zum Steuerberater?\"",
+            why: "Hier liegt das meiste Geld und die größte Fehlerquelle (GoBD, E-Rechnung).",
+            followup: "\"Tippst du das Angebot nochmal ab, um eine Rechnung zu erstellen? Nutzt du DATEV Unternehmen online?\"",
+            warning: "Schuhkarton für den Steuerberater. Jede Rechnung einzeln aus Mails herunterladen.",
+            quickwin: "E-Mail-Parser, direkte DATEV/Lexoffice-Schnittstelle.",
+            placeholder: "z.B. Schuhkarton für Belege, Rechnungen werden in Word geschrieben..."
+          },
+          {
+            id: "m9",
+            question: "9. \"Welche Software-Tools und Cloud-Dienste nutzt du aktuell?\"",
+            why: "Bestandsaufnahme für mögliche Schnittstellen (APIs).",
+            followup: "",
+            warning: "Keine zentrale Cloud, Daten nur lokal gespeichert.",
+            quickwin: "Zentrale Datenablage in Google Workspace / Microsoft 365.",
+            placeholder: "z.B. Outlook, Excel, WhatsApp, eventuell ein kleines Branchenprogramm..."
+          },
+          {
+            id: "m10",
+            question: "10. \"Wie sicher bist du beim Thema DSGVO (z.B. bei WhatsApp) und Datensicherung?\"",
+            why: "Zeigt rechtliche Risiken auf.",
+            followup: "",
+            warning: "Kundendaten auf privatem Handy ohne Auftragsverarbeitungsvertrag.",
+            quickwin: "Sichere Cloud-Umgebungen und DSGVO-konforme Messenger.",
+            placeholder: "z.B. Keine Backups, WhatsApp privat für Kundenkommunikation..."
+          }
+        ]
+      }
+    ]
+  },
+  pilot: {
+    title: "🛠️ PILOT-PLAYBOOK: Das Bruder-Onboarding (GoClean Harz)",
+    phases: [
+      {
+        name: "Phase 1: Der ehrliche Status Quo (Das \"Bruder-Gespräch\")",
+        description: "Hier geht es darum, die Maske fallen zu lassen.",
+        questions: [
+          {
+            id: "p1",
+            question: "1. \"Jetzt mal ganz ehrlich, Bruder zu Bruder: Wie läuft der Laden wirklich?\"",
+            why: "Finden ob er genug Gewinn macht, gestresst ist, Personal oder Aufträge fehlen.",
+            followup: "\"Wenn du dir deinen Stundenlohn mal ausrechnest (inklusive der Abende am Schreibtisch) – lohnt sich das gerade?\"",
+            warning: "",
+            quickwin: "",
+            placeholder: "z.B. Umsatz ok, aber Stress ist viel zu hoch, freie Wochenenden fehlen..."
+          },
+          {
+            id: "p2",
+            question: "2. \"Was ist aktuell dein größter Engpass: Willst du eigentlich wachsen (mehr Kunden) oder willst du einfach nur weniger Stress mit den aktuellen Kunden?\"",
+            why: "Definiert die Strategie (Lead-Generierung/Sales vs. Automatisierung/Organisation).",
+            followup: "",
+            warning: "",
+            quickwin: "",
+            placeholder: "z.B. Möchte weniger Stress und geregelte Abläufe bei den bestehenden Kunden..."
+          }
+        ]
+      },
+      {
+        name: "Phase 2: Die \"Zeig-mir-dein-Handy\"-Analyse (Der Deep Dive)",
+        description: "Direkter, knallharter Einblick in die Praxis.",
+        questions: [
+          {
+            id: "p3",
+            question: "3. \"Hol mal bitte dein Handy raus. Zeig mir mal, wie eine typische Kundenanfrage bei dir auf WhatsApp aussieht und was du dann machst.\"",
+            why: "Du siehst live den Medienbruch (Zettel schreiben, Vergessen zu antworten).",
+            followup: "",
+            warning: "",
+            quickwin: "",
+            placeholder: "z.B. Schreibt Kundendaten auf einen Zettel im Auto, vergisst manchmal Rückrufe..."
+          },
+          {
+            id: "p4",
+            question: "4. \"Wann hast du das letzte Mal Rechnungen geschrieben und wie lange saßt du da dran?\"",
+            why: "Finde den \"Bürosonntag\" und wie er Belege an den Steuerberater übergibt.",
+            followup: "",
+            warning: "",
+            quickwin: "",
+            placeholder: "z.B. Rechnungen alle 2 Wochen sonntags für ca. 4 Stunden..."
+          },
+          {
+            id: "p5",
+            question: "5. \"Gibt es irgendwas in deinem Alltag, wo du dir denkst: 'Das ist so dumm, dass ich das jeden Tag dreimal von Hand tippen muss'?\"",
+            why: "Identifiziert den offensichtlichsten manuellen Zeitfresser für ein schnelles Make.com-Projekt.",
+            followup: "",
+            warning: "",
+            quickwin: "",
+            placeholder: "z.B. Baustellenbilder vom Handy mühsam in Drive-Ordner verschieben..."
+          }
+        ]
+      },
+      {
+        name: "Phase 3: Der \"Pilot-Deal\"",
+        description: "Dein kostenloses Angebot gegen Testimonial pitch.",
+        questions: [
+          {
+            id: "p6",
+            question: "Pitch & Vereinbarung: Erkläre ihm den Deal: Kostenloses System in 4 Wochen, dafür ehrliches Nutzenfeedback und ein Video/Zitat Testimonial.",
+            why: "Legt die Basis für deine allererste Case Study (\"Proof Asset\").",
+            followup: "",
+            warning: "",
+            quickwin: "",
+            placeholder: "Deal vereinbart? (Ja / Nein + Details)..."
+          }
+        ]
+      },
+      {
+        name: "Phase 4: Abschluss & Direkter Start",
+        description: "Fokus auf EIN Problem zum Start.",
+        questions: [
+          {
+            id: "p7",
+            question: "Entscheidung: Welche der 3 Optionen wollen wir als Erstes angehen? (Option A: Beleg-Upload / Option B: WhatsApp Lead-Tabelle / Option C: Baustellenfoto-Upload)",
+            why: "Nicht 10 Dinge auf einmal ändern.",
+            followup: "Welche Notizen gibt es für das gewählte erste Projekt auf Make.com?",
+            warning: "",
+            quickwin: "",
+            placeholder: "Gewählte Option (z.B. Option C) und konkrete Make.com-Notizen..."
+          }
+        ]
+      }
+    ]
+  }
+};
+
 function App() {
   // Navigation State
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => localStorage.getItem('f_sidebar_collapsed') === 'true');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem('f_sidebar_collapsed', sidebarCollapsed ? 'true' : 'false');
+  }, [sidebarCollapsed]);
   
   // Mobile responsive detection state
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' ? window.innerWidth < 900 : false);
@@ -753,6 +978,36 @@ function App() {
   const [formNotes, setFormNotes] = useState('');
   const [formStatus, setFormStatus] = useState('nicht kontaktiert');
   const [isSavingLead, setIsSavingLead] = useState(false);
+
+  // Onboarding Module States
+  const [onboardingLeadId, setOnboardingLeadId] = useState(null);
+  const [onboardingPlaybook, setOnboardingPlaybook] = useState('master'); // 'master' or 'pilot'
+  const [onboardingActivePhase, setOnboardingActivePhase] = useState(0);
+  const [onboardingAnswers, setOnboardingAnswers] = useState({});
+
+  useEffect(() => {
+    if (!onboardingLeadId) {
+      setOnboardingAnswers({});
+      return;
+    }
+    const lead = leads.find(l => l.id === onboardingLeadId);
+    if (lead && lead.notes) {
+      const match = lead.notes.match(/<!--ONBOARDING_DATA: ({.*?})-->/);
+      if (match) {
+        try {
+          const parsed = JSON.parse(match[1]);
+          setOnboardingPlaybook(parsed.playbook || 'master');
+          setOnboardingAnswers(parsed.answers || {});
+          setOnboardingActivePhase(0);
+          return;
+        } catch (e) {
+          console.error("Fehler beim Parsen der Onboarding-Daten aus den Lead-Notizen:", e);
+        }
+      }
+    }
+    setOnboardingAnswers({});
+    setOnboardingActivePhase(0);
+  }, [onboardingLeadId]);
 
   useEffect(() => {
     const activeLead = leads.find(l => l.id === activeLeadId);
@@ -1644,6 +1899,99 @@ function App() {
     
     setIsSavingLead(false);
     alert("✔ Feedback erfolgreich gespeichert!");
+  };
+
+  // Onboarding Save and Export Handlers
+  const handleSaveOnboarding = async (customLeadId, answersMap, playbookType) => {
+    const targetLeadId = customLeadId || onboardingLeadId;
+    if (!targetLeadId) return;
+
+    const lead = leads.find(l => l.id === targetLeadId);
+    if (!lead) return;
+
+    const activePlaybook = ONBOARDING_PLAYBOOKS[playbookType || onboardingPlaybook];
+    let summary = `# Onboarding-Protokoll: ${lead.company}\n`;
+    summary += `Datum: ${new Date().toLocaleDateString('de-DE')} | Playbook: ${activePlaybook.title}\n\n`;
+
+    activePlaybook.phases.forEach(phase => {
+      summary += `## ${phase.name}\n`;
+      phase.questions.forEach(q => {
+        const ans = (answersMap || onboardingAnswers)[q.id] || "Keine Notizen erfasst.";
+        summary += `### ${q.question}\n`;
+        summary += `Antwort: ${ans}\n\n`;
+      });
+    });
+
+    const serializedData = JSON.stringify({
+      playbook: playbookType || onboardingPlaybook,
+      answers: answersMap || onboardingAnswers
+    });
+    const finalNotes = `${summary}\n\n<!--ONBOARDING_DATA: ${serializedData}-->`;
+
+    // Update local state
+    const updatedLeads = leads.map(l => {
+      if (l.id === targetLeadId) {
+        return {
+          ...l,
+          notes: finalNotes,
+          status: 'Pain Points erfasst'
+        };
+      }
+      return l;
+    });
+    setLeads(updatedLeads);
+    localStorage.setItem('f_leads', JSON.stringify(updatedLeads));
+
+    // Update Supabase
+    try {
+      const response = await fetch(`${supabaseConfig.url}/rest/v1/leads?id=eq.${targetLeadId}`, {
+        method: 'PATCH',
+        headers: {
+          'apikey': supabaseConfig.anonKey,
+          'Authorization': `Bearer ${supabaseConfig.anonKey}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify({
+          notes: finalNotes,
+          status: 'Pain Points erfasst'
+        })
+      });
+      if (response.ok) {
+        console.log("Onboarding notes successfully synced to Supabase.");
+      }
+    } catch (e) {
+      console.error("Fehler beim Cloud-Update des Onboardings:", e);
+    }
+  };
+
+  const handleExportOnboardingToDocs = () => {
+    const lead = leads.find(l => l.id === onboardingLeadId);
+    if (!lead) return;
+
+    const activePlaybook = ONBOARDING_PLAYBOOKS[onboardingPlaybook];
+    let summary = `# Onboarding-Protokoll: ${lead.company}\n`;
+    summary += `Datum: ${new Date().toLocaleDateString('de-DE')} | Playbook: ${activePlaybook.title}\n\n`;
+
+    activePlaybook.phases.forEach(phase => {
+      summary += `## ${phase.name}\n`;
+      phase.questions.forEach(q => {
+        const ans = onboardingAnswers[q.id] || "Keine Notizen erfasst.";
+        summary += `### ${q.question}\n`;
+        summary += `Antwort: ${ans}\n\n`;
+      });
+    });
+
+    const newDoc = {
+      id: 'doc_' + Date.now(),
+      title: `Onboarding - ${lead.company}`,
+      content: summary,
+      lastModified: new Date().toISOString().replace('T', ' ').substring(0, 19),
+      syncStatus: 'local'
+    };
+
+    setDocs([newDoc, ...docs]);
+    alert(`🎉 Protokoll erfolgreich als Dokument "${newDoc.title}" im Wissens-Hub gespeichert! Du kannst es jetzt mit Google Drive synchronisieren.`);
   };
 
   // Live Timer tick for active project time tracking
@@ -2799,9 +3147,202 @@ ${original}
   const avgHourlyRate = totalActiveHours > 0 ? Math.round(activeUmsatz / totalActiveHours) : 0;
 
   return (
-    <div className="app-container">
-      {/* Confetti Overlay */}
-      {showConfetti && (
+    <div className="app-layout">
+      {/* Sidebar Navigation */}
+      {!clientPortalMode ? (
+        <>
+          {/* Desktop Sidebar */}
+          {!isMobile ? (
+            <aside className={`app-sidebar ${sidebarCollapsed ? 'collapsed' : ''}`}>
+              <div className="sidebar-header">
+                <div className="sidebar-brand">
+                  <div className="brand-logo">
+                    <BrainCircuit size={20} />
+                  </div>
+                  <h1 style={{ display: sidebarCollapsed ? 'none' : 'block' }}>Founder OS</h1>
+                </div>
+              </div>
+              <div className="sidebar-nav-list">
+                <button 
+                  className={`sidebar-nav-item ${activeTab === 'dashboard' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('dashboard')}
+                  title="Dashboard"
+                >
+                  <LayoutDashboard size={18} />
+                  <span className="sidebar-nav-label">Dashboard</span>
+                </button>
+                <button 
+                  className={`sidebar-nav-item ${activeTab === 'tasks' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('tasks')}
+                  title="Inbox & Tasks"
+                >
+                  <Inbox size={18} />
+                  <span className="sidebar-nav-label">Inbox & Tasks</span>
+                </button>
+                <button 
+                  className={`sidebar-nav-item ${activeTab === 'crm' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('crm')}
+                  title="CRM & Projekte"
+                >
+                  <Users size={18} />
+                  <span className="sidebar-nav-label">CRM & Projekte</span>
+                </button>
+                <button 
+                  className={`sidebar-nav-item ${activeTab === 'leads' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('leads')}
+                  title="Lead-Tracker"
+                >
+                  <PhoneCall size={18} />
+                  <span className="sidebar-nav-label">Lead-Tracker</span>
+                </button>
+                <button 
+                  className={`sidebar-nav-item ${activeTab === 'onboarding' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('onboarding')}
+                  title="Kunden-Onboarding"
+                >
+                  <HelpCircle size={18} />
+                  <span className="sidebar-nav-label">Onboarding</span>
+                </button>
+                <button 
+                  className={`sidebar-nav-item ${activeTab === 'prompts' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('prompts')}
+                  title="KI Prompts"
+                >
+                  <BrainCircuit size={18} />
+                  <span className="sidebar-nav-label">KI Prompts</span>
+                </button>
+                <button 
+                  className={`sidebar-nav-item ${activeTab === 'hub' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('hub')}
+                  title="Dokumente & Sync"
+                >
+                  <FileText size={18} />
+                  <span className="sidebar-nav-label">Dokumente & Sync</span>
+                </button>
+                <button 
+                  className={`sidebar-nav-item ${activeTab === 'sales' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('sales')}
+                  title="Sales & SOPs"
+                >
+                  <TrendingUp size={18} />
+                  <span className="sidebar-nav-label">Sales & SOPs</span>
+                </button>
+              </div>
+              <div className="sidebar-footer">
+                <button 
+                  className="sidebar-collapse-btn" 
+                  onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+                  title={sidebarCollapsed ? "Sidebar ausklappen" : "Sidebar einklappen"}
+                >
+                  {sidebarCollapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
+                </button>
+              </div>
+            </aside>
+          ) : null}
+
+          {/* Mobile Sidebar Drawer */}
+          {isMobile ? (
+            <>
+              {mobileMenuOpen ? (
+                <div 
+                  className="mobile-sidebar-backdrop" 
+                  onClick={() => setMobileMenuOpen(false)}
+                ></div>
+              ) : null}
+              <aside className={`mobile-sidebar-drawer ${mobileMenuOpen ? 'open' : ''}`}>
+                <div className="sidebar-header">
+                  <div className="sidebar-brand">
+                    <div className="brand-logo">
+                      <BrainCircuit size={20} />
+                    </div>
+                    <h1>Founder OS</h1>
+                  </div>
+                  <button className="hamburger-btn" onClick={() => setMobileMenuOpen(false)}>
+                    <X size={20} />
+                  </button>
+                </div>
+                <div className="sidebar-nav-list">
+                  <button 
+                    className={`sidebar-nav-item ${activeTab === 'dashboard' ? 'active' : ''}`} 
+                    onClick={() => { setActiveTab('dashboard'); setMobileMenuOpen(false); }}
+                  >
+                    <LayoutDashboard size={18} />
+                    <span>Dashboard</span>
+                  </button>
+                  <button 
+                    className={`sidebar-nav-item ${activeTab === 'tasks' ? 'active' : ''}`} 
+                    onClick={() => { setActiveTab('tasks'); setMobileMenuOpen(false); }}
+                  >
+                    <Inbox size={18} />
+                    <span>Inbox & Tasks</span>
+                  </button>
+                  <button 
+                    className={`sidebar-nav-item ${activeTab === 'crm' ? 'active' : ''}`} 
+                    onClick={() => { setActiveTab('crm'); setMobileMenuOpen(false); }}
+                  >
+                    <Users size={18} />
+                    <span>CRM & Projekte</span>
+                  </button>
+                  <button 
+                    className={`sidebar-nav-item ${activeTab === 'leads' ? 'active' : ''}`} 
+                    onClick={() => { setActiveTab('leads'); setMobileMenuOpen(false); }}
+                  >
+                    <PhoneCall size={18} />
+                    <span>Lead-Tracker</span>
+                  </button>
+                  <button 
+                    className={`sidebar-nav-item ${activeTab === 'onboarding' ? 'active' : ''}`} 
+                    onClick={() => { setActiveTab('onboarding'); setMobileMenuOpen(false); }}
+                  >
+                    <HelpCircle size={18} />
+                    <span>Onboarding</span>
+                  </button>
+                  <button 
+                    className={`sidebar-nav-item ${activeTab === 'prompts' ? 'active' : ''}`} 
+                    onClick={() => { setActiveTab('prompts'); setMobileMenuOpen(false); }}
+                  >
+                    <BrainCircuit size={18} />
+                    <span>KI Prompts</span>
+                  </button>
+                  <button 
+                    className={`sidebar-nav-item ${activeTab === 'hub' ? 'active' : ''}`} 
+                    onClick={() => { setActiveTab('hub'); setMobileMenuOpen(false); }}
+                  >
+                    <FileText size={18} />
+                    <span>Dokumente & Sync</span>
+                  </button>
+                  <button 
+                    className={`sidebar-nav-item ${activeTab === 'sales' ? 'active' : ''}`} 
+                    onClick={() => { setActiveTab('sales'); setMobileMenuOpen(false); }}
+                  >
+                    <TrendingUp size={18} />
+                    <span>Sales & SOPs</span>
+                  </button>
+                </div>
+              </aside>
+            </>
+          ) : null}
+        </>
+      ) : null}
+
+      {/* Main Container */}
+      <div className="app-container" style={isMobile ? { padding: 0 } : { marginLeft: 0, marginRight: 0, maxWidth: '100%' }}>
+        {/* Mobile Top Bar */}
+        {isMobile && !clientPortalMode && (
+          <div className="mobile-top-bar">
+            <div className="mobile-brand">
+              <div className="brand-logo" style={{ width: '1.75rem', height: '1.75rem', borderRadius: '0.5rem' }}>
+                <BrainCircuit size={14} />
+              </div>
+              <h1>Founder OS</h1>
+            </div>
+            <button className="hamburger-btn" onClick={() => setMobileMenuOpen(true)}>
+              <Menu size={24} />
+            </button>
+          </div>
+        )}
+        {/* Confetti Overlay */}
+        {showConfetti && (
         <div className="confetti-container">
           {confettiParticles.map(p => (
             <div 
@@ -2913,53 +3454,6 @@ ${original}
           </div>
         </div>
         
-        {/* DESKTOP NAV TABS (Nur sichtbar wenn nicht im Kunden-Portal Modus) */}
-        {!clientPortalMode && (
-          <nav className="nav-tabs">
-            <button 
-              className={`nav-tab ${activeTab === 'dashboard' ? 'active' : ''}`}
-              onClick={() => setActiveTab('dashboard')}
-            >
-              <LayoutDashboard size={16} /> Dashboard
-            </button>
-            <button 
-              className={`nav-tab ${activeTab === 'tasks' ? 'active' : ''}`}
-              onClick={() => setActiveTab('tasks')}
-            >
-              <Inbox size={16} /> Inbox & Tasks
-            </button>
-            <button 
-              className={`nav-tab ${activeTab === 'crm' ? 'active' : ''}`}
-              onClick={() => setActiveTab('crm')}
-            >
-              <Users size={16} /> CRM & Projekte
-            </button>
-            <button 
-              className={`nav-tab ${activeTab === 'leads' ? 'active' : ''}`}
-              onClick={() => setActiveTab('leads')}
-            >
-              <PhoneCall size={16} /> Lead-Tracker
-            </button>
-            <button 
-              className={`nav-tab ${activeTab === 'prompts' ? 'active' : ''}`}
-              onClick={() => setActiveTab('prompts')}
-            >
-              <BrainCircuit size={16} /> KI Prompts
-            </button>
-            <button 
-              className={`nav-tab ${activeTab === 'hub' ? 'active' : ''}`}
-              onClick={() => setActiveTab('hub')}
-            >
-              <FileText size={16} /> Dokumente & Sync
-            </button>
-            <button 
-              className={`nav-tab ${activeTab === 'sales' ? 'active' : ''}`}
-              onClick={() => setActiveTab('sales')}
-            >
-              <TrendingUp size={16} /> Sales & SOPs
-            </button>
-          </nav>
-        )}
       </header>
 
       {/* MAIN CONTENT */}
@@ -7105,65 +7599,316 @@ ${original}
             
           </div>
         )}
-        </>
+
+        {activeTab === 'onboarding' && (
+          <div className="onboarding-container" id="onboarding-tab-content">
+            <div className="card" style={{ marginBottom: '1.5rem' }}>
+              <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+                <h2 className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0 }}>
+                  <HelpCircle size={22} className="text-purple-500" />
+                  Kunden-Onboarding Gesprächs-Leitfaden
+                </h2>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  {/* Select Lead/Client */}
+                  <select 
+                    className="input-field"
+                    value={onboardingLeadId || ''}
+                    onChange={(e) => setOnboardingLeadId(e.target.value || null)}
+                    style={{ minWidth: '220px' }}
+                  >
+                    <option value="">-- Kunden/Lead auswählen --</option>
+                    <optgroup label="Kaltakquise-Kontakte">
+                      {leads.map(l => (
+                        <option key={l.id} value={l.id}>{showcaseMode ? 'Muster-Firma' : l.company} ({l.industry || 'Keine Branche'})</option>
+                      ))}
+                    </optgroup>
+                  </select>
+
+                  {/* Playbook Select */}
+                  <select
+                    className="input-field"
+                    value={onboardingPlaybook}
+                    onChange={(e) => setOnboardingPlaybook(e.target.value)}
+                    disabled={!onboardingLeadId}
+                  >
+                    <option value="master">📘 Master-Playbook</option>
+                    <option value="pilot">🛠️ Pilot-Playbook (Bruder)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {onboardingLeadId ? (() => {
+              const selectedLead = leads.find(l => l.id === onboardingLeadId);
+              if (!selectedLead) return null;
+              const playbook = ONBOARDING_PLAYBOOKS[onboardingPlaybook];
+              const phase = playbook.phases[onboardingActivePhase];
+              
+              if (!phase) return null;
+
+              // Calculate overall question progress
+              let totalQuestions = 0;
+              let answeredQuestions = 0;
+              playbook.phases.forEach(p => {
+                p.questions.forEach(q => {
+                  totalQuestions++;
+                  if (onboardingAnswers[q.id] && onboardingAnswers[q.id].trim() !== '') {
+                    answeredQuestions++;
+                  }
+                });
+              });
+              const progressPercentage = totalQuestions > 0 ? Math.round((answeredQuestions / totalQuestions) * 100) : 0;
+
+              return (
+                <div className="onboarding-wizard">
+                  
+                  {/* Left Column: Questionnaire Wizard */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    
+                    {/* Progress Bar */}
+                    <div className="card" style={{ padding: '1rem' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '0.5rem', fontWeight: 600 }}>
+                        <span>Aktiv: {playbook.phases[onboardingActivePhase].name}</span>
+                        <span>{answeredQuestions} von {totalQuestions} Fragen beantwortet ({progressPercentage}%)</span>
+                      </div>
+                      <div className="wizard-progress-bar">
+                        <div className="wizard-progress-fill" style={{ width: `${progressPercentage}%` }}></div>
+                      </div>
+
+                      {/* Phase Navigation Tabs */}
+                      <div style={{ display: 'flex', gap: '0.35rem', overflowX: 'auto', paddingBottom: '0.25rem' }}>
+                        {playbook.phases.map((p, idx) => (
+                          <button
+                            key={idx}
+                            onClick={() => setOnboardingActivePhase(idx)}
+                            className="btn"
+                            style={{
+                              padding: '0.35rem 0.65rem',
+                              fontSize: '0.75rem',
+                              background: onboardingActivePhase === idx ? 'rgba(139, 92, 246, 0.2)' : 'rgba(255, 255, 255, 0.02)',
+                              borderColor: onboardingActivePhase === idx ? 'var(--accent-purple)' : 'var(--border-color)',
+                              color: onboardingActivePhase === idx ? 'white' : 'var(--text-secondary)',
+                              whiteSpace: 'nowrap'
+                            }}
+                          >
+                            {p.name.split(':')[0]}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Question Card */}
+                    <div className="wizard-card">
+                      <div style={{ fontSize: '0.8rem', textTransform: 'uppercase', color: 'var(--accent-purple)', fontWeight: 700, marginBottom: '0.5rem' }}>
+                        {phase.name}
+                      </div>
+                      <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '1rem', fontStyle: 'italic' }}>
+                        {phase.description}
+                      </p>
+
+                      <hr style={{ border: 'none', borderTop: '1px solid var(--border-color)', margin: '1rem 0' }} />
+
+                      {phase.questions.map((q) => {
+                        const answerValue = onboardingAnswers[q.id] || '';
+                        return (
+                          <div key={q.id} style={{ marginBottom: '2rem' }}>
+                            <div className="wizard-question-text">{q.question}</div>
+                            
+                            {/* Question Meta Drawer / Help Box */}
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '0.75rem', margin: '0.75rem 0' }}>
+                              {q.why && (
+                                <div className="info-box" style={{ margin: 0, padding: '0.75rem' }}>
+                                  <div className="info-box-title">Ziel & Erkenntnisse</div>
+                                  <div className="info-box-content">{q.why}</div>
+                                </div>
+                              )}
+                              {q.followup && (
+                                <div className="info-box" style={{ margin: 0, padding: '0.75rem', borderLeft: '3px solid var(--accent-indigo)', background: 'rgba(99, 102, 241, 0.03)' }}>
+                                  <div className="info-box-title" style={{ color: 'var(--accent-indigo)' }}>Folgefragen</div>
+                                  <div className="info-box-content" style={{ fontStyle: 'italic' }}>{q.followup}</div>
+                                </div>
+                              )}
+                              {q.warning && (
+                                <div className="info-box" style={{ margin: 0, padding: '0.75rem', borderLeft: '3px solid var(--accent-yellow)', background: 'rgba(245, 158, 11, 0.03)' }}>
+                                  <div className="info-box-title" style={{ color: 'var(--accent-yellow)' }}>Warnsignal & Potenzial</div>
+                                  <div className="info-box-content">{q.warning}</div>
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Note Taking Text Area */}
+                            <textarea
+                              className="notes-editor"
+                              placeholder={q.placeholder || "Trage hier deine Notizen und die Antworten des Kunden ein..."}
+                              value={answerValue}
+                              onChange={(e) => {
+                                const newAnswers = { ...onboardingAnswers, [q.id]: e.target.value };
+                                setOnboardingAnswers(newAnswers);
+                                handleSaveOnboarding(onboardingLeadId, newAnswers, onboardingPlaybook);
+                              }}
+                            />
+                          </div>
+                        );
+                      })}
+
+                      {/* Navigation Controls */}
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '2rem' }}>
+                        <button
+                          className="btn btn-secondary"
+                          onClick={() => setOnboardingActivePhase(prev => Math.max(0, prev - 1))}
+                          disabled={onboardingActivePhase === 0}
+                        >
+                          Zurück
+                        </button>
+                        
+                        {onboardingActivePhase < playbook.phases.length - 1 ? (
+                          <button
+                            className="btn btn-primary"
+                            onClick={() => setOnboardingActivePhase(prev => Math.min(playbook.phases.length - 1, prev + 1))}
+                          >
+                            Nächste Phase
+                          </button>
+                        ) : (
+                          <button
+                            className="btn btn-success"
+                            style={{ background: 'linear-gradient(135deg, #10b981, #059669)', color: 'white', border: 'none', boxShadow: '0 0 15px rgba(16, 185, 129, 0.2)' }}
+                            onClick={() => {
+                              alert("🎉 Onboarding erfolgreich abgeschlossen! Das Protokoll wurde gespeichert und in die Cloud übertragen.");
+                            }}
+                          >
+                            Gespräch beenden & Speichern
+                          </button>
+                        )}
+                      </div>
+                    </div>
+
+                  </div>
+
+                  {/* Right Column: Roadmap Preview & Export */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    
+                    {/* Info Card */}
+                    <div className="card" style={{ padding: '1.25rem' }}>
+                      <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'white', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                        <Database size={16} className="text-purple-400" />
+                        Live Cloud-Synchronisation
+                      </h3>
+                      <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', lineHeight: '1.4', marginBottom: '0.75rem' }}>
+                        Jede Eingabe wird in Echtzeit im Cloud-Speicher für <strong>{showcaseMode ? 'Muster-Firma' : selectedLead.company}</strong> gesichert.
+                      </p>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.7rem', color: '#34d399', background: 'rgba(16, 185, 129, 0.1)', padding: '0.4rem 0.6rem', borderRadius: '0.25rem', width: 'fit-content' }}>
+                        <span style={{ display: 'inline-block', width: '6px', height: '6px', borderRadius: '50%', background: '#34d399' }}></span>
+                        Supabase Cloud-Sync: AKTIV
+                      </div>
+                    </div>
+
+                    {/* Export Actions */}
+                    <div className="card" style={{ padding: '1.25rem' }}>
+                      <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'white', marginBottom: '0.75rem' }}>
+                        Protokoll-Optionen
+                      </h3>
+                      
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                        <button 
+                          className="btn btn-secondary"
+                          style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.35rem', fontSize: '0.8rem' }}
+                          onClick={handleExportOnboardingToDocs}
+                        >
+                          <FileText size={14} />
+                          Im Wissens-Hub speichern
+                        </button>
+                        
+                        <button
+                          className="btn btn-secondary"
+                          style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.35rem', fontSize: '0.8rem' }}
+                          onClick={() => {
+                            const activePlaybook = ONBOARDING_PLAYBOOKS[onboardingPlaybook];
+                            let summary = `# Onboarding-Protokoll: ${selectedLead.company}\n`;
+                            summary += `Datum: ${new Date().toLocaleDateString('de-DE')} | Playbook: ${activePlaybook.title}\n\n`;
+
+                            activePlaybook.phases.forEach(phase => {
+                              summary += `## ${phase.name}\n`;
+                              phase.questions.forEach(q => {
+                                const ans = onboardingAnswers[q.id] || "Keine Notizen erfasst.";
+                                summary += `### ${q.question}\n`;
+                                summary += `Antwort: ${ans}\n\n`;
+                              });
+                            });
+                            
+                            navigator.clipboard.writeText(summary);
+                            alert("📋 Protokoll als Markdown in die Zwischenablage kopiert!");
+                          }}
+                        >
+                          <ClipboardCopy size={14} />
+                          Protokoll kopieren (Markdown)
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Preview Area */}
+                    <div className="card" style={{ padding: '1.25rem', flex: 1, display: 'flex', flexDirection: 'column', maxHeight: '400px' }}>
+                      <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'white', marginBottom: '0.5rem' }}>
+                        Protokoll Vorschau
+                      </h3>
+                      <div 
+                        style={{ 
+                          background: 'rgba(0,0,0,0.2)', 
+                          border: '1px solid var(--border-color)', 
+                          borderRadius: '0.375rem', 
+                          padding: '0.75rem', 
+                          fontSize: '0.75rem', 
+                          color: 'var(--text-secondary)', 
+                          overflowY: 'auto',
+                          fontFamily: 'monospace',
+                          whiteSpace: 'pre-wrap',
+                          flex: 1
+                        }}
+                      >
+                        {(() => {
+                          const activePlaybook = ONBOARDING_PLAYBOOKS[onboardingPlaybook];
+                          let summary = `# Onboarding: ${selectedLead.company}\n`;
+                          activePlaybook.phases.forEach(phase => {
+                            let answeredInPhase = false;
+                            let phaseSummary = `## ${phase.name}\n`;
+                            phase.questions.forEach(q => {
+                              if (onboardingAnswers[q.id]) {
+                                answeredInPhase = true;
+                                phaseSummary += `Q: ${q.question.substring(0, 30)}...\nA: ${onboardingAnswers[q.id]}\n\n`;
+                              }
+                            });
+                            if (answeredInPhase) {
+                              summary += phaseSummary;
+                            }
+                          });
+                          return summary.trim() === `# Onboarding: ${selectedLead.company}` 
+                            ? "Beginne Fragen zu beantworten, um hier die Vorschau zu sehen." 
+                            : summary;
+                        })()}
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+              );
+            })() : (
+              <div className="card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '5rem 2rem', textAlign: 'center' }}>
+                <div style={{ fontSize: '3rem', marginBottom: '1.5rem' }}>📘</div>
+                <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'white', marginBottom: '0.5rem' }}>Onboarding-Gespräch vorbereiten</h3>
+                <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', maxWidth: '400px', margin: '0 auto 1.5rem auto', lineHeight: '1.5' }}>
+                  Wähle oben einen Kunden oder Kaltakquise-Kontakt aus und entscheide dich für das passende Playbook, um das Gespräch zu starten.
+                </p>
+              </div>
+            )}
+
+          </div>
         )}
+      </>
+      )}
 
       </main>
 
-      {/* MOBILE BOTTOM NAVIGATION BAR */}
-      {!clientPortalMode && (
-        <nav className="mobile-nav-bar">
-          <button 
-            className={`mobile-nav-tab ${activeTab === 'dashboard' ? 'active' : ''}`}
-            onClick={() => setActiveTab('dashboard')}
-          >
-            <LayoutDashboard size={20} />
-            <span>Dashboard</span>
-          </button>
-          <button 
-            className={`mobile-nav-tab ${activeTab === 'tasks' ? 'active' : ''}`}
-            onClick={() => setActiveTab('tasks')}
-          >
-            <Inbox size={20} />
-            <span>Tasks</span>
-          </button>
-          <button 
-            className={`mobile-nav-tab ${activeTab === 'crm' ? 'active' : ''}`}
-            onClick={() => setActiveTab('crm')}
-          >
-            <Users size={20} />
-            <span>CRM</span>
-          </button>
-          <button 
-            className={`mobile-nav-tab ${activeTab === 'leads' ? 'active' : ''}`}
-            onClick={() => setActiveTab('leads')}
-          >
-            <PhoneCall size={20} />
-            <span>Leads</span>
-          </button>
-          <button 
-            className={`mobile-nav-tab ${activeTab === 'prompts' ? 'active' : ''}`}
-            onClick={() => setActiveTab('prompts')}
-          >
-            <BrainCircuit size={20} />
-            <span>Prompts</span>
-          </button>
-          <button 
-            className={`mobile-nav-tab ${activeTab === 'hub' ? 'active' : ''}`}
-            onClick={() => setActiveTab('hub')}
-          >
-            <FileText size={20} />
-            <span>Docs</span>
-          </button>
-          <button 
-            className={`mobile-nav-tab ${activeTab === 'sales' ? 'active' : ''}`}
-            onClick={() => setActiveTab('sales')}
-          >
-            <TrendingUp size={20} />
-            <span>Sales</span>
-          </button>
-        </nav>
-      )}
+
 
       {/* CRM Contact Details Drawer */}
       <div className={`crm-drawer ${selectedContactId ? 'open' : ''}`}>
@@ -7420,6 +8165,7 @@ ${original}
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 }

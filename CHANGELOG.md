@@ -5,6 +5,16 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **Kunden-Onboarding-Playbook Modul (Phase v15):**
+  - **📋 Master- & Pilot-Playbooks:** Direkt integrierte Gesprächsleitfäden und strukturierte Fragen aus dem KMU-Service Harz Onboarding Playbook (10 Fragen) sowie dem GoClean Harz Bruder-Onboarding (5 Fragen).
+  - **🧙 Schritt-für-Schritt-Wizard:** Interaktiver Gesprächsassistent mit Phasen-Navigation, Fortschrittsbalken und Einblendung von "Ziel & Erkenntnisse", "Folgefragen" sowie "Warnsignalen" für jede Frage zur optimalen Gesprächsführung.
+  - **📝 Notizen & Antworten:** Direkte Texterfassung zu jeder Onboarding-Frage.
+  - **🔄 Cross-Device Cloud-Synchronisation:** Die Antworten werden in Echtzeit als serialisierter HTML-Kommentarblock am Ende der CRM-Notizen gespeichert. Das sichert die geräteübergreifende Synchronisation via Supabase ab, ohne das Tabellenschema ändern zu müssen.
+  - **📂 Wissens-Hub Export:** Exportiert das fertig ausgefüllte Onboarding-Protokoll als formatiertes Markdown-Dokument mit einem Klick direkt in den Wissens-Hub.
+- **Glassmorphic Sidebar Navigation (Phase v15):**
+  - **🖥️ Desktop-Ansicht:** Einklappbare linke Seitenleiste mit schwebenden Glass-Effekten, klaren Icons und Tooltips.
+  - **📱 Mobil-Ansicht:** Platzsparender Hamburger-Button im oberen Header, der ein weiches Slide-in Drawer-Menü von links öffnet.
+  - Die alten horizontalen Header-Tabs und die überladene mobile Bottom-Bar wurden komplett entfernt, um Platz für künftige App-Erweiterungen zu schaffen.
 - **Modulare & Einfache Dashboard-Bausteine & Mobile-Optimierung (Phase v14):**
   - **📌 Einfacher Notizzettel (Haftnotiz):** Modularer Block mit 5 auswählbaren Hintergrundfarben (Gelb, Blau, Grün, Pink, Lila) zur schnellen Ideenerfassung.
   - **✍️ Einfache Aufgabenliste (To-Do):** Eine saubere Kachel zum Eintragen, Abhaken und Löschen von Todos.

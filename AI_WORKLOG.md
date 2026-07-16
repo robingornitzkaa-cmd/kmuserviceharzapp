@@ -1,5 +1,39 @@
 # AI Worklog - Founder OS
 
+## 2026-07-16 13:15 – Kunden-Onboarding Modul & Sidebar-Navigation Layout (Phase v15)
+
+### Ziel
+Strukturierte Erfassung von Onboarding-Antworten und Gesprächsleitfäden für KMU-Kunden und den Pilot-Bruder. Umstellung der App-Navigation von einer überladenen horizontalen Tableiste zu einer einklappbaren, modernen Glassmorphic-Seitenleiste (Desktop) und einem ausziehbaren Navigations-Drawer (Mobil).
+
+### Erstellt
+Keine neuen Codedateien. (Temporäre Testskripte check_tags.js, check_acorn.js und check_return.js im Scratch-Ordner zur Syntaxvalidierung).
+
+### Geändert
+- [App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx):
+  - Definition des `ONBOARDING_PLAYBOOKS` Datenmodells mit allen 10 Fragen des KMU-Service Harz Master Onboarding Playbooks und 5 spezifischen GoClean-Bruder-Fragen.
+  - Hinzufügen von States für Onboarding-Steuerung (`onboardingLeadId`, `onboardingPlaybook`, `onboardingActivePhase`, `onboardingAnswers`).
+  - Implementierung der Datenaufhängung: Die Antworten werden serialisiert im HTML-Kommentar-Format am Ende des `notes`-Textfeldes des CRM-Eintrags gespeichert. Dadurch synchronisieren sich die Onboarding-Daten automatisch via existierendem Patch-Sync auf Supabase ohne Schemaänderung.
+  - Implementierung von `handleSaveOnboarding` und `handleExportOnboardingToDocs` (Export als ausformuliertes Markdown-Protokoll in den Wissens-Hub).
+  - Integration der neuen einklappbaren Sidebar-Navigation auf Desktop- und Mobilansicht. Entfernung der alten horizontalen/mobilen Tableisten.
+- [index.css](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/index.css):
+  - Hinzufügen des Stylings für das `.app-layout` Grid-Layout (Sidebar + Container).
+  - Glassmorphic-Sidebar Styling mit Transitionen für `.collapsed` Status und `.mobile-sidebar-drawer` inklusive Backdrop.
+  - Styling für das Onboarding-Wizard-Interface, Fortschrittsanzeige, Info-Boxen für Gesprächsleitfäden und Live-Markdown-Vorschau.
+- [TODO.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md), [CHANGELOG.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md), [README.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/README.md): Dokumentationsupdates.
+
+### Warum
+Damit Robin morgen früh für das Onboarding-Gespräch mit seinem Bruder eine voll funktionsfähige, übersichtliche Oberfläche hat, in der er die spezifischen Fragen abarbeiten und Notizen erfassen kann. Die einklappbare Seitenleiste schafft Platz für das wachsende App-Menü.
+
+### Testen
+1. Klicke in der linken Seitenleiste auf **Onboarding**.
+2. Wähle oben einen Kontakt (z. B. den Bruder/GoClean Harz) und das passende Playbook (Pilot-Playbook) aus.
+3. Klicke auf "Gespräch starten".
+4. Gehe die Fragen durch, mache Notizen und beobachte die Live-Speicherung (Supabase Cloud-Sync-Status leuchtet grün) und die Markdown-Vorschau rechts.
+5. Klicke am Ende der Fragen auf "Protokoll in Wissens-Hub exportieren" ➔ Prüfe unter "Dokumente & Sync", ob das Dokument angelegt wurde.
+6. Führe `npm run build` aus ➔ Kompilierung läuft fehlerfrei durch.
+
+---
+
 ## 2026-07-15 22:42 – Modulare Dashboard-Bausteine & Mobile-Optimierung (Phase v14)
 
 ### Ziel

@@ -22,18 +22,24 @@ Die Anwendung zeichnet sich durch ein futuristisches "Glassmorphic Dark Theme" a
 - **Kunden-Akte (Drawer):** Drawer mit kundenbezogenen Notizen, verlinkten Dokumenten und lückenloser Aktivitätshistorie.
 - **Projekt-Tracker & Time-Tracking:** Live-Stoppuhr zur Rentabilitätsberechnung (effektiver Stundensatz) mit Farbindikatoren (Rot/Gelb/Grün).
 
-### 4. KI Prompts (Prompt-Zentrale) -- *NEU!*
+### 4. Kunden-Onboarding (Gesprächsleitfäden) -- *NEU!*
+- **Wizard-Ansicht:** Schritt-für-Schritt Abarbeitung des KMU-Service Harz Master Playbooks (10 Phasen) oder des Pilot-Bruder-Onboardings (5 Phasen).
+- **Unterstützende Infos:** Live-Einblendung von Fragestellungs-Hintergründen, Folgefragen und Warnsignalen direkt im Workflow.
+- **Echtzeit-Synchronisation:** Nahtlose Speicherung der Notizen über die Supabase-REST-API direkt in den CRM-Lead-Einträgen.
+- **Wissens-Hub-Export:** Generierung sauberer Markdown-Gesprächsprotokolle für den Wissens-Hub.
+
+### 5. KI Prompts (Prompt-Zentrale) -- *NEU!*
 - **Prompt Vault & Baukasten:** Speichere Prompts und baue sie mit vordefinierten oder eigenen Bausteinen (Rollen, Ton, Format, Suffix) zusammen.
 - **Ollama KI-Optimierer:** Verbessere Prompts live über eine lokale Ollama-Instanz (`localhost:11434`).
 - **Content-Planer:** Redaktionsplan für deine Social-Media-Kanäle.
 - **RAG Knowledge Bot:** KI-Assistent mit umschaltbaren Personas (🧠 Firmengehirn, 🎯 Pitch-Coach, 🔒 DSGVO & Legal), der dein Google-Drive-Wissen mit präzisen Quellenangaben durchsucht.
 
-### 5. Dokumente & Sync (Dateiverwaltung) -- *NEU!*
+### 6. Dokumente & Sync (Dateiverwaltung) -- *NEU!*
 - **Wissens-Hub & Dokumenten-Editor (Mini-Word):** Erstelle, bearbeite und lösche Textdokumente direkt in der App. Bietet Dateidownloads als `.txt`.
 - **Google Drive & NotebookLM Sync:** Synchronisiere deine lokalen Dokumente mit Google Drive zur Indizierung in Google NotebookLM (inklusive terminalähnlicher Fortschrittsanzeige).
 - **Supabase Cloud Sync:** Überwache die Echtzeit-Datenübertragung mit der Cloud (CRM, Tasks, Tickets) inklusive Latenz- und Tabellenzeilen-Anzeige.
 
-### 6. Sales & SOPs (Vertriebstools)
+### 7. Sales & SOPs (Vertriebstools)
 - **Showcase ROI-Rechner:** Berechne Einsparungen live beim Kunden und exportiere diese als professionelles PDF-Angebot.
 - **No-Code Automation Canvas:** Visueller Workflow-Builder zur Demonstration automatisierter Prozesse.
 - **Zettel-zu-Code Visualisierer:** Interaktiver Vergleich von manuellen Papier-Abläufen vs. modernen IT-Schnittstellen.
