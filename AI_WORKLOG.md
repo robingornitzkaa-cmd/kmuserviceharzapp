@@ -1,25 +1,24 @@
 # AI Worklog - Founder OS
 
-## 2026-07-16 13:15 – Kunden-Onboarding Modul & Sidebar-Navigation Layout (Phase v15)
+## 2026-07-16 14:05 – Kunden-Onboarding Modul & Erweiterungen (Phase v15)
 
 ### Ziel
-Strukturierte Erfassung von Onboarding-Antworten und Gesprächsleitfäden für KMU-Kunden und den Pilot-Bruder. Umstellung der App-Navigation von einer überladenen horizontalen Tableiste zu einer einklappbaren, modernen Glassmorphic-Seitenleiste (Desktop) und einem ausziehbaren Navigations-Drawer (Mobil).
+Strukturierte Erfassung von Onboarding-Antworten und Gesprächsleitfäden für KMU-Kunden und den Pilot-Bruder. Umstellung der App-Navigation von horizontaler Tableiste auf einklappbare Seitenleiste. Ergänzung von fortgeschrittenen Onboarding-Erweiterungen: Live-Digitalisierungsrechner, Priorisierungs-Indikatoren pro Frage, Speech-to-Text Diktierfunktion via Web Speech API und automatischer Corporate-Design-PDF-Angebot-Generator.
 
 ### Erstellt
-Keine neuen Codedateien. (Temporäre Testskripte check_tags.js, check_acorn.js und check_return.js im Scratch-Ordner zur Syntaxvalidierung).
+Keine neuen Codedateien.
 
 ### Geändert
 - [App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx):
-  - Definition des `ONBOARDING_PLAYBOOKS` Datenmodells mit allen 10 Fragen des KMU-Service Harz Master Onboarding Playbooks und 5 spezifischen GoClean-Bruder-Fragen.
-  - Hinzufügen von States für Onboarding-Steuerung (`onboardingLeadId`, `onboardingPlaybook`, `onboardingActivePhase`, `onboardingAnswers`).
-  - Implementierung der Datenaufhängung: Die Antworten werden serialisiert im HTML-Kommentar-Format am Ende des `notes`-Textfeldes des CRM-Eintrags gespeichert. Dadurch synchronisieren sich die Onboarding-Daten automatisch via existierendem Patch-Sync auf Supabase ohne Schemaänderung.
-  - Implementierung von `handleSaveOnboarding` und `handleExportOnboardingToDocs` (Export als ausformuliertes Markdown-Protokoll in den Wissens-Hub).
-  - Integration der neuen einklappbaren Sidebar-Navigation auf Desktop- und Mobilansicht. Entfernung der alten horizontalen/mobilen Tableisten.
+  - Hinzufügen von States für Onboarding-Erweiterungen (`onboardingPriorities`, `onboardingManualHours`, `onboardingHourlyRate`, `onboardingSavingRatio`, `recordingQuestionId`).
+  - Erweiterung des Serialisierungs-Modells in `handleSaveOnboarding` zur Absicherung der Cloud-Synchronisation aller Prioritäten und Rechner-Werte in Supabase.
+  - Implementierung der Diktierfunktion `startSpeechRecognition` über `SpeechRecognition`/`webkitSpeechRecognition` mit kontinuierlicher Statusspeicherung.
+  - Implementierung von `handleGenerateOnboardingPDF` zur automatischen, multipage-fähigen Erstellung schöner, strukturierter Angebote (KMU Service Harz Briefkopf, Kunden-Stammdaten, Rechner-Sparpotenzial, priorisierte Fragen/Antworten und Handlungsempfehlungen) mittels `jsPDF`.
+  - Integration von Slidern für manuelle Stunden, Stundensätze und Sparquoten in der rechten Onboarding-Spalte.
+  - Integration von Prioritäts-Pillen und dem Mikrofon-Button neben jeder Frage im Wizard.
 - [index.css](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/index.css):
-  - Hinzufügen des Stylings für das `.app-layout` Grid-Layout (Sidebar + Container).
-  - Glassmorphic-Sidebar Styling mit Transitionen für `.collapsed` Status und `.mobile-sidebar-drawer` inklusive Backdrop.
-  - Styling für das Onboarding-Wizard-Interface, Fortschrittsanzeige, Info-Boxen für Gesprächsleitfäden und Live-Markdown-Vorschau.
-- [TODO.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md), [CHANGELOG.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md), [README.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/README.md): Dokumentationsupdates.
+  - Hinzufügen der `@keyframes pulse-recording` Animation für den diktierenden Mikrofon-Button.
+- [TODO.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md), [CHANGELOG.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md), [README.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/README.md): Dokumentations-Updates.
 
 ### Warum
 Damit Robin morgen früh für das Onboarding-Gespräch mit seinem Bruder eine voll funktionsfähige, übersichtliche Oberfläche hat, in der er die spezifischen Fragen abarbeiten und Notizen erfassen kann. Die einklappbare Seitenleiste schafft Platz für das wachsende App-Menü.

@@ -9,7 +9,11 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
   - **📋 Master- & Pilot-Playbooks:** Direkt integrierte Gesprächsleitfäden und strukturierte Fragen aus dem KMU-Service Harz Onboarding Playbook (10 Fragen) sowie dem GoClean Harz Bruder-Onboarding (5 Fragen).
   - **🧙 Schritt-für-Schritt-Wizard:** Interaktiver Gesprächsassistent mit Phasen-Navigation, Fortschrittsbalken und Einblendung von "Ziel & Erkenntnisse", "Folgefragen" sowie "Warnsignalen" für jede Frage zur optimalen Gesprächsführung.
   - **📝 Notizen & Antworten:** Direkte Texterfassung zu jeder Onboarding-Frage.
-  - **🔄 Cross-Device Cloud-Synchronisation:** Die Antworten werden in Echtzeit als serialisierter HTML-Kommentarblock am Ende der CRM-Notizen gespeichert. Das sichert die geräteübergreifende Synchronisation via Supabase ab, ohne das Tabellenschema ändern zu müssen.
+  - **📊 Live-Digitalisierungsrechner:** Integrierte Regler zur Erfassung von manuellen Wochenstunden, Mitarbeiter-Stundensätzen und der angenommenen Automatisierungsquote. Berechnet live die zeitliche und finanzielle Ersparnis pro Monat.
+  - **🔴 Priorisierungs-Indikatoren:** Zuweisung von Dringlichkeitsstufen (Hoch/Mittel/Niedrig) direkt bei der Beantwortung jeder Frage zur Kennzeichnung von Quickwins.
+  - **🎙️ Sprache-zu-Text (Diktierfunktion):** Native Spracheingabe über die Web Speech API (Mikrofon-Button), die gesprochene Notizen automatisch im deutschen Textfeld erfasst.
+  - **📄 PDF-Angebot-Generator:** Generiert vollautomatisch ein schönes, mehrseitiges PDF-Angebot im Corporate Design (KMU Service Harz) inklusive Kundendaten, Onboarding-Protokoll, live berechnetem Sparpotenzial und empfohlenen nächsten Schritten.
+  - **🔄 Cross-Device Cloud-Synchronisation:** Die Antworten, Prioritäten und Berechnungen werden in Echtzeit als serialisierter HTML-Kommentarblock am Ende der CRM-Notizen gespeichert. Das sichert die geräteübergreifende Synchronisation via Supabase ab.
   - **📂 Wissens-Hub Export:** Exportiert das fertig ausgefüllte Onboarding-Protokoll als formatiertes Markdown-Dokument mit einem Klick direkt in den Wissens-Hub.
 - **Glassmorphic Sidebar Navigation (Phase v15):**
   - **🖥️ Desktop-Ansicht:** Einklappbare linke Seitenleiste mit schwebenden Glass-Effekten, klaren Icons und Tooltips.

@@ -984,10 +984,19 @@ function App() {
   const [onboardingPlaybook, setOnboardingPlaybook] = useState('master'); // 'master' or 'pilot'
   const [onboardingActivePhase, setOnboardingActivePhase] = useState(0);
   const [onboardingAnswers, setOnboardingAnswers] = useState({});
+  const [onboardingPriorities, setOnboardingPriorities] = useState({});
+  const [onboardingManualHours, setOnboardingManualHours] = useState(10);
+  const [onboardingHourlyRate, setOnboardingHourlyRate] = useState(45);
+  const [onboardingSavingRatio, setOnboardingSavingRatio] = useState(40);
+  const [recordingQuestionId, setRecordingQuestionId] = useState(null);
 
   useEffect(() => {
     if (!onboardingLeadId) {
       setOnboardingAnswers({});
+      setOnboardingPriorities({});
+      setOnboardingManualHours(10);
+      setOnboardingHourlyRate(45);
+      setOnboardingSavingRatio(40);
       return;
     }
     const lead = leads.find(l => l.id === onboardingLeadId);
@@ -998,6 +1007,16 @@ function App() {
           const parsed = JSON.parse(match[1]);
           setOnboardingPlaybook(parsed.playbook || 'master');
           setOnboardingAnswers(parsed.answers || {});
+          setOnboardingPriorities(parsed.priorities || {});
+          if (parsed.calc) {
+            setOnboardingManualHours(parsed.calc.hours || 10);
+            setOnboardingHourlyRate(parsed.calc.rate || 45);
+            setOnboardingSavingRatio(parsed.calc.ratio || 40);
+          } else {
+            setOnboardingManualHours(10);
+            setOnboardingHourlyRate(45);
+            setOnboardingSavingRatio(40);
+          }
           setOnboardingActivePhase(0);
           return;
         } catch (e) {
@@ -1006,6 +1025,10 @@ function App() {
       }
     }
     setOnboardingAnswers({});
+    setOnboardingPriorities({});
+    setOnboardingManualHours(10);
+    setOnboardingHourlyRate(45);
+    setOnboardingSavingRatio(40);
     setOnboardingActivePhase(0);
   }, [onboardingLeadId]);
 
@@ -1902,7 +1925,7 @@ function App() {
   };
 
   // Onboarding Save and Export Handlers
-  const handleSaveOnboarding = async (customLeadId, answersMap, playbookType) => {
+  const handleSaveOnboarding = async (customLeadId, answersMap, playbookType, prioritiesMap, calcData) => {
     const targetLeadId = customLeadId || onboardingLeadId;
     if (!targetLeadId) return;
 
@@ -1913,18 +1936,43 @@ function App() {
     let summary = `# Onboarding-Protokoll: ${lead.company}\n`;
     summary += `Datum: ${new Date().toLocaleDateString('de-DE')} | Playbook: ${activePlaybook.title}\n\n`;
 
+    // Digitalisierungs-Score Summary if manual calculation values exist
+    const currentHours = calcData ? calcData.hours : onboardingManualHours;
+    const currentRate = calcData ? calcData.rate : onboardingHourlyRate;
+    const currentRatio = calcData ? calcData.ratio : onboardingSavingRatio;
+    
+    const monthlyHoursSaved = Math.round(currentHours * 4 * (currentRatio / 100));
+    const monthlyMoneySaved = monthlyHoursSaved * currentRate;
+    
+    summary += `## 📊 Digitalisierungs-Potenzial (Live-Rechner)\n`;
+    summary += `- Manuelle Stunden/Woche: ${currentHours} Std.\n`;
+    summary += `- Mitarbeiter Stundensatz: ${currentRate} €/Std.\n`;
+    summary += `- Angenommene Ersparnis: ${currentRatio}%\n`;
+    summary += `- Ersparte Stunden/Monat: **${monthlyHoursSaved} Std.**\n`;
+    summary += `- Finanzielles Potenzial: **${monthlyMoneySaved.toLocaleString('de-DE')} € / Monat**\n\n`;
+
     activePlaybook.phases.forEach(phase => {
       summary += `## ${phase.name}\n`;
       phase.questions.forEach(q => {
         const ans = (answersMap || onboardingAnswers)[q.id] || "Keine Notizen erfasst.";
+        const prio = (prioritiesMap || onboardingPriorities)[q.id] || 'keine';
+        const prioLabel = prio === 'high' ? '🔴 Hoch (Sofortiger Hebel)' : prio === 'medium' ? '🟡 Mittel' : prio === 'low' ? '🟢 Niedrig' : 'Keine Priorität';
+        
         summary += `### ${q.question}\n`;
-        summary += `Antwort: ${ans}\n\n`;
+        summary += `- **Priorität**: ${prioLabel}\n`;
+        summary += `- **Antwort**: ${ans}\n\n`;
       });
     });
 
     const serializedData = JSON.stringify({
       playbook: playbookType || onboardingPlaybook,
-      answers: answersMap || onboardingAnswers
+      answers: answersMap || onboardingAnswers,
+      priorities: prioritiesMap || onboardingPriorities,
+      calc: calcData || {
+        hours: onboardingManualHours,
+        rate: onboardingHourlyRate,
+        ratio: onboardingSavingRatio
+      }
     });
     const finalNotes = `${summary}\n\n<!--ONBOARDING_DATA: ${serializedData}-->`;
 
@@ -1973,12 +2021,26 @@ function App() {
     let summary = `# Onboarding-Protokoll: ${lead.company}\n`;
     summary += `Datum: ${new Date().toLocaleDateString('de-DE')} | Playbook: ${activePlaybook.title}\n\n`;
 
+    const monthlyHoursSaved = Math.round(onboardingManualHours * 4 * (onboardingSavingRatio / 100));
+    const monthlyMoneySaved = monthlyHoursSaved * onboardingHourlyRate;
+    
+    summary += `## 📊 Digitalisierungs-Potenzial (Live-Rechner)\n`;
+    summary += `- Manuelle Stunden/Woche: ${onboardingManualHours} Std.\n`;
+    summary += `- Mitarbeiter Stundensatz: ${onboardingHourlyRate} €/Std.\n`;
+    summary += `- Angenommene Ersparnis: ${onboardingSavingRatio}%\n`;
+    summary += `- Ersparte Stunden/Monat: **${monthlyHoursSaved} Std.**\n`;
+    summary += `- Finanzielles Potenzial: **${monthlyMoneySaved.toLocaleString('de-DE')} € / Monat**\n\n`;
+
     activePlaybook.phases.forEach(phase => {
       summary += `## ${phase.name}\n`;
       phase.questions.forEach(q => {
         const ans = onboardingAnswers[q.id] || "Keine Notizen erfasst.";
+        const prio = onboardingPriorities[q.id] || 'keine';
+        const prioLabel = prio === 'high' ? '🔴 Hoch (Sofortiger Hebel)' : prio === 'medium' ? '🟡 Mittel' : prio === 'low' ? '🟢 Niedrig' : 'Keine Priorität';
+        
         summary += `### ${q.question}\n`;
-        summary += `Antwort: ${ans}\n\n`;
+        summary += `- **Priorität**: ${prioLabel}\n`;
+        summary += `- **Antwort**: ${ans}\n\n`;
       });
     });
 
@@ -1992,6 +2054,197 @@ function App() {
 
     setDocs([newDoc, ...docs]);
     alert(`🎉 Protokoll erfolgreich als Dokument "${newDoc.title}" im Wissens-Hub gespeichert! Du kannst es jetzt mit Google Drive synchronisieren.`);
+  };
+
+  const handleGenerateOnboardingPDF = () => {
+    const lead = leads.find(l => l.id === onboardingLeadId);
+    if (!lead) return;
+
+    const doc = new jsPDF();
+    const activePlaybook = ONBOARDING_PLAYBOOKS[onboardingPlaybook];
+
+    // Colors
+    const primaryColor = [139, 92, 246]; // Purple
+    const secondaryColor = [100, 100, 100];
+    const darkColor = [30, 30, 40];
+
+    // Header
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(22);
+    doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+    doc.text('KMU SERVICE HARZ', 20, 25);
+
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(secondaryColor[0], secondaryColor[1], secondaryColor[2]);
+    doc.text('Digitalisierungsberatung & Prozess-Automatisierung | Harz', 20, 31);
+
+    doc.setDrawColor(220, 220, 230);
+    doc.line(20, 35, 190, 35);
+
+    // Title
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(16);
+    doc.setTextColor(darkColor[0], darkColor[1], darkColor[2]);
+    doc.text('Digitalisierungsfahrplan & Onboarding-Protokoll', 20, 45);
+
+    // Meta box
+    doc.setFillColor(245, 245, 250);
+    doc.rect(20, 52, 170, 24, 'F');
+
+    doc.setFontSize(9);
+    doc.setTextColor(80, 80, 80);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Kunde:', 25, 59);
+    doc.text('Datum:', 25, 65);
+    doc.text('Leitfaden:', 25, 71);
+
+    doc.setFont('helvetica', 'normal');
+    doc.text(lead.company, 50, 59);
+    doc.text(new Date().toLocaleDateString('de-DE'), 50, 65);
+    doc.text(activePlaybook.title.replace('📘 ', ''), 50, 71);
+
+    // Digitalisierungsrechner Box
+    const monthlyHoursSaved = Math.round(onboardingManualHours * 4 * (onboardingSavingRatio / 100));
+    const monthlyMoneySaved = monthlyHoursSaved * onboardingHourlyRate;
+
+    doc.setFillColor(236, 253, 245);
+    doc.rect(20, 82, 170, 28, 'F');
+    doc.setDrawColor(16, 185, 129);
+    doc.rect(20, 82, 170, 28, 'S');
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(10);
+    doc.setTextColor(6, 95, 70);
+    doc.text('📊 LIVE-DIGITALISIERUNGSRECHNER POTENZIAL', 25, 88);
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.setTextColor(16, 124, 65);
+    doc.text(`Angenommene wöchentliche manuelle Büroarbeit: ${onboardingManualHours} Std.`, 25, 94);
+    doc.text(`Mitarbeiter-Stundensatz: ${onboardingHourlyRate} €/Std. | Erwartete Automatisierungsquote: ${onboardingSavingRatio}%`, 25, 99);
+    
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(10);
+    doc.text(`PROGNOSTIZIERTE ERSPARNIS: ~${monthlyHoursSaved} Stunden & ~${monthlyMoneySaved.toLocaleString('de-DE')} € pro Monat`, 25, 105);
+
+    let y = 120;
+
+    const printHeader = (text, size, style = 'bold', color = darkColor) => {
+      if (y > 260) {
+        doc.addPage();
+        y = 25;
+      }
+      doc.setFont('helvetica', style);
+      doc.setFontSize(size);
+      doc.setTextColor(color[0], color[1], color[2]);
+      doc.text(text, 20, y);
+      y += (size * 0.4) + 4;
+    };
+
+    const printParagraph = (text, size, style = 'normal', color = [50, 50, 50]) => {
+      doc.setFont('helvetica', style);
+      doc.setFontSize(size);
+      doc.setTextColor(color[0], color[1], color[2]);
+      const lines = doc.splitTextToSize(text, 170);
+      lines.forEach(line => {
+        if (y > 275) {
+          doc.addPage();
+          y = 25;
+        }
+        doc.text(line, 20, y);
+        y += (size * 0.4) + 2.5;
+      });
+      y += 1.5;
+    };
+
+    activePlaybook.phases.forEach(phase => {
+      let phaseHasAnswers = false;
+      phase.questions.forEach(q => {
+        if (onboardingAnswers[q.id]) phaseHasAnswers = true;
+      });
+
+      if (phaseHasAnswers) {
+        y += 3;
+        printHeader(phase.name, 12, 'bold', primaryColor);
+        doc.line(20, y - 2, 190, y - 2);
+        y += 2;
+
+        phase.questions.forEach(q => {
+          const ans = onboardingAnswers[q.id];
+          if (ans) {
+            const prio = onboardingPriorities[q.id] || 'keine';
+            const prioLabel = prio === 'high' ? '[🔴 HOCH (Sofortiger Hebel)]' : prio === 'medium' ? '[🟡 MITTEL]' : prio === 'low' ? '[🟢 NIEDRIG]' : '';
+            
+            printHeader(`${q.question} ${prioLabel}`, 9.5, 'bold', darkColor);
+            printParagraph(`Antwort/Notizen: ${ans}`, 9, 'normal', [80, 80, 90]);
+            y += 2;
+          }
+        });
+      }
+    });
+
+    y += 5;
+    printHeader('Nächste Schritte & Empfehlungen', 12, 'bold', primaryColor);
+    printParagraph('1. Überführung der identifizierten Quickwins (Priorität "Hoch") in Make-Automations-Konzepte.', 9);
+    printParagraph('2. Erstellung eines detaillierten Lastenhefts auf Basis dieses Onboarding-Protokolls.', 9);
+    printParagraph('3. Abstimmung über das erste Pilot-Modul (z.B. Beleg-Upload oder WhatsApp-Anbindungen).', 9);
+
+    doc.save(`Onboarding_Fahrplan_${lead.company.replace(/\s+/g, '_')}.pdf`);
+  };
+
+  const startSpeechRecognition = (qId) => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("Spracherkennung wird von deinem Browser leider nicht unterstützt. Bitte nutze Google Chrome oder Safari.");
+      return;
+    }
+    
+    if (recordingQuestionId === qId) {
+      if (window.activeRecognition) {
+        window.activeRecognition.stop();
+      }
+      setRecordingQuestionId(null);
+      return;
+    }
+    
+    if (window.activeRecognition) {
+      window.activeRecognition.stop();
+    }
+    
+    const rec = new SpeechRecognition();
+    rec.lang = 'de-DE';
+    rec.continuous = false;
+    rec.interimResults = false;
+    
+    rec.onstart = () => {
+      setRecordingQuestionId(qId);
+    };
+    
+    rec.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      const currentText = onboardingAnswers[qId] || '';
+      const newText = currentText ? `${currentText} ${transcript}` : transcript;
+      const newAnswers = { ...onboardingAnswers, [qId]: newText };
+      setOnboardingAnswers(newAnswers);
+      handleSaveOnboarding(onboardingLeadId, newAnswers, onboardingPlaybook, onboardingPriorities, {
+        hours: onboardingManualHours,
+        rate: onboardingHourlyRate,
+        ratio: onboardingSavingRatio
+      });
+    };
+    
+    rec.onerror = (e) => {
+      console.error("Speech Recognition Error:", e);
+      setRecordingQuestionId(null);
+    };
+    
+    rec.onend = () => {
+      setRecordingQuestionId(null);
+    };
+    
+    window.activeRecognition = rec;
+    rec.start();
   };
 
   // Live Timer tick for active project time tracking
@@ -7744,9 +7997,68 @@ ${original}
                               onChange={(e) => {
                                 const newAnswers = { ...onboardingAnswers, [q.id]: e.target.value };
                                 setOnboardingAnswers(newAnswers);
-                                handleSaveOnboarding(onboardingLeadId, newAnswers, onboardingPlaybook);
+                                handleSaveOnboarding(onboardingLeadId, newAnswers, onboardingPlaybook, onboardingPriorities);
                               }}
+                              style={{ marginBottom: '0.75rem' }}
                             />
+
+                            {/* Priority Selector & Dictation Row */}
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                                <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Priorität:</span>
+                                {['low', 'medium', 'high'].map(level => {
+                                  const isSelected = (onboardingPriorities[q.id] || 'keine') === level;
+                                  const colors = level === 'high' ? { bg: 'rgba(239, 68, 68, 0.15)', border: '#ef4444', text: '#f87171' } :
+                                                 level === 'medium' ? { bg: 'rgba(245, 158, 11, 0.15)', border: '#f59e0b', text: '#fbbf24' } :
+                                                 { bg: 'rgba(16, 185, 129, 0.15)', border: '#10b981', text: '#34d399' };
+                                  const label = level === 'high' ? 'Hoch' : level === 'medium' ? 'Mittel' : 'Niedrig';
+                                  
+                                  return (
+                                    <button
+                                      key={level}
+                                      type="button"
+                                      onClick={() => {
+                                        const newPriorities = { ...onboardingPriorities, [q.id]: level };
+                                        setOnboardingPriorities(newPriorities);
+                                        handleSaveOnboarding(onboardingLeadId, onboardingAnswers, onboardingPlaybook, newPriorities);
+                                      }}
+                                      style={{
+                                        padding: '0.2rem 0.5rem',
+                                        fontSize: '0.7rem',
+                                        borderRadius: '0.25rem',
+                                        background: isSelected ? colors.bg : 'rgba(255,255,255,0.01)',
+                                        border: `1px solid ${isSelected ? colors.border : 'var(--border-color)'}`,
+                                        color: isSelected ? colors.text : 'var(--text-secondary)',
+                                        cursor: 'pointer',
+                                        transition: 'all 0.2s'
+                                      }}
+                                    >
+                                      {label}
+                                    </button>
+                                  );
+                                })}
+                              </div>
+
+                              <button
+                                type="button"
+                                onClick={() => startSpeechRecognition(q.id)}
+                                className="btn"
+                                style={{
+                                  padding: '0.2rem 0.6rem',
+                                  fontSize: '0.7rem',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  gap: '0.25rem',
+                                  background: recordingQuestionId === q.id ? '#ef4444' : 'rgba(255,255,255,0.05)',
+                                  color: recordingQuestionId === q.id ? 'white' : 'var(--text-secondary)',
+                                  borderColor: recordingQuestionId === q.id ? '#ef4444' : 'var(--border-color)',
+                                  cursor: 'pointer'
+                                }}
+                              >
+                                <span>🎙</span>
+                                <span>{recordingQuestionId === q.id ? 'Hört zu...' : 'Diktieren'}</span>
+                              </button>
+                            </div>
                           </div>
                         );
                       })}
@@ -7802,6 +8114,101 @@ ${original}
                       </div>
                     </div>
 
+                    {/* Live Digitalisierungsrechner */}
+                    <div className="card" style={{ padding: '1.25rem' }}>
+                      <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'white', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                        <TrendingUp size={16} className="text-emerald-400" />
+                        Digitalisierungs-Potenzial
+                      </h3>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                        <div>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', marginBottom: '0.25rem' }}>
+                            <span style={{ color: 'var(--text-secondary)' }}>Manuelle Arbeit:</span>
+                            <span style={{ fontWeight: 600, color: 'white' }}>{onboardingManualHours} Std./Woche</span>
+                          </div>
+                          <input
+                            type="range"
+                            min="2"
+                            max="40"
+                            value={onboardingManualHours}
+                            onChange={(e) => {
+                              const val = parseInt(e.target.value);
+                              setOnboardingManualHours(val);
+                              handleSaveOnboarding(onboardingLeadId, onboardingAnswers, onboardingPlaybook, onboardingPriorities, {
+                                hours: val,
+                                rate: onboardingHourlyRate,
+                                ratio: onboardingSavingRatio
+                              });
+                            }}
+                            style={{ width: '100%', accentColor: 'var(--accent-purple)' }}
+                          />
+                        </div>
+
+                        <div>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', marginBottom: '0.25rem' }}>
+                            <span style={{ color: 'var(--text-secondary)' }}>Mitarbeiter Stundensatz:</span>
+                            <span style={{ fontWeight: 600, color: 'white' }}>{onboardingHourlyRate} €/Std.</span>
+                          </div>
+                          <input
+                            type="range"
+                            min="15"
+                            max="150"
+                            value={onboardingHourlyRate}
+                            onChange={(e) => {
+                              const val = parseInt(e.target.value);
+                              setOnboardingHourlyRate(val);
+                              handleSaveOnboarding(onboardingLeadId, onboardingAnswers, onboardingPlaybook, onboardingPriorities, {
+                                hours: onboardingManualHours,
+                                rate: val,
+                                ratio: onboardingSavingRatio
+                              });
+                            }}
+                            style={{ width: '100%', accentColor: 'var(--accent-purple)' }}
+                          />
+                        </div>
+
+                        <div>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', marginBottom: '0.25rem' }}>
+                            <span style={{ color: 'var(--text-secondary)' }}>Automatisierungsquote:</span>
+                            <span style={{ fontWeight: 600, color: 'white' }}>{onboardingSavingRatio}%</span>
+                          </div>
+                          <input
+                            type="range"
+                            min="10"
+                            max="90"
+                            value={onboardingSavingRatio}
+                            onChange={(e) => {
+                              const val = parseInt(e.target.value);
+                              setOnboardingSavingRatio(val);
+                              handleSaveOnboarding(onboardingLeadId, onboardingAnswers, onboardingPlaybook, onboardingPriorities, {
+                                hours: onboardingManualHours,
+                                rate: onboardingHourlyRate,
+                                ratio: val
+                              });
+                            }}
+                            style={{ width: '100%', accentColor: 'var(--accent-purple)' }}
+                          />
+                        </div>
+
+                        <div style={{
+                          marginTop: '0.25rem',
+                          padding: '0.75rem',
+                          background: 'rgba(16, 185, 129, 0.05)',
+                          border: '1px solid rgba(16, 185, 129, 0.2)',
+                          borderRadius: '0.375rem',
+                          textAlign: 'center'
+                        }}>
+                          <div style={{ fontSize: '0.65rem', textTransform: 'uppercase', color: '#10b981', fontWeight: 700, marginBottom: '0.25rem' }}>Prognostizierte Ersparnis</div>
+                          <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'white' }}>
+                            {Math.round(onboardingManualHours * 4 * (onboardingSavingRatio / 100))} Std. / Monat
+                          </div>
+                          <div style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--accent-cyan)', marginTop: '0.15rem' }}>
+                            ~ {(Math.round(onboardingManualHours * 4 * (onboardingSavingRatio / 100)) * onboardingHourlyRate).toLocaleString('de-DE')} € / Monat
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                     {/* Export Actions */}
                     <div className="card" style={{ padding: '1.25rem' }}>
                       <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'white', marginBottom: '0.75rem' }}>
@@ -7809,6 +8216,15 @@ ${original}
                       </h3>
                       
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                        <button 
+                          className="btn btn-primary"
+                          style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.35rem', fontSize: '0.8rem', background: 'linear-gradient(135deg, var(--accent-purple), var(--accent-indigo))', border: 'none', color: 'white' }}
+                          onClick={handleGenerateOnboardingPDF}
+                        >
+                          <Download size={14} />
+                          PDF-Angebot generieren
+                        </button>
+
                         <button 
                           className="btn btn-secondary"
                           style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.35rem', fontSize: '0.8rem' }}
@@ -7826,12 +8242,26 @@ ${original}
                             let summary = `# Onboarding-Protokoll: ${selectedLead.company}\n`;
                             summary += `Datum: ${new Date().toLocaleDateString('de-DE')} | Playbook: ${activePlaybook.title}\n\n`;
 
+                            const monthlyHoursSaved = Math.round(onboardingManualHours * 4 * (onboardingSavingRatio / 100));
+                            const monthlyMoneySaved = monthlyHoursSaved * onboardingHourlyRate;
+                            
+                            summary += `## 📊 Digitalisierungs-Potenzial (Live-Rechner)\n`;
+                            summary += `- Manuelle Stunden/Woche: ${onboardingManualHours} Std.\n`;
+                            summary += `- Mitarbeiter Stundensatz: ${onboardingHourlyRate} €/Std.\n`;
+                            summary += `- Angenommene Ersparnis: ${onboardingSavingRatio}%\n`;
+                            summary += `- Ersparte Stunden/Monat: **${monthlyHoursSaved} Std.**\n`;
+                            summary += `- Finanzielles Potenzial: **${monthlyMoneySaved.toLocaleString('de-DE')} € / Monat**\n\n`;
+
                             activePlaybook.phases.forEach(phase => {
                               summary += `## ${phase.name}\n`;
                               phase.questions.forEach(q => {
                                 const ans = onboardingAnswers[q.id] || "Keine Notizen erfasst.";
+                                const prio = onboardingPriorities[q.id] || 'keine';
+                                const prioLabel = prio === 'high' ? '🔴 Hoch (Sofortiger Hebel)' : prio === 'medium' ? '🟡 Mittel' : prio === 'low' ? '🟢 Niedrig' : 'Keine Priorität';
+                                
                                 summary += `### ${q.question}\n`;
-                                summary += `Antwort: ${ans}\n\n`;
+                                summary += `- **Priorität**: ${prioLabel}\n`;
+                                summary += `- **Antwort**: ${ans}\n\n`;
                               });
                             });
                             
