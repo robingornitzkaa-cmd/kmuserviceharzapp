@@ -5,6 +5,13 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **Offline-Resilienz & Local-First Konzept (Phase v16):**
+  - **🔌 Netzwerkstatus-Erkennung:** Dynamische Erkennung der Internetverbindung (`window.navigator.onLine`).
+  - **💾 Local-First Fallback:** Alle Schreiboperationen (Prompts, Leads-Feedback, Onboarding-Protokolle, Notizen, etc.) speichern die Daten sofort im `localStorage`. fetch-Aufrufe an die Supabase Cloud werden offline automatisch übersprungen, um Timeouts und Hänger zu verhindern.
+  - **🟢 Dynamische Status-Indikatoren:** Die Cloud-Synchronisations-Panels zeigen offline den Status `🔌 OFFLINE` (mit gelbem Warnhinweis) anstelle eines fälschlichen Online-Status. Im Onboarding-Tab wird der Text zu "Offline-Modus: LOKAL SPEICHERN" angepasst.
+  - **👥 Onboarding für Bestandskunden:** Im Onboarding-Select können nun neben Kaltakquise-Leads auch CRM-Kontakte ausgewählt werden. Dadurch kann das Onboarding für GoClean Harz (den Bruder) offline durchgeführt werden.
+  - **📊 Initial-Leads Offline-Fallback:** Ein statisches Array `INITIAL_LEADS` mit 5 Mustereinträgen lädt, wenn beim ersten Start keine Internetverbindung vorhanden ist, sodass das Lead-Tracking nicht leer bleibt.
+  - **⚠️ Webhook-Warnmeldung:** Der WhatsApp-Simulator zeigt im Offline-Modus einen gelben Hinweis, dass HTTP-POST-Weiterleitungen an Make.com temporär deaktiviert sind.
 - **Kunden-Onboarding-Playbook Modul (Phase v15):**
   - **📋 Master- & Pilot-Playbooks:** Direkt integrierte Gesprächsleitfäden und strukturierte Fragen aus dem KMU-Service Harz Onboarding Playbook (10 Fragen) sowie dem GoClean Harz Bruder-Onboarding (5 Fragen).
   - **🧙 Schritt-für-Schritt-Wizard:** Interaktiver Gesprächsassistent mit Phasen-Navigation, Fortschrittsbalken und Einblendung von "Ziel & Erkenntnisse", "Folgefragen" sowie "Warnsignalen" für jede Frage zur optimalen Gesprächsführung.

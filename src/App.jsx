@@ -124,6 +124,84 @@ const INITIAL_CONTACTS = [
   }
 ];
 
+const INITIAL_LEADS = [
+  {
+    id: 'l_demo_1',
+    company: 'Harzer Holzwerke GmbH',
+    name: 'Christian Gornitzka',
+    industry: 'Handwerk & Industrie',
+    phone: '+49 176 1234567',
+    email: 'c.gornitzka@harz-holz.de',
+    notes: 'Potenzieller Kunde für automatisierte Lieferscheinerfassung und DATEV-Export. Großer Hebel bei digitaler Rechnungsverarbeitung.',
+    status: 'nicht kontaktiert',
+    urgency: 3,
+    pain_point: 'Zettelwirtschaft bei Lieferscheinen',
+    conversation_hook: 'Zeitersparnis von 20 Stunden im Monat',
+    actual_objection: 'Keine internen IT-Ressourcen',
+    next_step: 'Erstgespräch vor Ort vereinbaren'
+  },
+  {
+    id: 'l_demo_2',
+    company: 'Pflegedienst Harz GmbH',
+    name: 'Sabine Kraft',
+    industry: 'Gesundheit & Pflege',
+    phone: '+49 172 9876543',
+    email: 's.kraft@pflegedienst-harz.de',
+    notes: 'Interesse an WhatsApp-gestützter Zeiterfassung für Pflegekräfte vor Ort.',
+    status: 'kontaktiert',
+    urgency: 2,
+    pain_point: 'Stundenzettel werden verspätet eingereicht',
+    conversation_hook: 'Automatische Lexoffice-Schnittstelle',
+    actual_objection: 'Mitarbeiter sind nicht technikaffin',
+    next_step: 'WhatsApp-Bot Testzugang freischalten'
+  },
+  {
+    id: 'l_demo_3',
+    company: 'Dachdecker Meisterbetrieb Müller',
+    name: 'Markus Müller',
+    industry: 'Handwerk',
+    phone: '+49 151 5554433',
+    email: 'info@mueller-dach-harz.de',
+    notes: 'Familienbetrieb. Möchte Rechnungen direkt auf dem Dach per Tablet erstellen und an Lexoffice senden.',
+    status: 'nicht kontaktiert',
+    urgency: 4,
+    pain_point: 'Wochenendarbeit für Rechnungsstellung im Büro',
+    conversation_hook: 'E-Rechnungspflicht 2025/2026',
+    actual_objection: 'Zu teure Setup-Kosten',
+    next_step: 'ROI-Kalkulation per PDF zusenden'
+  },
+  {
+    id: 'l_demo_4',
+    company: 'Gärtnerei Blütentraum Harz',
+    name: 'Renate Blume',
+    industry: 'Handwerk & Dienstleistungen',
+    phone: '+49 160 8887766',
+    email: 'kontakt@bluetentraum-harz.de',
+    notes: 'Viele kleine Privatkunden. Sucht automatisierte Mahnwesen-Lösung.',
+    status: 'in verhandlung',
+    urgency: 1,
+    pain_point: 'Hohe Außenstände / späte Zahlungen',
+    conversation_hook: 'Automatischer Lexoffice-Mahnlauf',
+    actual_objection: 'Kunden könnten verärgert sein',
+    next_step: 'Muster-Mahn-Formulierungen zeigen'
+  },
+  {
+    id: 'l_demo_5',
+    company: 'Hotel Bunte Tanne Schierke',
+    name: 'Robert Schmidt',
+    industry: 'Gastronomie & Hotellerie',
+    phone: '+49 39455 1230',
+    email: 'info@bunte-tanne.de',
+    notes: 'Rezeptions-Automation. Check-In & Abrechnung über digitalen Meldeschein.',
+    status: 'nicht kontaktiert',
+    urgency: 3,
+    pain_point: 'Manueller Aufwand beim Check-In zu Stoßzeiten',
+    conversation_hook: 'SMS-Check-in-Link am Anreisetag',
+    actual_objection: 'Kompatibilität mit PMS-System',
+    next_step: 'Schnittstellen-Dokumentation anfordern'
+  }
+];
+
 const INITIAL_PROJECTS = [
   { id: 'p1', client: 'Dachdeckerei Müller', offerSigned: true, subsidyApplied: true, subsidyApproved: false, ready: false, pricePackage: 3500, trackedHours: 14.5, trackingStartTime: null },
   { id: 'p2', client: 'Pflegedienst Harz', offerSigned: false, subsidyApplied: false, subsidyApproved: false, ready: false, pricePackage: 2450, trackedHours: 6.2, trackingStartTime: null },
@@ -641,6 +719,19 @@ function App() {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // Online/Offline detection state
+  const [isOnline, setIsOnline] = useState(() => typeof window !== 'undefined' ? window.navigator.onLine : true);
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
   
   // Showcase Mode State
   const [showcaseMode, setShowcaseMode] = useState(() => JSON.parse(localStorage.getItem('f_showcase_mode')) || false);
@@ -956,9 +1047,9 @@ function App() {
   const [leads, setLeads] = useState(() => {
     try {
       const saved = localStorage.getItem('f_leads');
-      return saved ? JSON.parse(saved) : [];
+      return saved ? JSON.parse(saved) : INITIAL_LEADS;
     } catch {
-      return [];
+      return INITIAL_LEADS;
     }
   });
   const [activeLeadId, setActiveLeadId] = useState(() => {
@@ -999,7 +1090,10 @@ function App() {
       setOnboardingSavingRatio(40);
       return;
     }
-    const lead = leads.find(l => l.id === onboardingLeadId);
+    const isCRMContact = String(onboardingLeadId).startsWith('c');
+    const lead = isCRMContact 
+      ? contacts.find(c => c.id === onboardingLeadId)
+      : leads.find(l => l.id === onboardingLeadId);
     if (lead && lead.notes) {
       const match = lead.notes.match(/<!--ONBOARDING_DATA: ({.*?})-->/);
       if (match) {
@@ -1245,6 +1339,7 @@ function App() {
   // Fetch leads from Supabase on mount (or when config changes)
   useEffect(() => {
     const fetchLeads = async () => {
+      if (!isOnline) return;
       try {
         const response = await fetch(`${supabaseConfig.url}/rest/v1/leads?select=*&order=priority.asc,company.asc`, {
           headers: {
@@ -1263,7 +1358,7 @@ function App() {
       }
     };
     fetchLeads();
-  }, [supabaseConfig]);
+  }, [supabaseConfig, isOnline]);
 
   // Wochen-Review & Archiv Logik & Sync (Feature A3)
   useEffect(() => {
@@ -1815,7 +1910,23 @@ function App() {
     };
 
     setSupabaseLogs([
-      `[${getTimestamp()}] 🔄 Verbindungsaufbau zu ${supabaseConfig.url}...`,
+      `[${getTimestamp()}] 🔄 Verbindungsaufbau zu ${supabaseConfig.url}...`
+    ]);
+
+    if (!isOnline) {
+      setTimeout(() => {
+        setSupabaseLogs(prev => [
+          ...prev,
+          `[${getTimestamp()}] ❌ FEHLER: Keine Internetverbindung erkannt.`,
+          `[${getTimestamp()}] 🔌 Synchronisation abgebrochen. Lokale Kopie (localStorage) ist intakt.`
+        ]);
+        setSupabaseSyncStatus('error');
+      }, 1000);
+      return;
+    }
+
+    setSupabaseLogs(prev => [
+      ...prev,
       `[${getTimestamp()}] 📡 Authentifizierung mit anon-key erfolgreich.`
     ]);
 
@@ -1894,30 +2005,32 @@ function App() {
     setLeads(updatedLeads);
     localStorage.setItem('f_leads', JSON.stringify(updatedLeads));
 
-    try {
-      const response = await fetch(`${supabaseConfig.url}/rest/v1/leads?id=eq.${activeLeadId}`, {
-        method: 'PATCH',
-        headers: {
-          'apikey': supabaseConfig.anonKey,
-          'Authorization': `Bearer ${supabaseConfig.anonKey}`,
-          'Content-Type': 'application/json',
-          'Prefer': 'return=minimal'
-        },
-        body: JSON.stringify({
-          pain_point: formPainPoint,
-          urgency: parseInt(formUrgency) || 0,
-          actual_objection: formActualObjection,
-          conversation_hook: formConversationHook,
-          next_step: formNextStep,
-          notes: formNotes,
-          status: formStatus
-        })
-      });
-      if (response.ok) {
-        console.log("Lead successfully updated in Supabase.");
+    if (isOnline) {
+      try {
+        const response = await fetch(`${supabaseConfig.url}/rest/v1/leads?id=eq.${activeLeadId}`, {
+          method: 'PATCH',
+          headers: {
+            'apikey': supabaseConfig.anonKey,
+            'Authorization': `Bearer ${supabaseConfig.anonKey}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({
+            pain_point: formPainPoint,
+            urgency: parseInt(formUrgency) || 0,
+            actual_objection: formActualObjection,
+            conversation_hook: formConversationHook,
+            next_step: formNextStep,
+            notes: formNotes,
+            status: formStatus
+          })
+        });
+        if (response.ok) {
+          console.log("Lead successfully updated in Supabase.");
+        }
+      } catch (e) {
+        console.error("Fehler beim Cloud-Update des Leads:", e);
       }
-    } catch (e) {
-      console.error("Fehler beim Cloud-Update des Leads:", e);
     }
     
     setIsSavingLead(false);
@@ -1929,7 +2042,10 @@ function App() {
     const targetLeadId = customLeadId || onboardingLeadId;
     if (!targetLeadId) return;
 
-    const lead = leads.find(l => l.id === targetLeadId);
+    const isCRMContact = String(targetLeadId).startsWith('c');
+    const lead = isCRMContact 
+      ? contacts.find(c => c.id === targetLeadId)
+      : leads.find(l => l.id === targetLeadId);
     if (!lead) return;
 
     const activePlaybook = ONBOARDING_PLAYBOOKS[playbookType || onboardingPlaybook];
@@ -1976,45 +2092,66 @@ function App() {
     });
     const finalNotes = `${summary}\n\n<!--ONBOARDING_DATA: ${serializedData}-->`;
 
-    // Update local state
-    const updatedLeads = leads.map(l => {
-      if (l.id === targetLeadId) {
-        return {
-          ...l,
-          notes: finalNotes,
-          status: 'Pain Points erfasst'
-        };
-      }
-      return l;
-    });
-    setLeads(updatedLeads);
-    localStorage.setItem('f_leads', JSON.stringify(updatedLeads));
-
-    // Update Supabase
-    try {
-      const response = await fetch(`${supabaseConfig.url}/rest/v1/leads?id=eq.${targetLeadId}`, {
-        method: 'PATCH',
-        headers: {
-          'apikey': supabaseConfig.anonKey,
-          'Authorization': `Bearer ${supabaseConfig.anonKey}`,
-          'Content-Type': 'application/json',
-          'Prefer': 'return=minimal'
-        },
-        body: JSON.stringify({
-          notes: finalNotes,
-          status: 'Pain Points erfasst'
-        })
+    if (isCRMContact) {
+      // Update local state for contacts
+      const updatedContacts = contacts.map(c => {
+        if (c.id === targetLeadId) {
+          return {
+            ...c,
+            notes: finalNotes,
+            stage: 'gespräch'
+          };
+        }
+        return c;
       });
-      if (response.ok) {
-        console.log("Onboarding notes successfully synced to Supabase.");
+      setContacts(updatedContacts);
+      localStorage.setItem('f_contacts', JSON.stringify(updatedContacts));
+    } else {
+      // Update local state for leads
+      const updatedLeads = leads.map(l => {
+        if (l.id === targetLeadId) {
+          return {
+            ...l,
+            notes: finalNotes,
+            status: 'Pain Points erfasst'
+          };
+        }
+        return l;
+      });
+      setLeads(updatedLeads);
+      localStorage.setItem('f_leads', JSON.stringify(updatedLeads));
+
+      // Update Supabase if online
+      if (isOnline) {
+        try {
+          const response = await fetch(`${supabaseConfig.url}/rest/v1/leads?id=eq.${targetLeadId}`, {
+            method: 'PATCH',
+            headers: {
+              'apikey': supabaseConfig.anonKey,
+              'Authorization': `Bearer ${supabaseConfig.anonKey}`,
+              'Content-Type': 'application/json',
+              'Prefer': 'return=minimal'
+            },
+            body: JSON.stringify({
+              notes: finalNotes,
+              status: 'Pain Points erfasst'
+            })
+          });
+          if (response.ok) {
+            console.log("Onboarding notes successfully synced to Supabase.");
+          }
+        } catch (e) {
+          console.error("Fehler beim Cloud-Update des Onboardings:", e);
+        }
       }
-    } catch (e) {
-      console.error("Fehler beim Cloud-Update des Onboardings:", e);
     }
   };
 
   const handleExportOnboardingToDocs = () => {
-    const lead = leads.find(l => l.id === onboardingLeadId);
+    const isCRMContact = String(onboardingLeadId).startsWith('c');
+    const lead = isCRMContact 
+      ? contacts.find(c => c.id === onboardingLeadId)
+      : leads.find(l => l.id === onboardingLeadId);
     if (!lead) return;
 
     const activePlaybook = ONBOARDING_PLAYBOOKS[onboardingPlaybook];
@@ -2057,7 +2194,10 @@ function App() {
   };
 
   const handleGenerateOnboardingPDF = () => {
-    const lead = leads.find(l => l.id === onboardingLeadId);
+    const isCRMContact = String(onboardingLeadId).startsWith('c');
+    const lead = isCRMContact 
+      ? contacts.find(c => c.id === onboardingLeadId)
+      : leads.find(l => l.id === onboardingLeadId);
     if (!lead) return;
 
     const doc = new jsPDF();
@@ -5116,8 +5256,11 @@ ${original}
                       onChange={(e) => setWebhookUrl(e.target.value)}
                       disabled={isSimulating}
                     />
-                    <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', marginTop: '0.25rem', display: 'block' }}>
-                      Trage deine Make-Webhook-URL ein, um echte HTTP-POST-Daten live an dein Make-Szenario zu senden!
+                    <span style={{ fontSize: '0.65rem', color: isOnline ? 'var(--text-muted)' : '#fbbf24', marginTop: '0.25rem', display: 'block' }}>
+                      {isOnline 
+                        ? 'Trage deine Make-Webhook-URL ein, um echte HTTP-POST-Daten live an dein Make-Szenario zu senden!'
+                        : '⚠️ Du bist offline. Der Make-Webhook kann momentan nicht aufgerufen werden.'
+                      }
                     </span>
                   </div>
 
@@ -6495,15 +6638,24 @@ ${original}
                     <Database size={20} className="text-emerald-500" />
                     Supabase Cloud Sync
                   </h2>
-                  <span style={{ 
+                   <span style={{ 
                     fontSize: '0.7rem', 
                     padding: '0.15rem 0.5rem', 
                     borderRadius: '0.25rem', 
-                    background: supabaseSyncStatus === 'syncing' ? 'rgba(245, 158, 11, 0.15)' : 'rgba(16, 185, 129, 0.15)',
-                    color: supabaseSyncStatus === 'syncing' ? 'var(--accent-yellow)' : 'var(--accent-green)',
+                    background: !isOnline ? 'rgba(245, 158, 11, 0.15)' : 
+                                supabaseSyncStatus === 'syncing' ? 'rgba(245, 158, 11, 0.15)' : 
+                                supabaseSyncStatus === 'error' ? 'rgba(239, 68, 68, 0.15)' : 
+                                'rgba(16, 185, 129, 0.15)',
+                    color: !isOnline ? '#fbbf24' : 
+                           supabaseSyncStatus === 'syncing' ? '#fbbf24' : 
+                           supabaseSyncStatus === 'error' ? '#f87171' : 
+                           '#34d399',
                     fontWeight: 700
                   }}>
-                    {supabaseSyncStatus === 'syncing' ? '⌛ SYNCHRONISIERT...' : '🟢 ONLINE'}
+                    {!isOnline ? '🔌 OFFLINE' : 
+                     supabaseSyncStatus === 'syncing' ? '⌛ SYNCHRONISIERT...' : 
+                     supabaseSyncStatus === 'error' ? '❌ VERBINDUNGSFEHLER' : 
+                     '🟢 ONLINE'}
                   </span>
                 </div>
                 
@@ -7870,7 +8022,12 @@ ${original}
                     style={{ minWidth: '220px' }}
                   >
                     <option value="">-- Kunden/Lead auswählen --</option>
-                    <optgroup label="Kaltakquise-Kontakte">
+                    <optgroup label="CRM-Kontakte & Mandanten">
+                      {contacts.map(c => (
+                        <option key={c.id} value={c.id}>{showcaseMode ? 'Muster-Firma' : c.company} ({c.industry || 'Keine Branche'})</option>
+                      ))}
+                    </optgroup>
+                    <optgroup label="Kaltakquise-Leads">
                       {leads.map(l => (
                         <option key={l.id} value={l.id}>{showcaseMode ? 'Muster-Firma' : l.company} ({l.industry || 'Keine Branche'})</option>
                       ))}
@@ -7892,7 +8049,10 @@ ${original}
             </div>
 
             {onboardingLeadId ? (() => {
-              const selectedLead = leads.find(l => l.id === onboardingLeadId);
+              const isCRMContact = String(onboardingLeadId).startsWith('c');
+              const selectedLead = isCRMContact 
+                ? contacts.find(c => c.id === onboardingLeadId)
+                : leads.find(l => l.id === onboardingLeadId);
               if (!selectedLead) return null;
               const playbook = ONBOARDING_PLAYBOOKS[onboardingPlaybook];
               const phase = playbook.phases[onboardingActivePhase];
@@ -8106,11 +8266,30 @@ ${original}
                         Live Cloud-Synchronisation
                       </h3>
                       <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', lineHeight: '1.4', marginBottom: '0.75rem' }}>
-                        Jede Eingabe wird in Echtzeit im Cloud-Speicher für <strong>{showcaseMode ? 'Muster-Firma' : selectedLead.company}</strong> gesichert.
+                        {isOnline 
+                          ? <>Jede Eingabe wird in Echtzeit im Cloud-Speicher für <strong>{showcaseMode ? 'Muster-Firma' : selectedLead.company}</strong> gesichert.</>
+                          : <>Du bist offline. Eingaben für <strong>{showcaseMode ? 'Muster-Firma' : selectedLead.company}</strong> werden lokal gesichert und synchronisiert, sobald eine Verbindung besteht.</>
+                        }
                       </p>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.7rem', color: '#34d399', background: 'rgba(16, 185, 129, 0.1)', padding: '0.4rem 0.6rem', borderRadius: '0.25rem', width: 'fit-content' }}>
-                        <span style={{ display: 'inline-block', width: '6px', height: '6px', borderRadius: '50%', background: '#34d399' }}></span>
-                        Supabase Cloud-Sync: AKTIV
+                      <div style={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        gap: '0.5rem', 
+                        fontSize: '0.7rem', 
+                        color: isOnline ? '#34d399' : '#fbbf24', 
+                        background: isOnline ? 'rgba(16, 185, 129, 0.1)' : 'rgba(245, 158, 11, 0.1)', 
+                        padding: '0.4rem 0.6rem', 
+                        borderRadius: '0.25rem', 
+                        width: 'fit-content' 
+                      }}>
+                        <span style={{ 
+                          display: 'inline-block', 
+                          width: '6px', 
+                          height: '6px', 
+                          borderRadius: '50%', 
+                          background: isOnline ? '#34d399' : '#fbbf24' 
+                        }}></span>
+                        {isOnline ? 'Supabase Cloud-Sync: AKTIV' : 'Offline-Modus: LOKAL SPEICHERN'}
                       </div>
                     </div>
 

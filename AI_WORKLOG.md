@@ -1,5 +1,27 @@
 # AI Worklog - Founder OS
 
+## 2026-07-16 14:15 – Offline-Resilienz & Local-First Konzept (Phase v16)
+
+### Ziel
+Robuste Nutzbarkeit der Kernfunktionen der App (Prompts speichern, Notizen verfassen, Leads-Feedback, Onboarding-Gespräche etc.) komplett ohne Internetverbindung. Verhindern von fetch-Verzögerungen, Timeouts und fehlerhaften Online-Visualisierungen. Ermöglichen des Onboardings für CRM-Bestandskunden wie GoClean Harz offline.
+
+### Erstellt
+Keine neuen Codedateien.
+
+### Geändert
+- [App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx):
+  - Hinzufügen des States `isOnline` zur Überwachung des Netzwerkstatus (`navigator.onLine`).
+  - Definition des `INITIAL_LEADS` Fallback-Arrays mit 5 Mustereinträgen zur Gewährleistung der Offline-Erstnutzung.
+  - Integration von `isOnline` in `fetchLeads` und `handleSaveLeadFeedback`, um blockierende API-Anrufe offline direkt zu überspringen.
+  - Refactoring von `handleSaveOnboarding`, `handleExportOnboardingToDocs` und `handleGenerateOnboardingPDF` zur Unterstützung von CRM-Kontakten (Kunden-IDs beginnend mit `'c'`) sowie zur Vermeidung von Supabase-Anfragen im Offline-Zustand.
+  - Dynamisches Status-Badge für "Supabase Cloud Sync" (`🔌 OFFLINE` bei Verbindungsverlust) und angepasste Synchronisations-Logs.
+  - Dynamische Warnung im Make.com Webhook-Simulator und im Onboarding-Tab-Synchronisations-Panel bei Offline-Status.
+  - Zusammenführung von CRM-Bestandskunden und Kaltakquise-Leads im Onboarding-Wizard-Dropdown.
+- [TODO.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md), [CHANGELOG.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md): Aktualisierung der Offene-Aufgaben-Liste und der Versionsänderungen.
+
+### Warum
+Um die App für Vor-Ort-Termine (z.B. in schlecht ausgebauten Handwerksbetrieben oder im Harz) absolut ausfallsicher zu machen. Robin kann nun alle Onboarding-Daten für seinen Bruder (GoClean Harz) offline erheben, und das CRM startet beim ersten Mal auch offline nicht mehr mit einer leeren Ansicht.
+
 ## 2026-07-16 14:05 – Kunden-Onboarding Modul & Erweiterungen (Phase v15)
 
 ### Ziel
