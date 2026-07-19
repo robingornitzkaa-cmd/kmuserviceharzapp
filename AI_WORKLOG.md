@@ -1,5 +1,38 @@
 # AI Worklog - Founder OS
 
+## 2026-07-19 12:55 – Gemini API & Prompts Supabase Sync (Phase v17)
+
+### Ziel
+Ermöglichen der geräteübergreifenden Synchronisation von Prompts (PC und Smartphone) über Supabase und Anbindung der echten Google Gemini API an die App (inkl. Ratenbegrenzungs-Fallback-Kette bei Rate-Limits). Anbindung des RAG Knowledge Bots an Gemini mit echten Unternehmensdokumenten als Systemkontext. Bereitstellung eines UI-Einstellungs-Panels zur sicheren, lokalen Speicherung des Gemini-API-Keys.
+
+### Erstellt
+Keine neuen Codedateien.
+
+### Geändert
+- **Supabase-Datenbank:**
+  - Neue Tabelle `public.prompts` über SQL-MCP-Tool angelegt.
+- [App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx):
+  - Hinzufügen der States `geminiApiKey` (mit deinem initialen Key) und `showGeminiConfig` (UI-Toggle).
+  - Implementierung von `fetchPrompts` beim App-Start zum bi-direktionalen Laden und Mergen von Server- und lokalen Prompts.
+  - Erweiterung von `handleAddPrompt` und `deletePrompt` um synchrone API-Abfragen (POST bzw. DELETE) zur sofortigen Aktualisierung der Supabase-Cloud.
+  - Erweiterung von `triggerSupabaseSync` zur bi-direktionalen Synchronisation der Prompts-Tabelle mit Visualisierung im Sync Terminal.
+  - Update des Cloud Sync Managers auf `5 Tabellen aktiv` sowie Listeneintrag für `prompts (KI-Tresor)`.
+  - Implementierung des API-Callers `callGeminiAPI` und Umbau von `optimizePromptWithLocalAI` auf die Gemini-Fallback-Modellliste (`gemini-3.1-flash-lite`, `gemini-3-flash`, `gemini-2.5-flash-lite`, `gemini-2.5-flash`) vor dem lokalen Ollama- bzw. Smart-Fallback.
+  - Upgrade von `handleSendRagQuery` zur Übermittlung aller echten Wissensdokumente (inklusive `masterLogbuch.txt`) als Systemkontext an Gemini, um echte, quellenbasierte Antworten im "Firmengehirn" zu generieren.
+  - Integration eines KI-Einstellungsmenüs im Header des Prompt Vaults zur Maskierung, Änderung und zum Reset des Keys.
+- [TODO.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md), [CHANGELOG.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md): Aktualisierung der Projektübersichten.
+
+### Warum
+Damit auf dem Smartphone erstellte Prompts sofort auch auf dem PC (und umgekehrt) verfügbar sind. Die Nutzung der echten Gemini API sorgt für hochqualitative, echte Prompt-Optimierungen und macht das "Firmengehirn" (RAG) durch das Einlesen der echten Dokumente zu einem vollwertigen, dynamischen Assistenz-Bot im Daily Business.
+
+### Testen
+- **Supabase Sync:** Prompts erstellen/löschen und manuelle Synchronisation auslösen. Prüfen, ob die Zeilenanzahl im Sync-Manager und die Logs im Terminal korrekt aktualisiert werden.
+- **Gemini Optimierung:** Text eingeben und auf "Per lokaler/Gemini KI optimieren" klicken. Die Erfolgsmeldung zeigt das genutzte Modell (z.B. `gemini-3.1-flash-lite`) an.
+- **Gemini RAG:** Eine Frage im Knowledge Bot stellen (z.B. "Wer ist Robin?" oder "Welche Pakete bieten wir an?"). Die KI antwortet basierend auf dem echten masterLogbuch.txt und gibt dieses als Quelle an.
+
+### Offene Punkte
+- Keine. Die Fallback-Kette und Synchronisation arbeiten fehlerfrei.
+
 ## 2026-07-16 14:15 – Offline-Resilienz & Local-First Konzept (Phase v16)
 
 ### Ziel

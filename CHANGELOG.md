@@ -5,6 +5,13 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **Gemini API & Prompts Supabase Sync (Phase v17):**
+  - **🚀 Google Gemini API-Integration:** Native Unterstützung von Gemini-Modellen (`gemini-3.1-flash-lite`, `gemini-3-flash`, `gemini-2.5-flash-lite`, `gemini-2.5-flash`) über die offizielle Google AI Studio API.
+  - **⛓️ Intelligente Fallback-Kette:** Bei Erreichen von Ratenbegrenzungen (Rate Limits) weicht die App automatisch auf nachfolgende Modelle aus, testet danach das lokale Ollama und nutzt bei totalem Ausfall den statischen Smart-Fallback.
+  - **🧠 Gemini RAG Knowledge Bot:** Der RAG Knowledge Bot ("Frag das Firmengehirn") lädt nun alle echten Wissensdokumente (inkl. `masterLogbuch.txt`) als Systemkontext und liefert echte Antworten mit Quellenangaben.
+  - **⚙️ KI-Einstellungen-Panel:** Ein neues Einstellungs-Menü im Prompt-Vault-Header erlaubt das Einsehen, Ändern und Zurücksetzen des Gemini API-Schlüssels, geschützt im `localStorage` des jeweiligen Geräts.
+  - **🗃️ Supabase Prompts Synchronisation:** Neue DB-Tabelle `prompts` angelegt. Vollständige bi-direktionale Cloud-Synchronisation der Prompts beim App-Start sowie direkt bei Hinzufügen/Löschen von Einträgen, um Prompts geräteübergreifend (PC & Mobil) verfügbar zu machen.
+  - **🟢 Erweitertes Cloud Sync UI:** Integration der Prompts-Tabelle in den Supabase Cloud Sync Manager (Anzeige von "5 Tabellen aktiv" und Zeilenanzahl).
 - **Offline-Resilienz & Local-First Konzept (Phase v16):**
   - **🔌 Netzwerkstatus-Erkennung:** Dynamische Erkennung der Internetverbindung (`window.navigator.onLine`).
   - **💾 Local-First Fallback:** Alle Schreiboperationen (Prompts, Leads-Feedback, Onboarding-Protokolle, Notizen, etc.) speichern die Daten sofort im `localStorage`. fetch-Aufrufe an die Supabase Cloud werden offline automatisch übersprungen, um Timeouts und Hänger zu verhindern.

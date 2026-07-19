@@ -1040,8 +1040,13 @@ function App() {
     };
   });
   const [supabaseLogs, setSupabaseLogs] = useState([]);
-  const [supabaseLogsOpen, setSupabaseLogsOpen] = useState(false);
   const [ollamaLoading, setOllamaLoading] = useState(false);
+  const [showGeminiConfig, setShowGeminiConfig] = useState(false);
+  const [geminiApiKey, setGeminiApiKey] = useState(() => localStorage.getItem('f_gemini_api_key') || '');
+
+  useEffect(() => {
+    localStorage.setItem('f_gemini_api_key', geminiApiKey);
+  }, [geminiApiKey]);
 
   // Lead- & Pain-Point-Tracker States (Phase v13)
   const [leads, setLeads] = useState(() => {
@@ -1358,6 +1363,37 @@ function App() {
       }
     };
     fetchLeads();
+  }, [supabaseConfig, isOnline]);
+
+  // Fetch prompts from Supabase on mount
+  useEffect(() => {
+    const fetchPrompts = async () => {
+      if (!isOnline) return;
+      try {
+        const response = await fetch(`${supabaseConfig.url}/rest/v1/prompts?select=*`, {
+          headers: {
+            'apikey': supabaseConfig.anonKey,
+            'Authorization': `Bearer ${supabaseConfig.anonKey}`
+          }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          if (data) {
+            setPrompts(prevPrompts => {
+              const merged = new Map();
+              data.forEach(p => merged.set(p.id, p));
+              prevPrompts.forEach(p => merged.set(p.id, p));
+              const mergedList = Array.from(merged.values());
+              localStorage.setItem('f_prompts', JSON.stringify(mergedList));
+              return mergedList;
+            });
+          }
+        }
+      } catch (e) {
+        console.error("Fehler beim Laden der Prompts aus Supabase:", e);
+      }
+    };
+    fetchPrompts();
   }, [supabaseConfig, isOnline]);
 
   // Wochen-Review & Archiv Logik & Sync (Feature A3)
@@ -1766,8 +1802,7 @@ function App() {
     }
   };
 
-  // RAG Knowledge Bot Handlers (Feature 4 - v4)
-  const handleSendRagQuery = (customQuery = null) => {
+  const handleSendRagQuery = async (customQuery = null) => {
     const query = typeof customQuery === 'string' ? customQuery : ragInput;
     if (!query || !query.trim() || ragGenerating) return;
 
@@ -1776,6 +1811,50 @@ function App() {
     if (typeof customQuery !== 'string') setRagInput('');
     setRagGenerating(true);
 
+    // 1. Try Gemini Cloud RAG if key exists and online
+    if (geminiApiKey && geminiApiKey.trim() && isOnline) {
+      const docContext = docs.map(d => `=== DOKUMENT: ${d.title} ===\n${d.content}`).join('\n\n');
+      const systemInstruction = `Du bist der RAG Knowledge Bot ("Firmengehirn") für Robin's Consultingfirma "KMU Service Harz".
+Deine Aufgabe ist es, Fragen basierend auf den folgenden Unternehmensdokumenten präzise, professionell und wahrheitsgemäß zu beantworten.
+
+Hier sind die aktuellen Dokumente als Wissensdatenbank:
+${docContext}
+
+Wenn die Antwort in den Dokumenten steht, nenne am Ende der Antwort die genauen Quellen (z.B. Dokumentname wie masterLogbuch.txt).
+Wenn die Antwort NICHT in den Dokumenten steht, antworte freundlich, dass diese Information nicht in der lokalen Wissensdatenbank vorhanden ist, aber gib basierend auf deinem Allgemeinwissen eine kurze Hilfestellung.
+
+Hier ist die Frage des Nutzers:
+"${query}"`;
+
+      for (const model of GEMINI_MODELS) {
+        try {
+          console.log(`RAG Bot versucht Anfrage mit ${model}...`);
+          const text = await callGeminiAPI(model, systemInstruction, geminiApiKey);
+          if (text) {
+            const sources = [];
+            docs.forEach(d => {
+              if (text.toLowerCase().includes(d.title.toLowerCase()) || text.includes(d.title)) {
+                sources.push(d.title);
+              }
+            });
+            const aiMsg = { 
+              id: 'rag_a_' + Date.now(), 
+              sender: 'ai', 
+              persona: ragPersona, 
+              text: text.trim(), 
+              sources: sources.length > 0 ? sources : ['Dynamisches Firmengehirn'] 
+            };
+            setRagChat(prev => [...prev, aiMsg]);
+            setRagGenerating(false);
+            return;
+          }
+        } catch (e) {
+          console.warn(`Fehler bei RAG Gemini Modell ${model}:`, e);
+        }
+      }
+    }
+
+    // 2. Fallback static keyword-based RAG if offline or key failed
     setTimeout(() => {
       let responseText = '';
       let sources = [];
@@ -1897,7 +1976,6 @@ function App() {
     alert(`Erfolgreich! E-Rechnung über ${gross.toLocaleString('de-DE', { minimumFractionDigits: 2 })} € wurde an Lexoffice übertragen und in deiner Inbox verbucht.`);
   };
 
-  // Supabase Backend-Integration Handlers (Feature 6 - v4)
   const triggerSupabaseSync = () => {
     if (supabaseSyncStatus === 'syncing') return;
     setSupabaseSyncStatus('syncing');
@@ -1908,11 +1986,11 @@ function App() {
       const ms = String(now.getMilliseconds()).padStart(3, '0').slice(0, 2);
       return now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + '.' + ms;
     };
-
+ 
     setSupabaseLogs([
       `[${getTimestamp()}] 🔄 Verbindungsaufbau zu ${supabaseConfig.url}...`
     ]);
-
+ 
     if (!isOnline) {
       setTimeout(() => {
         setSupabaseLogs(prev => [
@@ -1924,22 +2002,23 @@ function App() {
       }, 1000);
       return;
     }
-
+ 
     setSupabaseLogs(prev => [
       ...prev,
       `[${getTimestamp()}] 📡 Authentifizierung mit anon-key erfolgreich.`
     ]);
-
+ 
     setTimeout(() => {
       setSupabaseLogs(prev => [
         ...prev,
         `[${getTimestamp()}] 📤 Analysiere lokale Tabellen (localStorage-Mirror)...`,
         `[${getTimestamp()}] 💾 Syncing 'contacts' (${contacts.length} Zeilen)...`,
+        `[${getTimestamp()}] 💾 Syncing 'prompts' (${prompts.length} Zeilen)...`,
         `[${getTimestamp()}] 💾 Syncing 'leads' (${leads.length} Zeilen)...`,
         `[${getTimestamp()}] 💾 Syncing 'tasks' (${tasks.length} Zeilen)...`
       ]);
     }, 800);
-
+ 
     // Real API fetch in background during sync
     const performLiveSync = async () => {
       try {
@@ -1958,9 +2037,42 @@ function App() {
       } catch (e) {
         console.error("Supabase sync fetch failed", e);
       }
+
+      try {
+        const response = await fetch(`${supabaseConfig.url}/rest/v1/prompts?select=*`, {
+          headers: {
+            'apikey': supabaseConfig.anonKey,
+            'Authorization': `Bearer ${supabaseConfig.anonKey}`
+          }
+        });
+        if (response.ok) {
+          const serverPrompts = await response.json();
+          const merged = new Map();
+          serverPrompts.forEach(p => merged.set(p.id, p));
+          prompts.forEach(p => merged.set(p.id, p));
+          const mergedList = Array.from(merged.values());
+          setPrompts(mergedList);
+          localStorage.setItem('f_prompts', JSON.stringify(mergedList));
+
+          if (mergedList.length > 0) {
+            await fetch(`${supabaseConfig.url}/rest/v1/prompts`, {
+              method: 'POST',
+              headers: {
+                'apikey': supabaseConfig.anonKey,
+                'Authorization': `Bearer ${supabaseConfig.anonKey}`,
+                'Content-Type': 'application/json',
+                'Prefer': 'resolution=merge-duplicates'
+              },
+              body: JSON.stringify(mergedList)
+            });
+          }
+        }
+      } catch (e) {
+        console.error("Supabase sync prompts failed", e);
+      }
     };
     performLiveSync();
-
+ 
     setTimeout(() => {
       setSupabaseLogs(prev => [
         ...prev,
@@ -1969,7 +2081,7 @@ function App() {
         `[${getTimestamp()}] 📥 Empfange Updates von Remote-Datenbank...`
       ]);
     }, 1600);
-
+ 
     setTimeout(() => {
       const nowStr = new Date().toLocaleString('de-DE');
       setSupabaseLastSync(nowStr);
@@ -3056,15 +3168,75 @@ function App() {
     alert('Prompt wurde in die Zwischenablage kopiert!');
   };
 
-  const handleAddPrompt = (e) => {
+  const handleAddPrompt = async (e) => {
     e.preventDefault();
     if (!newPrompt.title.trim() || !newPrompt.text.trim()) return;
     const promptToAdd = {
       id: 'pr_' + Date.now(),
-      ...newPrompt
+      title: newPrompt.title,
+      category: newPrompt.category,
+      text: newPrompt.text
     };
     setPrompts([promptToAdd, ...prompts]);
     setNewPrompt({ title: '', category: 'Sales', text: '' });
+
+    if (isOnline) {
+      try {
+        await fetch(`${supabaseConfig.url}/rest/v1/prompts`, {
+          method: 'POST',
+          headers: {
+            'apikey': supabaseConfig.anonKey,
+            'Authorization': `Bearer ${supabaseConfig.anonKey}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'resolution=merge-duplicates'
+          },
+          body: JSON.stringify(promptToAdd)
+        });
+      } catch (err) {
+        console.error("Fehler beim Speichern des Prompts in Supabase:", err);
+      }
+    }
+  };
+
+  const GEMINI_MODELS = [
+    'gemini-3.1-flash-lite',
+    'gemini-3-flash',
+    'gemini-2.5-flash-lite',
+    'gemini-2.5-flash'
+  ];
+
+  const callGeminiAPI = async (model, promptText, apiKey) => {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        contents: [
+          {
+            parts: [
+              {
+                text: promptText
+              }
+            ]
+          }
+        ],
+        generationConfig: {
+          temperature: 0.2
+        }
+      })
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Gemini API error (Status ${response.status})`);
+    }
+    
+    const data = await response.json();
+    if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0]) {
+      return data.candidates[0].content.parts[0].text;
+    }
+    throw new Error("Invalid response format from Gemini API");
   };
 
   const optimizePromptWithLocalAI = async () => {
@@ -3074,6 +3246,28 @@ function App() {
     }
     setOllamaLoading(true);
     
+    // 1. Try Gemini API chain
+    if (geminiApiKey && geminiApiKey.trim()) {
+      const promptToOptimize = `Optimiere diesen Prompt für ein LLM (mache ihn präzise, strukturiert und füge klare Anweisungen hinzu). Antworte NUR mit dem verbesserten Prompt-Text, ohne Einleitung oder Erklärung:\n\n${newPrompt.text}`;
+      
+      for (const model of GEMINI_MODELS) {
+        try {
+          console.log(`Versuche Prompt-Optimierung mit ${model}...`);
+          const responseText = await callGeminiAPI(model, promptToOptimize, geminiApiKey);
+          if (responseText) {
+            setNewPrompt(prev => ({ ...prev, text: responseText.trim() }));
+            alert(`🎉 Prompt erfolgreich per Gemini Cloud-KI (${model}) optimiert!`);
+            setOllamaLoading(false);
+            return;
+          }
+        } catch (e) {
+          console.warn(`Fehler bei Gemini Modell ${model}:`, e);
+          // Loop continues to next model
+        }
+      }
+    }
+    
+    // 2. Try Ollama (Local AI)
     try {
       const controller = new AbortController();
       const id = setTimeout(() => controller.abort(), 2000);
@@ -3103,6 +3297,7 @@ function App() {
       console.log("Ollama nicht erreichbar, nutze lokalen Fallback-Optimierer...", e);
     }
 
+    // 3. Static Pattern Fallback
     setTimeout(() => {
       const original = newPrompt.text;
       const optimized = `[SYSTEM PROMPT]
@@ -3119,13 +3314,27 @@ ${original}
 5. Weise auf potenzielle Hürden oder Fehlerquellen hin.`;
       
       setNewPrompt(prev => ({ ...prev, text: optimized }));
-      alert("⚡ Ollama Offline. Prompt wurde mit dem integrierten Smart-Fallback-Optimierer verbessert!");
+      alert("⚡ Gemini Cloud & Ollama Offline. Prompt wurde mit dem integrierten Smart-Fallback-Optimierer verbessert!");
       setOllamaLoading(false);
     }, 1000);
   };
 
-  const deletePrompt = (id) => {
+  const deletePrompt = async (id) => {
     setPrompts(prompts.filter(p => p.id !== id));
+
+    if (isOnline) {
+      try {
+        await fetch(`${supabaseConfig.url}/rest/v1/prompts?id=eq.${id}`, {
+          method: 'DELETE',
+          headers: {
+            'apikey': supabaseConfig.anonKey,
+            'Authorization': `Bearer ${supabaseConfig.anonKey}`
+          }
+        });
+      } catch (err) {
+        console.error("Fehler beim Löschen des Prompts aus Supabase:", err);
+      }
+    }
   };
 
   // Content Planer Operations
@@ -5823,9 +6032,58 @@ ${original}
             
             {/* Prompt Vault */}
             <div className="card">
-              <div className="card-header">
-                <h2 className="card-title"><BrainCircuit size={20} className="text-purple-500" /> Prompt Vault (KI-Tresor)</h2>
+              <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <h2 className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', margin: 0 }}>
+                  <BrainCircuit size={20} className="text-purple-500" /> Prompt Vault (KI-Tresor)
+                </h2>
+                <button
+                  type="button"
+                  onClick={() => setShowGeminiConfig(!showGeminiConfig)}
+                  className="btn btn-secondary"
+                  style={{ padding: '0.25rem 0.5rem', fontSize: '0.65rem', height: '22px' }}
+                >
+                  {showGeminiConfig ? 'Schließen' : '⚙ KI-Einstellungen'}
+                </button>
               </div>
+
+              {/* Gemini Settings Form */}
+              {showGeminiConfig && (
+                <div style={{ background: 'rgba(139, 92, 246, 0.05)', border: '1px dashed var(--accent-purple)', borderRadius: '0.5rem', padding: '0.75rem', marginBottom: '1rem', marginTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--accent-purple)' }}>Gemini API-Schlüssel & Modell-Optionen</div>
+                  <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                    <input
+                      type="password"
+                      placeholder="Gemini API Key..."
+                      className="input-field"
+                      style={{ height: '30px', fontSize: '0.75rem', flex: 1 }}
+                      value={geminiApiKey}
+                      onChange={(e) => setGeminiApiKey(e.target.value)}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setGeminiApiKey('');
+                        alert('API-Schlüssel gelöscht! Bitte gib deinen eigenen Schlüssel ein.');
+                      }}
+                      className="btn btn-secondary"
+                      style={{ height: '30px', fontSize: '0.7rem', padding: '0 0.5rem' }}
+                    >
+                      Reset Key
+                    </button>
+                  </div>
+                  <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>
+                    Dein API-Schlüssel wird lokal im Browser gesichert und nicht im GitHub-Quellcode geteilt.
+                  </span>
+                  <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap', marginTop: '0.25rem' }}>
+                    <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontWeight: 'bold' }}>Fallbacks:</span>
+                    {['gemini-3.1-flash-lite', 'gemini-3-flash', 'gemini-2.5-flash-lite', 'gemini-2.5-flash', 'Ollama (Lokal)', 'Fallback-Template'].map((m, i) => (
+                      <span key={i} style={{ fontSize: '0.6rem', padding: '0.1rem 0.35rem', borderRadius: '0.25rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'var(--text-secondary)' }}>
+                        {i + 1}. {m}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
               
               {/* Prompt hinzufügen */}
               <form onSubmit={handleAddPrompt} style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', marginBottom: '1rem' }}>
@@ -6670,7 +6928,7 @@ ${original}
                     
                     <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Tabellen-Status:</div>
                     <div style={{ fontSize: '0.75rem', color: 'var(--accent-cyan)', fontWeight: 600 }}>
-                      4 Tabellen aktiv
+                      5 Tabellen aktiv
                     </div>
                     
                     <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Latenz:</div>
@@ -6682,6 +6940,7 @@ ${original}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
                       {[
                         { name: 'contacts (CRM-Kunden)', count: contacts.length },
+                        { name: 'prompts (KI-Tresor)', count: prompts.length },
                         { name: 'tasks (To-Dos)', count: tasks.length },
                         { name: 'inbox (Posteingang)', count: inbox.length },
                         { name: 'client_tickets (Support)', count: clientTickets.length }

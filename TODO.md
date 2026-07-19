@@ -1,6 +1,7 @@
 # TODO - Founder OS
 
 ## Wichtig
+- [x] **Gemini API & Prompts Supabase Sync (Phase v17):** Integration von Google Gemini Cloud API Modellen (`gemini-3.1-flash-lite`, `gemini-3-flash`, etc.) mit Ratenbegrenzungs-Fallback-Kette. RAG Knowledge Bot ("Frag das Firmengehirn") mit echten Dokumenten (inkl. `masterLogbuch.txt`) als Gemini-Systemkontext verknüpft. Neue DB-Tabelle `prompts` auf Supabase angelegt und voll synchronisiert für PC- & Smartphone-Nutzung (bi-direktionaler Sync). Sichere UI-Key-Konfiguration über `localStorage`.
 - [x] **Offline-Resilienz & Local-First (Phase v16):** Kontinuierliche Nutzbarkeit aller App-Funktionen ohne Internetverbindung. Fallback auf lokalen Speicher (localStorage), Deaktivierung von blockierenden fetch-Aufrufen bei Verbindungsverlust, dynamische Online-/Offline-Statustoken in UIs, Zusammenführung von Kaltakquise-Leads und CRM-Kunden im Onboarding und Hinzufügung eines statischen `INITIAL_LEADS`-Fallbacks für den Offline-Erststart.
 - [x] **Kunden-Onboarding-Playbook Modul & Erweiterungen (Phase v15):** Volle Integration der Playbook-Fragen, Wizard-Oberfläche, Supabase-Sync über CRM-Notes-Kommentare, Docs-Export sowie Live-Potenzialrechner (Umsatz- & Stundenersparnis), Priorisierungs-Pills (Low/Medium/High), Sprache-zu-Text (Web Speech API) und automatischer PDF-Angebot-Generator.
 - [x] **Glassmorphic Sidebar Navigation (Phase v15):** Umstellung der App-Navigation auf einklappbare Desktop-Seitenleiste und mobilen Drawer.
