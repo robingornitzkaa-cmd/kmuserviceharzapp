@@ -1,6 +1,31 @@
 # TODO - Founder OS
 
 ## Wichtig
+- [ ] **Qualitäts- & Sicherheitsroadmap (Fahrplan aus codebase_review_report.md):**
+  - [ ] **Phase 1: Sofortmaßnahmen (Härtung & Secrets):**
+    - [ ] Supabase-Secrets aus Quellcode in `.env` auslagern (Task 1.1)
+    - [ ] Gemini API-Key-Übertragung auf HTTP-Headers `x-goog-api-key` umstellen (Task 1.2)
+    - [ ] Row-Level Security (RLS) in Supabase aktivieren (Task 1.3)
+    - [ ] `android:allowBackup="false"` in AndroidManifest festlegen (Task 1.4)
+    - [ ] R8 Code-Minification in `build.gradle` aktivieren (Task 1.5)
+    - [ ] Statische Daten (`MASTER_LOGBUCH_CONTENT`) aus `App.jsx` in MD-Datei auslagern (Task 1.6)
+    - [ ] Eingabe-Validierung für Webhooks im WhatsApp-Simulator hinzufügen (Task 1.7)
+    - [ ] npm audit durchführen und Pakete aktualisieren (Task 1.8)
+    - [ ] Benutzerauthentifizierung (Login-Schranke) für Vercel-Zugang einrichten (Task 1.9)
+  - [ ] **Phase 2: Strukturierung & Performance (Modularisierung):**
+    - [ ] `App.jsx` in Unterkomponenten in `src/components/` aufteilen (Task 2.1)
+    - [ ] Globales State-Management (z. B. Zustand) zur Vermeidung globaler Re-renders einführen (Task 2.2)
+    - [ ] API-Service-Layer einführen (Task 2.3)
+    - [ ] Unit-Tests in `App.test.jsx` modularisieren (Task 2.4)
+    - [ ] CRM-Rendering-Performance optimieren (Task 2.5)
+    - [ ] React Error Boundaries zur Absturzsicherung implementieren (Task 2.6)
+    - [ ] Ollama API-Verbindung Mixed-Content-sicher machen (Task 2.7)
+  - [ ] **Phase 3: Langzeithärtung (MFA, Verschlüsselung, Monitoring):**
+    - [ ] Erweiterte Multi-Faktor-Authentifizierung (MFA) für Administrator-Schnittstellen (Task 3.1)
+    - [ ] Verschlüsselte lokale Speicherlösung (Secure Storage / In-Memory PBKDF2) einrichten (Task 3.2)
+    - [ ] Biometrischen App-Lock für Android hinzufügen (Task 3.3)
+    - [ ] Content Security Policy (CSP) in `index.html` einbetten (Task 3.4)
+    - [ ] API Gateway Proxy für API-Schlüssel etablieren (Task 3.6)
 - [x] **Gemini API & Prompts Supabase Sync (Phase v17):** Integration von Google Gemini Cloud API Modellen (`gemini-3.1-flash-lite`, `gemini-3-flash`, etc.) mit Ratenbegrenzungs-Fallback-Kette. RAG Knowledge Bot ("Frag das Firmengehirn") mit echten Dokumenten (inkl. `masterLogbuch.txt`) als Gemini-Systemkontext verknüpft. Neue DB-Tabelle `prompts` auf Supabase angelegt und voll synchronisiert für PC- & Smartphone-Nutzung (bi-direktionaler Sync). Sichere UI-Key-Konfiguration über `localStorage`.
 - [x] **Offline-Resilienz & Local-First (Phase v16):** Kontinuierliche Nutzbarkeit aller App-Funktionen ohne Internetverbindung. Fallback auf lokalen Speicher (localStorage), Deaktivierung von blockierenden fetch-Aufrufen bei Verbindungsverlust, dynamische Online-/Offline-Statustoken in UIs, Zusammenführung von Kaltakquise-Leads und CRM-Kunden im Onboarding und Hinzufügung eines statischen `INITIAL_LEADS`-Fallbacks für den Offline-Erststart.
 - [x] **Kunden-Onboarding-Playbook Modul & Erweiterungen (Phase v15):** Volle Integration der Playbook-Fragen, Wizard-Oberfläche, Supabase-Sync über CRM-Notes-Kommentare, Docs-Export sowie Live-Potenzialrechner (Umsatz- & Stundenersparnis), Priorisierungs-Pills (Low/Medium/High), Sprache-zu-Text (Web Speech API) und automatischer PDF-Angebot-Generator.

@@ -5,6 +5,9 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **Qualitäts- und Sicherheits-Review:**
+  - **🔒 Codebase Audit:** Umfassendes Codequalität- und Sicherheitsaudit der gesamten Anwendung basierend auf den OWASP Top 10.
+  - **📋 Audit-Bericht erstellt:** Ablage des Berichts unter `codebase_review_report.md` mit detaillierter Schwachstellenanalyse, God-Component-Refactoring-Plänen und einem 3-Phasen-Entwickler-Fahrplan.
 - **Gemini API & Prompts Supabase Sync (Phase v17):**
   - **🚀 Google Gemini API-Integration:** Native Unterstützung von Gemini-Modellen (`gemini-3.1-flash-lite`, `gemini-3-flash`, `gemini-2.5-flash-lite`, `gemini-2.5-flash`) über die offizielle Google AI Studio API.
   - **⛓️ Intelligente Fallback-Kette:** Bei Erreichen von Ratenbegrenzungen (Rate Limits) weicht die App automatisch auf nachfolgende Modelle aus, testet danach das lokale Ollama und nutzt bei totalem Ausfall den statischen Smart-Fallback.

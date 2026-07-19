@@ -1035,8 +1035,8 @@ function App() {
   const [supabaseLastSync, setSupabaseLastSync] = useState(() => localStorage.getItem('f_sb_last_sync') || 'Noch nie');
   const [supabaseConfig, setSupabaseConfig] = useState(() => {
     return JSON.parse(localStorage.getItem('f_sb_config')) || {
-      url: 'https://ypqlssyrlykjzjnoyjoa.supabase.co',
-      anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwcWxzc3lybHlranpqbm95am9hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzMTc5OTYsImV4cCI6MjA5Nzg5Mzk5Nn0.l1gbcQkrgjGJyTsRp3cjCqYIVrme9M48sbqUILhoAes'
+      url: import.meta.env.VITE_SUPABASE_URL || 'https://ypqlssyrlykjzjnoyjoa.supabase.co',
+      anonKey: import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwcWxzc3lybHlranpqbm95am9hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzMTc5OTYsImV4cCI6MjA5Nzg5Mzk5Nn0.l1gbcQkrgjGJyTsRp3cjCqYIVrme9M48sbqUILhoAes'
     };
   });
   const [supabaseLogs, setSupabaseLogs] = useState([]);
@@ -3206,11 +3206,12 @@ Hier ist die Frage des Nutzers:
   ];
 
   const callGeminiAPI = async (model, promptText, apiKey) => {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
     const response = await fetch(url, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'x-goog-api-key': apiKey
       },
       body: JSON.stringify({
         contents: [
@@ -3747,6 +3748,165 @@ ${original}
     return sum + (p.trackedHours || 0) + elapsed;
   }, 0);
   const avgHourlyRate = totalActiveHours > 0 ? Math.round(activeUmsatz / totalActiveHours) : 0;
+
+  const hashPassword = async (password) => {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    return hashHex;
+  };
+
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return sessionStorage.getItem('f_app_authenticated') === 'true';
+  });
+  const [loginPassword, setLoginPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
+
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+    setIsAuthenticating(true);
+    setLoginError('');
+    
+    try {
+      const hash = await hashPassword(loginPassword);
+      const expectedHash = import.meta.env.VITE_APP_PASSWORD_HASH;
+      
+      // Fallback: If no password hash is set (local dev), bypass authentication
+      if (!expectedHash || expectedHash.trim() === '') {
+        setIsAuthenticated(true);
+        sessionStorage.setItem('f_app_authenticated', 'true');
+        return;
+      }
+      
+      if (hash === expectedHash) {
+        setIsAuthenticated(true);
+        sessionStorage.setItem('f_app_authenticated', 'true');
+      } else {
+        setLoginError('Ungültiges Passwort. Bitte erneut versuchen.');
+      }
+    } catch (err) {
+      console.error(err);
+      setLoginError('Ein kryptografischer Fehler ist aufgetreten.');
+    } finally {
+      setIsAuthenticating(false);
+    }
+  };
+
+  if (!isAuthenticated && import.meta.env.VITE_APP_PASSWORD_HASH && import.meta.env.VITE_APP_PASSWORD_HASH.trim() !== '') {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'radial-gradient(circle at top left, #1e1e30, #0c0c14)',
+        fontFamily: 'Outfit, Inter, system-ui, sans-serif',
+        color: '#f8fafc',
+        padding: '1rem'
+      }}>
+        <div style={{
+          background: 'rgba(255, 255, 255, 0.03)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          border: '1px solid rgba(255, 255, 255, 0.05)',
+          borderRadius: '24px',
+          padding: '2.5rem',
+          width: '100%',
+          maxWidth: '420px',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+          textAlign: 'center'
+        }}>
+          {/* Logo */}
+          <div style={{
+            width: '60px',
+            height: '60px',
+            borderRadius: '16px',
+            background: 'linear-gradient(135deg, #06b6d4, #3b82f6)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            margin: '0 auto 1.5rem',
+            boxShadow: '0 0 20px rgba(6, 182, 212, 0.3)'
+          }}>
+            <BrainCircuit size={32} color="#ffffff" />
+          </div>
+          
+          <h2 style={{ fontSize: '1.75rem', fontWeight: '700', marginBottom: '0.5rem', letterSpacing: '-0.025em' }}>
+            Founder OS
+          </h2>
+          <p style={{ fontSize: '0.9rem', color: '#94a3b8', marginBottom: '2rem' }}>
+            KMU Service Harz • Command Center
+          </p>
+          
+          <form onSubmit={handleLoginSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div style={{ textAlign: 'left' }}>
+              <label style={{ fontSize: '0.8rem', fontWeight: '500', color: '#94a3b8', display: 'block', marginBottom: '0.5rem' }}>
+                Passwort eingeben
+              </label>
+              <input
+                type="password"
+                className="input-field"
+                style={{
+                  width: '100%',
+                  padding: '0.75rem 1rem',
+                  borderRadius: '12px',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  background: 'rgba(0, 0, 0, 0.2)',
+                  color: '#ffffff',
+                  fontSize: '1rem',
+                  outline: 'none',
+                  boxSizing: 'border-box'
+                }}
+                placeholder="••••••••"
+                value={loginPassword}
+                onChange={(e) => setLoginPassword(e.target.value)}
+                disabled={isAuthenticating}
+                required
+              />
+            </div>
+            
+            {loginError && (
+              <div style={{
+                color: '#ef4444',
+                fontSize: '0.85rem',
+                textAlign: 'left',
+                background: 'rgba(239, 68, 68, 0.1)',
+                padding: '0.75rem',
+                borderRadius: '8px',
+                border: '1px solid rgba(239, 68, 68, 0.2)'
+              }}>
+                ⚠️ {loginError}
+              </div>
+            )}
+            
+            <button
+              type="submit"
+              className="btn btn-primary"
+              style={{
+                width: '100%',
+                padding: '0.75rem',
+                borderRadius: '12px',
+                fontSize: '1rem',
+                fontWeight: '600',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.5rem',
+                cursor: 'pointer',
+                marginTop: '0.5rem'
+              }}
+              disabled={isAuthenticating}
+            >
+              {isAuthenticating ? 'Prüfe...' : 'Anmelden'} <ChevronRight size={18} />
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="app-layout">
