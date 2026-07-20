@@ -5,7 +5,19 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
-- **Phase 1 Live-App Security Hardening (Vercel):**
+- **🚀 Master Command Center & STATUS.md Dashboard:**
+  - **STATUS.md:** Erstellung einer zentralen Projekt-Statusdatei im Root-Verzeichnis (`STATUS.md`).
+  - **Interaktives To-Do Board:** Dynamische Aufgabenverwaltung in `DocsHub.jsx` mit Häkchen-Status, Hinzufügen/Löschen von Aufgaben und automatischer `STATUS.md` Aktualisierung.
+  - **NotebookLM 1-Klick Export:** Neue Buttons für NotebookLM Clipboard Copy, Markdown-Export und Supabase RAG Knowledge Sync.
+- **📱 Telefonnummern-Anzeige im Lead-Tracker:**
+  - Transparente Anzeige aller Telefonnummern direkt in den Lead-Karten sowie im Anruf-Dashboard (`📞 Tel: 039452 ...` & `📞 Anrufen (...)`).
+
+### Fixed
+- **🌐 Supabase Leads Fetch & Fallback Fix:**
+  - Hinzufügen von resilienten Key- & URL-Fallbacks in `src/services/supabase.js` für reibungsloses Nachladen aller 90 Kaltakquise-Leads.
+  - Einbau eines direkten `🔄 90 Cloud-Leads laden` Buttons im Lead-Tracker Header.
+
+### Added (Previous)
   - **🔐 Glassmorphic Password Wall:** WebCrypto SHA-256 Passwort-Schutzwall in `App.jsx` zum Schutz aller Kundendaten und internen Werkzeuge im Web-Deployment.
   - **🛡️ Secure API Key Header:** Umstellung der Gemini API-Kommunikation von Query-Parametern auf den sicheren HTTP-Header `x-goog-api-key`.
   - **🔑 Env Var Extraction:** Auslagerung von Supabase-URL und Anon-Key in `import.meta.env` (`VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`).

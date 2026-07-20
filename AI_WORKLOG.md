@@ -1,5 +1,27 @@
 # AI Worklog - Founder OS
 
+## 2026-07-20 18:44 – Master Command Center (STATUS.md) & Supabase Leads Fallback (COMPLETED)
+
+### Ziel
+Erstellung einer zentralen `STATUS.md` Single Source of Truth im Projekt sowie Integration eines interaktiven Command Center Dashboards in der App zur Synchronisation von Aufgaben und Projektfortschritt mit Google NotebookLM und Gemini. Zusätzlich Behebung von Supabase Key- / URL-Fallbacks für den reibungslosen Abruf aller 90 Kaltakquise-Leads.
+
+### Erstellt
+- [STATUS.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/STATUS.md): Zentrale Command-Center Markdown-Datei im Projekt-Hauptverzeichnis.
+
+### Geändert
+- [src/services/supabase.js](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/services/supabase.js): Hinzufügen von getUrl und getKey Fallback-Hilfsfunktionen zur Vermeidung von undefined-Keys bei alten localStorage-Einträgen.
+- [src/components/DocsHub.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/components/DocsHub.jsx): Hinzufügen des interaktiven Master Command Center Dashboards mit To-Do Verwaltung und NotebookLM 1-Klick-Export.
+- [src/App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): Anzeige der Telefonnummern in der Lead-Liste und im Anruf-Dashboard sowie Einfügen des '🔄 90 Cloud-Leads laden' Buttons.
+
+### Warum
+Ermöglicht eine nahtlose, interaktive Aufgabenverwaltung direkt in der App, die sich synchron mit NotebookLM, Google Drive und Gemini abgleicht, sowie Anzeige aller 90 Supabase Leads und Telefonnummern.
+
+### Testen
+- `npm run test` ausgeführt. Alle 7 Vitest-Integrationstests laufen zu 100% grün durch.
+- Interaktiver Test der To-Do Hinzufügung/Löschung und des NotebookLM Copy-Buttons.
+
+---
+
 ## 2026-07-20 11:10 – Phase 1 Security Hardening & Phase 2 Code Modularization (COMPLETED)
 
 ### Ziel
