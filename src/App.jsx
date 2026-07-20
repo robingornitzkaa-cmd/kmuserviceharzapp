@@ -1381,50 +1381,23 @@ Hier ist die Frage des Nutzers:
     // Real API fetch in background during sync
     const performLiveSync = async () => {
       try {
-        const response = await fetch(`${supabaseConfig.url}/rest/v1/leads?select=*&order=priority.asc,company.asc`, {
-          headers: {
-            'apikey': supabaseConfig.anonKey,
-            'Authorization': `Bearer ${supabaseConfig.anonKey}`
-          }
-        });
-        if (response.ok) {
-          const data = await response.json();
-          if (data && data.length > 0) {
-            setLeads(data);
-          }
+        const data = await fetchLeadsFromSupabase(supabaseConfig);
+        if (data && data.length > 0) {
+          setLeads(data);
         }
       } catch (e) {
         console.error("Supabase sync fetch failed", e);
       }
 
       try {
-        const response = await fetch(`${supabaseConfig.url}/rest/v1/prompts?select=*`, {
-          headers: {
-            'apikey': supabaseConfig.anonKey,
-            'Authorization': `Bearer ${supabaseConfig.anonKey}`
-          }
-        });
-        if (response.ok) {
-          const serverPrompts = await response.json();
+        const serverPrompts = await fetchPromptsFromSupabase(supabaseConfig);
+        if (serverPrompts) {
           const merged = new Map();
           serverPrompts.forEach(p => merged.set(p.id, p));
           prompts.forEach(p => merged.set(p.id, p));
           const mergedList = Array.from(merged.values());
           setPrompts(mergedList);
           localStorage.setItem('f_prompts', JSON.stringify(mergedList));
-
-          if (mergedList.length > 0) {
-            await fetch(`${supabaseConfig.url}/rest/v1/prompts`, {
-              method: 'POST',
-              headers: {
-                'apikey': supabaseConfig.anonKey,
-                'Authorization': `Bearer ${supabaseConfig.anonKey}`,
-                'Content-Type': 'application/json',
-                'Prefer': 'resolution=merge-duplicates'
-              },
-              body: JSON.stringify(mergedList)
-            });
-          }
         }
       } catch (e) {
         console.error("Supabase sync prompts failed", e);
