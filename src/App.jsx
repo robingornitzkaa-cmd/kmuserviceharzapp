@@ -3748,73 +3748,74 @@ Hier ist die Frage des Nutzers:
             {/* Linke Spalte: Leads Liste */}
             {(!isMobile || !activeLeadId) && (
               <div className="card" style={{ display: 'flex', flexDirection: 'column', height: 'fit-content', maxHeight: '80vh' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
-                  <h2 className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0 }}>
-                    <PhoneCall size={20} className="text-purple-500" />
-                    Kaltakquise-Kontakte ({leads.length})
-                  </h2>
-                  <button
-                    type="button"
-                    onClick={async () => {
-                      try {
-                        const data = await fetchLeadsFromSupabase(supabaseConfig);
-                        if (data && data.length > 0) {
-                          setLeads(data);
-                          localStorage.setItem('f_leads', JSON.stringify(data));
-                          alert(`✅ Erfolgreich ${data.length} Kaltakquise-Leads direkt aus Supabase geladen!`);
-                        } else {
-                          alert('Keine Leads in Supabase gefunden.');
+                <div className="card-header" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', alignItems: 'stretch' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
+                    <h2 className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0 }}>
+                      <PhoneCall size={20} className="text-purple-500" />
+                      Kaltakquise-Kontakte ({leads.length})
+                    </h2>
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        try {
+                          const data = await fetchLeadsFromSupabase(supabaseConfig);
+                          if (data && data.length > 0) {
+                            setLeads(data);
+                            localStorage.setItem('f_leads', JSON.stringify(data));
+                            alert(`✅ Erfolgreich ${data.length} Kaltakquise-Leads direkt aus Supabase geladen!`);
+                          } else {
+                            alert('Keine Leads in Supabase gefunden.');
+                          }
+                        } catch (err) {
+                          alert('Fehler beim Laden der Supabase Leads: ' + err.message);
                         }
-                      } catch (err) {
-                        alert('Fehler beim Laden der Supabase Leads: ' + err.message);
-                      }
-                    }}
-                    className="btn btn-secondary"
-                    style={{ padding: '0.2rem 0.5rem', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.25rem', height: '28px' }}
-                  >
-                    <RefreshCw size={14} /> 🔄 90 Cloud-Leads laden
-                  </button>
-                </div>
-                
-                {/* Suche */}
-                <input 
-                  type="text" 
-                  className="input-field" 
-                  placeholder="Firma oder Branche suchen..."
-                  value={leadsSearch}
-                  onChange={(e) => setLeadsSearch(e.target.value)}
-                  style={{ width: '100%' }}
-                />
-
-                {/* Filter */}
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem' }}>
-                  <select 
+                      }}
+                      className="btn btn-secondary"
+                      style={{ padding: '0.2rem 0.5rem', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.25rem', height: '28px' }}
+                    >
+                      <RefreshCw size={14} /> 🔄 90 Cloud-Leads laden
+                    </button>
+                  </div>
+                  
+                  {/* Suche */}
+                  <input 
+                    type="text" 
                     className="input-field" 
-                    value={leadsPrioFilter} 
-                    onChange={(e) => setLeadsPrioFilter(e.target.value)}
-                    style={{ fontSize: '0.7rem', height: 'auto', padding: '0.2rem 0.4rem', flex: 1 }}
-                  >
-                    <option value="all">Alle Prioritäten</option>
-                    <option value="A">Prio A</option>
-                    <option value="B">Prio B</option>
-                    <option value="C">Prio C</option>
-                  </select>
+                    placeholder="Firma oder Branche suchen..."
+                    value={leadsSearch}
+                    onChange={(e) => setLeadsSearch(e.target.value)}
+                    style={{ width: '100%' }}
+                  />
 
-                  <select 
-                    className="input-field" 
-                    value={leadsStatusFilter} 
-                    onChange={(e) => setLeadsStatusFilter(e.target.value)}
-                    style={{ fontSize: '0.7rem', height: 'auto', padding: '0.2rem 0.4rem', flex: 1 }}
-                  >
-                    <option value="all">Alle Status</option>
-                    <option value="nicht kontaktiert">Nicht kontaktiert</option>
-                    <option value="in Arbeit">In Arbeit</option>
-                    <option value="Pain Points erfasst">Pain Points erfasst</option>
-                    <option value="Kein Interesse">Kein Interesse</option>
-                    <option value="Wiedervorlage">Wiedervorlage</option>
-                  </select>
+                  {/* Filter */}
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem' }}>
+                    <select 
+                      className="input-field" 
+                      value={leadsPrioFilter} 
+                      onChange={(e) => setLeadsPrioFilter(e.target.value)}
+                      style={{ fontSize: '0.7rem', height: 'auto', padding: '0.2rem 0.4rem', flex: 1 }}
+                    >
+                      <option value="all">Alle Prioritäten</option>
+                      <option value="A">Prio A</option>
+                      <option value="B">Prio B</option>
+                      <option value="C">Prio C</option>
+                    </select>
+
+                    <select 
+                      className="input-field" 
+                      value={leadsStatusFilter} 
+                      onChange={(e) => setLeadsStatusFilter(e.target.value)}
+                      style={{ fontSize: '0.7rem', height: 'auto', padding: '0.2rem 0.4rem', flex: 1 }}
+                    >
+                      <option value="all">Alle Status</option>
+                      <option value="nicht kontaktiert">Nicht kontaktiert</option>
+                      <option value="in Arbeit">In Arbeit</option>
+                      <option value="Pain Points erfasst">Pain Points erfasst</option>
+                      <option value="Kein Interesse">Kein Interesse</option>
+                      <option value="Wiedervorlage">Wiedervorlage</option>
+                    </select>
+                  </div>
                 </div>
-              </div>
 
               {/* Leads Liste */}
               <div style={{ overflowY: 'auto', flex: 1, padding: '0 0.5rem', maxHeight: '55vh' }}>
