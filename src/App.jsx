@@ -724,6 +724,7 @@ function App() {
         const data = await fetchLeadsFromSupabase(supabaseConfig);
         if (data && data.length > 0) {
           setLeads(data);
+          localStorage.setItem('f_leads', JSON.stringify(data));
         }
       } catch (e) {
         console.error("Fehler beim Laden der Leads aus Supabase:", e);
@@ -3747,11 +3748,33 @@ Hier ist die Frage des Nutzers:
             {/* Linke Spalte: Leads Liste */}
             {(!isMobile || !activeLeadId) && (
               <div className="card" style={{ display: 'flex', flexDirection: 'column', height: 'fit-content', maxHeight: '80vh' }}>
-              <div className="card-header" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', alignItems: 'stretch' }}>
-                <h2 className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0 }}>
-                  <PhoneCall size={20} className="text-purple-500" />
-                  Kaltakquise-Kontakte ({leads.length})
-                </h2>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
+                  <h2 className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0 }}>
+                    <PhoneCall size={20} className="text-purple-500" />
+                    Kaltakquise-Kontakte ({leads.length})
+                  </h2>
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      try {
+                        const data = await fetchLeadsFromSupabase(supabaseConfig);
+                        if (data && data.length > 0) {
+                          setLeads(data);
+                          localStorage.setItem('f_leads', JSON.stringify(data));
+                          alert(`✅ Erfolgreich ${data.length} Kaltakquise-Leads direkt aus Supabase geladen!`);
+                        } else {
+                          alert('Keine Leads in Supabase gefunden.');
+                        }
+                      } catch (err) {
+                        alert('Fehler beim Laden der Supabase Leads: ' + err.message);
+                      }
+                    }}
+                    className="btn btn-secondary"
+                    style={{ padding: '0.2rem 0.5rem', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.25rem', height: '28px' }}
+                  >
+                    <RefreshCw size={14} /> 🔄 90 Cloud-Leads laden
+                  </button>
+                </div>
                 
                 {/* Suche */}
                 <input 
