@@ -3758,7 +3758,14 @@ Hier ist die Frage des Nutzers:
                       type="button"
                       onClick={async () => {
                         try {
-                          const data = await fetchLeadsFromSupabase(supabaseConfig);
+                          // Clear any potentially corrupted local sb config
+                          localStorage.removeItem('f_sb_config');
+                          const cleanConfig = {
+                            url: 'https://ypqlssyrlykjzjnoyjoa.supabase.co',
+                            anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwcWxzc3lybHlranpqbm95am9hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzMTc5OTYsImV4cCI6MjA5Nzg5Mzk5Nn0.l1gbcQkrgjGJyTsRp3cjCqYIVrme9M48sbqUILhoAes'
+                          };
+                          setSupabaseConfig(cleanConfig);
+                          const data = await fetchLeadsFromSupabase(cleanConfig);
                           if (data && data.length > 0) {
                             setLeads(data);
                             localStorage.setItem('f_leads', JSON.stringify(data));

@@ -1,12 +1,25 @@
-const DEFAULT_URL = import.meta.env.VITE_SUPABASE_URL || 'https://ypqlssyrlykjzjnoyjoa.supabase.co';
-const DEFAULT_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwcWxzc3lybHlranpqbm95am9hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzMTc5OTYsImV4cCI6MjA5Nzg5Mzk5Nn0.l1gbcQkrgjGJyTsRp3cjCqYIVrme9M48sbqUILhoAes';
+const DEFAULT_URL = 'https://ypqlssyrlykjzjnoyjoa.supabase.co';
+const DEFAULT_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwcWxzc3lybHlranpqbm95am9hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzMTc5OTYsImV4cCI6MjA5Nzg5Mzk5Nn0.l1gbcQkrgjGJyTsRp3cjCqYIVrme9M48sbqUILhoAes';
 
-const getUrl = (config) => (config && config.url) ? config.url : DEFAULT_URL;
-const getKey = (config) => (config && (config.anonKey || config.key)) ? (config.anonKey || config.key) : DEFAULT_KEY;
+const getUrl = (config) => {
+  if (config && typeof config.url === 'string' && config.url.includes('supabase.co')) {
+    return config.url;
+  }
+  return DEFAULT_URL;
+};
+
+const getKey = (config) => {
+  const k = config && (config.anonKey || config.key);
+  if (k && typeof k === 'string' && k.length > 20) {
+    return k;
+  }
+  return DEFAULT_KEY;
+};
 
 export const fetchLeadsFromSupabase = async (supabaseConfig) => {
   const url = getUrl(supabaseConfig);
   const key = getKey(supabaseConfig);
+  
   const response = await fetch(`${url}/rest/v1/leads?select=*&order=priority.asc,company.asc`, {
     headers: {
       'apikey': key,
@@ -16,7 +29,7 @@ export const fetchLeadsFromSupabase = async (supabaseConfig) => {
   if (response.ok) {
     return await response.json();
   }
-  throw new Error(`Supabase leads fetch error: ${response.statusText}`);
+  throw new Error(`Supabase leads fetch error: ${response.status} ${response.statusText}`);
 };
 
 export const saveLeadToSupabase = async (leadToSave, supabaseConfig) => {
@@ -47,7 +60,7 @@ export const fetchPromptsFromSupabase = async (supabaseConfig) => {
   if (response.ok) {
     return await response.json();
   }
-  throw new Error(`Supabase prompts fetch error: ${response.statusText}`);
+  throw new Error(`Supabase prompts fetch error: ${response.status} ${response.statusText}`);
 };
 
 export const savePromptToSupabase = async (promptToAdd, supabaseConfig) => {
