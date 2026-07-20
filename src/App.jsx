@@ -3863,7 +3863,7 @@ Hier ist die Frage des Nutzers:
                           {showcaseMode ? 'Muster-Firma GmbH' : lead.company}
                         </h4>
                         <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)' }}>
-                          {lead.industry} • {lead.city}
+                          {lead.industry} • {lead.city} {lead.phone ? ` • 📞 ${mask(lead.phone, 'phone')}` : ''}
                         </div>
                       </div>
                     );
@@ -3897,18 +3897,23 @@ Hier ist die Frage des Nutzers:
                         <h2 style={{ fontSize: '1.2rem', fontWeight: 700, margin: 0, color: 'white' }}>
                           {showcaseMode ? 'Muster-Firma GmbH' : activeLead.company}
                         </h2>
-                        <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.2rem' }}>
                           {activeLead.industry} • {activeLead.street}, {activeLead.city}
-                        </span>
+                        </div>
+                        {activeLead.phone && (
+                          <div style={{ fontSize: '0.85rem', color: 'var(--accent-purple)', fontWeight: 700, marginTop: '0.35rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                            📞 Tel: {mask(activeLead.phone, 'phone')}
+                          </div>
+                        )}
                       </div>
                       
                       {activeLead.phone && (
                         <a 
                           href={`tel:${activeLead.phone}`} 
                           className="btn btn-primary"
-                          style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', textDecoration: 'none' }}
+                          style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', textDecoration: 'none', background: 'linear-gradient(135deg, var(--accent-purple), var(--accent-indigo))' }}
                         >
-                          <Phone size={14} /> Jetzt anrufen
+                          <Phone size={14} /> Anrufen ({mask(activeLead.phone, 'phone')})
                         </a>
                       )}
                     </div>
