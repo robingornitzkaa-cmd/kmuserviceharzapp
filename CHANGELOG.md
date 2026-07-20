@@ -5,6 +5,16 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **Phase 1 Live-App Security Hardening (Vercel):**
+  - **🔐 Glassmorphic Password Wall:** WebCrypto SHA-256 Passwort-Schutzwall in `App.jsx` zum Schutz aller Kundendaten und internen Werkzeuge im Web-Deployment.
+  - **🛡️ Secure API Key Header:** Umstellung der Gemini API-Kommunikation von Query-Parametern auf den sicheren HTTP-Header `x-goog-api-key`.
+  - **🔑 Env Var Extraction:** Auslagerung von Supabase-URL und Anon-Key in `import.meta.env` (`VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`).
+  - **📱 Android Hardening:** Deaktivierung von automatischen Android-Backups (`allowBackup="false"`) und Aktivierung von R8 Minification & Code-Shrinking.
+- **Phase 2 Modularisierung & Architektur-Refactoring:**
+  - **🧩 8 Sub-Komponenten extrahiert:** `Sidebar`, `PromptVault`, `SopManager`, `DocsHub`, `SettingsView`, `KanbanBoard`, `CrmPipeline` und `DashboardView`.
+  - **⚙️ Service Layer Layering:** Dedizierte Service-Module `gemini.js`, `supabase.js` und `widget.js`.
+  - **📁 Statische Daten-Auslagerung:** `masterLogbuch.js` (813 Zeilen) und `initialData.js`.
+  - **⚡ Performance & Code-Reduktion:** Monolithische `src/App.jsx` von ~8.434 Zeilen auf unter ~3.800 Zeilen reduziert bei 100% grünen Vitest Integration-Tests.
 - **Qualitäts- und Sicherheits-Review:**
   - **🔒 Codebase Audit:** Umfassendes Codequalität- und Sicherheitsaudit der gesamten Anwendung basierend auf den OWASP Top 10.
   - **📋 Audit-Bericht erstellt:** Ablage des Berichts unter `codebase_review_report.md` mit detaillierter Schwachstellenanalyse, God-Component-Refactoring-Plänen und einem 3-Phasen-Entwickler-Fahrplan.

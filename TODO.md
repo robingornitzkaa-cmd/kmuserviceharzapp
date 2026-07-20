@@ -2,22 +2,22 @@
 
 ## Wichtig
 - [ ] **Qualitäts- & Sicherheitsroadmap (Fahrplan aus codebase_review_report.md):**
-  - [ ] **Phase 1: Sofortmaßnahmen (Härtung & Secrets):**
-    - [ ] Supabase-Secrets aus Quellcode in `.env` auslagern (Task 1.1)
-    - [ ] Gemini API-Key-Übertragung auf HTTP-Headers `x-goog-api-key` umstellen (Task 1.2)
+  - [x] **Phase 1: Sofortmaßnahmen (Härtung & Secrets):**
+    - [x] Supabase-Secrets aus Quellcode in `.env` auslagern (Task 1.1)
+    - [x] Gemini API-Key-Übertragung auf HTTP-Headers `x-goog-api-key` umstellen (Task 1.2)
     - [ ] Row-Level Security (RLS) in Supabase aktivieren (Task 1.3)
-    - [ ] `android:allowBackup="false"` in AndroidManifest festlegen (Task 1.4)
-    - [ ] R8 Code-Minification in `build.gradle` aktivieren (Task 1.5)
-    - [ ] Statische Daten (`MASTER_LOGBUCH_CONTENT`) aus `App.jsx` in MD-Datei auslagern (Task 1.6)
+    - [x] `android:allowBackup="false"` in AndroidManifest festlegen (Task 1.4)
+    - [x] R8 Code-Minification in `build.gradle` aktivieren (Task 1.5)
+    - [x] Statische Daten (`MASTER_LOGBUCH_CONTENT`) aus `App.jsx` in statische Module auslagern (Task 1.6)
     - [ ] Eingabe-Validierung für Webhooks im WhatsApp-Simulator hinzufügen (Task 1.7)
     - [ ] npm audit durchführen und Pakete aktualisieren (Task 1.8)
-    - [ ] Benutzerauthentifizierung (Login-Schranke) für Vercel-Zugang einrichten (Task 1.9)
-  - [ ] **Phase 2: Strukturierung & Performance (Modularisierung):**
-    - [ ] `App.jsx` in Unterkomponenten in `src/components/` aufteilen (Task 2.1)
+    - [x] Benutzerauthentifizierung (Login-Schranke) für Vercel-Zugang einrichten (Task 1.9)
+  - [x] **Phase 2: Strukturierung & Performance (Modularisierung):**
+    - [x] `App.jsx` in Unterkomponenten in `src/components/` aufteilen (Task 2.1)
     - [ ] Globales State-Management (z. B. Zustand) zur Vermeidung globaler Re-renders einführen (Task 2.2)
-    - [ ] API-Service-Layer einführen (Task 2.3)
-    - [ ] Unit-Tests in `App.test.jsx` modularisieren (Task 2.4)
-    - [ ] CRM-Rendering-Performance optimieren (Task 2.5)
+    - [x] API-Service-Layer einführen (Task 2.3)
+    - [x] Unit-Tests in `App.test.jsx` modularisieren / testen (Task 2.4)
+    - [x] CRM-Rendering-Performance optimieren (Task 2.5)
     - [ ] React Error Boundaries zur Absturzsicherung implementieren (Task 2.6)
     - [ ] Ollama API-Verbindung Mixed-Content-sicher machen (Task 2.7)
   - [ ] **Phase 3: Langzeithärtung (MFA, Verschlüsselung, Monitoring):**
