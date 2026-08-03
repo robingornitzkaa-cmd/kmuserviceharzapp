@@ -3,14 +3,14 @@
 ## 2026-08-03 11:40 – Google Drive Live-Sync & Unified To-Dos (COMPLETED)
 
 ### Ziel
-Realisierung einer vollwertigen Google Drive REST API Live-Synchronisation für deine Wissensdokumente direkt in der React App sowie Zusammenführung und bi-direktionale Live-Synchronisation deiner To-Dos zwischen der interaktiven Meilenstein-Checkliste im Command Center und dem Markdown-Text von `masterLogbuch.txt`.
+Realisierung einer vollwertigen Google Drive REST API Live-Synchronisation für deine Wissensdokumente direkt in der React App sowie Zusammenführung und bi-direktionale Live-Synchronisation deiner To-Dos zwischen der interaktiven Meilenstein-Checkliste im Command Center und dem Markdown-Text von `masterLogbuch.txt`. Zudem feste Verankerung der Google Client-ID als Standardwert für ein direkt einsatzbereites System.
 
 ### Erstellt
 - [src/services/googleDrive.js](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/services/googleDrive.js): REST-Service-Modul zum asynchronen Laden der Google API-Skripte (`gapi` & `gis`), Initiieren der OAuth2-Autorisierung und Synchronisieren von Ordnern und Dateien.
 
 ### Geändert
 - [src/components/CommandCenter.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/components/CommandCenter.jsx): Koppelung der To-Do Liste mit dem Markdown-Inhalt von `masterLogbuch.txt`. Implementierung des Logbuch-Parsers und der Schreib-Handler zur Koppelung von Checkbox-Klicks und Editor-Inhalt. Barrierefreie Verknüpfung der Labels mit `htmlFor` und `id`.
-- [src/App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): Einbindung der Google Drive Client-Bibliotheken und Ablösung des Mock-Sync-Laufs durch die echten API-Aufrufe mit visualisiertem Live-Fortschritt.
+- [src/App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): Einbindung der Google Drive Client-Bibliotheken und Ablösung des Mock-Sync-Laufs durch die echten API-Aufrufe mit visualisiertem Live-Fortschritt. Hinterlegung der realen Google Client-ID `505623531185-f42t71ranm5u57uort8o4tl4r181rvd4.apps.googleusercontent.com` als Standard-Fallback-Wert.
 - [src/test/App.test.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/test/App.test.jsx): Integration der Testumgebungs-Isolierung (`beforeEach` mit `localStorage.clear()`) und Hinzufügen eines asynchronen Testfalls (`Bi-direktionaler Sync zwischen Meilenstein-Checkliste und masterLogbuch.txt`) mit `findBy`-Abfragen.
 
 ### Warum
