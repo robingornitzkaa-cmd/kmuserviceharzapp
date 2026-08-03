@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   BrainCircuit, 
   Plus, 
   ClipboardCopy, 
   Trash2, 
   TrendingUp, 
-  Send 
+  Send,
+  Pin,
+  Download,
+  Upload,
+  RefreshCw,
+  Sparkles
 } from 'lucide-react';
 
 export const PromptVault = ({
@@ -36,6 +41,15 @@ export const PromptVault = ({
   prompts,
   copyPromptText,
   deletePrompt,
+  togglePinPrompt,
+  exportPromptsJSON,
+  importPromptsJSON,
+  handleSyncPromptsFromSupabase,
+  diffModalData,
+  setDiffModalData,
+  variableModalData,
+  setVariableModalData,
+  showToast,
   newPost,
   setNewPost,
   handleAddPost,
@@ -49,23 +63,59 @@ export const PromptVault = ({
   ragChat,
   handleSendRagQuery
 }) => {
+  const [selectedOptMode, setSelectedOptMode] = useState('structured');
+
   return (
     <div className="hub-grid" style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '1.5rem' }}>
       
       {/* Prompt Vault */}
       <div className="card">
-        <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
           <h2 className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', margin: 0 }}>
             <BrainCircuit size={20} className="text-purple-500" /> Prompt Vault (KI-Tresor)
           </h2>
-          <button
-            type="button"
-            onClick={() => setShowGeminiConfig(!showGeminiConfig)}
-            className="btn btn-secondary"
-            style={{ padding: '0.25rem 0.5rem', fontSize: '0.65rem', height: '22px' }}
-          >
-            {showGeminiConfig ? 'Schließen' : '⚙ KI-Einstellungen'}
-          </button>
+
+          <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap', alignItems: 'center' }}>
+            <button
+              type="button"
+              onClick={() => handleSyncPromptsFromSupabase && handleSyncPromptsFromSupabase()}
+              className="btn btn-secondary"
+              style={{ padding: '0.25rem 0.5rem', fontSize: '0.65rem', height: '24px', display: 'flex', alignItems: 'center', gap: '0.2rem' }}
+              title="Prompts aus Supabase synchronisieren"
+            >
+              <RefreshCw size={11} /> Sync
+            </button>
+            <button
+              type="button"
+              onClick={() => exportPromptsJSON && exportPromptsJSON()}
+              className="btn btn-secondary"
+              style={{ padding: '0.25rem 0.5rem', fontSize: '0.65rem', height: '24px', display: 'flex', alignItems: 'center', gap: '0.2rem' }}
+              title="Prompts als JSON herunterladen"
+            >
+              <Download size={11} /> Export
+            </button>
+            <label
+              className="btn btn-secondary"
+              style={{ padding: '0.25rem 0.5rem', fontSize: '0.65rem', height: '24px', display: 'inline-flex', alignItems: 'center', gap: '0.2rem', cursor: 'pointer', margin: 0 }}
+              title="Prompts aus JSON importieren"
+            >
+              <Upload size={11} /> Import
+              <input
+                type="file"
+                accept=".json"
+                onChange={(e) => importPromptsJSON && importPromptsJSON(e)}
+                style={{ display: 'none' }}
+              />
+            </label>
+            <button
+              type="button"
+              onClick={() => setShowGeminiConfig(!showGeminiConfig)}
+              className="btn btn-secondary"
+              style={{ padding: '0.25rem 0.5rem', fontSize: '0.65rem', height: '24px' }}
+            >
+              {showGeminiConfig ? 'Schließen' : '⚙ KI-Einstellungen'}
+            </button>
+          </div>
         </div>
 
         {/* Gemini Settings Form */}
@@ -85,7 +135,7 @@ export const PromptVault = ({
                 type="button"
                 onClick={() => {
                   setGeminiApiKey('');
-                  alert('API-Schlüssel gelöscht! Bitte gib deinen eigenen Schlüssel ein.');
+                  if (showToast) showToast('API-Schlüssel gelöscht.');
                 }}
                 className="btn btn-secondary"
                 style={{ height: '30px', fontSize: '0.7rem', padding: '0 0.5rem' }}
@@ -371,13 +421,42 @@ export const PromptVault = ({
           </div>
 
           <textarea 
-            placeholder="Prompt Text..." 
+            placeholder="Prompt Text... (Nutze {{Variable}} für dynamische Ausfüllfelder)" 
             className="input-field" 
             rows={4}
             value={newPrompt.text}
             onChange={(e) => setNewPrompt({ ...newPrompt, text: e.target.value })}
             required
           />
+
+          {/* KI Optimierungs-Modi Auswahlleiste */}
+          <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap', alignItems: 'center' }}>
+            <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontWeight: 600 }}>Optimierungs-Ziel:</span>
+            {[
+              { id: 'structured', label: '🎯 Standard' },
+              { id: 'concise', label: '✂️ Kurz & Präzise' },
+              { id: 'english', label: '🌍 Englisch' },
+              { id: 'privacy', label: '🛡️ Datenschutz' }
+            ].map(m => (
+              <button
+                key={m.id}
+                type="button"
+                onClick={() => setSelectedOptMode(m.id)}
+                style={{
+                  fontSize: '0.65rem',
+                  padding: '0.15rem 0.45rem',
+                  borderRadius: '0.25rem',
+                  border: selectedOptMode === m.id ? '1px solid var(--accent-purple)' : '1px solid var(--border-color)',
+                  background: selectedOptMode === m.id ? 'rgba(139, 92, 246, 0.2)' : 'transparent',
+                  color: selectedOptMode === m.id ? '#a78bfa' : 'var(--text-secondary)',
+                  cursor: 'pointer',
+                  transition: 'all 0.15s ease'
+                }}
+              >
+                {m.label}
+              </button>
+            ))}
+          </div>
           
           <div style={{ display: 'flex', gap: '0.5rem' }}>
             <button type="submit" className="btn btn-primary" style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.35rem' }}>
@@ -385,7 +464,7 @@ export const PromptVault = ({
             </button>
             <button 
               type="button" 
-              onClick={handleOptimizePrompt} 
+              onClick={() => handleOptimizePrompt && handleOptimizePrompt(selectedOptMode)} 
               disabled={ollamaLoading}
               className="btn btn-secondary" 
               style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.35rem' }}
@@ -395,7 +474,7 @@ export const PromptVault = ({
                 <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
                 <line x1="12" y1="22.08" x2="12" y2="12"></line>
               </svg>
-              {ollamaLoading ? 'Optimiert...' : 'Per lokaler KI verbessern (Ollama)'}
+              {ollamaLoading ? 'Optimiert...' : 'Per KI verbessern'}
             </button>
           </div>
         </form>
@@ -450,31 +529,50 @@ export const PromptVault = ({
         </div>
 
         <div className="prompt-vault">
-          {prompts.filter(p => {
-            const matchesCategory = promptCategoryFilter === 'all' || p.category === promptCategoryFilter;
-            const matchesSearch = p.title.toLowerCase().includes(promptSearch.toLowerCase()) || p.text.toLowerCase().includes(promptSearch.toLowerCase());
-            return matchesCategory && matchesSearch;
-          }).map(p => (
-            <div key={p.id} className="prompt-card">
-              <div className="prompt-head">
-                <span className="prompt-title">{p.title}</span>
-                <span className="prompt-cat">{p.category}</span>
+          {prompts
+            .filter(p => {
+              const matchesCategory = promptCategoryFilter === 'all' || p.category === promptCategoryFilter;
+              const matchesSearch = p.title.toLowerCase().includes(promptSearch.toLowerCase()) || p.text.toLowerCase().includes(promptSearch.toLowerCase());
+              return matchesCategory && matchesSearch;
+            })
+            .sort((a, b) => (b.isPinned ? 1 : 0) - (a.isPinned ? 1 : 0))
+            .map(p => (
+              <div key={p.id} className="prompt-card" style={p.isPinned ? { border: '1px solid var(--accent-purple)', background: 'rgba(139, 92, 246, 0.03)' } : {}}>
+                <div className="prompt-head">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                    {p.isPinned && <Pin size={12} className="text-purple-400" style={{ transform: 'rotate(45deg)' }} />}
+                    <span className="prompt-title">{p.title}</span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                    <span className="prompt-cat">{p.category}</span>
+                    <span style={{ fontSize: '0.6rem', padding: '0.1rem 0.35rem', borderRadius: '0.25rem', background: p.synced ? 'rgba(16, 185, 129, 0.15)' : 'rgba(255,255,255,0.05)', color: p.synced ? '#34d399' : 'var(--text-muted)' }}>
+                      {p.synced ? '☁️ Cloud' : '📱 Lokal'}
+                    </span>
+                  </div>
+                </div>
+                <div className="prompt-body">{p.text}</div>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.35rem' }}>
+                  <button
+                    onClick={() => togglePinPrompt && togglePinPrompt(p.id)}
+                    className="btn btn-secondary"
+                    style={{ padding: '0.35rem', color: p.isPinned ? '#a78bfa' : 'var(--text-muted)' }}
+                    title={p.isPinned ? 'Entpinnen' : 'Anpinnen'}
+                  >
+                    <Pin size={12} />
+                  </button>
+                  <button 
+                    onClick={() => copyPromptText(p.text)} 
+                    className="btn btn-secondary" 
+                    style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem' }}
+                  >
+                    <ClipboardCopy size={12} /> Kopieren
+                  </button>
+                  <button onClick={() => deletePrompt(p.id)} className="btn-icon-only" style={{ padding: '0.35rem' }}>
+                    <Trash2 size={12} className="text-red-500" />
+                  </button>
+                </div>
               </div>
-              <div className="prompt-body">{p.text}</div>
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }}>
-                <button 
-                  onClick={() => copyPromptText(p.text)} 
-                  className="btn btn-secondary" 
-                  style={{ padding: '0.35rem 0.75rem', fontSize: '0.75rem' }}
-                >
-                  <ClipboardCopy size={12} /> Kopieren
-                </button>
-                <button onClick={() => deletePrompt(p.id)} className="btn-icon-only" style={{ padding: '0.35rem' }}>
-                  <Trash2 size={12} className="text-red-500" />
-                </button>
-              </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
 
@@ -661,6 +759,141 @@ export const PromptVault = ({
           </form>
         </div>
       </div>
+
+      {/* Vorher / Nachher KI-Diff Modal */}
+      {diffModalData && diffModalData.isOpen && (
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.75)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 10000, padding: '1rem' }}>
+          <div style={{ background: '#0f172a', border: '1px solid var(--accent-purple)', borderRadius: '0.75rem', padding: '1.25rem', maxWidth: '750px', width: '100%', maxHeight: '90vh', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '1rem', boxShadow: '0 20px 40px rgba(0,0,0,0.6)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h3 style={{ margin: 0, color: 'var(--accent-purple)', fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <Sparkles size={18} /> KI-Optimierung: Vorher / Nachher Vergleich
+              </h3>
+              <span style={{ fontSize: '0.7rem', padding: '0.2rem 0.5rem', background: 'rgba(139,92,246,0.15)', color: '#a78bfa', borderRadius: '0.25rem', border: '1px solid rgba(139,92,246,0.3)' }}>
+                {diffModalData.source}
+              </span>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: '0.5rem', padding: '0.75rem' }}>
+                <div style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '0.5rem', textTransform: 'uppercase' }}>
+                  Original Entwurf
+                </div>
+                <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', whiteSpace: 'pre-wrap', lineHeight: '1.45' }}>
+                  {diffModalData.originalText}
+                </div>
+              </div>
+
+              <div style={{ background: 'rgba(139, 92, 246, 0.05)', border: '1px solid var(--accent-purple)', borderRadius: '0.5rem', padding: '0.75rem' }}>
+                <div style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--accent-purple)', marginBottom: '0.5rem', textTransform: 'uppercase' }}>
+                  ✨ KI-Optimierte Fassung
+                </div>
+                <div style={{ fontSize: '0.8rem', color: '#ffffff', whiteSpace: 'pre-wrap', lineHeight: '1.45' }}>
+                  {diffModalData.optimizedText}
+                </div>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end', marginTop: '0.5rem' }}>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => setDiffModalData({ ...diffModalData, isOpen: false })}
+                style={{ fontSize: '0.75rem' }}
+              >
+                Abbrechen
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={() => {
+                  setNewPrompt(prev => ({ ...prev, text: diffModalData.optimizedText }));
+                  setDiffModalData({ ...diffModalData, isOpen: false });
+                  if (showToast) showToast('✨ KI-Optimierter Text in den Entwurf übernommen!');
+                }}
+                style={{ fontSize: '0.75rem' }}
+              >
+                Übernehmen & Ersetzen
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Dynamic Variables Modal */}
+      {variableModalData && variableModalData.isOpen && (
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.75)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 10000, padding: '1rem' }}>
+          <div style={{ background: '#0f172a', border: '1px solid var(--accent-cyan)', borderRadius: '0.75rem', padding: '1.25rem', maxWidth: '550px', width: '100%', display: 'flex', flexDirection: 'column', gap: '1rem', boxShadow: '0 20px 40px rgba(0,0,0,0.6)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h3 style={{ margin: 0, color: 'var(--accent-cyan)', fontSize: '0.95rem' }}>
+                🧩 Prompt-Variablen ausfüllen
+              </h3>
+              <button
+                type="button"
+                onClick={() => setVariableModalData({ ...variableModalData, isOpen: false })}
+                style={{ border: 'none', background: 'transparent', color: 'var(--text-muted)', cursor: 'pointer', fontSize: '1rem' }}
+              >
+                ✕
+              </button>
+            </div>
+
+            <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', margin: 0 }}>
+              Dieser Prompt enthält Platzhalter. Trage die Werte ein, um den fertigen Prompt zu generieren:
+            </p>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+              {variableModalData.variables.map(v => (
+                <div key={v} style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                  <label style={{ fontSize: '0.7rem', fontWeight: 600, color: '#22d3ee' }}>
+                    {`{{${v}}}`}
+                  </label>
+                  <input
+                    type="text"
+                    className="input-field"
+                    style={{ fontSize: '0.8rem', height: '32px' }}
+                    placeholder={`Wert für ${v}...`}
+                    value={variableModalData.values[v] || ''}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setVariableModalData(prev => ({
+                        ...prev,
+                        values: { ...prev.values, [v]: val }
+                      }));
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+
+            <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end', marginTop: '0.5rem' }}>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => setVariableModalData({ ...variableModalData, isOpen: false })}
+                style={{ fontSize: '0.75rem' }}
+              >
+                Abbrechen
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={() => {
+                  let finalPrompt = variableModalData.promptText;
+                  Object.entries(variableModalData.values).forEach(([k, v]) => {
+                    finalPrompt = finalPrompt.replaceAll(`{{${k}}}`, v || `{{${k}}}`);
+                  });
+                  navigator.clipboard.writeText(finalPrompt);
+                  setVariableModalData({ ...variableModalData, isOpen: false });
+                  if (showToast) showToast('📋 Fertiger Prompt mit Variablen kopiert!');
+                }}
+                style={{ fontSize: '0.75rem', background: 'linear-gradient(135deg, var(--accent-purple), var(--accent-cyan))', border: 'none' }}
+              >
+                Fertigen Prompt kopieren
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };

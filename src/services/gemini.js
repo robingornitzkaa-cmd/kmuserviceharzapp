@@ -40,18 +40,27 @@ export const callGeminiAPI = async (model, promptText, apiKey) => {
   throw new Error("Invalid response format from Gemini API");
 };
 
-export const optimizePromptWithLocalAI = async ({ promptText, geminiApiKey }) => {
+export const optimizePromptWithLocalAI = async ({ promptText, geminiApiKey, mode = 'structured' }) => {
   if (!promptText.trim()) {
     throw new Error("Bitte gib zuerst einen Prompt-Entwurf in das Textfeld ein.");
   }
   
+  let modeInstruction = "Optimiere diesen Prompt für ein LLM (mache ihn präzise, strukturiert und füge klare Anweisungen hinzu). Antworte NUR mit dem verbesserten Prompt-Text, ohne Einleitung oder Erklärung:";
+  if (mode === 'concise') {
+    modeInstruction = "Optimiere diesen Prompt für ein LLM: Kürze ihn radikal auf das Wesentliche, erstelle eine ultrakompakte und präzise Anweisung ohne unnötigen Floskeln. Antworte NUR mit dem verbesserten Prompt-Text:";
+  } else if (mode === 'english') {
+    modeInstruction = "Translate and optimize this prompt into high-quality professional English for LLMs (GPT-4/Claude/Gemini). Return ONLY the optimized English prompt text without any intro or explanation:";
+  } else if (mode === 'privacy') {
+    modeInstruction = "Anonymisiere und optimiere diesen Prompt für ein LLM: Ersetze spezifische Eigennamen oder Firmendaten durch Platzhalter wie {{Firma}}, {{Kunde}}, {{Datum}} und strukturiere die Anweisung. Antworte NUR mit dem überarbeiteten Prompt-Text:";
+  }
+
+  const promptToOptimize = `${modeInstruction}\n\n${promptText}`;
+
   // 1. Try Gemini API chain
   if (geminiApiKey && geminiApiKey.trim()) {
-    const promptToOptimize = `Optimiere diesen Prompt für ein LLM (mache ihn präzise, strukturiert und füge klare Anweisungen hinzu). Antworte NUR mit dem verbesserten Prompt-Text, ohne Einleitung oder Erklärung:\n\n${promptText}`;
-    
     for (const model of GEMINI_MODELS) {
       try {
-        console.log(`Versuche Prompt-Optimierung mit ${model}...`);
+        console.log(`Versuche Prompt-Optimierung (${mode}) mit ${model}...`);
         const responseText = await callGeminiAPI(model, promptToOptimize, geminiApiKey);
         if (responseText) {
           return { text: responseText.trim(), source: `Gemini Cloud-KI (${model})` };
@@ -73,7 +82,7 @@ export const optimizePromptWithLocalAI = async ({ promptText, geminiApiKey }) =>
       signal: controller.signal,
       body: JSON.stringify({
         model: "llama3",
-        prompt: `Optimiere diesen Prompt für ein LLM (mache ihn präzise, strukturiert und füge klare Anweisungen hinzu). Antworte NUR mit dem verbesserten Prompt-Text, ohne Einleitung oder Erklärung:\n\n${promptText}`,
+        prompt: promptToOptimize,
         stream: false
       })
     });

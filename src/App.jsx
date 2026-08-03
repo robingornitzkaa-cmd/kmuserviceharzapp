@@ -316,6 +316,11 @@ function App() {
   const [promptCategoryFilter, setPromptCategoryFilter] = useState('all');
   const [crmStageFilter, setCrmStageFilter] = useState('all');
 
+  // Prompt Vault Upgrade States & Toast
+  const [toastMessage, setToastMessage] = useState(null);
+  const [diffModalData, setDiffModalData] = useState({ isOpen: false, originalText: '', optimizedText: '', source: '' });
+  const [variableModalData, setVariableModalData] = useState({ isOpen: false, promptText: '', variables: [], values: {} });
+
   // CRM Detail Drawer State
   const [selectedContactId, setSelectedContactId] = useState(null);
   const [newLinkInput, setNewLinkInput] = useState({ title: '', url: '' });
@@ -2515,55 +2520,161 @@ Hier ist die Frage des Nutzers:
     setProjects(projects.map(p => p.id === projId ? { ...p, pricePackage: Math.max(0, parseInt(price) || 0) } : p));
   };
 
-  // Prompt Vault Copier
+  // Toast Helper
+  const showToast = (msg) => {
+    setToastMessage(msg);
+    setTimeout(() => {
+      setToastMessage(prev => prev === msg ? null : prev);
+    }, 3200);
+  };
+
+  // Prompt Vault Operations (Enhanced v9)
   const copyPromptText = (text) => {
-    navigator.clipboard.writeText(text);
-    alert('Prompt wurde in die Zwischenablage kopiert!');
+    const regex = /\{\{([^}]+)\}\}/g;
+    const matches = [];
+    let match;
+    while ((match = regex.exec(text)) !== null) {
+      if (!matches.includes(match[1])) {
+        matches.push(match[1]);
+      }
+    }
+
+    if (matches.length > 0) {
+      const initialValues = {};
+      matches.forEach(m => initialValues[m] = '');
+      setVariableModalData({
+        isOpen: true,
+        promptText: text,
+        variables: matches,
+        values: initialValues
+      });
+    } else {
+      navigator.clipboard.writeText(text);
+      showToast('📋 Prompt in Zwischenablage kopiert!');
+    }
   };
 
   const handleAddPrompt = async (e) => {
     e.preventDefault();
     if (!newPrompt.title.trim() || !newPrompt.text.trim()) return;
+    let isSynced = false;
     const promptToAdd = {
       id: 'pr_' + Date.now(),
       title: newPrompt.title,
       category: newPrompt.category,
-      text: newPrompt.text
+      text: newPrompt.text,
+      isPinned: false,
+      synced: false
     };
-    setPrompts([promptToAdd, ...prompts]);
-    setNewPrompt({ title: '', category: 'Sales', text: '' });
 
     if (isOnline) {
       try {
-        await savePromptToSupabase(promptToAdd, supabaseConfig);
+        const ok = await savePromptToSupabase(promptToAdd, supabaseConfig);
+        if (ok) {
+          promptToAdd.synced = true;
+          isSynced = true;
+        }
       } catch (err) {
         console.error("Fehler beim Speichern des Prompts in Supabase:", err);
       }
     }
+    setPrompts([promptToAdd, ...prompts]);
+    setNewPrompt({ title: '', category: 'Sales', text: '' });
+    showToast(isSynced ? '✅ Prompt in Cloud & Lokal gesichert!' : '📱 Prompt lokal gesichert!');
   };
 
-  const handleOptimizePrompt = async () => {
+  const handleOptimizePrompt = async (mode = 'structured') => {
     if (!newPrompt.text.trim()) {
-      alert("Bitte gib zuerst einen Prompt-Entwurf in das Textfeld ein.");
+      showToast("⚠️ Bitte gib zuerst einen Prompt-Entwurf in das Textfeld ein.");
       return;
     }
     setOllamaLoading(true);
     try {
       const result = await optimizePromptWithLocalAI({
         promptText: newPrompt.text,
-        geminiApiKey
+        geminiApiKey,
+        mode
       });
-      setNewPrompt(prev => ({ ...prev, text: result.text }));
-      alert(`🎉 Prompt erfolgreich mit ${result.source} optimiert!`);
+      setDiffModalData({
+        isOpen: true,
+        originalText: newPrompt.text,
+        optimizedText: result.text,
+        source: result.source
+      });
+      showToast(`🎉 Prompt mit ${result.source} optimiert!`);
     } catch (err) {
-      alert(err.message || "Fehler bei der Prompt-Optimierung.");
+      showToast(err.message || "Fehler bei der Prompt-Optimierung.");
     } finally {
       setOllamaLoading(false);
     }
   };
 
+  const togglePinPrompt = (id) => {
+    setPrompts(prev => prev.map(p => p.id === id ? { ...p, isPinned: !p.isPinned } : p));
+    showToast('📌 Favoriten-Status geändert!');
+  };
+
+  const exportPromptsJSON = () => {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(prompts, null, 2));
+    const downloadAnchor = document.createElement('a');
+    downloadAnchor.setAttribute("href", dataStr);
+    downloadAnchor.setAttribute("download", `prompts_export_${new Date().toISOString().split('T')[0]}.json`);
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+    showToast('📥 Prompts als JSON exportiert!');
+  };
+
+  const importPromptsJSON = (e) => {
+    const fileReader = new FileReader();
+    if (e.target.files && e.target.files[0]) {
+      fileReader.readAsText(e.target.files[0], "UTF-8");
+      fileReader.onload = (event) => {
+        try {
+          const imported = JSON.parse(event.target.result);
+          if (Array.isArray(imported)) {
+            setPrompts(prev => {
+              const map = new Map();
+              prev.forEach(p => map.set(p.id, p));
+              imported.forEach(p => {
+                if (p.id && p.text) map.set(p.id, p);
+              });
+              return Array.from(map.values());
+            });
+            showToast(`✅ ${imported.length} Prompts importiert!`);
+          }
+        } catch (err) {
+          showToast('⚠️ Fehler beim Lesen der JSON-Datei');
+        }
+      };
+    }
+  };
+
+  const handleSyncPromptsFromSupabase = async () => {
+    try {
+      const serverPrompts = await fetchPromptsFromSupabase(supabaseConfig);
+      if (serverPrompts && Array.isArray(serverPrompts)) {
+        setPrompts(prevPrompts => {
+          const mergedMap = new Map();
+          serverPrompts.forEach(p => mergedMap.set(p.id, { ...p, synced: true }));
+          prevPrompts.forEach(p => {
+            if (!mergedMap.has(p.id)) mergedMap.set(p.id, p);
+          });
+          const mergedList = Array.from(mergedMap.values());
+          localStorage.setItem('f_prompts', JSON.stringify(mergedList));
+          return mergedList;
+        });
+        showToast(`☁️ ${serverPrompts.length} Prompts aus Supabase synchronisiert!`);
+      }
+    } catch (err) {
+      console.error("Supabase Prompt-Sync Fehler:", err);
+      showToast('⚠️ Supabase Prompt-Sync fehlgeschlagen.');
+    }
+  };
+
   const deletePrompt = async (id) => {
     setPrompts(prompts.filter(p => p.id !== id));
+    showToast('🗑️ Prompt entfernt');
 
     if (isOnline) {
       try {
@@ -3841,10 +3952,18 @@ Hier ist die Frage des Nutzers:
             promptSearch={promptSearch}
             setPromptSearch={setPromptSearch}
             promptCategoryFilter={promptCategoryFilter}
-            setPromptCategoryFilter={setPromptCategoryFilter}
             prompts={prompts}
             copyPromptText={copyPromptText}
             deletePrompt={deletePrompt}
+            togglePinPrompt={togglePinPrompt}
+            exportPromptsJSON={exportPromptsJSON}
+            importPromptsJSON={importPromptsJSON}
+            handleSyncPromptsFromSupabase={handleSyncPromptsFromSupabase}
+            diffModalData={diffModalData}
+            setDiffModalData={setDiffModalData}
+            variableModalData={variableModalData}
+            setVariableModalData={setVariableModalData}
+            showToast={showToast}
             newPost={newPost}
             setNewPost={setNewPost}
             handleAddPost={handleAddPost}
@@ -5046,6 +5165,29 @@ Hier ist die Frage des Nutzers:
               </button>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Toast Notification Banner */}
+      {toastMessage && (
+        <div style={{
+          position: 'fixed',
+          bottom: '1.5rem',
+          right: '1.5rem',
+          background: 'rgba(15, 23, 42, 0.95)',
+          border: '1px solid var(--accent-purple)',
+          color: '#ffffff',
+          padding: '0.75rem 1.25rem',
+          borderRadius: '0.75rem',
+          boxShadow: '0 10px 25px rgba(0,0,0,0.5)',
+          zIndex: 9999,
+          fontSize: '0.85rem',
+          fontWeight: 600,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.5rem'
+        }}>
+          {toastMessage}
         </div>
       )}
       </div>

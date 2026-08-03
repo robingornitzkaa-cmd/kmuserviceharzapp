@@ -1,5 +1,26 @@
 # AI Worklog - Founder OS
 
+## 2026-08-03 15:52 – KI-Prompt-Zentrale Upgrade: Auto-Sync, Vorher/Nachher Diff, Variablen & Pinning (COMPLETED)
+
+### Ziel
+Umfassende Erweiterung der KI-Prompt-Zentrale zur Behebung der Synchronisations-Diskrepanz zwischen Handy und PC, Einbau eines Vorher/Nachher-Diff Modals für KI-Optimierungen, wählbarer Optimierungsmodi, Variablen-Substitution, Favoriten-Funktion, JSON Import/Export und moderner Toast-Notifications.
+
+### Erstellt
+- Keine neuen Dateien (Erweiterung von `src/services/gemini.js`, `src/App.jsx` und `src/components/PromptVault.jsx`).
+
+### Geändert
+- [src/services/gemini.js](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/services/gemini.js): Parameter `mode` für `optimizePromptWithLocalAI` hinzugefügt (`structured`, `concise`, `english`, `privacy`) mit angepassten System-Instruktionen.
+- [src/App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): Sofortiger Supabase Cloud-Upload bei `handleAddPrompt` & `deletePrompt`, `showToast` Notification-System, `diffModalData` & `variableModalData` State-Management, Pinning-Logik und JSON Import/Export.
+- [src/components/PromptVault.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/components/PromptVault.jsx): Vorher/Nachher Diff-Modal (Side-by-side Vergleich), Variablen-Ausfüllmodal für `{{Variable}}` Platzhalter, Optimierungs-Modi Auswahlleiste, Sync-Badges (`☁️ Cloud` vs `📱 Lokal`), Pin-Buttons (`📌`), Sync-, Export- und Import-Buttons.
+
+### Warum
+Damit auf dem Handy angelegte Prompts sofort auf den PC synchronisiert werden, KI-Optimierungen vor dem Übernehmen transparent geprüft werden können und Prompts durch Platzhalter noch flexibler einsetzbar sind.
+
+### Testen
+- `npm run test` ausgeführt. Alle Vitest-Integrationstests verifiziert.
+
+---
+
 ## 2026-08-03 15:43 – Master-PIN Sperrbildschirm & App-Verschlüsselung (COMPLETED)
 
 ### Ziel

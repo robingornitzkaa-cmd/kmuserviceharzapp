@@ -28,9 +28,10 @@ Die Anwendung zeichnet sich durch ein futuristisches "Glassmorphic Dark Theme" a
 - **Echtzeit-Synchronisation:** Nahtlose Speicherung der Notizen über die Supabase-REST-API direkt in den CRM-Lead-Einträgen.
 - **Wissens-Hub-Export:** Generierung sauberer Markdown-Gesprächsprotokolle für den Wissens-Hub.
 
-### 5. KI Prompts (Prompt-Zentrale) -- *NEU!*
-- **Prompt Vault & Baukasten:** Speichere Prompts und baue sie mit vordefinierten oder eigenen Bausteinen (Rollen, Ton, Format, Suffix) zusammen.
-- **Ollama KI-Optimierer:** Verbessere Prompts live über eine lokale Ollama-Instanz (`localhost:11434`).
+### 5. KI Prompts (Prompt-Zentrale) -- *UPGRADED!*
+- **Prompt Vault & Baukasten:** Speichere, verwalte, filtere, pinne (`📌`) und exportiere/importiere Prompts. Mit Platzhalter-Variablen (`{{Variable}}`) und Sync-Badges (`☁️ Cloud` vs `📱 Lokal`).
+- **Supabase Auto-Cloud-Sync:** Neue Prompts werden beim Erstellen oder Löschen sofort geräteübergreifend (Handy ↔ PC) synchronisiert.
+- **Vorher/Nachher KI-Diff & Modi:** Vergleiche Original und KI-Ergebnis nebeneinander in 4 Ziel-Modi (*🎯 Standard*, *✂️ Kurz*, *🌍 Englisch*, *🛡️ Datenschutz*).
 - **Content-Planer:** Redaktionsplan für deine Social-Media-Kanäle.
 - **RAG Knowledge Bot:** KI-Assistent mit umschaltbaren Personas (🧠 Firmengehirn, 🎯 Pitch-Coach, 🔒 DSGVO & Legal), der dein Google-Drive-Wissen mit präzisen Quellenangaben durchsucht.
 

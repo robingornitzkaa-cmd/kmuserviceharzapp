@@ -5,6 +5,15 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **⚡ KI-Prompt-Zentrale Upgrade & Supabase Auto-Sync:**
+  - **Sofortige Cloud-Synchronisation:** Beim Erstellen oder Löschen von Prompts wird die Supabase-Datenbank direkt im Hintergrund aktualisiert.
+  - **Sync-Status-Badges (`☁️ Cloud` vs `📱 Lokal`):** Transparente Anzeige an jeder Prompt-Karte, ob der Prompt bereits in Supabase vorliegt.
+  - **Vorher / Nachher KI-Diff Modal:** Side-by-Side Nebeneinander-Vergleich von Original-Entwurf und KI-optimierter Fassung mit direkter Übernahmemöglichkeit.
+  - **Gezielte KI-Optimierungs-Modi:** Auswahlleiste für 4 Optimierungs-Ziele (*🎯 Standard*, *✂️ Kurz & Präzise*, *🌍 Englisch*, *🛡️ Datenschutz*).
+  - **Dynamische Variablen-Substitution (`{{Variable}}`):** Beim Kopieren von Prompts mit Platzhaltern öffnet sich automatisch ein Ausfüll-Modal zur Live-Generierung.
+  - **Favoriten / Anpinnen (`📌`):** Prompts können angepinnt und automatisch nach oben sortiert werden.
+  - **Prompts Import & Export:** Ein-Klick JSON-Export und JSON-Import für Prompt-Bibliotheken.
+  - **Moderne Toast-Notifications:** Schwebendes Benachrichtigungs-System anstelle blockierender Browser-`alert()`s.
 - **🔒 Master-PIN Sperrbildschirm (App-Sicherheit):**
   - **Sicherheits-Verriegelung:** Die gesamte App wird beim Aufrufen über Vercel durch einen modernen 4-stelligen Master-PIN Sperrbildschirm geschützt (Standard-PIN: `2026`).
   - **Manuelles Sperren:** Neuer Button `🔒 App sperren` in der App-Kopfzeile zum sofortigen Sperren der aktuellen Sitzung.
