@@ -64,7 +64,11 @@ describe('Founder OS App - Integration Tests', () => {
     // Command Center Tab anklicken
     const statusTab = screen.getByRole('button', { name: /Command Center/i })
     fireEvent.click(statusTab)
-    expect(screen.getByText('masterLogbuch.txt (Coaching & Strategie)')).toBeInTheDocument()
+    expect(screen.getByText(/masterLogbuch.txt/i)).toBeInTheDocument()
+
+    // Kachel 5 (Roh-Text Editor) im Akkordeon öffnen
+    const rawTextHeader = screen.getByText(/5. masterLogbuch.txt/i)
+    fireEvent.click(rawTextHeader)
 
     // Teste die Texteingabe im Logbuch-Textfeld
     const logbookInput = screen.getByPlaceholderText('Schreibe hier deinen aktuellen Stand hinein...')
@@ -217,6 +221,10 @@ describe('Founder OS App - Integration Tests', () => {
     // Command Center Tab anklicken
     const statusTab = screen.getByRole('button', { name: /Command Center/i })
     fireEvent.click(statusTab)
+
+    // Kachel 5 (Roh-Text Editor) öffnen
+    const rawTextHeader = await screen.findByText(/5. masterLogbuch.txt/i)
+    fireEvent.click(rawTextHeader)
 
     // Finde das Logbuch-Textfeld und verifiziere, dass es geladen ist
     const logbookInput = await screen.findByPlaceholderText('Schreibe hier deinen aktuellen Stand hinein...')

@@ -5,6 +5,11 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **📊 Visuelles Strategie-Cockpit & Command Center v2:**
+  - **Gründungs-Bereitschafts-Score:** Dynamische Prozentanzeige der Launch-Bereitschaft basierend auf fixierten vs. offenen Strategie-Variablen.
+  - **Schnell-Erfassung für Coach-Meetings:** Dialog-Modal (`+ Coach-Termin eintragen`) zur strukturierten Eingabe von Beratungsergebnissen und automatischer Übernahme neuer Hausaufgaben.
+  - **Klappbares Akkordeon-System:** Aufteilung des Command Centers in 5 aufgeräumte Kacheln (Meilensteine, Preispakete, Formeller Fahrplan, Gründungsprotokoll, Roh-Text-Editor).
+  - **Dynamische Statuserkennung:** Automatische Badges (`🔴 Offen / Entwurf` vs. `🟢 Fixiert`) für Gründungsdatum, Notar, B2B-Konto und Jobcenter-Anträge.
 - **📁 Echter Google Drive Live-Sync:**
   - **REST API Live-Synchronisation:** Integration des Google Identity Services (`gis`) und der Google Drive REST API.
   - **OAuth2 Token Client:** Sichere Autorisierung über Google Login-Popup (`drive.file`-Scope) direkt in der React App.

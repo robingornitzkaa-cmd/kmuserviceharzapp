@@ -1,6 +1,7 @@
 # TODO - Founder OS
 
 ## Wichtig
+- [x] **Visuelles Strategie-Cockpit & Command Center v2 (Phase v19):** Gründungs-Bereitschafts-Score (%), Meeting Capture Modal (`+ Coach-Termin eintragen`), Akkordeon-System (5 Themen-Kacheln) und bi-direktionaler Parameter-Editor für `masterLogbuch.txt`.
 - [x] **Google Drive REST API Live-Sync & Unified To-Dos (Phase v18):** Echte REST API Synchronisation mit OAuth2 Token Client und Google Identity Services. Bi-direktionaler Sync zwischen Meilenstein-Checkliste im Command Center und `masterLogbuch.txt` (TEIL 7).
 - [ ] **Gründung & Business (Coaching-Vorgaben):**
   - [ ] MVP ausarbeiten (Dienstleistungs-Leistungsumfang & ROI-Präsentation für Erstgespräche)
