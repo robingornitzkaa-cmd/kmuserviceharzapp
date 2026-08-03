@@ -286,7 +286,12 @@ function App() {
     return localStorage.getItem('f_google_connected') === 'true';
   });
   const [googleClientId, setGoogleClientId] = useState(() => {
-    return localStorage.getItem('f_google_client_id') || '481297122516-m7hgprfvc28si5cj3cuqd6aocgogsv9q.apps.googleusercontent.com';
+    const saved = localStorage.getItem('f_google_client_id');
+    const oldId = '481297122516-m7hgprfvc28si5cj3cuqd6aocgogsv9q.apps.googleusercontent.com';
+    if (!saved || saved.trim() === '' || saved === oldId) {
+      return '505623531185-f42t71ranm5u57uort8o4tl4r181rvd4.apps.googleusercontent.com';
+    }
+    return saved;
   });
   const [isConnectingGoogle, setIsConnectingGoogle] = useState(false);
   const [isGoogleSyncing, setIsGoogleSyncing] = useState(false);
