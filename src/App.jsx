@@ -75,6 +75,15 @@ import {
   deletePromptFromSupabase 
 } from './services/supabase';
 import { updateAndroidWidget } from './services/widget';
+import { 
+  loadGoogleApiScripts, 
+  getAccessToken, 
+  getFolderId, 
+  createFolder, 
+  getFileId, 
+  uploadFile, 
+  updateFile 
+} from './services/googleDrive';
 
 // COMPONENTS IMPORT
 import { Sidebar } from './components/Sidebar';
@@ -2660,7 +2669,12 @@ Hier ist die Frage des Nutzers:
     setEditorContent('');
   };
 
-  const triggerManualGoogleDriveSync = () => {
+  const triggerManualGoogleDriveSync = async () => {
+    if (!googleClientId || !googleClientId.trim()) {
+      alert("Bitte richte zuerst deine Google OAuth Client-ID im Tab 'Dokumente & Sync' oder im Command Center ein.");
+      return;
+    }
+
     if (notebookLmSyncStatus === 'syncing') return;
     
     const pendingDocs = docs.filter(d => d.status === 'local' || d.status === 'modified');
@@ -2670,40 +2684,70 @@ Hier ist die Frage des Nutzers:
     }
 
     setNotebookLmSyncStatus('syncing');
-    setNotebookLmProgress(0);
-    setNotebookLmSyncStep('Verbindung mit Google Drive herstellen...');
+    setNotebookLmProgress(5);
+    setNotebookLmSyncStep('Initialisiere Google Client-Bibliotheken...');
 
-    const steps = [
-      { progress: 15, text: 'Google Drive Ordner "Founder OS" autorisieren...' },
-      ...pendingDocs.flatMap((doc, i) => [
-        { progress: 20 + i * 20, text: `Lese Datei ${doc.title} (Status: ${doc.status === 'local' ? 'Neu' : 'Bearbeitet'})...` },
-        { progress: 30 + i * 20, text: `Übertrage Datenstrom für ${doc.title} in Google Drive...` }
-      ]),
-      { progress: 85, text: 'Google Drive Datei-Indizierung abschließen...' },
-      { progress: 95, text: 'NotebookLM-Kopplung aktualisieren (Datenquellen neu einlesen)...' }
-    ];
+    try {
+      // 1. Script Laden
+      await loadGoogleApiScripts();
+      setNotebookLmProgress(15);
+      setNotebookLmSyncStep('Fordere Google Autorisierung an (OAuth-Popup)...');
 
-    let currentStep = 0;
-    const interval = setInterval(() => {
-      if (currentStep < steps.length - 1) {
-        setNotebookLmSyncStep(steps[currentStep].text);
-        setNotebookLmProgress(steps[currentStep].progress);
-        currentStep++;
-      } else {
-        clearInterval(interval);
-        
-        setDocs(prev => prev.map(d => ({ ...d, status: 'synced' })));
-        
-        const now = new Date();
-        const timeStr = now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-        const dateStr = 'Heute, ' + timeStr;
-        
-        setNotebookLmLastSync(dateStr);
-        setNotebookLmSyncStatus('synced');
-        setNotebookLmSyncStep('');
-        alert(`🎉 Google Drive erfolgreich aktualisiert! ${pendingDocs.length} Datei(en) wurden synchronisiert. NotebookLM ist bereit.`);
+      // 2. Token erhalten
+      const token = await getAccessToken(googleClientId);
+      setNotebookLmProgress(30);
+      setNotebookLmSyncStep('Suche Google Drive Projektordner...');
+
+      // 3. Ordner prüfen oder anlegen
+      const folderName = 'KMU Service Harz (Founder OS)';
+      let folderId = await getFolderId(token, folderName);
+      
+      if (!folderId) {
+        setNotebookLmSyncStep('Erstelle neuen Projektordner "KMU Service Harz (Founder OS)"...');
+        folderId = await createFolder(token, folderName);
       }
-    }, 900);
+      
+      setNotebookLmProgress(45);
+      
+      // 4. Dokumente nacheinander hochladen/aktualisieren
+      for (let i = 0; i < pendingDocs.length; i++) {
+        const doc = pendingDocs[i];
+        const stepProgress = 45 + Math.round((i / pendingDocs.length) * 45);
+        setNotebookLmProgress(stepProgress);
+        setNotebookLmSyncStep(`Prüfe Datei "${doc.title}" in Google Drive...`);
+
+        // Datei im Ordner suchen
+        const fileId = await getFileId(token, doc.title, folderId);
+        if (fileId) {
+          setNotebookLmSyncStep(`Aktualisiere Datei "${doc.title}"...`);
+          await updateFile(token, fileId, doc.content);
+        } else {
+          setNotebookLmSyncStep(`Erstelle neue Datei "${doc.title}"...`);
+          await uploadFile(token, doc.title, doc.content, folderId);
+        }
+      }
+
+      setNotebookLmProgress(95);
+      setNotebookLmSyncStep('NotebookLM Quellensync abgeschlossen!');
+      
+      // Zustand auf synced aktualisieren
+      setDocs(prev => prev.map(d => ({ ...d, status: 'synced' })));
+      
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      const dateStr = 'Heute, ' + timeStr;
+      
+      setNotebookLmLastSync(dateStr);
+      setNotebookLmSyncStatus('synced');
+      setNotebookLmSyncStep('');
+      
+      alert(`✅ Erfolgreich ${pendingDocs.length} Dokumente mit Google Drive synchronisiert!`);
+    } catch (error) {
+      console.error('Google Drive Sync Fehler:', error);
+      setNotebookLmSyncStatus('error');
+      setNotebookLmSyncStep('Fehler: ' + error.message);
+      alert('⚠️ Fehler beim Google Drive Sync: ' + error.message);
+    }
   };
 
   const handleFileUploadMock = () => {

@@ -5,6 +5,13 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **📁 Echter Google Drive Live-Sync:**
+  - **REST API Live-Synchronisation:** Integration des Google Identity Services (`gis`) und der Google Drive REST API.
+  - **OAuth2 Token Client:** Sichere Autorisierung über Google Login-Popup (`drive.file`-Scope) direkt in der React App.
+  - **Automatisierte Ablage:** Automatisches Erstellen des Projektordners `KMU Service Harz (Founder OS)` in Google Drive und Synchronisierung (Erstellen/Überschreiben) aller Dokumente.
+- **🔄 Unified To-Dos (Bi-direktionaler Sync):**
+  - **Logbuch-Checklisten-Sync:** Vollständige Koppelung der To-Do Checkliste im Command Center mit `TEIL 7` von `masterLogbuch.txt`.
+  - **Zwei-Wege-Datenstrom:** Checkbox-Klicks aktualisieren in Echtzeit den Dokumenten-Text; das manuelle Ändern der Checkboxen (`[ ]` / `[x]`) im Editor oder das Hinzufügen/Löschen von Zeilen aktualisiert synchron die Checkliste.
 - **⚡ Eigenständiger Command Center Tab (Gründung & Business):**
   - **Standalone Ansicht:** Neues `CommandCenter.jsx` Modul als eigenständiger Tab direkt unter dem Dashboard in der Seitenleiste (Desktop & Mobile) verlinkt.
   - **Zentraler Workspace:** Vereint die interaktive Meilenstein-Checkliste (inklusive der neuen Business-To-Dos) und die Direkt-Bearbeitung von `masterLogbuch.txt` an einem Ort.

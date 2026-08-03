@@ -32,39 +32,143 @@ export const CommandCenter = ({
   ragPersona,
   setRagPersona
 }) => {
-  const [statusTodos, setStatusTodos] = useState(() => {
-    try {
-      const saved = localStorage.getItem('f_status_todos');
-      return saved ? JSON.parse(saved) : INITIAL_STATUS_TODOS;
-    } catch {
-      return INITIAL_STATUS_TODOS;
-    }
-  });
+  const logbuchContent = docs.find(d => d.id === 'master-logbuch')?.content || '';
+
+  const [statusTodos, setStatusTodos] = useState([]);
   const [newTodoText, setNewTodoText] = useState('');
   const [copiedStatus, setCopiedStatus] = useState(false);
 
+  // Hilfsfunktion zum Parsen der To-Dos aus dem Logbuch-Inhalt
+  const parseLogbuchTodos = (content) => {
+    if (!content) return [];
+    const lines = content.split('\n');
+    const todos = [];
+    let inTeil7 = false;
+    
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      if (line.includes('## **TEIL 7: OPERATIVE TO-DO-LISTE')) {
+        inTeil7 = true;
+        continue;
+      }
+      if (inTeil7 && line.startsWith('##')) {
+        break;
+      }
+      if (inTeil7) {
+        // Findet Zeilen wie: * [ ] Task, * [x] Task, - [ ] Task, - [x] Task, * **[ ]** Task, etc.
+        const match = line.match(/^\s*[\*\-]\s*(?:\*\*|)?\[([ xX])\](?:\*\*|)?\s*(.*)$/);
+        if (match) {
+          const completed = match[1].toLowerCase() === 'x';
+          const text = match[2].trim();
+          todos.push({
+            id: 'logtodo_' + i,
+            lineIndex: i,
+            text: text,
+            completed: completed
+          });
+        }
+      }
+    }
+    return todos;
+  };
+
   useEffect(() => {
-    localStorage.setItem('f_status_todos', JSON.stringify(statusTodos));
-  }, [statusTodos]);
+    const todos = parseLogbuchTodos(logbuchContent);
+    setStatusTodos(todos);
+  }, [logbuchContent]);
 
   const toggleStatusTodo = (id) => {
-    setStatusTodos(prev => prev.map(t => t.id === id ? { ...t, completed: !t.completed } : t));
+    const todo = statusTodos.find(t => t.id === id);
+    if (!todo) return;
+
+    const newCompleted = !todo.completed;
+    const lines = logbuchContent.split('\n');
+    const lineIndex = todo.lineIndex;
+    
+    if (lineIndex >= 0 && lineIndex < lines.length) {
+      const line = lines[lineIndex];
+      let updatedLine = line;
+      if (newCompleted) {
+        // Ersetze [ ] durch [x]
+        updatedLine = line.replace(/\[\s*\]/, '[x]').replace(/\[\s*X\s*\]/i, '[x]');
+      } else {
+        // Ersetze [x] durch [ ]
+        updatedLine = line.replace(/\[\s*[xX]\s*\]/, '[ ]');
+      }
+      lines[lineIndex] = updatedLine;
+      const newContent = lines.join('\n');
+      
+      setDocs(prev => prev.map(d => 
+        d.id === 'master-logbuch' 
+          ? { ...d, content: newContent, status: d.status === 'synced' ? 'modified' : d.status } 
+          : d
+      ));
+    }
   };
 
   const handleAddStatusTodo = (e) => {
     e.preventDefault();
     if (!newTodoText.trim()) return;
-    const newEntry = {
-      id: 'st_' + Date.now(),
-      text: newTodoText.trim(),
-      completed: false
-    };
-    setStatusTodos(prev => [newEntry, ...prev]);
+
+    const lines = logbuchContent.split('\n');
+    let inTeil7 = false;
+    let lastTodoIndex = -1;
+    let teil7HeaderIndex = -1;
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      if (line.includes('## **TEIL 7: OPERATIVE TO-DO-LISTE')) {
+        inTeil7 = true;
+        teil7HeaderIndex = i;
+        continue;
+      }
+      if (inTeil7 && line.startsWith('##')) {
+        break;
+      }
+      if (inTeil7 && line.match(/^\s*[\*\-]\s*(?:\*\*|)?\[([ xX])\]/)) {
+        lastTodoIndex = i;
+      }
+    }
+
+    const newLine = `* [ ] ${newTodoText.trim()}`;
+    if (lastTodoIndex !== -1) {
+      lines.splice(lastTodoIndex + 1, 0, newLine);
+    } else if (teil7HeaderIndex !== -1) {
+      // Wenn noch keine Aufgaben da sind, füge sie 2 Zeilen nach der Überschrift ein
+      lines.splice(teil7HeaderIndex + 2, 0, newLine);
+    } else {
+      // Falls TEIL 7 gar nicht existiert, hänge es an das Ende an
+      lines.push('');
+      lines.push('## **TEIL 7: OPERATIVE TO-DO-LISTE (Sachen, die zu erledigen sind)**');
+      lines.push('');
+      lines.push(newLine);
+    }
+
+    const newContent = lines.join('\n');
+    setDocs(prev => prev.map(d => 
+      d.id === 'master-logbuch' 
+        ? { ...d, content: newContent, status: d.status === 'synced' ? 'modified' : d.status } 
+        : d
+    ));
     setNewTodoText('');
   };
 
   const handleDeleteStatusTodo = (id) => {
-    setStatusTodos(prev => prev.filter(t => t.id !== id));
+    const todo = statusTodos.find(t => t.id === id);
+    if (!todo) return;
+
+    const lines = logbuchContent.split('\n');
+    const lineIndex = todo.lineIndex;
+
+    if (lineIndex >= 0 && lineIndex < lines.length) {
+      lines.splice(lineIndex, 1);
+      const newContent = lines.join('\n');
+      setDocs(prev => prev.map(d => 
+        d.id === 'master-logbuch' 
+          ? { ...d, content: newContent, status: d.status === 'synced' ? 'modified' : d.status } 
+          : d
+      ));
+    }
   };
 
   const generateStatusMarkdown = () => {
@@ -135,7 +239,6 @@ ${doneTodos.map(t => `- [x] ${t.text}`).join('\n') || '- Keine erledigten Aufgab
     alert('✅ STATUS.md im Wissens-Hub gespeichert! Der Gemini RAG Bot greift jetzt direkt darauf zu.');
   };
 
-  const logbuchContent = docs.find(d => d.id === 'master-logbuch')?.content || '';
 
   return (
     <div className="command-center-container">
@@ -238,8 +341,12 @@ ${doneTodos.map(t => `- [x] ${t.text}`).join('\n') || '- Keine erledigten Aufgab
                         borderRadius: '0.5rem' 
                       }}
                     >
-                      <label style={{ display: 'flex', alignItems: 'center', gap: '0.55rem', cursor: 'pointer', flexGrow: 1, margin: 0 }}>
+                      <label 
+                        htmlFor={t.id}
+                        style={{ display: 'flex', alignItems: 'center', gap: '0.55rem', cursor: 'pointer', flexGrow: 1, margin: 0 }}
+                      >
                         <input
+                          id={t.id}
                           type="checkbox"
                           checked={t.completed}
                           onChange={() => toggleStatusTodo(t.id)}

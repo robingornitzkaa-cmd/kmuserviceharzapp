@@ -1,6 +1,7 @@
 # TODO - Founder OS
 
 ## Wichtig
+- [x] **Google Drive REST API Live-Sync & Unified To-Dos (Phase v18):** Echte REST API Synchronisation mit OAuth2 Token Client und Google Identity Services. Bi-direktionaler Sync zwischen Meilenstein-Checkliste im Command Center und `masterLogbuch.txt` (TEIL 7).
 - [ ] **Gründung & Business (Coaching-Vorgaben):**
   - [ ] MVP ausarbeiten (Dienstleistungs-Leistungsumfang & ROI-Präsentation für Erstgespräche)
   - [ ] Fördermittel recherchieren (Digitalbonus Niedersachsen, Existenzgründungsförderung Jobcenter)

@@ -1,9 +1,13 @@
 import React from 'react'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import { describe, test, expect } from 'vitest'
+import { describe, test, expect, beforeEach } from 'vitest'
 import App from '../App'
 
 describe('Founder OS App - Integration Tests', () => {
+  beforeEach(() => {
+    localStorage.clear()
+  })
+
   test('App rendert initial das Dashboard', () => {
     render(<App />)
     
@@ -205,5 +209,40 @@ describe('Founder OS App - Integration Tests', () => {
     expect(screen.getAllByText('Kaffeeklatsch').length).toBe(2)
 
     alertMock.mockRestore()
+  })
+
+  test('Bi-direktionaler Sync zwischen Meilenstein-Checkliste und masterLogbuch.txt', async () => {
+    render(<App />)
+
+    // Command Center Tab anklicken
+    const statusTab = screen.getByRole('button', { name: /Command Center/i })
+    fireEvent.click(statusTab)
+
+    // Finde das Logbuch-Textfeld und verifiziere, dass es geladen ist
+    const logbookInput = await screen.findByPlaceholderText('Schreibe hier deinen aktuellen Stand hinein...')
+    expect(logbookInput).toBeInTheDocument()
+
+    // 1. Checkliste-Toggles spiegeln sich im Logbuch-Text wider
+    const mvpCheckbox = await screen.findByLabelText(/MVP ausarbeiten/i)
+    expect(mvpCheckbox).toBeInTheDocument()
+    expect(mvpCheckbox.checked).toBe(false)
+
+    // Checkbox anklicken (als erledigt markieren)
+    fireEvent.click(mvpCheckbox)
+    
+    // Warte darauf, dass sich der Text im Logbuch-Textfeld auf erledigt [x] aktualisiert
+    await waitFor(() => {
+      expect(logbookInput.value).toContain('[x] [Prio 1] MVP ausarbeiten')
+    })
+    expect(mvpCheckbox.checked).toBe(true)
+
+    // 2. Logbuch-Textänderungen spiegeln sich in der Checkliste wider
+    const updatedContent = logbookInput.value.replace('[x] [Prio 1] MVP ausarbeiten', '[ ] [Prio 1] MVP ausarbeiten')
+    fireEvent.change(logbookInput, { target: { value: updatedContent } })
+
+    // Checkbox muss wieder unchecked sein
+    await waitFor(() => {
+      expect(mvpCheckbox.checked).toBe(false)
+    })
   })
 })
