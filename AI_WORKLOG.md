@@ -1,5 +1,62 @@
 # AI Worklog - Founder OS
 
+## 2026-08-03 18:47 – Freie Widget-Reihenfolge & Verschiebe-Editor im Dashboard (COMPLETED)
+
+### Ziel
+Ermöglicht das freie Verschieben und Neuanordnen aller 12 Dashboard-Widgets im Anpassen-Editor mit Positionsanzeige (`#1`, `#2`...) und Pfeil-Buttons (`⬆️`, `⬇️`), voll integriert mit dem Supabase Cloud Auto-Sync.
+
+### Erstellt
+- Hilfsfunktionen `getWidgetOrder` und `DEFAULT_WIDGET_ORDER` in [`src/components/SettingsView.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/components/SettingsView.jsx).
+
+### Geändert
+- [`src/components/SettingsView.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/components/SettingsView.jsx): UI um Positionsmarkierungen, `⬆️ Nach oben` / `⬇️ Nach unten` Verschiebe-Buttons und "Standard-Reihenfolge" Reset-Button erweitert.
+- [`src/components/DashboardView.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/components/DashboardView.jsx): Dynamisches Rendering aller Widgets anhand des vom Nutzer festgelegten `getWidgetOrder(dashboardWidgets)`-Arrays.
+- [`README.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/README.md), [`CHANGELOG.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md), [`AI_WORKLOG.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/AI_WORKLOG.md), [`TODO.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md): Dokumentation aktualisiert.
+
+### Gelöscht
+- Keine.
+
+### Warum
+Damit der Nutzer im Dashboard-Editor nicht nur festlegen kann, welche Widgets sichtbar sind, sondern ihre Reihenfolge auf dem Bildschirm beliebig verschieben und zwischen allen Geräten über Supabase synchronisieren kann.
+
+### Testen
+- `npm run test` ausgeführt. All Integrationstests bestanden.
+- Klick auf "Layout anpassen" im Dashboard ➔ Klick auf `⬆️` / `⬇️` verschiebt die Widgets in Echtzeit.
+
+### Offene Punkte
+- Keine.
+
+---
+
+## 2026-08-03 18:43 – Supabase Cloud Auto-Sync für Dashboard State & Prompt Payload Fix (COMPLETED)
+
+### Ziel
+Verbindung von Dashboard-Notizen (`dashNotes`), Dashboard-To-Dos (`dashTodos`), Widget-Layout (`dashboardWidgets`) und Dashboard-Modus (`dashboardMode`) mit der Supabase-Cloud-Datenbank, damit alle auf dem Handy oder PC gemachten Eingaben und Layout-Anpassungen geräteübergreifend in Echtzeit synchronisiert werden.
+
+### Erstellt
+- Supabase DB-Tabelle `public.dashboard_state` (`id`, `dash_notes`, `dash_todos`, `dashboard_widgets`, `dashboard_mode`, `updated_at`) mit initialer Zeile `main`.
+- Funktionen `fetchDashboardStateFromSupabase` und `saveDashboardStateToSupabase` in `src/services/supabase.js`.
+
+### Geändert
+- [`src/services/supabase.js`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/services/supabase.js): Hilfsfunktionen für `dashboard_state` hinzugefügt und Payload-Schema in `savePromptToSupabase` bereinigt (verhindert Supabase REST API Schema-Fehler durch nicht existierende Spalten).
+- [`src/App.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): Mount-Effect zum Abrufen des `dashboard_state` aus Supabase und automatischer Debounced-Sync beim Ändern von Notizen, To-Dos, Widgets oder Modus.
+- [`TODO.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md), [`CHANGELOG.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md), [`README.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/README.md): Dokumentation aktualisiert.
+
+### Gelöscht
+- Keine.
+
+### Warum
+Behebt das Problem, dass auf dem Smartphone eingegebene Notizen, To-Dos, Layouts und Prompts nicht auf den PC übertragen oder lokal überschrieben wurden.
+
+### Testen
+- `npm run test` ausgeführt. Alle 9 Integrationstests bestanden.
+- Notiz oder To-Do eingeben: Daten werden automatisch in `dashboard_state` auf Supabase gespeichert.
+
+### Offene Punkte
+- Keine.
+
+---
+
 ## 2026-08-03 15:52 – KI-Prompt-Zentrale Upgrade: Auto-Sync, Vorher/Nachher Diff, Variablen & Pinning (COMPLETED)
 
 ### Ziel

@@ -1,6 +1,8 @@
 # TODO - Founder OS
 
 ## Wichtig
+- [x] **Freie Widget-Reihenfolge & Layout-Verschiebung (Phase v21):** Dynamische Neuanordnung aller Dashboard-Widgets im Anpassen-Editor mit Positionsanzeige (#1, #2...) und ⬆️ ⬇️ Verschiebe-Steuerung. Voll integriert mit Supabase Cloud Auto-Sync.
+- [x] **Dashboard State Supabase Cloud Auto-Sync (Phase v20):** Vollständige Cloud-Synchronisation für Dashboard-Notizen (`dashNotes`), To-Dos (`dashTodos`), Widget-Layout (`dashboardWidgets`) und Dashboard-Modi (`dashboardMode`) über Supabase DB-Tabelle `dashboard_state`. Gerätesynchronisation zwischen Handy und PC hergestellt und Prompt-Payload-Schema korrigiert.
 - [x] **KI-Prompt-Zentrale Upgrade & Cloud Auto-Sync:** Sofortiger Supabase Auto-Sync (Handy ↔ PC), Sync-Badges (`☁️ Cloud` vs `📱 Lokal`), Vorher/Nachher KI-Diff Modal, 4 KI-Optimierungsmodi, Variablen-Substitution (`{{Variable}}`), Favoriten (`📌`), JSON Export/Import und Toast-Notifications.
 - [x] **Visuelles Strategie-Cockpit & Command Center v2 (Phase v19):** Gründungs-Bereitschafts-Score (%), Meeting Capture Modal (`+ Coach-Termin eintragen`), Akkordeon-System (5 Themen-Kacheln) und bi-direktionaler Parameter-Editor für `masterLogbuch.txt`.
 - [x] **Google Drive REST API Live-Sync & Unified To-Dos (Phase v18):** Echte REST API Synchronisation mit OAuth2 Token Client und Google Identity Services. Bi-direktionaler Sync zwischen Meilenstein-Checkliste im Command Center und `masterLogbuch.txt` (TEIL 7).

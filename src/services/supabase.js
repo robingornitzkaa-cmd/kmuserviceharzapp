@@ -66,6 +66,12 @@ export const fetchPromptsFromSupabase = async (supabaseConfig) => {
 export const savePromptToSupabase = async (promptToAdd, supabaseConfig) => {
   const url = getUrl(supabaseConfig);
   const key = getKey(supabaseConfig);
+  const payload = {
+    id: String(promptToAdd.id),
+    title: promptToAdd.title || '',
+    category: promptToAdd.category || 'General',
+    text: promptToAdd.text || ''
+  };
   const response = await fetch(`${url}/rest/v1/prompts`, {
     method: 'POST',
     headers: {
@@ -74,7 +80,7 @@ export const savePromptToSupabase = async (promptToAdd, supabaseConfig) => {
       'Content-Type': 'application/json',
       'Prefer': 'resolution=merge-duplicates'
     },
-    body: JSON.stringify(promptToAdd)
+    body: JSON.stringify(payload)
   });
   return response.ok;
 };
@@ -91,3 +97,44 @@ export const deletePromptFromSupabase = async (id, supabaseConfig) => {
   });
   return response.ok;
 };
+
+export const fetchDashboardStateFromSupabase = async (supabaseConfig) => {
+  const url = getUrl(supabaseConfig);
+  const key = getKey(supabaseConfig);
+  const response = await fetch(`${url}/rest/v1/dashboard_state?id=eq.main&select=*`, {
+    headers: {
+      'apikey': key,
+      'Authorization': `Bearer ${key}`
+    }
+  });
+  if (response.ok) {
+    const data = await response.json();
+    return data && data.length > 0 ? data[0] : null;
+  }
+  throw new Error(`Supabase dashboard_state fetch error: ${response.status} ${response.statusText}`);
+};
+
+export const saveDashboardStateToSupabase = async (stateData, supabaseConfig) => {
+  const url = getUrl(supabaseConfig);
+  const key = getKey(supabaseConfig);
+  const payload = {
+    id: 'main',
+    dash_notes: stateData.dashNotes ?? '',
+    dash_todos: stateData.dashTodos ?? [],
+    dashboard_widgets: stateData.dashboardWidgets ?? [],
+    dashboard_mode: stateData.dashboardMode ?? 'detailed',
+    updated_at: new Date().toISOString()
+  };
+  const response = await fetch(`${url}/rest/v1/dashboard_state`, {
+    method: 'POST',
+    headers: {
+      'apikey': key,
+      'Authorization': `Bearer ${key}`,
+      'Content-Type': 'application/json',
+      'Prefer': 'resolution=merge-duplicates'
+    },
+    body: JSON.stringify(payload)
+  });
+  return response.ok;
+};
+

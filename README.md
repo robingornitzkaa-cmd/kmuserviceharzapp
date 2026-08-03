@@ -8,9 +8,10 @@ Die Anwendung zeichnet sich durch ein futuristisches "Glassmorphic Dark Theme" a
 
 ## 🚀 Wichtigste Funktionen & Tab-Struktur
 
-### 1. Dashboard (Zentrale)
-- **Personalisierbares Layout:** Blende Widgets (Finanzen, E-Rechnung, Habits, Google Kalender, Quick Capture) ein/aus.
-- **Offline-Notizen & Checkliste:** Lokaler Zettelkasten mit Markdown-Formatierungshilfe.
+### 1. Dashboard (Zentrale) -- *UPGRADED!*
+- **Personalisierbares Layout & Freie Verschiebung:** Blende Widgets (Finanzen, E-Rechnung, Habits, Google Kalender, Quick Capture) ein/aus und **verschiebe sie frei per Positionsmarkierung (`#1`, `#2`...) und `⬆️` / `⬇️` Buttons im Editor**.
+- **Supabase Auto-Cloud-Sync (Handy ↔ PC):** Dashboard-Notizen, To-Dos, Widget-Layout und Ansichts-Modi werden automatisch über Supabase geräteübergreifend in Echtzeit synchronisiert.
+- **Offline-Notizen & Checkliste:** Zettelkasten mit Markdown-Formatierungshilfe und Fallback-Speicherung in `localStorage`.
 - **Wochen-Review & PDF-Bericht:** Archiv für erledigte Aufgaben mit jsPDF-Berichts-Export.
 - **Gamifizierter Habit-Tracker:** Streak-Zähler mit CSS-Konfetti-Animation bei 100 % Abschluss.
 

@@ -73,7 +73,9 @@ import {
   saveLeadToSupabase, 
   fetchPromptsFromSupabase, 
   savePromptToSupabase, 
-  deletePromptFromSupabase 
+  deletePromptFromSupabase,
+  fetchDashboardStateFromSupabase,
+  saveDashboardStateToSupabase
 } from './services/supabase';
 import { updateAndroidWidget } from './services/widget';
 import { 
@@ -780,6 +782,55 @@ function App() {
     };
     fetchPrompts();
   }, [supabaseConfig, isOnline]);
+
+  // Fetch Dashboard State (Notes, To-Dos, Widgets, Mode) from Supabase on mount
+  useEffect(() => {
+    const fetchDashboardState = async () => {
+      if (!isOnline) return;
+      try {
+        const state = await fetchDashboardStateFromSupabase(supabaseConfig);
+        if (state) {
+          if (state.dash_notes !== undefined && state.dash_notes !== null) {
+            setDashNotes(state.dash_notes);
+            localStorage.setItem('f_dash_notes', state.dash_notes);
+          }
+          if (Array.isArray(state.dash_todos) && state.dash_todos.length > 0) {
+            setDashTodos(state.dash_todos);
+            localStorage.setItem('f_dash_todos', JSON.stringify(state.dash_todos));
+          }
+          if (Array.isArray(state.dashboard_widgets) && state.dashboard_widgets.length > 0) {
+            setDashboardWidgets(state.dashboard_widgets);
+            localStorage.setItem('f_dashboard_widgets', JSON.stringify(state.dashboard_widgets));
+          }
+          if (state.dashboard_mode) {
+            setDashboardMode(state.dashboard_mode);
+            localStorage.setItem('f_dashboard_mode', state.dashboard_mode);
+          }
+        }
+      } catch (e) {
+        console.error("Fehler beim Laden des Dashboard-States aus Supabase:", e);
+      }
+    };
+    fetchDashboardState();
+  }, [supabaseConfig, isOnline]);
+
+  // Auto-sync Dashboard State to Supabase whenever notes, todos, widgets or mode change
+  useEffect(() => {
+    if (!isOnline) return;
+    const timer = setTimeout(async () => {
+      try {
+        await saveDashboardStateToSupabase({
+          dashNotes,
+          dashTodos,
+          dashboardWidgets,
+          dashboardMode
+        }, supabaseConfig);
+      } catch (err) {
+        console.error("Fehler beim Speichern des Dashboard-States in Supabase:", err);
+      }
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [dashNotes, dashTodos, dashboardWidgets, dashboardMode, supabaseConfig, isOnline]);
 
   // Wochen-Review & Archiv Logik & Sync (Feature A3)
   useEffect(() => {

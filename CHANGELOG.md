@@ -5,6 +5,18 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **🎨 Freie Widget-Reihenfolge & Verschiebung im Dashboard-Editor:**
+  - **Dynamische Positionssteuerung:** Jedes der 12 Widgets besitzt im Layout-Editor nun eine Positions-Markierung (`#1`, `#2`...) und Pfeil-Tasten (`⬆️ Nach oben` / `⬇️ Nach unten`), um die Anordnung auf dem Dashboard beliebig zu verändern.
+  - **Button Standard-Reihenfolge:** Ein-Klick Wiederherstellen der ursprünglichen Standardanordnung.
+  - **Geräteübergreifer Auto-Sync:** Die individuelle Reihenfolge wird automatisch lokal und in Supabase gespeichert und auf Handy und PC synchron gehalten.
+- **☁️ Supabase Cloud Auto-Sync für Dashboard State (Notizen, To-Dos & Layout):**
+  - **Echtzeit-Synchronisation zwischen Geräten:** Dashboard-Notizen (`dashNotes`), Dashboard-To-Dos (`dashTodos`), Widget-Layout (`dashboardWidgets`) und Modus (`dashboardMode`) werden beim Start automatisch aus der Supabase-Tabelle `dashboard_state` geladen.
+  - **Automatisches Speichern:** Jede Änderung am Handy oder PC wird im Hintergrund nach 1 Sekunde nahtlos in die Cloud-Datenbank übertragen.
+
+### Fixed
+- **📱 Mobilgeräte Prompts Supabase-Sync Payload:** Bereinigung des Payload-Schemas in `savePromptToSupabase`, sodass zusätzliche Frontend-Eigenschaften (`isPinned`, `synced`) nicht mehr zu Schema-Fehlern in Supabase führen und Prompts zuverlässig auf Mobilgeräten gespeichert werden.
+
+### Added
 - **⚡ KI-Prompt-Zentrale Upgrade & Supabase Auto-Sync:**
   - **Sofortige Cloud-Synchronisation:** Beim Erstellen oder Löschen von Prompts wird die Supabase-Datenbank direkt im Hintergrund aktualisiert.
   - **Sync-Status-Badges (`☁️ Cloud` vs `📱 Lokal`):** Transparente Anzeige an jeder Prompt-Karte, ob der Prompt bereits in Supabase vorliegt.
