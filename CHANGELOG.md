@@ -5,6 +5,14 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **⚡ Eigenständiger Command Center Tab (Gründung & Business):**
+  - **Standalone Ansicht:** Neues `CommandCenter.jsx` Modul als eigenständiger Tab direkt unter dem Dashboard in der Seitenleiste (Desktop & Mobile) verlinkt.
+  - **Zentraler Workspace:** Vereint die interaktive Meilenstein-Checkliste (inklusive der neuen Business-To-Dos) und die Direkt-Bearbeitung von `masterLogbuch.txt` an einem Ort.
+  - **Datenschutz & Sync Info:** Erklärung des Local-First & Supabase Cloud Sync Modells zur Datensicherheit direkt im Banner sichtbar.
+  - **Cleanup DocsHub:** Redundante To-Do-Listen und Logbuch-Felder aus `DocsHub.jsx` entfernt, sodass der Tab fokussiert bleibt auf Dokumente, NotebookLM und Cloud-Sync.
+- **💼 Integration von Business- & Coaching-Aufgaben:**
+  - **Coaching-Vorgaben & To-Dos:** MVP-Ausarbeitung und Fördermittelrecherche als standardmäßige, sichtbare Business-Meilensteine in `STATUS.md` und `DocsHub.jsx` (`INITIAL_STATUS_TODOS` / `CommandCenter.jsx`) hinzugefügt.
+  - **Master-Logbuch Ergänzung:** Eintragung des Beratungstermins vom 28.07.2026 im chronologischen Gründungs-Logbuch von `masterLogbuch.js` (Hausaufgaben und nächste strategische Schritte zu MVP und Förderung).
 - **🚀 Master Command Center & STATUS.md Dashboard:**
   - **STATUS.md:** Erstellung einer zentralen Projekt-Statusdatei im Root-Verzeichnis (`STATUS.md`).
   - **Interaktives To-Do Board:** Dynamische Aufgabenverwaltung in `DocsHub.jsx` mit Häkchen-Status, Hinzufügen/Löschen von Aufgaben und automatischer `STATUS.md` Aktualisierung.

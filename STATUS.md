@@ -5,13 +5,15 @@
 - **Vercel Deployment:** Lokal gebaut und getestet (Vitest 7/7 grün). Bereit für `git push`.
 - **Kaltakquise-Datenbank:** 90 echte Leads in Supabase (`public.leads`) live angebunden.
 - **KI & RAG Firmengehirn:** Google Gemini API mit Fallback-Kette angebunden (`gemini-3.1-flash-lite`, `gemini-3-flash`, etc.).
-- **Letzte Aktualisierung:** 20.07.2026
+- **Letzte Aktualisierung:** 03.08.2026
 
 ---
 
 ## 🎯 Offene & Erledigte Aufgaben (To-Dos)
 
 ### 🔴 Wichtig / Aktuell
+- [ ] **[Business]** MVP ausarbeiten (Dienstleistungs-Leistungsumfang & ROI-Präsentation für Erstgespräche)
+- [ ] **[Business]** Fördermittel recherchieren (Digitalbonus Niedersachsen, Existenzgründungsförderung Jobcenter)
 - [ ] Vercel Live-Deployment durchführen (`git push origin main`)
 - [ ] Row-Level Security (RLS) in Supabase aktivieren (`ALTER TABLE public.leads ENABLE ROW LEVEL SECURITY;`)
 - [ ] Erstgespräche für Prio-A Leads (Handwerk & Pflege) im Harz ausmachen

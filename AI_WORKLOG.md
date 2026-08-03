@@ -1,5 +1,31 @@
 # AI Worklog - Founder OS
 
+## 2026-08-03 00:06 – Eigenständiger Command Center Tab & Business-Sync (COMPLETED)
+
+### Ziel
+Auslagern des "Master Command Centers" und des "masterLogbuch.txt"-Editors aus dem Dokumenten-Tab in einen eigenständigen, prominenten "Command Center"-Navigationspunkt sowie Integration der Gründungscoach-Aufgaben und Datensicherheits-Erklärungen.
+
+### Erstellt
+- [src/components/CommandCenter.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/components/CommandCenter.jsx): Neues React-Modul für das eigenständige Command Center (Meilensteine, Exportfunktionen, Direkt-Editor für `masterLogbuch.txt` und Info-Banner zum Local-First/Supabase-Sync).
+
+### Geändert
+- [src/components/DocsHub.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/components/DocsHub.jsx): Bereinigt von redundanten Meilenstein-Listen und dem Logbuch-Textfeld. Der Tab konzentriert sich jetzt rein auf Dokumente, NotebookLM und Supabase Sync.
+- [src/components/Sidebar.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/components/Sidebar.jsx): Verlinkung des neuen "Command Center"-Tabs mit einem Blitz-Icon in Desktop- und Mobile-Menü.
+- [src/App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): Import und konditionales Rendern des `CommandCenter`-Moduls bei Aktivierung des `status`-Tabs.
+- [src/assets/docs/masterLogbuch.js](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/assets/docs/masterLogbuch.js): Neue Business To-Dos hinzugefügt (MVP ausarbeiten, Fördermittel recherchieren) und neuen Coaching-Logbucheintrag vom 28.07.2026 für die Historie eingepflegt.
+- [src/test/App.test.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/test/App.test.jsx): Integrationstests an die neue Tab-Struktur angepasst (Logbuch-Feld wird nun im Command-Center-Tab verifiziert).
+- [STATUS.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/STATUS.md): Neue Business To-Dos unter "Wichtig / Aktuell" eingefügt und Datum aktualisiert.
+- [TODO.md](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md): Neuer Bereich "Gründung & Business (Coaching-Vorgaben)" für die Nachvollziehbarkeit hinzugefügt.
+
+### Warum
+Geschäftliche Meilensteine und Coaching-Vorgaben sind kritische Kernprozesse für den Gründer. Ein eigenständiger Tab unter dem Dashboard macht diese jederzeit präsent. Gleichzeitig klärt ein Info-Banner Missverständnisse bezüglich der Datensicherheit im Local-First/Cloud-Sync-Betrieb.
+
+### Testen
+- `npm run test` ausgeführt. Alle 7 Vitest-Integrationstests laufen fehlerfrei durch.
+- Erfolgreicher Integrationstest des Tab-Wechsels und der Logbuch-Texteingabe.
+
+---
+
 ## 2026-07-20 18:44 – Master Command Center (STATUS.md) & Supabase Leads Fallback (COMPLETED)
 
 ### Ziel

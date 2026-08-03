@@ -85,6 +85,7 @@ import { SettingsView } from './components/SettingsView';
 import { KanbanBoard } from './components/KanbanBoard';
 import { CrmPipeline } from './components/CrmPipeline';
 import { DashboardView } from './components/DashboardView';
+import { CommandCenter } from './components/CommandCenter';
 
 function App() {
   // Navigation State
@@ -3567,6 +3568,17 @@ Hier ist die Frage des Nutzers:
             weeklyArchive={weeklyArchive}
             updateReflection={updateReflection}
             insertMarkdownIntoNotes={insertMarkdownIntoNotes}
+          />
+        )}
+
+        {/* ==================== TAB 1b: BUSINESS COMMAND CENTER ==================== */}
+        {activeTab === 'status' && (
+          <CommandCenter
+            docs={docs}
+            setDocs={setDocs}
+            isOnline={isOnline}
+            ragPersona={ragPersona}
+            setRagPersona={setRagPersona}
           />
         )}
 

@@ -11,7 +11,8 @@ import {
   ChevronRight, 
   ChevronLeft, 
   X, 
-  Menu 
+  Menu,
+  Zap
 } from 'lucide-react';
 
 export const Sidebar = ({
@@ -47,6 +48,14 @@ export const Sidebar = ({
             >
               <LayoutDashboard size={18} />
               <span className="sidebar-nav-label">Dashboard</span>
+            </button>
+            <button 
+              className={`sidebar-nav-item ${activeTab === 'status' ? 'active' : ''}`}
+              onClick={() => setActiveTab('status')}
+              title="Command Center"
+            >
+              <Zap size={18} />
+              <span className="sidebar-nav-label">Command Center</span>
             </button>
             <button 
               className={`sidebar-nav-item ${activeTab === 'tasks' ? 'active' : ''}`}
@@ -145,6 +154,13 @@ export const Sidebar = ({
               >
                 <LayoutDashboard size={18} />
                 <span>Dashboard</span>
+              </button>
+              <button 
+                className={`sidebar-nav-item ${activeTab === 'status' ? 'active' : ''}`} 
+                onClick={() => { setActiveTab('status'); setMobileMenuOpen(false); }}
+              >
+                <Zap size={18} />
+                <span>Command Center</span>
               </button>
               <button 
                 className={`sidebar-nav-item ${activeTab === 'tasks' ? 'active' : ''}`} 

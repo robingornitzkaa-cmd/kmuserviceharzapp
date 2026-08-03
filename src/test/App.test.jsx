@@ -57,18 +57,22 @@ describe('Founder OS App - Integration Tests', () => {
     expect(screen.getByText('Prompt Vault (KI-Tresor)')).toBeInTheDocument()
     expect(screen.getByText('Social Media Content-Planer')).toBeInTheDocument()
 
-    // Dokumente & Sync Tab anklicken
-    const docsTab = screen.getByRole('button', { name: /Dokumente & Sync/i })
-    fireEvent.click(docsTab)
-    expect(screen.getByText('Wissens-Hub (Dokumente)')).toBeInTheDocument()
-    expect(screen.getByText('Supabase Cloud Sync')).toBeInTheDocument()
-    expect(screen.getByText('masterLogbuch.txt (Immer offen)')).toBeInTheDocument()
+    // Command Center Tab anklicken
+    const statusTab = screen.getByRole('button', { name: /Command Center/i })
+    fireEvent.click(statusTab)
+    expect(screen.getByText('masterLogbuch.txt (Coaching & Strategie)')).toBeInTheDocument()
 
     // Teste die Texteingabe im Logbuch-Textfeld
     const logbookInput = screen.getByPlaceholderText('Schreibe hier deinen aktuellen Stand hinein...')
     expect(logbookInput).toBeInTheDocument()
     fireEvent.change(logbookInput, { target: { value: 'Logbuch Eintrag: Test läuft.' } })
     expect(logbookInput.value).toBe('Logbuch Eintrag: Test läuft.')
+
+    // Dokumente & Sync Tab anklicken
+    const docsTab = screen.getByRole('button', { name: /Dokumente & Sync/i })
+    fireEvent.click(docsTab)
+    expect(screen.getByText('Wissens-Hub (Dokumente)')).toBeInTheDocument()
+    expect(screen.getByText('Supabase Cloud Sync')).toBeInTheDocument()
   })
 
   test('Showcase-Modus toggle maskiert sensible Daten', () => {

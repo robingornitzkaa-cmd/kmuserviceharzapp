@@ -124,11 +124,21 @@ export const MASTER_LOGBUCH_CONTENT = `# **📑 MASTER-LOGBUCH & COMMAND CENTER:
 
 ## **TEIL 7: OPERATIVE TO-DO-LISTE (Sachen, die zu erledigen sind)**
 
-* **[ ] [Prio 1] Argumentations-Übersicht für den Coach erstellen (UG vs. Einzelunternehmen):** Knallharte Gegenüberstellung ausarbeiten, warum ein Einzelunternehmen wegen der privaten Verschuldung/Insolvenz-Thematik das Business sofort killen würde und warum die UG der einzig tragfähige Schutzwall ist. *(Hausaufgabe für den Coach!)*  
+* **[ ] [Prio 1] MVP ausarbeiten:** Detaillierten Leistungsumfang für das Einstiegs-Audit (500 €) und das Standard-Setup-Projekt (2.000 €) festlegen, um ein klares, minimal überlebensfähiges Service-Produkt präsentieren zu können.
+* **[ ] [Prio 1] Fördermittel recherchieren:** Fördermöglichkeiten prüfen (insb. Digitalbonus Niedersachsen für Kunden sowie Einstiegsgeld, Gründungszuschuss und Sachmittelzuschuss für die eigene Existenzsicherung).
+* **[ ] [Prio 2] Argumentations-Übersicht für den Coach erstellen (UG vs. Einzelunternehmen):** Knallharte Gegenüberstellung ausarbeiten, warum ein Einzelunternehmen wegen der privaten Verschuldung/Insolvenz-Thematik das Business sofort killen würde und warum die UG der einzig tragfähige Schutzwall ist. *(Hausaufgabe für den Coach!)*  
 * **[ ] [Prio 2] Pricing-Sparring vorbereiten:** Da der Coach die Preistreppe (500 € / 2.000 € / 200 €) im Erstgespräch gesehen, aber noch nicht tiefergehend besprochen hat, muss hierzu ein roter Faden für das nächste Meeting gelegt werden.  
 * **[ ] [Prio 3] Jobcenter-Sachmittel-Spezifikation:** Exakte Begründung formulieren, warum für die Arbeit mit DATEV- und Lexoffice-Kundendaten ein dedizierter, hardwareverschlüsselter Business-Laptop rechtlich zwingend nötig ist (Sachmittelzuschuss).
 
 ## **TEIL 8: CHRONOLOGISCHES GRÜNDUNGS-LOGBUCH**
+
+### **📝 Eintrag vom 28.07.2026: Beratungsgespräch mit dem Gründungscoach (Fokus: MVP & Förderung)**
+
+* **Status Quo der Besprechung:** Besprechung der nächsten konkreten Gründungsschritte. Der Coach empfiehlt, vor der formellen Notaranmeldung das MVP (Minimum Viable Product) für KMU Service Harz glasklar auszuarbeiten und parallel eine strukturierte Recherche für infrage kommende Gründungsförderungen und Kunden-Fördergelder durchzuführen.
+* **Zentraler Diskussionspunkt:** Timing der Anträge. Um Förderschädlichkeit zu vermeiden, müssen Einstiegsgeld und Sachmittelzuschüsse beim Jobcenter zwingend *vor* der UG-Notargründung beantragt und genehmigt sein.
+* **Definierte Next Steps / Vereinbarte Hausaufgaben:**  
+  1. MVP-Modulbeschreibung (Leistungsumfang und Kundennutzen) formulieren.
+  2. Recherche der Fördermittel-Richtlinien und Antragsformulare (Digitalbonus, Einstiegsgeld).
 
 ### **📝 Eintrag vom 11.07.2026: Erstes Beratungsgespräch mit dem Gründungscoach**
 

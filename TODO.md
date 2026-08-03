@@ -1,6 +1,9 @@
 # TODO - Founder OS
 
 ## Wichtig
+- [ ] **Gründung & Business (Coaching-Vorgaben):**
+  - [ ] MVP ausarbeiten (Dienstleistungs-Leistungsumfang & ROI-Präsentation für Erstgespräche)
+  - [ ] Fördermittel recherchieren (Digitalbonus Niedersachsen, Existenzgründungsförderung Jobcenter)
 - [ ] **Qualitäts- & Sicherheitsroadmap (Fahrplan aus codebase_review_report.md):**
   - [x] **Phase 1: Sofortmaßnahmen (Härtung & Secrets):**
     - [x] Supabase-Secrets aus Quellcode in `.env` auslagern (Task 1.1)
