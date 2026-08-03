@@ -5,6 +5,12 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **🔒 Master-PIN Sperrbildschirm (App-Sicherheit):**
+  - **Sicherheits-Verriegelung:** Die gesamte App wird beim Aufrufen über Vercel durch einen modernen 4-stelligen Master-PIN Sperrbildschirm geschützt (Standard-PIN: `2026`).
+  - **Manuelles Sperren:** Neuer Button `🔒 App sperren` in der App-Kopfzeile zum sofortigen Sperren der aktuellen Sitzung.
+- **🔄 Bi-direktionaler Google Drive Import & Lokaler Datei-Upload:**
+  - **Drive ➔ App Download:** Button `☁️ aus Google Drive in App laden` lädt automatisch alle Recherche-Dateien aus deinem Projektordner herunter und speichert sie in der App.
+  - **Lokaler Ordner-Import:** Button `📁 Dateien importieren` erlaubt das gleichzeitige Auswählen mehrerer `.txt`/`.md`-Dateien von deinem Rechner.
 - **🧠 Schnellfrage an das Firmengehirn & Folge-Task Generator:**
   - **Direkte RAG-Suche:** Neues KI-Widget im Command Center zum sofortigen Stellen von Fragen an deine Dokumente (z.B. Fördermittel-Status).
   - **Mehrstufige KI-Fallback-Kette:** Kombiniert Gemini API, lokales Ollama (Llama 3.2) und Volltextsuche.

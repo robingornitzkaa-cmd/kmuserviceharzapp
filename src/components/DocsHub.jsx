@@ -23,6 +23,7 @@ export const DocsHub = ({
   notebookLmSyncStep,
   notebookLmProgress,
   triggerManualGoogleDriveSync,
+  triggerImportFromGoogleDrive,
   googleClientId,
   setGoogleClientId,
   supabaseSyncStatus,
@@ -43,6 +44,42 @@ export const DocsHub = ({
   ragInput,
   setRagInput
 }) => {
+  const handleLocalFilesImport = (e) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+
+    let importedCount = 0;
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const textContent = event.target.result;
+        setDocs(prev => {
+          const index = prev.findIndex(d => d.title === file.name);
+          if (index !== -1) {
+            const updated = [...prev];
+            updated[index] = { ...updated[index], content: textContent, status: 'local' };
+            return updated;
+          } else {
+            return [
+              ...prev,
+              {
+                id: 'local_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+                title: file.name,
+                content: textContent,
+                status: 'local',
+                url: '#'
+              }
+            ];
+          }
+        });
+        importedCount++;
+        if (importedCount === files.length) {
+          alert(`✅ ${files.length} Datei(en) erfolgreich in deinen Wissens-Hub importiert!`);
+        }
+      };
+      reader.readAsText(file);
+    });
+  };
   return (
     <div className="hub-grid">
       
@@ -53,14 +90,32 @@ export const DocsHub = ({
         <div className="card">
           <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <h2 className="card-title"><FileText size={20} className="text-cyan-500" /> Wissens-Hub (Dokumente)</h2>
-            <button
-              type="button"
-              onClick={() => handleOpenDocInEditor(null)}
-              className="btn btn-primary"
-              style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.25rem', height: '28px' }}
-            >
-              ➕ Neues Dokument erstellen
-            </button>
+            <div style={{ display: 'flex', gap: '0.4rem' }}>
+              <input
+                type="file"
+                id="local-file-import-input"
+                multiple
+                accept=".txt,.md,.json,.csv"
+                onChange={handleLocalFilesImport}
+                style={{ display: 'none' }}
+              />
+              <button
+                type="button"
+                onClick={() => document.getElementById('local-file-import-input')?.click()}
+                className="btn btn-secondary"
+                style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.25rem', height: '28px' }}
+              >
+                📁 Dateien importieren
+              </button>
+              <button
+                type="button"
+                onClick={() => handleOpenDocInEditor(null)}
+                className="btn btn-primary"
+                style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.25rem', height: '28px' }}
+              >
+                ➕ Neues Dokument
+              </button>
+            </div>
           </div>
           
           <div className="upload-zone" onClick={() => handleOpenDocInEditor(null)} style={{ border: '1px dashed var(--accent-cyan)', background: 'rgba(6, 182, 212, 0.02)', padding: '1rem', textAlign: 'center', cursor: 'pointer', borderRadius: '0.5rem', marginBottom: '1rem' }}>
@@ -213,28 +268,27 @@ export const DocsHub = ({
               </div>
             )}
 
-            <button 
-              type="button"
-              onClick={triggerManualGoogleDriveSync} 
-              disabled={notebookLmSyncStatus === 'syncing'} 
-              className="btn btn-secondary"
-              style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem', border: docs.filter(d => d.status === 'local' || d.status === 'modified').length > 0 ? '1px solid var(--accent-purple)' : '1px solid var(--border-color)' }}
-            >
-              <svg 
-                className={notebookLmSyncStatus === 'syncing' ? 'spin' : ''} 
-                width="16" 
-                height="16" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                strokeLinejoin="round"
+            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+              <button 
+                type="button"
+                onClick={triggerImportFromGoogleDrive} 
+                disabled={notebookLmSyncStatus === 'syncing'} 
+                className="btn btn-secondary"
+                style={{ flex: 1, minWidth: '180px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', padding: '0.6rem 0.5rem' }}
               >
-                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
-              </svg>
-              {notebookLmSyncStatus === 'syncing' ? 'Synchronisiere Drive & NotebookLM...' : 'Google Drive & NotebookLM aktualisieren'}
-            </button>
+                ☁️ aus Google Drive in App laden
+              </button>
+
+              <button 
+                type="button"
+                onClick={triggerManualGoogleDriveSync} 
+                disabled={notebookLmSyncStatus === 'syncing'} 
+                className="btn btn-primary"
+                style={{ flex: 1, minWidth: '180px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', padding: '0.6rem 0.5rem', background: 'var(--accent-purple)', border: 'none' }}
+              >
+                <Upload size={14} /> App in Google Drive sichern
+              </button>
+            </div>
 
             <div style={{ marginTop: '1.25rem', paddingTop: '1rem', borderTop: '1px solid var(--border-color)' }}>
               <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.25rem', fontWeight: 600 }}>

@@ -6,6 +6,7 @@ import App from '../App'
 describe('Founder OS App - Integration Tests', () => {
   beforeEach(() => {
     localStorage.clear()
+    localStorage.setItem('f_app_authenticated', 'true')
   })
 
   test('App rendert initial das Dashboard', () => {
@@ -252,5 +253,26 @@ describe('Founder OS App - Integration Tests', () => {
     await waitFor(() => {
       expect(mvpCheckbox.checked).toBe(false)
     })
+  })
+
+  test('Master-PIN Lock Screen sperrt unangemeldete Besucher und schaltet mit PIN 2026 frei', () => {
+    localStorage.clear() // Simuliere unangemeldeten Besucher
+    render(<App />)
+
+    // Lock Screen wird gerendert
+    expect(screen.getByText('Founder OS – Geschützt')).toBeInTheDocument()
+    const pinInput = screen.getByPlaceholderText(/PIN eingeben/i)
+
+    // Falscher PIN
+    fireEvent.change(pinInput, { target: { value: '0000' } })
+    fireEvent.click(screen.getByRole('button', { name: /App freischalten/i }))
+    expect(screen.getByText(/Ungültiger PIN/i)).toBeInTheDocument()
+
+    // Richtiger PIN (2026)
+    fireEvent.change(pinInput, { target: { value: '2026' } })
+    fireEvent.click(screen.getByRole('button', { name: /App freischalten/i }))
+
+    // Dashboard ist freigeschaltet
+    expect(screen.getByText('Neue Idee oder Notiz erfassen')).toBeInTheDocument()
   })
 })

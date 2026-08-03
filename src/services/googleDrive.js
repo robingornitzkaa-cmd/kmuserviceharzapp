@@ -218,3 +218,46 @@ export const updateFile = async (token, fileId, content) => {
   }
   return fileId;
 };
+
+/**
+ * Downloads all text files from a folder in Google Drive.
+ */
+export const downloadAllDocsFromDrive = async (token, folderName) => {
+  const folderId = await getFolderId(token, folderName);
+  if (!folderId) {
+    throw new Error(`Projektordner "${folderName}" wurde in Google Drive nicht gefunden.`);
+  }
+
+  const query = encodeURIComponent(`'${folderId}' in parents and mimeType != 'application/vnd.google-apps.folder' and trashed = false`);
+  const response = await fetch(
+    `https://www.googleapis.com/drive/v3/files?q=${query}&fields=files(id,name)`,
+    {
+      headers: { Authorization: `Bearer ${token}` }
+    }
+  );
+  const data = await handleResponse(response);
+  const driveFiles = data.files || [];
+
+  const downloadedDocs = [];
+  for (const file of driveFiles) {
+    const contentResponse = await fetch(
+      `https://www.googleapis.com/drive/v3/files/${file.id}?alt=media`,
+      {
+        headers: { Authorization: `Bearer ${token}` }
+      }
+    );
+    let textContent = '';
+    if (contentResponse.ok) {
+      textContent = await contentResponse.text();
+    }
+    downloadedDocs.push({
+      id: 'gdrive_' + file.id,
+      title: file.name,
+      content: textContent,
+      status: 'synced',
+      url: '#'
+    });
+  }
+
+  return downloadedDocs;
+};

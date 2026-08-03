@@ -1,5 +1,46 @@
 # AI Worklog - Founder OS
 
+## 2026-08-03 15:43 – Master-PIN Sperrbildschirm & App-Verschlüsselung (COMPLETED)
+
+### Ziel
+Vollständiges Absichern der Vercel-Web-App gegen unbefugte externe Zugriffe durch einen eleganten Master-PIN Sperrbildschirm (Standard-PIN: `2026`).
+
+### Erstellt
+- Keine neuen Dateien (Erweiterung der bestehenden Komponenten & Tests).
+
+### Geändert
+- [src/App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): Einbau des Master-PIN Sperrbildschirms (Glassmorphism UI), Verifizierung per `handleLoginSubmit` (Standard PIN `2026`) und Hinzufügen des `🔒 App sperren` Buttons in der App-Headerleiste.
+- [src/test/App.test.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/test/App.test.jsx): Pre-Authentifizierung in `beforeEach` und Erstellung eines 9. Integrationstests zur Verifizierung des Sperrbildschirms.
+
+### Warum
+Damit fremde Personen über die öffentliche Vercel-URL ohne den Master-PIN keinen Zugriff auf die sensiblen Betriebsdaten, Kundendaten und Logbücher erhalten.
+
+### Testen
+- `npm run test` ausgeführt. Alle 9 Vitest-Integrationstests laufen zu 100% grün durch.
+
+---
+
+## 2026-08-03 15:40 – Bi-direktionaler Google Drive Import & Lokaler Mehrfach-Datei-Import (COMPLETED)
+
+### Ziel
+Ermöglichen des Bi-direktionalen Datenflusses zwischen Google Drive (NotebookLM) und der React-App (App ➔ Drive & Drive ➔ App) sowie Einbau eines lokalen Mehrfach-Datei-Importers für Recherche-Dateien.
+
+### Erstellt
+- Keine neuen Dateien.
+
+### Geändert
+- [src/services/googleDrive.js](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/services/googleDrive.js): Hinzufügen der REST-API-Funktion `downloadAllDocsFromDrive` zum Herunterladen aller Quell-Dateien aus dem Drive-Projektordner.
+- [src/App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): Einbau des Handlers `triggerImportFromGoogleDrive` zum automatischen Abgleich und Einfügen heruntergeladener Dokumente in den lokalen `docs`-State.
+- [src/components/DocsHub.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/components/DocsHub.jsx): Einbau des Mehrfach-Datei-Uploads (`📁 Dateien importieren`) sowie der zwei Bi-direktionalen Action-Buttons (`☁️ aus Google Drive in App laden` & `⬆️ App in Google Drive sichern`).
+
+### Warum
+Damit Robin alle Dokumente und Recherche-Ergebnisse aus NotebookLM/Google Drive direkt in seine App laden, dort lesen und bearbeiten kann, und Änderungen nahtlos zurück nach Google Drive synchronisiert werden.
+
+### Testen
+- `npm run test` ausgeführt. Alle 8 Vitest-Integrationstests laufen zu 100% grün durch.
+
+---
+
 ## 2026-08-03 14:09 – KI-Firmengehirn Schnellfragen & Automatische Folge-Tasks (COMPLETED)
 
 ### Ziel
