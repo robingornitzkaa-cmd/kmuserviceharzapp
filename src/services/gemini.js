@@ -105,3 +105,70 @@ ${promptText}
   
   return { text: optimized, source: "integriertem Smart-Fallback-Optimierer" };
 };
+
+export const askFirmengehirn = async ({ question, docsContent, geminiApiKey }) => {
+  const systemPrompt = `Du bist das KI-Firmengehirn für "KMU Service Harz". Du hast vollen Zugriff auf das Master-Logbuch und alle Wissensdokumente des Gründers Robin.
+Beantworte die folgende Frage präzise, auf den Punkt und ehrlich auf Deutsch basierend auf den Dokumenten. Nenne relevante Details wie Beträge, Fristen oder Rechtsformen, falls vorhanden.
+
+--- WISSENSDOKUMENTE ---
+${docsContent}
+--- ENDE DOKUMENTE ---
+
+Nutzer-Frage: ${question}`;
+
+  // 1. Try Gemini Cloud API Models
+  if (geminiApiKey && geminiApiKey.trim()) {
+    for (const model of GEMINI_MODELS) {
+      try {
+        const responseText = await callGeminiAPI(model, systemPrompt, geminiApiKey);
+        if (responseText) {
+          return { text: responseText.trim(), source: `Gemini (${model})` };
+        }
+      } catch (e) {
+        console.warn(`Gemini Model ${model} failed:`, e);
+      }
+    }
+  }
+
+  // 2. Try Ollama (Local AI)
+  try {
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), 3500);
+    
+    const response = await fetch("http://localhost:11434/api/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      signal: controller.signal,
+      body: JSON.stringify({
+        model: "llama3.2",
+        prompt: systemPrompt,
+        stream: false
+      })
+    });
+    clearTimeout(id);
+    
+    if (response.ok) {
+      const data = await response.json();
+      if (data.response) {
+        return { text: data.response.trim(), source: "Lokaler Ollama KI (Llama 3.2)" };
+      }
+    }
+  } catch (e) {
+    console.log("Ollama Local AI nicht erreichbar", e);
+  }
+
+  // 3. Offline Fulltext Search Fallback
+  const matchingLines = docsContent
+    .split('\n')
+    .filter(line => {
+      const words = question.toLowerCase().split(' ').filter(w => w.length > 3);
+      return words.some(w => line.toLowerCase().includes(w));
+    })
+    .slice(0, 6);
+
+  const fallbackText = matchingLines.length > 0
+    ? `💡 **Wissens-Suchergebnis (Offline-Modus):**\n\n` + matchingLines.map(l => `• ${l.trim()}`).join('\n')
+    : `💡 **Wissens-Suche:** Zu "${question}" wurden keine direkten Einträge gefunden. Tipp: Hinterlege einen kostenlosen Gemini API-Key in den KI-Einstellungen für tiefere KI-Antworten.`;
+
+  return { text: fallbackText, source: "Lokale Volltext-Suche" };
+};

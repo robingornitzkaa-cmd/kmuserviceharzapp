@@ -25,12 +25,15 @@ import {
   UserCheck
 } from 'lucide-react';
 
+import { askFirmengehirn } from '../services/gemini';
+
 export const CommandCenter = ({
   docs,
   setDocs,
   isOnline,
   ragPersona,
-  setRagPersona
+  setRagPersona,
+  geminiApiKey
 }) => {
   const logbuchDoc = docs.find(d => d.id === 'master-logbuch');
   const logbuchContent = logbuchDoc?.content || '';
@@ -169,6 +172,38 @@ export const CommandCenter = ({
   const strategyVars = parseStrategyVars(logbuchContent);
   const logbuchEntries = parseLogbuchEntries(logbuchContent);
 
+  // Firmengehirn Quick Q&A State
+  const [qaQuestion, setQaQuestion] = useState('');
+  const [qaAnswer, setQaAnswer] = useState(null);
+  const [qaSource, setQaSource] = useState('');
+  const [isQaLoading, setIsQaLoading] = useState(false);
+
+  const handleAskFirmengehirn = async (e) => {
+    e.preventDefault();
+    if (!qaQuestion.trim()) return;
+
+    setIsQaLoading(true);
+    setQaAnswer(null);
+
+    const allDocsCombined = docs.map(d => `=== ${d.title} ===\n${d.content}`).join('\n\n');
+
+    try {
+      const res = await askFirmengehirn({
+        question: qaQuestion.trim(),
+        docsContent: allDocsCombined,
+        geminiApiKey: geminiApiKey
+      });
+
+      setQaAnswer(res.text);
+      setQaSource(res.source);
+    } catch (err) {
+      setQaAnswer("Fehler beim Abrufen der KI-Antwort: " + err.message);
+      setQaSource("Fehler");
+    } finally {
+      setIsQaLoading(false);
+    }
+  };
+
   // Helper: Prüft, ob ein Wert noch Platzhalter enthält
   const isPlaceholder = (val) => {
     if (!val) return true;
@@ -189,7 +224,7 @@ export const CommandCenter = ({
   const fixedCount = varKeys.filter(v => !isPlaceholder(v)).length;
   const readinessScore = Math.round((fixedCount / varKeys.length) * 100);
 
-  // Schreiber-Hilfsfunktion für Variablen
+  // Schreiber-Hilfsfunktion für Variablen mit automatischem Folge-Task Trigger
   const updateLogbuchVariable = (prefix, newValue) => {
     const lines = logbuchContent.split('\n');
     let updated = false;
@@ -203,6 +238,24 @@ export const CommandCenter = ({
     }
 
     if (updated) {
+      // Automatischen Folge-Task erzeugen (Cross-Document Trigger)
+      const followUpTaskText = `[Businessplan-Update] Ära ${prefix} (${newValue}) im Businessplan & ROI-Rechner nachziehen.`;
+      
+      let teil7HeaderIndex = -1;
+      let alreadyExists = false;
+      for (let i = 0; i < lines.length; i++) {
+        if (lines[i].includes('## **TEIL 7: OPERATIVE TO-DO-LISTE')) {
+          teil7HeaderIndex = i;
+        }
+        if (lines[i].includes(`[Businessplan-Update] Ära ${prefix}`)) {
+          alreadyExists = true;
+        }
+      }
+
+      if (!alreadyExists && teil7HeaderIndex !== -1) {
+        lines.splice(teil7HeaderIndex + 2, 0, `* [ ] ${followUpTaskText}`);
+      }
+
       const newContent = lines.join('\n');
       setDocs(prev => prev.map(d => 
         d.id === 'master-logbuch' 
@@ -491,6 +544,46 @@ ${doneTodos.map(t => `- [x] ${t.text}`).join('\n') || '- Keine erledigten Aufgab
             transition: 'width 0.4s ease' 
           }} />
         </div>
+      </div>
+
+      {/* Schnellfrage an das KI-Firmengehirn */}
+      <div className="card" style={{ background: 'rgba(163, 116, 255, 0.04)', border: '1px solid rgba(163, 116, 255, 0.2)', padding: '1.25rem', marginBottom: '1.5rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
+          <BrainCircuit size={22} style={{ color: 'var(--accent-purple)' }} />
+          <h3 style={{ margin: 0, fontSize: '1.05rem', color: 'white' }}>Schnellfrage an dein KI-Firmengehirn</h3>
+          <span style={{ fontSize: '0.7rem', padding: '0.1rem 0.4rem', borderRadius: '0.2rem', background: 'rgba(163, 116, 255, 0.15)', color: 'var(--accent-purple)' }}>
+            RAG Live-Suche
+          </span>
+        </div>
+
+        <form onSubmit={handleAskFirmengehirn} style={{ display: 'flex', gap: '0.5rem' }}>
+          <input
+            type="text"
+            className="input-field"
+            placeholder="Stelle eine Frage zu deinen Dokumenten (z.B.: Wie sieht es mit den Fördermitteln aus?)"
+            value={qaQuestion}
+            onChange={(e) => setQaQuestion(e.target.value)}
+            style={{ flexGrow: 1 }}
+          />
+          <button 
+            type="submit" 
+            className="btn btn-primary" 
+            disabled={isQaLoading}
+            style={{ background: 'var(--accent-purple)', border: 'none', minWidth: '110px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}
+          >
+            {isQaLoading ? 'Sucht...' : 'Fragen'}
+          </button>
+        </form>
+
+        {qaAnswer && (
+          <div style={{ marginTop: '1rem', padding: '1rem', background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(163, 116, 255, 0.3)', borderRadius: '0.5rem', fontSize: '0.85rem', lineHeight: '1.5', whiteSpace: 'pre-wrap' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', fontSize: '0.7rem', color: 'var(--accent-purple)', fontWeight: 700 }}>
+              <span>🧠 Antwort von deinem Firmengehirn:</span>
+              <span>Quelle: {qaSource}</span>
+            </div>
+            {qaAnswer}
+          </div>
+        )}
       </div>
 
       {/* Modal: Coach-Termin Mitschrift eintragen */}

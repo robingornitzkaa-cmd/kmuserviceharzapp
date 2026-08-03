@@ -3628,6 +3628,7 @@ Hier ist die Frage des Nutzers:
             isOnline={isOnline}
             ragPersona={ragPersona}
             setRagPersona={setRagPersona}
+            geminiApiKey={geminiApiKey}
           />
         )}
 

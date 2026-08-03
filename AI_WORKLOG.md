@@ -1,5 +1,26 @@
 # AI Worklog - Founder OS
 
+## 2026-08-03 14:09 – KI-Firmengehirn Schnellfragen & Automatische Folge-Tasks (COMPLETED)
+
+### Ziel
+Integration einer Schnellfragen-Suchleiste für das KI-Firmengehirn (RAG Bot) direkt im Command Center sowie Einbau eines automatisierten Folge-Task Generators (Cross-Document Trigger), der beim Aktualisieren von Strategie-Variablen automatisch eine Erinnerungs-Aufgabe zum Nachziehen des Businessplans erstellt.
+
+### Erstellt
+- Keine neuen Dateien.
+
+### Geändert
+- [src/services/gemini.js](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/services/gemini.js): Hinzufügen der RAG-Funktion `askFirmengehirn` mit 3-stufiger Fallback-Kette (Gemini API -> Lokaler Ollama Llama 3.2 -> Lokale Volltextsuche).
+- [src/components/CommandCenter.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/components/CommandCenter.jsx): Einbau des Widget-Bereichs „Schnellfrage an dein KI-Firmengehirn“ und Erweiterung von `updateLogbuchVariable` um den automatischen Folge-Task Generator (Businessplan-Update).
+- [src/App.jsx](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): Übergabe des Props `geminiApiKey` an die `CommandCenter`-Komponente.
+
+### Warum
+Damit Fragen zu Dokumenten (z.B. Fördermitteln) direkt ohne Tab-Wechsel gestellt werden können und bei Strategie-Änderungen automatisch Folge-To-Dos für abhängige Dokumente (wie den Businessplan) erzeugt werden.
+
+### Testen
+- `npm run test` ausgeführt. Alle 8 Vitest-Integrationstests laufen zu 100% grün durch.
+
+---
+
 ## 2026-08-03 14:04 – Visuelles Strategie-Cockpit & Command Center v2 (COMPLETED)
 
 ### Ziel

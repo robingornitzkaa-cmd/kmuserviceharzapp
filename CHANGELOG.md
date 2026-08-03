@@ -5,6 +5,10 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **🧠 Schnellfrage an das Firmengehirn & Folge-Task Generator:**
+  - **Direkte RAG-Suche:** Neues KI-Widget im Command Center zum sofortigen Stellen von Fragen an deine Dokumente (z.B. Fördermittel-Status).
+  - **Mehrstufige KI-Fallback-Kette:** Kombiniert Gemini API, lokales Ollama (Llama 3.2) und Volltextsuche.
+  - **Cross-Document Folge-Tasks:** Ändert sich ein Parameter im Strategie-Cockpit, wird automatisch eine Folge-Aufgabe (z.B. `[Businessplan-Update]`) in deine Meilenstein-Checkliste eingetragen.
 - **📊 Visuelles Strategie-Cockpit & Command Center v2:**
   - **Gründungs-Bereitschafts-Score:** Dynamische Prozentanzeige der Launch-Bereitschaft basierend auf fixierten vs. offenen Strategie-Variablen.
   - **Schnell-Erfassung für Coach-Meetings:** Dialog-Modal (`+ Coach-Termin eintragen`) zur strukturierten Eingabe von Beratungsergebnissen und automatischer Übernahme neuer Hausaufgaben.
