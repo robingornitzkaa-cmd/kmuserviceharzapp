@@ -275,4 +275,83 @@ describe('Founder OS App - Integration Tests', () => {
     // Dashboard ist freigeschaltet
     expect(screen.getByText('Neue Idee oder Notiz erfassen')).toBeInTheDocument()
   })
+
+  test('Deep Research Prompt Modus und Quick-Button im Prompt Vault funktionieren', async () => {
+    // Mocke fetch, damit der Ollama-Verbindungsversuch nicht in ein 2-Sekunden-Timeout läuft
+    const fetchSpy = vi.spyOn(global, 'fetch').mockRejectedValue(new Error('Ollama offline mock'))
+
+    render(<App />)
+
+    // KI Prompts Tab anklicken
+    const promptsTab = screen.getByRole('button', { name: /KI Prompts/i })
+    fireEvent.click(promptsTab)
+    expect(screen.getByText('Prompt Vault (KI-Tresor)')).toBeInTheDocument()
+
+    // Prüfe, ob das Optimierungsziel "🔬 Deep Research" gerendert wird
+    const deepResearchModeBtn = screen.getByRole('button', { name: /^🔬 Deep Research$/i })
+    expect(deepResearchModeBtn).toBeInTheDocument()
+
+    // Fülle einen Prompt-Textbereich aus
+    const promptInput = screen.getByPlaceholderText(/Prompt Text.../i)
+    fireEvent.change(promptInput, { target: { value: 'KMU Digitalisierung im Harz' } })
+
+    // Klicke auf den "🔬 Deep Research Prompt" Quick Button
+    const quickResearchBtn = screen.getByRole('button', { name: /🔬 Deep Research Prompt/i })
+    fireEvent.click(quickResearchBtn)
+
+    // Diff-Modal öffnet sich mit dem optimierten Deep Research Prompt
+    await waitFor(() => {
+      expect(screen.getByText(/KI-Optimierung: Vorher \/ Nachher Vergleich/i)).toBeInTheDocument()
+      expect(screen.getByText(/\[DEEP RESEARCH PROMPT\]/i)).toBeInTheDocument()
+    })
+
+    fetchSpy.mockRestore()
+  })
+
+  test('Dashboard Notizzettel rendert Cloud-Badge, Wörter- & Zeichenzähler', () => {
+    render(<App />)
+
+    // Prüfe, ob Notizzettel auf dem Dashboard gerendert wird
+    expect(screen.getByText('📌 Notizzettel & Aufgaben (Cloud-Sync)')).toBeInTheDocument()
+    expect(screen.getAllByText('☁️ Cloud-gesichert').length).toBeGreaterThan(0)
+
+    // Gebe Notiz-Text ein
+    const notesInput = screen.getByPlaceholderText(/Notiere hier deine Gedanken/i)
+    fireEvent.change(notesInput, { target: { value: 'Hallo Harz KMU Notiz' } })
+
+    // Statistiken prüfen (4 Wörter | 20 Zeichen)
+    expect(screen.getByText(/4 Wörter \| 20 Zeichen/i)).toBeInTheDocument()
+  })
+
+  test('KMU Spezial-Vorlagen und Prompt-Übernahme im Prompt Vault funktionieren', async () => {
+    const fetchSpy = vi.spyOn(global, 'fetch').mockImplementation(() => Promise.resolve({ ok: true, json: () => Promise.resolve([]) }))
+
+    render(<App />)
+
+    // KI Prompts Tab anklicken
+    const promptsTab = screen.getByRole('button', { name: /KI Prompts/i })
+    fireEvent.click(promptsTab)
+
+    // KMU Vorlagen Filter anklicken
+    const kmuFilterBtn = screen.getByRole('button', { name: /🏢 KMU Harz Vorlagen/i })
+    fireEvent.click(kmuFilterBtn)
+
+    // Prüfe, ob KMU-Vorlagen geladen sind
+    expect(screen.getByText(/Angebots-Nachfassung/i)).toBeInTheDocument()
+
+    // Vorlage übernehmen
+    const adoptBtns = screen.getAllByRole('button', { name: /➕ In meinen Tresor übernehmen/i })
+    fireEvent.click(adoptBtns[0])
+
+    // Zurück zu "Alle" Prompts filtern
+    const allFilterBtn = screen.getByRole('button', { name: /^Alle/i })
+    fireEvent.click(allFilterBtn)
+
+    // Prüfe mit waitFor, bis der async State-Update im Tresor gerendert wird
+    await waitFor(() => {
+      expect(screen.getAllByText(/Angebots-Nachfassung/i).length).toBeGreaterThan(0)
+    })
+
+    fetchSpy.mockRestore()
+  })
 })

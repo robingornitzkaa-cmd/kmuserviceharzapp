@@ -10,7 +10,7 @@ Die Anwendung zeichnet sich durch ein futuristisches "Glassmorphic Dark Theme" a
 
 ### 1. Dashboard (Zentrale) -- *UPGRADED!*
 - **Personalisierbares Layout & Freie Verschiebung:** Blende Widgets (Finanzen, E-Rechnung, Habits, Google Kalender, Quick Capture) ein/aus und **verschiebe sie frei per Positionsmarkierung (`#1`, `#2`...) und `⬆️` / `⬇️` Buttons im Editor**.
-- **Supabase Auto-Cloud-Sync (Handy ↔ PC):** Dashboard-Notizen, To-Dos, Widget-Layout und Ansichts-Modi werden automatisch über Supabase geräteübergreifend in Echtzeit synchronisiert.
+- **📌 Notizzettel Cloud-Sync (Handy ↔ PC):** Notizzettel-Inhalt und Notizfarbe (`stickyNoteColor`) werden automatisch über Supabase geräteübergreifend synchronisiert – inklusive Live Cloud-Status Badge (`☁️ Cloud-gesichert`), Wort-/Zeichenzähler und Kopierbutton.
 - **Offline-Notizen & Checkliste:** Zettelkasten mit Markdown-Formatierungshilfe und Fallback-Speicherung in `localStorage`.
 - **Wochen-Review & PDF-Bericht:** Archiv für erledigte Aufgaben mit jsPDF-Berichts-Export.
 - **Gamifizierter Habit-Tracker:** Streak-Zähler mit CSS-Konfetti-Animation bei 100 % Abschluss.
@@ -31,8 +31,11 @@ Die Anwendung zeichnet sich durch ein futuristisches "Glassmorphic Dark Theme" a
 
 ### 5. KI Prompts (Prompt-Zentrale) -- *UPGRADED!*
 - **Prompt Vault & Baukasten:** Speichere, verwalte, filtere, pinne (`📌`) und exportiere/importiere Prompts. Mit Platzhalter-Variablen (`{{Variable}}`) und Sync-Badges (`☁️ Cloud` vs `📱 Lokal`).
+- **🏢 KMU & Harz Spezial-Prompts:** 12+ vordefinierte Vorlagen für Sales, Recruiting, DSGVO, Google Beiträge und Handwerk mit 1-Klick-Übernahme (`➕ In meinen Tresor übernehmen`).
+- **📜 Prompt-Versionierung & Historie:** Automatische Speicherung früherer Prompt-Stände bei Bearbeitung / KI-Optimierung mit 1-Klick-Wiederherstellen (`🔄 Diese Version wiederherstellen`).
+- **🔬 Deep Research Prompt Modus & Quick-Button:** 1-Klick-Aktionsbutton (`🔬 Deep Research Prompt`) sowie Optimierungsziel (`🔬 Deep Research`), um beliebige Themen in 5-stufige Tiefenrecherche-Prompts (für Gemini Deep Research, Perplexity Pro, OpenAI Deep Research, Claude) zu transformieren.
 - **Supabase Auto-Cloud-Sync:** Neue Prompts werden beim Erstellen oder Löschen sofort geräteübergreifend (Handy ↔ PC) synchronisiert.
-- **Vorher/Nachher KI-Diff & Modi:** Vergleiche Original und KI-Ergebnis nebeneinander in 4 Ziel-Modi (*🎯 Standard*, *✂️ Kurz*, *🌍 Englisch*, *🛡️ Datenschutz*).
+- **Vorher/Nachher KI-Diff & Modi:** Vergleiche Original und KI-Ergebnis nebeneinander in 5 Ziel-Modi (*🎯 Standard*, *✂️ Kurz*, *🌍 Englisch*, *🛡️ Datenschutz*, *🔬 Deep Research*).
 - **Content-Planer:** Redaktionsplan für deine Social-Media-Kanäle.
 - **RAG Knowledge Bot:** KI-Assistent mit umschaltbaren Personas (🧠 Firmengehirn, 🎯 Pitch-Coach, 🔒 DSGVO & Legal), der dein Google-Drive-Wissen mit präzisen Quellenangaben durchsucht.
 

@@ -27,6 +27,7 @@ export const DashboardView = ({
   setStickyNoteColor,
   dashNotes,
   setDashNotes,
+  supabaseSyncStatus = 'connected',
   handleAddSimpleDashTodoSubmit,
   newDashTodoText,
   setNewDashTodoText,
@@ -176,23 +177,39 @@ export const DashboardView = ({
                 </div>
               );
 
-            case 'simpleNotes':
+            case 'simpleNotes': {
+              const noteWordCount = (dashNotes || '').trim() ? (dashNotes || '').trim().split(/\s+/).length : 0;
+              const noteCharCount = (dashNotes || '').length;
               return (
                 <div key="simpleNotes" className="card" style={{ 
                   background: stickyNoteColor, 
                   color: '#1e293b', 
-                  boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.3)',
+                  boxShadow: '0 10px 20px -5px rgba(0, 0, 0, 0.4)',
                   transition: 'background 0.3s ease',
-                  border: 'none',
+                  border: '1px solid rgba(0,0,0,0.1)',
                   display: 'flex',
-                  flexDirection: 'column'
+                  flexDirection: 'column',
+                  position: 'relative'
                 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(0, 0, 0, 0.08)', paddingBottom: '0.5rem', marginBottom: '0.75rem' }}>
-                    <h3 style={{ fontSize: '0.95rem', fontWeight: 800, color: '#0f172a', margin: 0, display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                      📌 Notizzettel
-                    </h3>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(0, 0, 0, 0.1)', paddingBottom: '0.5rem', marginBottom: '0.65rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                      <h3 style={{ fontSize: '0.95rem', fontWeight: 800, color: '#0f172a', margin: 0, display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                        📌 Notizzettel
+                      </h3>
+                      <span style={{ 
+                        fontSize: '0.6rem', 
+                        fontWeight: 700, 
+                        padding: '0.1rem 0.35rem', 
+                        borderRadius: '0.25rem', 
+                        background: supabaseSyncStatus === 'syncing' ? 'rgba(234, 179, 8, 0.25)' : supabaseSyncStatus === 'error' ? 'rgba(239, 68, 68, 0.25)' : 'rgba(16, 185, 129, 0.25)', 
+                        color: supabaseSyncStatus === 'syncing' ? '#854d0e' : supabaseSyncStatus === 'error' ? '#991b1b' : '#065f46',
+                        border: '1px solid rgba(0,0,0,0.1)'
+                      }}>
+                        {supabaseSyncStatus === 'syncing' ? '🔄 Speichert...' : supabaseSyncStatus === 'error' ? '⚠️ Sync-Fehler' : '☁️ Cloud-gesichert'}
+                      </span>
+                    </div>
                     
-                    <div style={{ display: 'flex', gap: '0.35rem' }}>
+                    <div style={{ display: 'flex', gap: '0.35rem', alignItems: 'center' }}>
                       {[
                         { color: '#fef08a', label: 'Gelb' },
                         { color: '#bfdbfe', label: 'Blau' },
@@ -209,7 +226,7 @@ export const DashboardView = ({
                             height: '14px',
                             borderRadius: '50%',
                             background: item.color,
-                            border: stickyNoteColor === item.color ? '2px solid #0f172a' : '1px solid rgba(0,0,0,0.15)',
+                            border: stickyNoteColor === item.color ? '2px solid #0f172a' : '1px solid rgba(0,0,0,0.2)',
                             cursor: 'pointer',
                             padding: 0
                           }}
@@ -232,11 +249,27 @@ export const DashboardView = ({
                       outline: 'none',
                       lineHeight: '1.4'
                     }}
+                    placeholder="Notiere hier deine Gedanken, Telefonnummern oder To-Dos. Wird sofort automatisch geräteübergreifend synchronisiert..."
                     value={dashNotes}
                     onChange={(e) => setDashNotes(e.target.value)}
                   />
+
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.5rem', paddingTop: '0.35rem', borderTop: '1px solid rgba(0,0,0,0.08)', fontSize: '0.65rem', color: '#475569' }}>
+                    <span>{noteWordCount} Wörter | {noteCharCount} Zeichen</span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        navigator.clipboard.writeText(dashNotes || '');
+                        if (window.showToast) window.showToast('📋 Notizzettel in Zwischenablage kopiert!');
+                      }}
+                      style={{ border: 'none', background: 'rgba(0,0,0,0.08)', color: '#0f172a', padding: '0.15rem 0.45rem', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', fontWeight: 600 }}
+                    >
+                      📋 Kopieren
+                    </button>
+                  </div>
                 </div>
               );
+            }
 
             case 'simpleTodos':
               return (
@@ -989,15 +1022,27 @@ export const DashboardView = ({
               </div>
             );
 
-          case 'notes':
+          case 'notes': {
+            const noteWordCount = (dashNotes || '').trim() ? (dashNotes || '').trim().split(/\s+/).length : 0;
+            const noteCharCount = (dashNotes || '').length;
             return (
               <div key="notes" className="card" style={{ gridColumn: 'span 2' }}>
-                <div className="card-header">
+                <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <h2 className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <FileText size={20} className="text-yellow-500" />
-                    Offline-Notizen & Aufgaben (100% Lokal)
+                    📌 Notizzettel & Aufgaben (Cloud-Sync)
                   </h2>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Kein Internet/KI nötig • Speichert automatisch</span>
+                  <span style={{ 
+                    fontSize: '0.65rem', 
+                    fontWeight: 700, 
+                    padding: '0.15rem 0.45rem', 
+                    borderRadius: '0.25rem', 
+                    background: supabaseSyncStatus === 'syncing' ? 'rgba(234, 179, 8, 0.25)' : supabaseSyncStatus === 'error' ? 'rgba(239, 68, 68, 0.25)' : 'rgba(16, 185, 129, 0.25)', 
+                    color: supabaseSyncStatus === 'syncing' ? '#eab308' : supabaseSyncStatus === 'error' ? '#ef4444' : '#34d399',
+                    border: '1px solid var(--border-color)'
+                  }}>
+                    {supabaseSyncStatus === 'syncing' ? '🔄 Speichert...' : supabaseSyncStatus === 'error' ? '⚠️ Sync-Fehler' : '☁️ Cloud-gesichert'}
+                  </span>
                 </div>
                 
                 <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '1.5rem' }}>
@@ -1047,10 +1092,24 @@ export const DashboardView = ({
                       id="dash-scratchpad"
                       className="input-field"
                       style={{ flexGrow: 1, minHeight: '160px', fontFamily: 'inherit', fontSize: '0.85rem', lineHeight: '1.4', background: 'rgba(0,0,0,0.2)', resize: 'none' }}
-                      placeholder="Tippe hier deine Gedanken, Entwürfe, Telefonnummern oder Mitschriften ein. Sie werden sofort lokal gespeichert..."
+                      placeholder="Notiere hier deine Gedanken, Telefonnummern oder Mitschriften..."
                       value={dashNotes}
                       onChange={(e) => setDashNotes(e.target.value)}
                     />
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.35rem', fontSize: '0.7rem', color: 'var(--text-muted)' }}>
+                      <span>{noteWordCount} Wörter | {noteCharCount} Zeichen</span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          navigator.clipboard.writeText(dashNotes || '');
+                          if (window.showToast) window.showToast('📋 Notizzettel in Zwischenablage kopiert!');
+                        }}
+                        className="btn btn-secondary"
+                        style={{ padding: '0.15rem 0.45rem', fontSize: '0.65rem', height: '22px' }}
+                      >
+                        📋 Kopieren
+                      </button>
+                    </div>
                   </div>
 
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
@@ -1110,6 +1169,7 @@ export const DashboardView = ({
                 </div>
               </div>
             );
+          }
 
           default:
             return null;

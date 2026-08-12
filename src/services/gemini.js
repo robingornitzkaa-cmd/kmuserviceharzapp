@@ -52,6 +52,16 @@ export const optimizePromptWithLocalAI = async ({ promptText, geminiApiKey, mode
     modeInstruction = "Translate and optimize this prompt into high-quality professional English for LLMs (GPT-4/Claude/Gemini). Return ONLY the optimized English prompt text without any intro or explanation:";
   } else if (mode === 'privacy') {
     modeInstruction = "Anonymisiere und optimiere diesen Prompt für ein LLM: Ersetze spezifische Eigennamen oder Firmendaten durch Platzhalter wie {{Firma}}, {{Kunde}}, {{Datum}} und strukturiere die Anweisung. Antworte NUR mit dem überarbeiteten Prompt-Text:";
+  } else if (mode === 'deep_research') {
+    modeInstruction = `Transformiere und erweitere das folgende Thema bzw. den Prompt-Entwurf in einen hochprofessionellen "Deep Research Prompt" für KI-Recherche-Tools (z.B. Gemini Deep Research, Perplexity Pro, OpenAI Deep Research, Claude).
+Der generierte Prompt muss folgende 5 Kernabschnitte aufweisen:
+1. [ZIEL & RECHERCHE-SKOP]: Haupt- und Unter-Forschungsfragen, Zielstellung, Abgrenzung.
+2. [METHODIK & SUCH-STRATEGIEN]: Keywords, Suchbegriffe, zu konsultierende Quellen (Branchenberichte, Statistiken, Fachmedien, Gesetze, Wettbewerber).
+3. [ANALYSE & EVALUATION]: Kriterien, Vergleiche (z.B. Pro/Contra, ROI, Risiko/Chancen Matrix).
+4. [ERGEBNIS-STRUKTUR DES REPORTS]: Detaillierte Gliederung für den finalen Research-Report (Executive Summary, Markt/Daten, Befunde, Risiken, Handlungsempfehlungen).
+5. [QUELLE-PRÜFUNG & CONSTRAINTS]: Regeln für Quellenkritik, Verifizierbarkeit, Objektivität und Verbot von Halluzinationen.
+
+Antworte AUSSCHLIESSLICH mit dem fertigen Deep Research Prompt auf Deutsch (ohne Einleitung oder Meta-Erklärungen):`;
   }
 
   const promptToOptimize = `${modeInstruction}\n\n${promptText}`;
@@ -99,6 +109,42 @@ export const optimizePromptWithLocalAI = async ({ promptText, geminiApiKey, mode
   }
 
   // 3. Static Pattern Fallback
+  if (mode === 'deep_research') {
+    const deepResearchOptimized = `[DEEP RESEARCH PROMPT]
+
+[1. ZIEL & RECHERCHE-SKOP]
+Führe eine umfassende Tiefenrecherche zum folgenden Thema durch:
+"${promptText}"
+
+Hauptforschungsfragen:
+- Was sind die Kernaspekte, aktuellen Entwicklungen und Trends zu diesem Thema?
+- Welche datenbasierten Fakten, Zahlen und Marktanalysen existieren?
+- Welche Best Practices, Hürden und Erfolgsfaktoren sind bekannt?
+
+[2. METHODIK & SUCH-STRATEGIEN]
+- Nutze primäre und sekundäre Quellen (Branchenstudien, Fachmedien, offizielle Statistiken, Expertenberichte).
+- Suche nach gezielten Begriffen, Synonymen und englischen Fachbegriffen.
+- Vergleiche mindestens 3 unterschiedliche Perspektiven oder Lösungsansätze.
+
+[3. ANALYSE & EVALUATION]
+- Erstelle eine strukturierte Vor- und Nachteile-Matrix.
+- Identifiziere typische Risiken, regulatorische Aspekte und finanzielle/zeitliche Faktoren.
+- Gewichte Befunde nach Relevanz für KMU / Praxisanwendung.
+
+[4. ERGEBNIS-STRUKTUR DES REPORTS]
+1. Executive Summary (Prägnante Zusammenfassung der Kernerkenntnisse)
+2. Ist-Analyse & Hintergrund
+3. Detaillierte Recherche-Ergebnisse (gegliedert nach Unterthemen mit Daten & Fakten)
+4. Vergleichs- / Chancen-Risiken-Matrix
+5. Konkrete Handlungsempfehlungen & Nächste Schritte
+
+[5. QUALITÄTSKRITERIEN & CONSTRAINTS]
+- Basiere alle Aussagen auf prüfbaren Fakten (keine Spekulationen).
+- Weise auf Datenlücken oder widersprüchliche Quellen hin.
+- Ton: Objektiv, analytisch und fundiert.`;
+    return { text: deepResearchOptimized, source: "integriertem Deep-Research Smart-Fallback" };
+  }
+
   const optimized = `[SYSTEM PROMPT]
 Du bist eine hochentwickelte KI mit Spezialisierung auf KMU-Prozesse und Effizienzsteigerung.
 

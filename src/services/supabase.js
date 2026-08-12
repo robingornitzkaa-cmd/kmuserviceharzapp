@@ -61,7 +61,8 @@ export const fetchPromptsFromSupabase = async (supabaseConfig) => {
     const data = await response.json();
     return data.map(p => ({
       ...p,
-      isPinned: p.is_pinned !== undefined ? p.is_pinned : Boolean(p.isPinned)
+      isPinned: p.is_pinned !== undefined ? p.is_pinned : Boolean(p.isPinned),
+      history: Array.isArray(p.history) ? p.history : (typeof p.history === 'string' ? JSON.parse(p.history) : (p.history || []))
     }));
   }
   throw new Error(`Supabase prompts fetch error: ${response.status} ${response.statusText}`);
@@ -77,6 +78,9 @@ export const savePromptToSupabase = async (promptToAdd, supabaseConfig) => {
     text: promptToAdd.text || '',
     is_pinned: Boolean(promptToAdd.isPinned)
   };
+  if (promptToAdd.history && Array.isArray(promptToAdd.history)) {
+    payload.history = promptToAdd.history;
+  }
   const response = await fetch(`${url}/rest/v1/prompts`, {
     method: 'POST',
     headers: {
@@ -87,7 +91,7 @@ export const savePromptToSupabase = async (promptToAdd, supabaseConfig) => {
     },
     body: JSON.stringify(payload)
   });
-  return response.ok;
+  return response ? response.ok : false;
 };
 
 export const deletePromptFromSupabase = async (id, supabaseConfig) => {
@@ -100,7 +104,7 @@ export const deletePromptFromSupabase = async (id, supabaseConfig) => {
       'Authorization': `Bearer ${key}`
     }
   });
-  return response.ok;
+  return response ? response.ok : false;
 };
 
 export const fetchDashboardStateFromSupabase = async (supabaseConfig) => {
@@ -125,6 +129,7 @@ export const saveDashboardStateToSupabase = async (stateData, supabaseConfig) =>
   const payload = {
     id: 'main',
     dash_notes: stateData.dashNotes ?? '',
+    sticky_note_color: stateData.stickyNoteColor ?? '#fef08a',
     dash_todos: stateData.dashTodos ?? [],
     dashboard_widgets: stateData.dashboardWidgets ?? [],
     dashboard_mode: stateData.dashboardMode ?? 'detailed',

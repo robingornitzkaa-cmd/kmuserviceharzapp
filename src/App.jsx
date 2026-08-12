@@ -62,6 +62,7 @@ import {
   PROCESSES, 
   ONBOARDING_PLAYBOOKS 
 } from './constants/initialData';
+import { KMU_HARZ_PROMPTS } from './constants/kmuPrompts';
 
 // SERVICES IMPORT
 import { 
@@ -757,6 +758,10 @@ function App() {
           setDashNotes(state.dash_notes);
           localStorage.setItem('f_dash_notes', state.dash_notes);
         }
+        if (state.sticky_note_color) {
+          setStickyNoteColor(state.sticky_note_color);
+          localStorage.setItem('f_sticky_note_color', state.sticky_note_color);
+        }
         if (Array.isArray(state.dash_todos) && state.dash_todos.length > 0) {
           setDashTodos(state.dash_todos);
           localStorage.setItem('f_dash_todos', JSON.stringify(state.dash_todos));
@@ -836,6 +841,7 @@ function App() {
       try {
         await saveDashboardStateToSupabase({
           dashNotes,
+          stickyNoteColor,
           dashTodos,
           dashboardWidgets,
           dashboardMode
@@ -845,7 +851,7 @@ function App() {
       }
     }, 1000);
     return () => clearTimeout(timer);
-  }, [dashNotes, dashTodos, dashboardWidgets, dashboardMode, supabaseConfig, isOnline, isInitialStateLoaded]);
+  }, [dashNotes, stickyNoteColor, dashTodos, dashboardWidgets, dashboardMode, supabaseConfig, isOnline, isInitialStateLoaded]);
 
   // Wochen-Review & Archiv Logik & Sync (Feature A3)
   useEffect(() => {
@@ -2678,6 +2684,57 @@ Hier ist die Frage des Nutzers:
     }
   };
 
+  const handleAdoptKmuPrompt = async (kmuPrompt) => {
+    const promptToAdd = {
+      id: 'p_' + Date.now(),
+      title: kmuPrompt.title,
+      category: kmuPrompt.category || 'Sales',
+      text: kmuPrompt.text,
+      isPinned: false,
+      synced: false,
+      history: []
+    };
+    if (isOnline) {
+      try {
+        const ok = await savePromptToSupabase(promptToAdd, supabaseConfig);
+        if (ok) promptToAdd.synced = true;
+      } catch (err) {
+        console.error("Fehler beim Speichern des KMU-Prompts in Supabase:", err);
+      }
+    }
+    setPrompts(prev => [promptToAdd, ...prev]);
+    showToast(`🏢 Vorlage "${kmuPrompt.title}" in deinen Tresor übernommen!`);
+  };
+
+  const handleRestorePromptVersion = async (promptId, versionItem) => {
+    let updatedPrompt = null;
+    setPrompts(prev => prev.map(p => {
+      if (p.id === promptId) {
+        const historyList = Array.isArray(p.history) ? p.history : [];
+        const currentVersionEntry = {
+          version: historyList.length + 1,
+          text: p.text,
+          timestamp: new Date().toLocaleString('de-DE')
+        };
+        updatedPrompt = {
+          ...p,
+          text: versionItem.text,
+          history: [currentVersionEntry, ...historyList]
+        };
+        return updatedPrompt;
+      }
+      return p;
+    }));
+    if (updatedPrompt && isOnline) {
+      try {
+        await savePromptToSupabase(updatedPrompt, supabaseConfig);
+      } catch (e) {
+        console.error("Fehler beim Aktualisieren der Prompt-Version:", e);
+      }
+    }
+    showToast('🔄 Frühere Prompt-Version erfolgreich wiederhergestellt!');
+  };
+
   const exportPromptsJSON = () => {
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(prompts, null, 2));
     const downloadAnchor = document.createElement('a');
@@ -4037,6 +4094,7 @@ Hier ist die Frage des Nutzers:
             promptSearch={promptSearch}
             setPromptSearch={setPromptSearch}
             promptCategoryFilter={promptCategoryFilter}
+            setPromptCategoryFilter={setPromptCategoryFilter}
             prompts={prompts}
             copyPromptText={copyPromptText}
             deletePrompt={deletePrompt}
@@ -4058,9 +4116,10 @@ Hier ist die Frage des Nutzers:
             setRagPersona={setRagPersona}
             ragInput={ragInput}
             setRagInput={setRagInput}
-            ragGenerating={ragGenerating}
-            ragChat={ragChat}
             handleSendRagQuery={handleSendRagQuery}
+            kmuPrompts={KMU_HARZ_PROMPTS}
+            handleAdoptKmuPrompt={handleAdoptKmuPrompt}
+            handleRestorePromptVersion={handleRestorePromptVersion}
           />
         )}
 

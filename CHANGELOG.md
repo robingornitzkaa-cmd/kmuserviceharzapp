@@ -13,6 +13,17 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 - **📌 Prompt Pinning Cloud-Sync:** Der Favoriten-Status (`isPinned`) von Prompts wird nun sofort in der Supabase-Datenbank aktualisiert und geräteübergreifend gespiegelt.
 
 ### Added
+- **🏢 KMU & Harz Spezial-Prompt-Bibliothek (Idee 4):**
+  - Vordefinierte Best-Practice Prompt-Bibliothek (`kmuPrompts.js`) mit 12+ praxiserprobten Vorlagen für regionale KMU (Angebots-Nachfassung, Einwandbehandlung "Zu teuer", Preiserhöhungen, Recruiting, DSGVO, Google Business Beiträge).
+  - Neuer Tab / Filter `🏢 KMU Harz Vorlagen` im Prompt Vault mit 1-Klick-Übernahme (`➕ In meinen Tresor übernehmen`) in die eigene Supabase-Cloud-Bibliothek.
+- **📜 Prompt-Versionierung & Änderungshistorie (Idee 5):**
+  - Automatische Speicherung früherer Prompt-Stände bei Bearbeitung oder KI-Optimierung.
+  - Neuer `📜 X Versionen` Button an Prompt-Karten und interaktives Versions-Modal zum Vergleichen und 1-Klick **Wiederherstellen** beliebiger älterer Stände.
+- **📌 Dashboard Notizzettel Upgraded & Cloud-Sync Fix:**
+  - **Supabase Cloud-Sync:** Notizzettel-Inhalt und Notizfarbe (`stickyNoteColor`) werden nun lückenlos in Supabase `dashboard_state` gesichert und geräteübergreifend gespiegelt.
+  - **Live Cloud-Status Badge:** Visueller Indikator (`☁️ Cloud-gesichert` / `🔄 Speichert...`) direkt im Notizzettel-Header.
+  - **Komfort-Funktionen:** Echtzeit Wort- & Zeichenzähler sowie 1-Klick Kopier-Button (`📋 Kopieren`).
+
 - **🔄 Cloud Sync Status Indicator:** Live-Anzeige (`☁️ Synchronisiert` / `🔄 Syncing` / `⚠️ Sync-Fehler`) mit Klick-Aktion für manuelles Re-Sync in der App-Headerleiste.
 
 ### Added

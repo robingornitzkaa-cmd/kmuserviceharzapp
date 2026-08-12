@@ -1,6 +1,61 @@
 # AI Worklog - Founder OS
 
-## 2026-08-12 07:40 – Behebung der Handy & PC Daten-Synchronisation & Supabase Backend-Wiederherstellung (COMPLETED)
+## 2026-08-12 14:01 – Dashboard Notizzettel Cloud-Sync Fix & Erweiterung um KMU-Prompts & Prompt-Historie (COMPLETED)
+
+### Ziel
+Reparatur des Notizzettel-Cloud-Syncs auf dem Dashboard (Inhalt & Notizfarbe geräteübergreifend) sowie Umsetzung der Erweiterungsideen 4 (KMU Branchen-Prompt Bibliothek) und 5 (Prompt-Versionierung & Wiederherstellung).
+
+### Erstellt
+- [`src/constants/kmuPrompts.js`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/constants/kmuPrompts.js): Vordefinierte KMU-Spezial-Prompts Bibliothek für Sales, Recruiting, DSGVO & Marketing.
+- Live Cloud-Sync-Status-Badge (`☁️ Cloud-gesichert` / `🔄 Speichert...`), Zeichen-/Wortzähler und Kopierbutton im Notizzettel-Widget auf dem Dashboard.
+- Tab/Filter `🏢 KMU Harz Vorlagen` im Prompt Vault mit 1-Klick Übernahme-Button (`➕ In meinen Tresor übernehmen`).
+- `📜 Prompt Versionshistorie` Modal in `PromptVault.jsx` zur Ansicht früherer Versionen und 1-Klick-Wiederherstellung (`🔄 Diese Version wiederherstellen`).
+- Integrationstests: `Dashboard Notizzettel rendert Cloud-Badge, Wörter- & Zeichenzähler` und `KMU Spezial-Vorlagen und Prompt-Übernahme im Prompt Vault funktionieren` in `src/test/App.test.jsx`.
+
+### Geändert
+- [`src/services/supabase.js`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/services/supabase.js): `sticky_note_color` im Dashboard-State Payload und `history` im Prompts Mapping aufgenommen.
+- [`src/App.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): `stickyNoteColor` in Sync & Save Effects eingebunden, `handleAdoptKmuPrompt` & `handleRestorePromptVersion` Handlers erstellt und an Komponenten übergeben.
+- [`src/components/DashboardView.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/components/DashboardView.jsx): `simpleNotes` Widget aufgewertet.
+- [`src/components/PromptVault.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/components/PromptVault.jsx): Filter-Bar, Vorlagen-Rendering und History-Modal integriert.
+- [`README.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/README.md), [`CHANGELOG.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md), [`AI_WORKLOG.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/AI_WORKLOG.md), [`TODO.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md): Dokumentation aktualisiert.
+
+### Warum
+Behebt die nicht-synchronisierende Notizzettel-Farbe und den fehlenden Sync-Indikator auf dem Smartphone und stellt Robin vorgefertigte KMU-Vorlagen sowie eine lückenlose Revisions-Historie für KI-Prompts bereit.
+
+### Testen
+- `npm test` ausgeführt. Alle 12 Integrationstests grün bestanden.
+
+### Offene Punkte
+- Keine.
+
+---
+
+### Ziel
+Erweiterung der KI-Prompt-Zentrale (Prompt Vault) um eine Spezialfunktion zur Erstellung hochprofessioneller "Deep Research Prompts" für KI-Recherchemodelle (Gemini Deep Research, Perplexity Pro, OpenAI Deep Research, Claude).
+
+### Erstellt
+- **Dedicated Quick Button (`🔬 Deep Research Prompt`)**: Ein-Klick-Aktionsbutton im Prompt-Formular mit Farbverlauf-Styling.
+- **Neues Optimierungs-Ziel (`🔬 Deep Research`)**: Auswahlleisten-Modus in `PromptVault.jsx` für die zielgerichtete Prompt-Transformation.
+- **Deep Research Prompt-Baukasten & Schnellstart-Vorlagen**: Vordefinierte Vorlagen (*KMU Marktanalyse Harz*, *Wettbewerber & USP*, *KI-Technologie Evaluierung*) sowie Bausteine (*Deep Research Analyst*, *Benchmark Expert*, *Quellenkritik*).
+- **Offline Smart-Fallback Template**: 5-stufiges strukturierte Vorlage (Ziel & Skop, Methodik & Such-Strategien, Analyse-Matrix, Report-Struktur, Quellenkritik) für Offline-Betrieb in `src/services/gemini.js`.
+- **Integrationstest**: `Deep Research Prompt Modus und Quick-Button im Prompt Vault funktionieren` in `src/test/App.test.jsx`.
+
+### Geändert
+- [`src/services/gemini.js`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/services/gemini.js): `optimizePromptWithLocalAI` um `mode === 'deep_research'` Instruktionen und 5-Stufen-Fallback erweitert.
+- [`src/components/PromptVault.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/components/PromptVault.jsx): Optimierungs-Auswahlleiste, Buttons und Schnellstart-Vorlagen um Deep Research Funktionen ergänzt.
+- [`src/test/App.test.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/test/App.test.jsx): Integrationstest für Deep Research Prompt-Optimierung hinzugefügt.
+- [`CHANGELOG.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md), [`README.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/README.md), [`AI_WORKLOG.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/AI_WORKLOG.md), [`TODO.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md): Dokumentation aktualisiert.
+
+### Warum
+Erfüllt den Nutzer-Wunsch nach einer dedizierten Erweiterung des Prompt-Verbesserers um einen Extra-Modus und Extra-Knopf zur automatischen Erstellung komplexer Recherche-Prompts.
+
+### Testen
+- `npm test` ausgeführt (10 von 10 Integrationstests grün).
+
+### Offene Punkte
+- Keine.
+
+---
 
 ### Ziel
 Wiederherstellung der Cloud-Synchronisation zwischen Handy und PC für Startseiten-Notizen (`dashNotes`), Prompts und CRM-Leads, Behebung von Supabase-Schlafmodus-Verbindungsabbrüchen und Schutz vor Notizen-Überschreibungen beim App-Start.

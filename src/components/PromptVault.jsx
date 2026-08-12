@@ -23,7 +23,7 @@ export const PromptVault = ({
   handleAddPrompt,
   handleOptimizePrompt,
   ollamaLoading,
-  customPromptBlocks,
+  customPromptBlocks = [],
   handleDeleteCustomPromptBlock,
   showCustomBlockForm,
   setShowCustomBlockForm,
@@ -38,7 +38,7 @@ export const PromptVault = ({
   setPromptSearch,
   promptCategoryFilter,
   setPromptCategoryFilter,
-  prompts,
+  prompts = [],
   copyPromptText,
   deletePrompt,
   togglePinPrompt,
@@ -53,17 +53,21 @@ export const PromptVault = ({
   newPost,
   setNewPost,
   handleAddPost,
-  contentPosts,
+  contentPosts = [],
   deletePost,
   ragPersona,
   setRagPersona,
   ragInput,
   setRagInput,
   ragGenerating,
-  ragChat,
-  handleSendRagQuery
+  ragChat = [],
+  handleSendRagQuery,
+  kmuPrompts = [],
+  handleAdoptKmuPrompt,
+  handleRestorePromptVersion
 }) => {
   const [selectedOptMode, setSelectedOptMode] = useState('structured');
+  const [historyModalData, setHistoryModalData] = useState({ isOpen: false, promptId: null, promptTitle: '', history: [] });
 
   return (
     <div className="hub-grid" style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '1.5rem' }}>
@@ -327,7 +331,8 @@ export const PromptVault = ({
                     { label: '3 Rückfragen', text: '\nStelle mir am Ende 3 vertiefende Rückfragen zur Präzisierung.' },
                     { label: 'Risikoanalyse', text: '\nFühre eine Risikoanalyse für die vorgeschlagene Lösung durch.' },
                     { label: '3 Alternativen', text: '\nGib mir 3 alternative Headlines oder Einstiegsformulierungen.' },
-                    { label: 'Einfach erklärt', text: '\nErkläre es so einfach, als wäre ich 10 Jahre alt (ELI5).' }
+                    { label: 'Einfach erklärt', text: '\nErkläre es so einfach, als wäre ich 10 Jahre alt (ELI5).' },
+                    { label: '🛡️ Quellenkritik', text: '\nPrüfe die Belastbarkeit aller Quellen und markiere verbleibende Datenlücken.' }
                   ].map((b, idx) => (
                     <button 
                       key={idx} 
@@ -358,6 +363,33 @@ export const PromptVault = ({
                         ×
                       </button>
                     </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Deep Research Schnellstart Vorlagen */}
+              <div style={{ marginTop: '0.25rem', paddingTop: '0.4rem', borderTop: '1px dashed rgba(139, 92, 246, 0.25)' }}>
+                <div style={{ fontSize: '0.65rem', color: '#c084fc', fontWeight: 700, marginBottom: '0.25rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                  <Sparkles size={11} /> Deep Research Vorlagen (Schnellstart):
+                </div>
+                <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
+                  {[
+                    { label: '🏢 KMU Marktanalyse Harz', text: 'Führe eine Deep Research Marktanalyse für regionale KMU im Harz durch. Relevante Trends, Konkurrenzdichte und digitale Potenziale.' },
+                    { label: '⚔️ Wettbewerber & USP', text: 'Führe eine tiefgehende Konkurrenz- & USP-Analyse im Bereich [Branche] durch. Identifiziere Marktlücken und Alleinstellungsmerkmale.' },
+                    { label: '🤖 KI-Technologie Evaluierung', text: 'Tiefenrecherche & Evaluierung modernster KI-Tools & LLMs für den Einsatz in KMU-Arbeitsabläufen (ROI, Datenschutz, Integration).' }
+                  ].map((tpl, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      style={{ cursor: 'pointer', border: '1px solid rgba(192, 132, 252, 0.4)', background: 'rgba(192, 132, 252, 0.12)', color: '#e9d5ff', fontSize: '0.65rem', padding: '0.2rem 0.45rem', borderRadius: '0.25rem' }}
+                      onClick={() => setNewPrompt(prev => ({
+                        ...prev,
+                        title: prev.title || tpl.label.replace(/^[^a-zA-Z0-9\s]+/, '').trim(),
+                        text: tpl.text
+                      }))}
+                    >
+                      ⚡ {tpl.label}
+                    </button>
                   ))}
                 </div>
               </div>
@@ -436,7 +468,8 @@ export const PromptVault = ({
               { id: 'structured', label: '🎯 Standard' },
               { id: 'concise', label: '✂️ Kurz & Präzise' },
               { id: 'english', label: '🌍 Englisch' },
-              { id: 'privacy', label: '🛡️ Datenschutz' }
+              { id: 'privacy', label: '🛡️ Datenschutz' },
+              { id: 'deep_research', label: '🔬 Deep Research' }
             ].map(m => (
               <button
                 key={m.id}
@@ -458,8 +491,8 @@ export const PromptVault = ({
             ))}
           </div>
           
-          <div style={{ display: 'flex', gap: '0.5rem' }}>
-            <button type="submit" className="btn btn-primary" style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.35rem' }}>
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+            <button type="submit" className="btn btn-primary" style={{ flex: '1 1 130px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.35rem' }}>
               <Plus size={16} /> Prompt sichern
             </button>
             <button 
@@ -467,7 +500,7 @@ export const PromptVault = ({
               onClick={() => handleOptimizePrompt && handleOptimizePrompt(selectedOptMode)} 
               disabled={ollamaLoading}
               className="btn btn-secondary" 
-              style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.35rem' }}
+              style={{ flex: '1 1 140px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.35rem' }}
             >
               <svg className={ollamaLoading ? 'spin' : ''} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
@@ -475,6 +508,30 @@ export const PromptVault = ({
                 <line x1="12" y1="22.08" x2="12" y2="12"></line>
               </svg>
               {ollamaLoading ? 'Optimiert...' : 'Per KI verbessern'}
+            </button>
+            <button 
+              type="button" 
+              onClick={() => {
+                setSelectedOptMode('deep_research');
+                if (handleOptimizePrompt) handleOptimizePrompt('deep_research');
+              }} 
+              disabled={ollamaLoading}
+              className="btn" 
+              style={{ 
+                flex: '1 1 170px', 
+                display: 'flex', 
+                justifyContent: 'center', 
+                alignItems: 'center', 
+                gap: '0.35rem',
+                background: 'linear-gradient(135deg, rgba(147, 51, 234, 0.25), rgba(6, 182, 212, 0.25))',
+                border: '1px solid rgba(168, 85, 247, 0.5)',
+                color: '#e9d5ff',
+                fontWeight: 600
+              }}
+              title="Erstellt aus dem Thema einen 5-stufigen Deep Research Prompt für KI-Tiefenrecherchen"
+            >
+              <Sparkles size={15} style={{ color: '#c084fc' }} />
+              🔬 Deep Research Prompt
             </button>
           </div>
         </form>
@@ -495,10 +552,15 @@ export const PromptVault = ({
               { key: 'Sales', label: 'Sales' },
               { key: 'Marketing', label: 'Marketing' },
               { key: 'Code', label: 'Code' },
-              { key: 'Strategie', label: 'Strategie' }
+              { key: 'Strategie', label: 'Strategie' },
+              { key: 'kmu_templates', label: '🏢 KMU Harz Vorlagen' }
             ].map(cat => {
               const isActive = promptCategoryFilter === cat.key;
-              const count = cat.key === 'all' ? prompts.length : prompts.filter(p => p.category === cat.key).length;
+              const count = cat.key === 'all' 
+                ? prompts.length 
+                : cat.key === 'kmu_templates' 
+                ? kmuPrompts.length 
+                : prompts.filter(p => p.category === cat.key).length;
               return (
                 <button
                   key={cat.key}
@@ -529,50 +591,108 @@ export const PromptVault = ({
         </div>
 
         <div className="prompt-vault">
-          {prompts
-            .filter(p => {
-              const matchesCategory = promptCategoryFilter === 'all' || p.category === promptCategoryFilter;
-              const matchesSearch = p.title.toLowerCase().includes(promptSearch.toLowerCase()) || p.text.toLowerCase().includes(promptSearch.toLowerCase());
-              return matchesCategory && matchesSearch;
-            })
-            .sort((a, b) => (b.isPinned ? 1 : 0) - (a.isPinned ? 1 : 0))
-            .map(p => (
-              <div key={p.id} className="prompt-card" style={p.isPinned ? { border: '1px solid var(--accent-purple)', background: 'rgba(139, 92, 246, 0.03)' } : {}}>
-                <div className="prompt-head">
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                    {p.isPinned && <Pin size={12} className="text-purple-400" style={{ transform: 'rotate(45deg)' }} />}
-                    <span className="prompt-title">{p.title}</span>
+          {promptCategoryFilter === 'kmu_templates' ? (
+            kmuPrompts
+              .filter(p => p.title.toLowerCase().includes(promptSearch.toLowerCase()) || p.text.toLowerCase().includes(promptSearch.toLowerCase()))
+              .map(p => (
+                <div key={p.id} className="prompt-card" style={{ border: '1px dashed rgba(192, 132, 252, 0.5)', background: 'rgba(192, 132, 252, 0.03)' }}>
+                  <div className="prompt-head">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                      <Sparkles size={13} className="text-purple-400" />
+                      <span className="prompt-title" style={{ color: '#e9d5ff' }}>{p.title}</span>
+                    </div>
+                    <span className="prompt-cat" style={{ background: 'rgba(192, 132, 252, 0.2)', color: '#c084fc' }}>{p.category}</span>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                    <span className="prompt-cat">{p.category}</span>
-                    <span style={{ fontSize: '0.6rem', padding: '0.1rem 0.35rem', borderRadius: '0.25rem', background: p.synced ? 'rgba(16, 185, 129, 0.15)' : 'rgba(255,255,255,0.05)', color: p.synced ? '#34d399' : 'var(--text-muted)' }}>
-                      {p.synced ? '☁️ Cloud' : '📱 Lokal'}
-                    </span>
+                  <div className="prompt-body">{p.text}</div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.5rem' }}>
+                    <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>🏢 KMU Spezial-Vorlage</span>
+                    <div style={{ display: 'flex', gap: '0.35rem' }}>
+                      <button
+                        type="button"
+                        onClick={() => copyPromptText(p.text)}
+                        className="btn btn-secondary"
+                        style={{ padding: '0.3rem 0.5rem', fontSize: '0.7rem' }}
+                      >
+                        <ClipboardCopy size={11} /> Kopieren
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleAdoptKmuPrompt && handleAdoptKmuPrompt(p)}
+                        className="btn btn-primary"
+                        style={{ padding: '0.3rem 0.65rem', fontSize: '0.7rem', background: 'linear-gradient(135deg, var(--accent-purple), var(--accent-cyan))', border: 'none' }}
+                      >
+                        ➕ In meinen Tresor übernehmen
+                      </button>
+                    </div>
                   </div>
                 </div>
-                <div className="prompt-body">{p.text}</div>
-                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.35rem' }}>
-                  <button
-                    onClick={() => togglePinPrompt && togglePinPrompt(p.id)}
-                    className="btn btn-secondary"
-                    style={{ padding: '0.35rem', color: p.isPinned ? '#a78bfa' : 'var(--text-muted)' }}
-                    title={p.isPinned ? 'Entpinnen' : 'Anpinnen'}
-                  >
-                    <Pin size={12} />
-                  </button>
-                  <button 
-                    onClick={() => copyPromptText(p.text)} 
-                    className="btn btn-secondary" 
-                    style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem' }}
-                  >
-                    <ClipboardCopy size={12} /> Kopieren
-                  </button>
-                  <button onClick={() => deletePrompt(p.id)} className="btn-icon-only" style={{ padding: '0.35rem' }}>
-                    <Trash2 size={12} className="text-red-500" />
-                  </button>
+              ))
+          ) : (
+            prompts
+              .filter(p => {
+                const matchesCategory = promptCategoryFilter === 'all' || p.category === promptCategoryFilter;
+                const matchesSearch = p.title.toLowerCase().includes(promptSearch.toLowerCase()) || p.text.toLowerCase().includes(promptSearch.toLowerCase());
+                return matchesCategory && matchesSearch;
+              })
+              .sort((a, b) => (b.isPinned ? 1 : 0) - (a.isPinned ? 1 : 0))
+              .map(p => (
+                <div key={p.id} className="prompt-card" style={p.isPinned ? { border: '1px solid var(--accent-purple)', background: 'rgba(139, 92, 246, 0.03)' } : {}}>
+                  <div className="prompt-head">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                      {p.isPinned && <Pin size={12} className="text-purple-400" style={{ transform: 'rotate(45deg)' }} />}
+                      <span className="prompt-title">{p.title}</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                      <span className="prompt-cat">{p.category}</span>
+                      <span style={{ fontSize: '0.6rem', padding: '0.1rem 0.35rem', borderRadius: '0.25rem', background: p.synced ? 'rgba(16, 185, 129, 0.15)' : 'rgba(255,255,255,0.05)', color: p.synced ? '#34d399' : 'var(--text-muted)' }}>
+                        {p.synced ? '☁️ Cloud' : '📱 Lokal'}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="prompt-body">{p.text}</div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.35rem' }}>
+                    <div>
+                      {p.history && p.history.length > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => setHistoryModalData({
+                            isOpen: true,
+                            promptId: p.id,
+                            promptTitle: p.title,
+                            history: p.history
+                          })}
+                          className="btn btn-secondary"
+                          style={{ padding: '0.25rem 0.5rem', fontSize: '0.65rem', color: '#c084fc', border: '1px solid rgba(192, 132, 252, 0.3)', background: 'rgba(192, 132, 252, 0.08)' }}
+                          title="Frühere Versionen anzeigen"
+                        >
+                          📜 {p.history.length} {p.history.length === 1 ? 'Version' : 'Versionen'}
+                        </button>
+                      )}
+                    </div>
+                    <div style={{ display: 'flex', gap: '0.35rem' }}>
+                      <button
+                        onClick={() => togglePinPrompt && togglePinPrompt(p.id)}
+                        className="btn btn-secondary"
+                        style={{ padding: '0.35rem', color: p.isPinned ? '#a78bfa' : 'var(--text-muted)' }}
+                        title={p.isPinned ? 'Entpinnen' : 'Anpinnen'}
+                      >
+                        <Pin size={12} />
+                      </button>
+                      <button 
+                        onClick={() => copyPromptText(p.text)} 
+                        className="btn btn-secondary" 
+                        style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem' }}
+                      >
+                        <ClipboardCopy size={12} /> Kopieren
+                      </button>
+                      <button onClick={() => deletePrompt(p.id)} className="btn-icon-only" style={{ padding: '0.35rem' }}>
+                        <Trash2 size={12} className="text-red-500" />
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+          )}
         </div>
       </div>
 
@@ -889,6 +1009,59 @@ export const PromptVault = ({
               >
                 Fertigen Prompt kopieren
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Prompt Version History Modal */}
+      {historyModalData && historyModalData.isOpen && (
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.75)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 10000, padding: '1rem' }}>
+          <div style={{ background: '#0f172a', border: '1px solid var(--accent-purple)', borderRadius: '0.75rem', padding: '1.25rem', maxWidth: '650px', width: '100%', maxHeight: '85vh', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '1rem', boxShadow: '0 20px 40px rgba(0,0,0,0.6)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h3 style={{ margin: 0, color: 'var(--accent-purple)', fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                📜 Prompt Versionshistorie: {historyModalData.promptTitle}
+              </h3>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                style={{ padding: '0.2rem 0.5rem', fontSize: '0.7rem' }}
+                onClick={() => setHistoryModalData({ ...historyModalData, isOpen: false })}
+              >
+                Schließen
+              </button>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              {historyModalData.history && historyModalData.history.length > 0 ? (
+                historyModalData.history.map((ver, idx) => (
+                  <div key={idx} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-color)', borderRadius: '0.5rem', padding: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#a78bfa' }}>
+                        Version #{ver.version || (historyModalData.history.length - idx)} ({ver.timestamp || 'Vorheriger Stand'})
+                      </span>
+                      <button
+                        type="button"
+                        className="btn btn-secondary"
+                        style={{ padding: '0.2rem 0.5rem', fontSize: '0.65rem', color: 'var(--accent-cyan)', border: '1px solid rgba(6, 182, 212, 0.3)' }}
+                        onClick={() => {
+                          if (handleRestorePromptVersion) {
+                            handleRestorePromptVersion(historyModalData.promptId, ver);
+                          }
+                          setHistoryModalData({ ...historyModalData, isOpen: false });
+                        }}
+                      >
+                        🔄 Diese Version wiederherstellen
+                      </button>
+                    </div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', whiteSpace: 'pre-wrap', fontFamily: 'monospace', background: 'rgba(0,0,0,0.2)', padding: '0.5rem', borderRadius: '0.25rem' }}>
+                      {ver.text}
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Keine früheren Versionen für diesen Prompt gespeichert.</div>
+              )}
             </div>
           </div>
         </div>
