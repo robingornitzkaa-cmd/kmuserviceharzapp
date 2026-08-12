@@ -58,7 +58,11 @@ export const fetchPromptsFromSupabase = async (supabaseConfig) => {
     }
   });
   if (response.ok) {
-    return await response.json();
+    const data = await response.json();
+    return data.map(p => ({
+      ...p,
+      isPinned: p.is_pinned !== undefined ? p.is_pinned : Boolean(p.isPinned)
+    }));
   }
   throw new Error(`Supabase prompts fetch error: ${response.status} ${response.statusText}`);
 };
@@ -70,7 +74,8 @@ export const savePromptToSupabase = async (promptToAdd, supabaseConfig) => {
     id: String(promptToAdd.id),
     title: promptToAdd.title || '',
     category: promptToAdd.category || 'General',
-    text: promptToAdd.text || ''
+    text: promptToAdd.text || '',
+    is_pinned: Boolean(promptToAdd.isPinned)
   };
   const response = await fetch(`${url}/rest/v1/prompts`, {
     method: 'POST',

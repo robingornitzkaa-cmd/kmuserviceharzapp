@@ -1,5 +1,39 @@
 # AI Worklog - Founder OS
 
+## 2026-08-12 07:40 – Behebung der Handy & PC Daten-Synchronisation & Supabase Backend-Wiederherstellung (COMPLETED)
+
+### Ziel
+Wiederherstellung der Cloud-Synchronisation zwischen Handy und PC für Startseiten-Notizen (`dashNotes`), Prompts und CRM-Leads, Behebung von Supabase-Schlafmodus-Verbindungsabbrüchen und Schutz vor Notizen-Überschreibungen beim App-Start.
+
+### Erstellt
+- Tabellen `dashboard_state`, `prompts` und `leads` in Supabase PostgreSQL inklusive Row Level Security (RLS) Policies für anonyme REST-Zugriffe.
+- Schutz-State `isInitialStateLoaded` in `src/App.jsx` zur Absicherung des Debounced-Uploads beim Anwendungsstart.
+- Cloud-Sync-Status-Button (`☁️ Synchronisiert` / `🔄 Syncing` / `⚠️ Sync-Fehler`) in der oberen Headerleiste von `src/App.jsx`.
+
+### Geändert
+- [`src/services/supabase.js`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/services/supabase.js): `is_pinned` DB-Spalten-Mapping für `fetchPromptsFromSupabase` und `savePromptToSupabase` ergänzt.
+- [`src/App.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): 
+  - Einzelne Fetch-Effects durch die zentrale Asynchron-Funktion `syncAllFromCloud` ersetzt.
+  - Server-Prompts erhalten Vorrang vor lokalen Default-Prompts.
+  - Automatic Re-Sync bei Fenster-Fokus (`window.addEventListener('focus')`) und im 30-Sekunden-Intervall eingebaut.
+  - `togglePinPrompt` speichert den geänderten Pin-Status direkt in Supabase.
+- [`README.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/README.md), [`CHANGELOG.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md), [`AI_WORKLOG.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/AI_WORKLOG.md), [`TODO.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md): Dokumentation aktualisiert.
+
+### Gelöscht
+- Redundante Einzel-Mount-Fetch-Effects in `App.jsx`.
+
+### Warum
+Behebt das Kernproblem, dass auf dem Smartphone verfasste Notizen und Prompts wegen eines inaktiven Supabase-Backends und eines Race-Condition-Überschreibungs-Bugs nicht am PC sichtbar waren.
+
+### Testen
+- `npm run test` ausgeführt. Alle 9 Integrationstests grün bestanden.
+- Supabase SQL-Query ausgeführt und REST-Endpunkte verifiziert.
+
+### Offene Punkte
+- Keine.
+
+---
+
 ## 2026-08-03 18:47 – Freie Widget-Reihenfolge & Verschiebe-Editor im Dashboard (COMPLETED)
 
 ### Ziel

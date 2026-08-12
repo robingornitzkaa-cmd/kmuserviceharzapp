@@ -441,6 +441,7 @@ function App() {
   // Supabase Backend-Integration States (Feature 6 - v4)
   const [supabaseSyncStatus, setSupabaseSyncStatus] = useState('connected'); // 'connected', 'syncing', 'error'
   const [supabaseLastSync, setSupabaseLastSync] = useState(() => localStorage.getItem('f_sb_last_sync') || 'Noch nie');
+  const [isInitialStateLoaded, setIsInitialStateLoaded] = useState(false);
   const [supabaseConfig, setSupabaseConfig] = useState(() => {
     return JSON.parse(localStorage.getItem('f_sb_config')) || {
       url: import.meta.env.VITE_SUPABASE_URL || 'https://ypqlssyrlykjzjnoyjoa.supabase.co',
@@ -743,80 +744,94 @@ function App() {
     }
   }, [activeLeadId]);
 
-  // Fetch leads from Supabase on mount (or when config changes)
-  useEffect(() => {
-    const fetchLeads = async () => {
-      if (!isOnline) return;
-      try {
-        const data = await fetchLeadsFromSupabase(supabaseConfig);
-        if (data && data.length > 0) {
-          setLeads(data);
-          localStorage.setItem('f_leads', JSON.stringify(data));
+  // Synchronize all core data (Dashboard State, Prompts, Leads) from Supabase Cloud
+  const syncAllFromCloud = async (showToastOnFinish = false) => {
+    if (!isOnline) return;
+    try {
+      setSupabaseSyncStatus('syncing');
+
+      // 1. Fetch Dashboard State (Notes, To-Dos, Widgets, Mode)
+      const state = await fetchDashboardStateFromSupabase(supabaseConfig);
+      if (state) {
+        if (state.dash_notes !== undefined && state.dash_notes !== null) {
+          setDashNotes(state.dash_notes);
+          localStorage.setItem('f_dash_notes', state.dash_notes);
         }
-      } catch (e) {
-        console.error("Fehler beim Laden der Leads aus Supabase:", e);
+        if (Array.isArray(state.dash_todos) && state.dash_todos.length > 0) {
+          setDashTodos(state.dash_todos);
+          localStorage.setItem('f_dash_todos', JSON.stringify(state.dash_todos));
+        }
+        if (Array.isArray(state.dashboard_widgets) && state.dashboard_widgets.length > 0) {
+          setDashboardWidgets(state.dashboard_widgets);
+          localStorage.setItem('f_dashboard_widgets', JSON.stringify(state.dashboard_widgets));
+        }
+        if (state.dashboard_mode) {
+          setDashboardMode(state.dashboard_mode);
+          localStorage.setItem('f_dashboard_mode', state.dashboard_mode);
+        }
       }
-    };
-    fetchLeads();
+
+      // 2. Fetch Prompts (Server prompts take priority over local defaults)
+      const serverPrompts = await fetchPromptsFromSupabase(supabaseConfig);
+      if (serverPrompts && Array.isArray(serverPrompts)) {
+        setPrompts(prevPrompts => {
+          const mergedMap = new Map();
+          prevPrompts.forEach(p => mergedMap.set(p.id, p));
+          serverPrompts.forEach(p => mergedMap.set(p.id, { ...p, synced: true }));
+          const mergedList = Array.from(mergedMap.values());
+          localStorage.setItem('f_prompts', JSON.stringify(mergedList));
+          return mergedList;
+        });
+      }
+
+      // 3. Fetch Leads
+      const serverLeads = await fetchLeadsFromSupabase(supabaseConfig);
+      if (serverLeads && Array.isArray(serverLeads) && serverLeads.length > 0) {
+        setLeads(serverLeads);
+        localStorage.setItem('f_leads', JSON.stringify(serverLeads));
+      }
+
+      const nowStr = new Date().toLocaleString('de-DE');
+      setSupabaseLastSync(nowStr);
+      localStorage.setItem('f_sb_last_sync', nowStr);
+      setSupabaseSyncStatus('connected');
+      if (showToastOnFinish) {
+        showToast('☁️ Erfolgreich mit Cloud synchronisiert!');
+      }
+    } catch (e) {
+      console.error("Fehler beim Synchronisieren mit Supabase:", e);
+      setSupabaseSyncStatus('error');
+    } finally {
+      setIsInitialStateLoaded(true);
+    }
+  };
+
+  // Fetch from Supabase on mount
+  useEffect(() => {
+    syncAllFromCloud();
   }, [supabaseConfig, isOnline]);
 
-  // Fetch prompts from Supabase on mount
+  // Re-sync from Supabase whenever window gains focus (e.g. switching tabs or waking mobile screen)
   useEffect(() => {
-    const fetchPrompts = async () => {
-      if (!isOnline) return;
-      try {
-        const data = await fetchPromptsFromSupabase(supabaseConfig);
-        if (data) {
-          setPrompts(prevPrompts => {
-            const merged = new Map();
-            data.forEach(p => merged.set(p.id, p));
-            prevPrompts.forEach(p => merged.set(p.id, p));
-            const mergedList = Array.from(merged.values());
-            localStorage.setItem('f_prompts', JSON.stringify(mergedList));
-            return mergedList;
-          });
-        }
-      } catch (e) {
-        console.error("Fehler beim Laden der Prompts aus Supabase:", e);
-      }
+    const handleFocus = () => {
+      syncAllFromCloud();
     };
-    fetchPrompts();
+    window.addEventListener('focus', handleFocus);
+    return () => window.removeEventListener('focus', handleFocus);
   }, [supabaseConfig, isOnline]);
 
-  // Fetch Dashboard State (Notes, To-Dos, Widgets, Mode) from Supabase on mount
-  useEffect(() => {
-    const fetchDashboardState = async () => {
-      if (!isOnline) return;
-      try {
-        const state = await fetchDashboardStateFromSupabase(supabaseConfig);
-        if (state) {
-          if (state.dash_notes !== undefined && state.dash_notes !== null) {
-            setDashNotes(state.dash_notes);
-            localStorage.setItem('f_dash_notes', state.dash_notes);
-          }
-          if (Array.isArray(state.dash_todos) && state.dash_todos.length > 0) {
-            setDashTodos(state.dash_todos);
-            localStorage.setItem('f_dash_todos', JSON.stringify(state.dash_todos));
-          }
-          if (Array.isArray(state.dashboard_widgets) && state.dashboard_widgets.length > 0) {
-            setDashboardWidgets(state.dashboard_widgets);
-            localStorage.setItem('f_dashboard_widgets', JSON.stringify(state.dashboard_widgets));
-          }
-          if (state.dashboard_mode) {
-            setDashboardMode(state.dashboard_mode);
-            localStorage.setItem('f_dashboard_mode', state.dashboard_mode);
-          }
-        }
-      } catch (e) {
-        console.error("Fehler beim Laden des Dashboard-States aus Supabase:", e);
-      }
-    };
-    fetchDashboardState();
-  }, [supabaseConfig, isOnline]);
-
-  // Auto-sync Dashboard State to Supabase whenever notes, todos, widgets or mode change
+  // Periodic background polling sync every 30 seconds
   useEffect(() => {
     if (!isOnline) return;
+    const interval = setInterval(() => {
+      syncAllFromCloud();
+    }, 30000);
+    return () => clearInterval(interval);
+  }, [supabaseConfig, isOnline]);
+
+  // Auto-sync Dashboard State to Supabase ONLY after initial load has finished
+  useEffect(() => {
+    if (!isOnline || !isInitialStateLoaded) return;
     const timer = setTimeout(async () => {
       try {
         await saveDashboardStateToSupabase({
@@ -830,7 +845,7 @@ function App() {
       }
     }, 1000);
     return () => clearTimeout(timer);
-  }, [dashNotes, dashTodos, dashboardWidgets, dashboardMode, supabaseConfig, isOnline]);
+  }, [dashNotes, dashTodos, dashboardWidgets, dashboardMode, supabaseConfig, isOnline, isInitialStateLoaded]);
 
   // Wochen-Review & Archiv Logik & Sync (Feature A3)
   useEffect(() => {
@@ -1458,26 +1473,9 @@ Hier ist die Frage des Nutzers:
     // Real API fetch in background during sync
     const performLiveSync = async () => {
       try {
-        const data = await fetchLeadsFromSupabase(supabaseConfig);
-        if (data && data.length > 0) {
-          setLeads(data);
-        }
+        await syncAllFromCloud();
       } catch (e) {
-        console.error("Supabase sync fetch failed", e);
-      }
-
-      try {
-        const serverPrompts = await fetchPromptsFromSupabase(supabaseConfig);
-        if (serverPrompts) {
-          const merged = new Map();
-          serverPrompts.forEach(p => merged.set(p.id, p));
-          prompts.forEach(p => merged.set(p.id, p));
-          const mergedList = Array.from(merged.values());
-          setPrompts(mergedList);
-          localStorage.setItem('f_prompts', JSON.stringify(mergedList));
-        }
-      } catch (e) {
-        console.error("Supabase sync prompts failed", e);
+        console.error("Supabase sync failed", e);
       }
     };
     performLiveSync();
@@ -2660,9 +2658,24 @@ Hier ist die Frage des Nutzers:
     }
   };
 
-  const togglePinPrompt = (id) => {
-    setPrompts(prev => prev.map(p => p.id === id ? { ...p, isPinned: !p.isPinned } : p));
+  const togglePinPrompt = async (id) => {
+    let updatedPrompt = null;
+    setPrompts(prev => prev.map(p => {
+      if (p.id === id) {
+        updatedPrompt = { ...p, isPinned: !p.isPinned };
+        return updatedPrompt;
+      }
+      return p;
+    }));
     showToast('📌 Favoriten-Status geändert!');
+
+    if (isOnline && updatedPrompt) {
+      try {
+        await savePromptToSupabase(updatedPrompt, supabaseConfig);
+      } catch (err) {
+        console.error("Fehler beim Speichern des Pin-Status in Supabase:", err);
+      }
+    }
   };
 
   const exportPromptsJSON = () => {
@@ -3498,6 +3511,27 @@ Hier ist die Frage des Nutzers:
             <span className="brand-badge">{clientPortalMode ? mask(selectedClientCompany, 'company') : 'KMU Service Harz'}</span>
           </div>
           
+          <button
+            type="button"
+            className="btn btn-secondary"
+            style={{
+              padding: '0.35rem 0.75rem',
+              fontSize: '0.75rem',
+              background: supabaseSyncStatus === 'connected' ? 'rgba(16, 185, 129, 0.1)' : supabaseSyncStatus === 'syncing' ? 'rgba(6, 182, 212, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+              borderColor: supabaseSyncStatus === 'connected' ? 'rgba(16, 185, 129, 0.3)' : supabaseSyncStatus === 'syncing' ? 'rgba(6, 182, 212, 0.3)' : 'rgba(239, 68, 68, 0.3)',
+              color: supabaseSyncStatus === 'connected' ? '#34d399' : supabaseSyncStatus === 'syncing' ? 'var(--accent-cyan)' : '#f87171',
+              marginRight: '0.35rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.35rem'
+            }}
+            onClick={() => syncAllFromCloud(true)}
+            title={`Cloud Sync Status: ${supabaseSyncStatus}. Letzter Sync: ${supabaseLastSync}. Klick zum manuellen Synchronisieren.`}
+          >
+            <RefreshCw size={13} className={supabaseSyncStatus === 'syncing' ? 'spin' : ''} />
+            {supabaseSyncStatus === 'connected' ? '☁️ Synchronisiert' : supabaseSyncStatus === 'syncing' ? '🔄 Syncing...' : '⚠️ Sync-Fehler'}
+          </button>
+
           <button
             type="button"
             className="btn btn-secondary"

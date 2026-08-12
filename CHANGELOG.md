@@ -4,6 +4,17 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 
 ## [Unreleased]
 
+### Fixed
+- **☁️ Handy & PC Daten-Synchronisation & Supabase Wiederherstellung:**
+  - **Supabase-Backend aufgeweckt:** Reaktivierung des ruhenden Supabase-Projekts sowie Erstellung der Tabellen `dashboard_state`, `prompts` und `leads` mit RLS-Freigaben.
+  - **Schutz vor Startseiten-Überschreibung:** Behebung einer Race-Condition beim App-Start, bei der leere lokale Notizen die Handy-Notizen in Supabase überschreiben konnten (`isInitialStateLoaded`).
+  - **Server-Priorität bei Prompt-Merging:** Cloud-Prompts erhalten beim Synchronisieren automatisch Vorrang vor veralteten lokalen Browser-Prompts.
+  - **Automatisches Re-Sync bei Fenster-Fokus:** Wechselt der Nutzer am PC auf den Browser-Tab, werden Notizen & Prompts sofort aus Supabase nachgeladen (`window.focus` & 30s Polling).
+- **📌 Prompt Pinning Cloud-Sync:** Der Favoriten-Status (`isPinned`) von Prompts wird nun sofort in der Supabase-Datenbank aktualisiert und geräteübergreifend gespiegelt.
+
+### Added
+- **🔄 Cloud Sync Status Indicator:** Live-Anzeige (`☁️ Synchronisiert` / `🔄 Syncing` / `⚠️ Sync-Fehler`) mit Klick-Aktion für manuelles Re-Sync in der App-Headerleiste.
+
 ### Added
 - **🎨 Freie Widget-Reihenfolge & Verschiebung im Dashboard-Editor:**
   - **Dynamische Positionssteuerung:** Jedes der 12 Widgets besitzt im Layout-Editor nun eine Positions-Markierung (`#1`, `#2`...) und Pfeil-Tasten (`⬆️ Nach oben` / `⬇️ Nach unten`), um die Anordnung auf dem Dashboard beliebig zu verändern.

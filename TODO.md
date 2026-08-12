@@ -1,6 +1,7 @@
 # TODO - Founder OS
 
 ## Wichtig
+- [x] **Handy & PC Daten-Synchronisation & Supabase Wiederherstellung (Phase v22):** Inaktives Supabase-Backend aufgeweckt, DB-Tabellen `dashboard_state`, `prompts` und `leads` mit RLS angelegt. Race-Condition-Überschreibungs-Schutz (`isInitialStateLoaded`), automatischen Re-Sync bei Fenster-Fokus (`window.focus` & Polling), `isPinned`-Cloud-Sync und Cloud-Status-Button in der Headerleiste eingebaut.
 - [x] **Freie Widget-Reihenfolge & Layout-Verschiebung (Phase v21):** Dynamische Neuanordnung aller Dashboard-Widgets im Anpassen-Editor mit Positionsanzeige (#1, #2...) und ⬆️ ⬇️ Verschiebe-Steuerung. Voll integriert mit Supabase Cloud Auto-Sync.
 - [x] **Dashboard State Supabase Cloud Auto-Sync (Phase v20):** Vollständige Cloud-Synchronisation für Dashboard-Notizen (`dashNotes`), To-Dos (`dashTodos`), Widget-Layout (`dashboardWidgets`) und Dashboard-Modi (`dashboardMode`) über Supabase DB-Tabelle `dashboard_state`. Gerätesynchronisation zwischen Handy und PC hergestellt und Prompt-Payload-Schema korrigiert.
 - [x] **KI-Prompt-Zentrale Upgrade & Cloud Auto-Sync:** Sofortiger Supabase Auto-Sync (Handy ↔ PC), Sync-Badges (`☁️ Cloud` vs `📱 Lokal`), Vorher/Nachher KI-Diff Modal, 4 KI-Optimierungsmodi, Variablen-Substitution (`{{Variable}}`), Favoriten (`📌`), JSON Export/Import und Toast-Notifications.
