@@ -193,7 +193,7 @@ describe('Founder OS App - Integration Tests', () => {
     fireEvent.click(doneBtn)
 
     // Prüfen, ob Widgets auf dem Dashboard gerendert werden
-    expect(screen.getByText('📌 Notizzettel')).toBeInTheDocument()
+    expect(screen.getByText(/📌 Notizen/i)).toBeInTheDocument()
     expect(screen.getByText('Einfacher Terminkalender')).toBeInTheDocument()
 
     // Formular im einfachen Terminkalender ausfüllen
@@ -312,7 +312,7 @@ describe('Founder OS App - Integration Tests', () => {
     render(<App />)
 
     // Prüfe, ob Notizzettel auf dem Dashboard gerendert wird
-    expect(screen.getByText('📌 Notizzettel & Aufgaben (Cloud-Sync)')).toBeInTheDocument()
+    expect(screen.getByText(/📌 Notizen.*Aufgaben/i)).toBeInTheDocument()
     expect(screen.getAllByText('☁️ Cloud-gesichert').length).toBeGreaterThan(0)
 
     // Gebe Notiz-Text ein
