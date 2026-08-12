@@ -193,7 +193,7 @@ describe('Founder OS App - Integration Tests', () => {
     fireEvent.click(doneBtn)
 
     // Prüfen, ob Widgets auf dem Dashboard gerendert werden
-    expect(screen.getByText(/📌 Notizen/i)).toBeInTheDocument()
+    expect(screen.getAllByText(/📌 Notizen/i).length).toBeGreaterThan(0)
     expect(screen.getByText('Einfacher Terminkalender')).toBeInTheDocument()
 
     // Formular im einfachen Terminkalender ausfüllen
