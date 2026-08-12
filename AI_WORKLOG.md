@@ -1,5 +1,67 @@
 # AI Worklog - Founder OS
 
+## 2026-08-13 01:29 – Notizblock & TODO Cloud- & Local-Synchronisation Fix (COMPLETED)
+
+### Ziel
+Behebung des Problems, dass neu eingegebene Notizen und To-Dos beim Neuladen der Seite gelöscht/zurückgesetzt wurden und nicht zuverlässig zwischen Smartphone und PC synchronisierten.
+
+### Erstellt
+- `f_dash_local_updated_at`: Lokales Zeitstempel-Tracking in `localStorage` zur sicheren Konfliktauflösung zwischen lokalem Bearbeitungsstand und Supabase-Cloud.
+- `saveDashboardNow`: Helper-Funktion in `src/App.jsx` für das sofortige Flushen von Notiz- und To-Do-Änderungen an Supabase.
+- `keepalive: true` Option im Fetch-Request in `src/services/supabase.js`, um Speicheranfragen auch beim Schließen/Neuladen des Browser-Tabs zu garantieren.
+- `onBlur`-Event-Listener an beiden Notiz-Textareas (`simpleNotes` & `notes`) in `src/components/DashboardView.jsx` für sofortiges Cloud-Speichern beim Verlassen des Textfeldes.
+- Event-Listener für `beforeunload` und `visibilitychange` (`hidden`) in `src/App.jsx` zum unmittelbaren Sichern ungespeicherter Eingaben beim App-Wechsel oder Browser-Tab-Schließen.
+
+### Geändert
+- [`src/App.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx):
+  - In `syncAllFromCloud`: Zeitstempelvergleich (`remoteTime` vs `localTime`). Wenn lokale Notizen/To-Dos neuer als der Serverstand sind, wird der Server mit den lokalen Daten aktualisiert, statt lokale Daten mit alten Serverdaten zu überschreiben.
+  - Schutz während der Eingabe: Wenn der Benutzer gerade aktiv im Notizfeld tippt (`document.activeElement`), wird der Inhalt von background polling nicht überschrieben.
+  - Korrektur der `dash_todos`-Prüfung (`if (Array.isArray(state.dash_todos))`), sodass auch leere To-Do-Listen korrekt geräteübergreifend synchronisiert werden.
+  - Reduzierung des Auto-Save-Debounce auf 400ms.
+- [`src/components/DashboardView.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/components/DashboardView.jsx):
+  - Prop `saveDashboardNow` hinzugefügt und an Textareas und To-Do-Actions angebunden.
+- [`src/services/supabase.js`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/services/supabase.js): `keepalive: true` & verbessertes Exception-Handling in `saveDashboardStateToSupabase`.
+- **Supabase DB Schema Fix**: Spalte `sticky_note_color` in der Supabase-Tabelle `public.dashboard_state` via SQL nachgerüstet. Zuvor lehnte Supabase Speicheranfragen mit HTTP 400 (`Could not find 'sticky_note_color' column`) ab, wodurch Speicherversuche fehlschlugen.
+- [`README.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/README.md), [`CHANGELOG.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md), [`AI_WORKLOG.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/AI_WORKLOG.md), [`TODO.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md): Dokumentation aktualisiert.
+
+### Warum
+Bisher führte `syncAllFromCloud()` beim App-Start / Neuladen ein ungeprüftes Fetching von Supabase aus. Da das automatische Speichern debounct war und beim Neuladen abgebrochen wurde, holte das App-Mounting alte Serverdaten und überschrieb die frischen lokalen Daten sofort mit leeren/alten Inhalten. Mit dem Zeitstempel-Abgleich, `keepalive: true` und `onBlur`/`beforeunload`-Flushing sind Datenverluste unmöglich.
+
+### Testen
+- `npm test` ausgeführt und alle Integrationstests verifiziert.
+
+### Offene Punkte
+- Keine.
+
+---
+
+## 2026-08-12 17:58 – Automatische Bidirektionale Prompt-Vault Synchronisierung (COMPLETED)
+
+### Ziel
+Behebung des Problems, dass auf dem Smartphone im Prompt Vault erstellte Prompts nicht auf dem PC angezeigt wurden. Implementierung einer echten bidirektionalen Auto-Synchronisierung (Push lokaler unsynchronisierter Prompts vor dem Cloud-Pull).
+
+### Erstellt
+- [`pushUnsyncedPromptsToSupabase`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/services/supabase.js#L97-L115): Neue API-Hilfsfunktion in `src/services/supabase.js` zum schrittweisen Hochladen noch nicht synchronisierter Prompts nach Supabase.
+- `syncPromptsBidirectional`: Neue zentrale Engine-Funktion in `src/App.jsx`, die lokal als `synced: false` markierte Prompts bei aktiver Internetverbindung automatisch an Supabase sendet, danach die aktuellen Server-Prompts lädt und konfliktfrei zusammenführt.
+
+### Geändert
+- [`src/services/supabase.js`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/services/supabase.js): `pushUnsyncedPromptsToSupabase` hinzugefügt und exportiert.
+- [`src/App.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): 
+  - `syncAllFromCloud`, `handleSyncPromptsFromSupabase`, `handleAddPrompt` auf `syncPromptsBidirectional` umgestellt.
+  - Auto-Sync-Mechanismen (App-Mount, Online-Reconnect, Tab-Fokus/Wiederaufruf, 30-Sekunden-Intervall) um den automatischen Push-Sync erweitert.
+- [`src/components/PromptVault.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/components/PromptVault.jsx): Sync-Badge auf den Prompt-Karten um deutlichen Status-Text erweitert (`☁️ Cloud` vs. `📱 Lokal (Sync ausstehend)`).
+- [`README.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/README.md), [`CHANGELOG.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md), [`AI_WORKLOG.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/AI_WORKLOG.md), [`TODO.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md): Dokumentation aktualisiert.
+
+### Warum
+Bisher wurden beim Cloud-Sync lediglich Server-Prompts *abgerufen*. Prompts, die auf dem Smartphone offline oder vor der ersten Cloud-Antwort angelegt worden waren, verblieben dauerhaft im lokalen Speicher (`localStorage`) des Smartphones und erreichten Supabase nie. Durch die bidirektionale Logik wird jeder Smartphone-Prompt automatisch hochgeladen und steht sofort auf dem PC zur Verfügung.
+
+### Testen
+- `npm run build` ausgeführt (Vite-Bundle fehlerfrei erstellt).
+
+### Offene Punkte
+- Keine.
+
+---
 ## 2026-08-12 14:01 – Dashboard Notizzettel Cloud-Sync Fix & Erweiterung um KMU-Prompts & Prompt-Historie (COMPLETED)
 
 ### Ziel

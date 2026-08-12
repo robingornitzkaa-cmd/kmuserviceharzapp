@@ -5,6 +5,15 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Fixed
+- **📌 Notizblock & TODO Cloud- & Local-Synchronisation Fix (Smartphone ↔ PC):**
+  - **Kein Datenverlust beim Neuladen der Seite:** Behebung des Fehlers, dass neu eingegebene Notizen oder To-Dos beim Druck auf F5/Neuladen oder nach App-Wechsel gelöscht oder auf einen alten Stand zurückgesetzt wurden.
+  - **Zeitstempel-basierte Konfliktauflösung:** Wenn lokale Notizen oder To-Dos neuer sind als der Cloud-Datenbankstand (`updated_at`), schützt die App die lokalen Daten und überträgt sie direkt in die Cloud, statt sie mit veralteten Serverdaten zu überschreiben.
+  - **Sofortiges Speichern bei `onBlur` & App-Wechsel:** Beim Verlassen der Notizfelder (`onBlur`), beim Wechseln in andere Smartphone-Apps (`visibilitychange`) oder beim Schließen des Browser-Tabs (`beforeunload` mit `keepalive: true`) werden Änderungen sofort an Supabase geflusht.
+  - **Echtzeit-Synchronisation für leere To-Do-Listen:** Korrektur des Array-Checks (`Array.isArray(state.dash_todos)`), sodass das vollständige Abhaken oder Löschen von Aufgaben auf allen Geräten korrekt gespiegelt wird.
+- **📱↔️💻 Prompt Vault Bidirektionale Auto-Synchronisierung (Handy & PC):**
+  - **Auto-Push für un-synchronisierte Prompts:** Behebung des Fehlers, dass auf dem Smartphone erstellte Prompts nicht auf dem PC erschienen. Alle noch nicht synchronisierten Prompts (`synced: false`) werden beim Cloud-Sync oder reconnect automatisch vor dem Abruf zu Supabase hochgeladen.
+  - **Nahtlose Gerätessynchronisation:** Automatische Ausführung der bidirektionalen Synchronisierung beim App-Start, bei Re-Connect (`isOnline`), beim Wechseln in die App (`focus`) und im 30-Sekunden-Hintergrundintervall.
+  - **Klare Status-Badges:** Transparenter visueller Indikator an Prompt-Karten (`☁️ Cloud` vs. `📱 Lokal (Sync ausstehend)`).
 - **☁️ Handy & PC Daten-Synchronisation & Supabase Wiederherstellung:**
   - **Supabase-Backend aufgeweckt:** Reaktivierung des ruhenden Supabase-Projekts sowie Erstellung der Tabellen `dashboard_state`, `prompts` und `leads` mit RLS-Freigaben.
   - **Schutz vor Startseiten-Überschreibung:** Behebung einer Race-Condition beim App-Start, bei der leere lokale Notizen die Handy-Notizen in Supabase überschreiben konnten (`isInitialStateLoaded`).

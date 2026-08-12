@@ -1,6 +1,8 @@
 # TODO - Founder OS
 
-## Wichtig
+### Wichtig
+- [x] **📌 Notizblock & TODO Cloud- & Local-Synchronisations Fix (Handy ↔ PC):** Zeitstempel-Konfliktauflösung (`f_dash_local_updated_at` vs Supabase `updated_at`), Schutz vor Neulade-Überschreibung, `onBlur` & `beforeunload` Sofort-Speicherung (`keepalive: true`), leere To-Do Array-Synchronisation und Eingabeschutz bei aktivem Tippen.
+- [x] **📱↔️💻 Prompt Vault Bidirektionale Auto-Synchronisierung (Handy & PC):** Echte bidirektionale Synchronisierung (Auto-Push lokaler unsynchronisierter Prompts `synced: false` nach Supabase vor dem Abruf), Auto-Sync bei App-Mount, Re-Connect, Tab-Fokus und 30s Polling. Badge-Anzeige (`☁️ Cloud` vs `📱 Lokal (Sync ausstehend)`).
 - [x] **🏢 KMU & Harz Spezial-Prompt-Bibliothek (Phase v25 / Idee 4):** Vordefinierte Prompt-Bibliothek (`kmuPrompts.js`) mit 12+ Vorlagen für KMU (Sales, Recruiting, DSGVO, Google Business) mit 1-Klick-Übernahme (`➕ In meinen Tresor übernehmen`) in Supabase.
 - [x] **📜 Prompt-Versionierung & Änderungshistorie (Phase v25 / Idee 5):** Automatische Revisions-Speicherung bei Prompt-Änderung / KI-Optimierung und interaktives Versions-Modal zum Vergleichen & 1-Klick-Wiederherstellen älterer Stände (`🔄 Diese Version wiederherstellen`).
 - [x] **📌 Dashboard Notizzettel Upgraded & Cloud-Sync Fix (Phase v24):** Notizzettel-Inhalt (`dashNotes`) und Notizfarbe (`stickyNoteColor`) lückenlos über Supabase `dashboard_state` geräteübergreifend gesichert. Live Cloud-Status-Badge (`☁️ Cloud-gesichert` / `🔄 Speichert...`), Zeichen-/Wortzähler und Kopierbutton eingebaut.

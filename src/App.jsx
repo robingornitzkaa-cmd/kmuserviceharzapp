@@ -74,6 +74,7 @@ import {
   saveLeadToSupabase, 
   fetchPromptsFromSupabase, 
   savePromptToSupabase, 
+  pushUnsyncedPromptsToSupabase,
   deletePromptFromSupabase,
   fetchDashboardStateFromSupabase,
   saveDashboardStateToSupabase
@@ -286,6 +287,7 @@ function App() {
       return [];
     }
   });
+  const [dashLocalUpdatedAt, setDashLocalUpdatedAt] = useState(() => localStorage.getItem('f_dash_local_updated_at') || null);
 
   const [googleConnected, setGoogleConnected] = useState(() => {
     return localStorage.getItem('f_google_connected') === 'true';
@@ -653,6 +655,13 @@ function App() {
   useEffect(() => {
     localStorage.setItem('f_dash_todos', JSON.stringify(dashTodos));
   }, [dashTodos]);
+  useEffect(() => {
+    if (isInitialStateLoaded) {
+      const nowIso = new Date().toISOString();
+      setDashLocalUpdatedAt(nowIso);
+      localStorage.setItem('f_dash_local_updated_at', nowIso);
+    }
+  }, [dashNotes, dashTodos, stickyNoteColor, dashboardWidgets, dashboardMode]);
 
   // Phase v9: Sync to Android Widget
   useEffect(() => {
@@ -745,6 +754,103 @@ function App() {
     }
   }, [activeLeadId]);
 
+  // Bidirectional Prompt Sync Engine (Push local unsynced prompts -> Supabase, then Pull server prompts -> Local)
+  const syncPromptsBidirectional = async (config = supabaseConfig) => {
+    if (!config || !config.url || !config.anonKey) {
+      return { success: false, pushed: 0, pulled: 0 };
+    }
+    try {
+      // 1. Get current local prompts from localStorage or state
+      let currentLocal = [];
+      try {
+        const saved = localStorage.getItem('f_prompts');
+        if (saved) currentLocal = JSON.parse(saved);
+      } catch {
+        currentLocal = prompts || [];
+      }
+      if (!Array.isArray(currentLocal) || currentLocal.length === 0) {
+        currentLocal = prompts || [];
+      }
+
+      // 2. Identify unsynced local prompts (created or modified offline)
+      const unsyncedPrompts = currentLocal.filter(p => p && (!p.synced || p.synced === false));
+      let pushCount = 0;
+
+      if (unsyncedPrompts.length > 0 && isOnline) {
+        const { uploadedIds } = await pushUnsyncedPromptsToSupabase(unsyncedPrompts, config);
+        pushCount = uploadedIds.length;
+        const uploadedSet = new Set(uploadedIds.map(id => String(id)));
+        currentLocal = currentLocal.map(p => {
+          if (uploadedSet.has(String(p.id))) {
+            return { ...p, synced: true };
+          }
+          return p;
+        });
+      }
+
+      // 3. Fetch server prompts from Supabase
+      const serverPrompts = await fetchPromptsFromSupabase(config);
+      if (serverPrompts && Array.isArray(serverPrompts)) {
+        const mergedMap = new Map();
+        
+        // Server prompts take priority for synced state
+        serverPrompts.forEach(p => {
+          mergedMap.set(String(p.id), { ...p, synced: true });
+        });
+
+        // Retain local prompts that failed to push or are strictly local
+        currentLocal.forEach(p => {
+          if (p && p.id) {
+            const strId = String(p.id);
+            if (!mergedMap.has(strId)) {
+              mergedMap.set(strId, p);
+            }
+          }
+        });
+
+        const mergedList = Array.from(mergedMap.values());
+        setPrompts(mergedList);
+        localStorage.setItem('f_prompts', JSON.stringify(mergedList));
+        return { success: true, pushed: pushCount, pulled: serverPrompts.length, total: mergedList.length };
+      }
+      return { success: false, pushed: pushCount, pulled: 0, total: currentLocal.length };
+    } catch (err) {
+      console.error("Fehler bei bidirektionaler Prompt-Synchronisierung:", err);
+      return { success: false, error: err };
+    }
+  };
+
+  // Helper to force immediate dashboard state save to Supabase
+  const saveDashboardNow = async () => {
+    if (!isOnline) return false;
+    try {
+      setSupabaseSyncStatus('syncing');
+      const nowIso = new Date().toISOString();
+      setDashLocalUpdatedAt(nowIso);
+      localStorage.setItem('f_dash_local_updated_at', nowIso);
+
+      const ok = await saveDashboardStateToSupabase({
+        dashNotes,
+        stickyNoteColor,
+        dashTodos,
+        dashboardWidgets,
+        dashboardMode,
+        updatedAt: nowIso
+      }, supabaseConfig);
+
+      if (ok) {
+        setSupabaseSyncStatus('connected');
+      } else {
+        setSupabaseSyncStatus('error');
+      }
+      return ok;
+    } catch (err) {
+      console.error("Fehler beim sofortigen Speichern des Dashboard-States:", err);
+      setSupabaseSyncStatus('error');
+      return false;
+    }
+  };
+
   // Synchronize all core data (Dashboard State, Prompts, Leads) from Supabase Cloud
   const syncAllFromCloud = async (showToastOnFinish = false) => {
     if (!isOnline) return;
@@ -754,40 +860,55 @@ function App() {
       // 1. Fetch Dashboard State (Notes, To-Dos, Widgets, Mode)
       const state = await fetchDashboardStateFromSupabase(supabaseConfig);
       if (state) {
-        if (state.dash_notes !== undefined && state.dash_notes !== null) {
-          setDashNotes(state.dash_notes);
-          localStorage.setItem('f_dash_notes', state.dash_notes);
-        }
-        if (state.sticky_note_color) {
-          setStickyNoteColor(state.sticky_note_color);
-          localStorage.setItem('f_sticky_note_color', state.sticky_note_color);
-        }
-        if (Array.isArray(state.dash_todos) && state.dash_todos.length > 0) {
-          setDashTodos(state.dash_todos);
-          localStorage.setItem('f_dash_todos', JSON.stringify(state.dash_todos));
-        }
-        if (Array.isArray(state.dashboard_widgets) && state.dashboard_widgets.length > 0) {
-          setDashboardWidgets(state.dashboard_widgets);
-          localStorage.setItem('f_dashboard_widgets', JSON.stringify(state.dashboard_widgets));
-        }
-        if (state.dashboard_mode) {
-          setDashboardMode(state.dashboard_mode);
-          localStorage.setItem('f_dashboard_mode', state.dashboard_mode);
+        const remoteTime = state.updated_at ? new Date(state.updated_at).getTime() : 0;
+        const localTimeStr = localStorage.getItem('f_dash_local_updated_at');
+        const localTime = localTimeStr ? new Date(localTimeStr).getTime() : 0;
+
+        // If local has unsaved edits newer than remote cloud timestamp (by > 1.5s), push local to cloud instead of overwriting local
+        if (localTime > remoteTime && (localTime - remoteTime > 1500)) {
+          const nowIso = localTimeStr || new Date().toISOString();
+          await saveDashboardStateToSupabase({
+            dashNotes: localStorage.getItem('f_dash_notes') ?? dashNotes,
+            stickyNoteColor: localStorage.getItem('f_sticky_note_color') ?? stickyNoteColor,
+            dashTodos: JSON.parse(localStorage.getItem('f_dash_todos') || '[]'),
+            dashboardWidgets: JSON.parse(localStorage.getItem('f_dashboard_widgets') || '[]'),
+            dashboardMode: localStorage.getItem('f_dashboard_mode') || dashboardMode,
+            updatedAt: nowIso
+          }, supabaseConfig);
+        } else {
+          // Cloud data is newer or equal: update local state from cloud
+          const activeElem = document.activeElement;
+          const isUserTypingNotes = activeElem && (activeElem.id === 'dash-scratchpad' || activeElem.tagName === 'TEXTAREA');
+
+          if (!isUserTypingNotes && state.dash_notes !== undefined && state.dash_notes !== null) {
+            setDashNotes(state.dash_notes);
+            localStorage.setItem('f_dash_notes', state.dash_notes);
+          }
+          if (state.sticky_note_color) {
+            setStickyNoteColor(state.sticky_note_color);
+            localStorage.setItem('f_sticky_note_color', state.sticky_note_color);
+          }
+          if (Array.isArray(state.dash_todos)) {
+            setDashTodos(state.dash_todos);
+            localStorage.setItem('f_dash_todos', JSON.stringify(state.dash_todos));
+          }
+          if (Array.isArray(state.dashboard_widgets) && state.dashboard_widgets.length > 0) {
+            setDashboardWidgets(state.dashboard_widgets);
+            localStorage.setItem('f_dashboard_widgets', JSON.stringify(state.dashboard_widgets));
+          }
+          if (state.dashboard_mode) {
+            setDashboardMode(state.dashboard_mode);
+            localStorage.setItem('f_dashboard_mode', state.dashboard_mode);
+          }
+          if (state.updated_at) {
+            setDashLocalUpdatedAt(state.updated_at);
+            localStorage.setItem('f_dash_local_updated_at', state.updated_at);
+          }
         }
       }
 
-      // 2. Fetch Prompts (Server prompts take priority over local defaults)
-      const serverPrompts = await fetchPromptsFromSupabase(supabaseConfig);
-      if (serverPrompts && Array.isArray(serverPrompts)) {
-        setPrompts(prevPrompts => {
-          const mergedMap = new Map();
-          prevPrompts.forEach(p => mergedMap.set(p.id, p));
-          serverPrompts.forEach(p => mergedMap.set(p.id, { ...p, synced: true }));
-          const mergedList = Array.from(mergedMap.values());
-          localStorage.setItem('f_prompts', JSON.stringify(mergedList));
-          return mergedList;
-        });
-      }
+      // 2. Bidirectional Prompt Sync (Push unsynced local prompts to Supabase, then Pull & merge server prompts)
+      await syncPromptsBidirectional(supabaseConfig);
 
       // 3. Fetch Leads
       const serverLeads = await fetchLeadsFromSupabase(supabaseConfig);
@@ -839,18 +960,54 @@ function App() {
     if (!isOnline || !isInitialStateLoaded) return;
     const timer = setTimeout(async () => {
       try {
-        await saveDashboardStateToSupabase({
+        const nowIso = localStorage.getItem('f_dash_local_updated_at') || new Date().toISOString();
+        const ok = await saveDashboardStateToSupabase({
           dashNotes,
           stickyNoteColor,
           dashTodos,
           dashboardWidgets,
-          dashboardMode
+          dashboardMode,
+          updatedAt: nowIso
         }, supabaseConfig);
+        if (ok) {
+          setSupabaseSyncStatus('connected');
+        } else {
+          setSupabaseSyncStatus('error');
+        }
       } catch (err) {
         console.error("Fehler beim Speichern des Dashboard-States in Supabase:", err);
+        setSupabaseSyncStatus('error');
       }
-    }, 1000);
+    }, 400);
     return () => clearTimeout(timer);
+  }, [dashNotes, stickyNoteColor, dashTodos, dashboardWidgets, dashboardMode, supabaseConfig, isOnline, isInitialStateLoaded]);
+
+  // Flush pending saves immediately when switching tabs or closing window
+  useEffect(() => {
+    const handleUnloadOrHide = () => {
+      if (isOnline && isInitialStateLoaded) {
+        const nowIso = localStorage.getItem('f_dash_local_updated_at') || new Date().toISOString();
+        saveDashboardStateToSupabase({
+          dashNotes: localStorage.getItem('f_dash_notes') || dashNotes,
+          stickyNoteColor,
+          dashTodos: JSON.parse(localStorage.getItem('f_dash_todos') || '[]'),
+          dashboardWidgets,
+          dashboardMode,
+          updatedAt: nowIso
+        }, supabaseConfig);
+      }
+    };
+    window.addEventListener('beforeunload', handleUnloadOrHide);
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        handleUnloadOrHide();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => {
+      window.removeEventListener('beforeunload', handleUnloadOrHide);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, [dashNotes, stickyNoteColor, dashTodos, dashboardWidgets, dashboardMode, supabaseConfig, isOnline, isInitialStateLoaded]);
 
   // Wochen-Review & Archiv Logik & Sync (Feature A3)
@@ -2633,9 +2790,15 @@ Hier ist die Frage des Nutzers:
         console.error("Fehler beim Speichern des Prompts in Supabase:", err);
       }
     }
-    setPrompts([promptToAdd, ...prompts]);
+    const updatedList = [promptToAdd, ...prompts];
+    setPrompts(updatedList);
+    localStorage.setItem('f_prompts', JSON.stringify(updatedList));
     setNewPrompt({ title: '', category: 'Sales', text: '' });
-    showToast(isSynced ? '✅ Prompt in Cloud & Lokal gesichert!' : '📱 Prompt lokal gesichert!');
+    showToast(isSynced ? '✅ Prompt in Cloud & Lokal gesichert!' : '📱 Prompt lokal gesichert (wird automatisch synchronisiert)');
+
+    if (isOnline) {
+      setTimeout(() => syncPromptsBidirectional(supabaseConfig), 800);
+    }
   };
 
   const handleOptimizePrompt = async (mode = 'structured') => {
@@ -2773,19 +2936,16 @@ Hier ist die Frage des Nutzers:
 
   const handleSyncPromptsFromSupabase = async () => {
     try {
-      const serverPrompts = await fetchPromptsFromSupabase(supabaseConfig);
-      if (serverPrompts && Array.isArray(serverPrompts)) {
-        setPrompts(prevPrompts => {
-          const mergedMap = new Map();
-          serverPrompts.forEach(p => mergedMap.set(p.id, { ...p, synced: true }));
-          prevPrompts.forEach(p => {
-            if (!mergedMap.has(p.id)) mergedMap.set(p.id, p);
-          });
-          const mergedList = Array.from(mergedMap.values());
-          localStorage.setItem('f_prompts', JSON.stringify(mergedList));
-          return mergedList;
-        });
-        showToast(`☁️ ${serverPrompts.length} Prompts aus Supabase synchronisiert!`);
+      showToast('🔄 Synchronisiere Prompts mit Cloud...');
+      const res = await syncPromptsBidirectional(supabaseConfig);
+      if (res.success) {
+        if (res.pushed > 0) {
+          showToast(`☁️ ${res.pushed} lokale Prompts hochgeladen & ${res.pulled} aus Cloud geladen!`);
+        } else {
+          showToast(`☁️ ${res.pulled} Prompts aus Supabase synchronisiert!`);
+        }
+      } else {
+        showToast('⚠️ Supabase Prompt-Sync fehlgeschlagen.');
       }
     } catch (err) {
       console.error("Supabase Prompt-Sync Fehler:", err);
@@ -3925,6 +4085,7 @@ Hier ist die Frage des Nutzers:
             setStickyNoteColor={setStickyNoteColor}
             dashNotes={dashNotes}
             setDashNotes={setDashNotes}
+            saveDashboardNow={saveDashboardNow}
             handleAddSimpleDashTodoSubmit={handleAddSimpleDashTodoSubmit}
             newDashTodoText={newDashTodoText}
             setNewDashTodoText={setNewDashTodoText}

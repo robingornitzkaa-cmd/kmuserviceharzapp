@@ -644,8 +644,8 @@ export const PromptVault = ({
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                       <span className="prompt-cat">{p.category}</span>
-                      <span style={{ fontSize: '0.6rem', padding: '0.1rem 0.35rem', borderRadius: '0.25rem', background: p.synced ? 'rgba(16, 185, 129, 0.15)' : 'rgba(255,255,255,0.05)', color: p.synced ? '#34d399' : 'var(--text-muted)' }}>
-                        {p.synced ? '☁️ Cloud' : '📱 Lokal'}
+                      <span style={{ fontSize: '0.6rem', padding: '0.1rem 0.35rem', borderRadius: '0.25rem', background: p.synced ? 'rgba(16, 185, 129, 0.15)' : 'rgba(234, 179, 8, 0.15)', color: p.synced ? '#34d399' : '#facc15' }} title={p.synced ? 'In Cloud gesichert & synchronisiert' : 'Lokal gespeichert, wird bei Cloud-Sync hochgeladen'}>
+                        {p.synced ? '☁️ Cloud' : '📱 Lokal (Sync ausstehend)'}
                       </span>
                     </div>
                   </div>

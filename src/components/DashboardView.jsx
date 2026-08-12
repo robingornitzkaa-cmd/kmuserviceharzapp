@@ -27,6 +27,7 @@ export const DashboardView = ({
   setStickyNoteColor,
   dashNotes,
   setDashNotes,
+  saveDashboardNow,
   supabaseSyncStatus = 'connected',
   handleAddSimpleDashTodoSubmit,
   newDashTodoText,
@@ -252,6 +253,7 @@ export const DashboardView = ({
                     placeholder="Notiere hier deine Gedanken, Telefonnummern oder To-Dos. Wird sofort automatisch geräteübergreifend synchronisiert..."
                     value={dashNotes}
                     onChange={(e) => setDashNotes(e.target.value)}
+                    onBlur={() => saveDashboardNow && saveDashboardNow()}
                   />
 
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.5rem', paddingTop: '0.35rem', borderTop: '1px solid rgba(0,0,0,0.08)', fontSize: '0.65rem', color: '#475569' }}>
@@ -1095,6 +1097,7 @@ export const DashboardView = ({
                       placeholder="Notiere hier deine Gedanken, Telefonnummern oder Mitschriften..."
                       value={dashNotes}
                       onChange={(e) => setDashNotes(e.target.value)}
+                      onBlur={() => saveDashboardNow && saveDashboardNow()}
                     />
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.35rem', fontSize: '0.7rem', color: 'var(--text-muted)' }}>
                       <span>{noteWordCount} Wörter | {noteCharCount} Zeichen</span>

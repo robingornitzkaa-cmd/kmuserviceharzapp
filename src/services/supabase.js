@@ -94,6 +94,27 @@ export const savePromptToSupabase = async (promptToAdd, supabaseConfig) => {
   return response ? response.ok : false;
 };
 
+export const pushUnsyncedPromptsToSupabase = async (promptsToPush, supabaseConfig) => {
+  if (!promptsToPush || promptsToPush.length === 0) return { uploadedIds: [], failedCount: 0 };
+  const uploadedIds = [];
+  let failedCount = 0;
+  for (const promptItem of promptsToPush) {
+    try {
+      const ok = await savePromptToSupabase(promptItem, supabaseConfig);
+      if (ok) {
+        uploadedIds.push(promptItem.id);
+      } else {
+        failedCount++;
+      }
+    } catch (err) {
+      console.error(`Fehler beim Push-Sync für Prompt ${promptItem.id}:`, err);
+      failedCount++;
+    }
+  }
+  return { uploadedIds, failedCount };
+};
+
+
 export const deletePromptFromSupabase = async (id, supabaseConfig) => {
   const url = getUrl(supabaseConfig);
   const key = getKey(supabaseConfig);
@@ -116,35 +137,41 @@ export const fetchDashboardStateFromSupabase = async (supabaseConfig) => {
       'Authorization': `Bearer ${key}`
     }
   });
-  if (response.ok) {
+  if (response && response.ok) {
     const data = await response.json();
     return data && data.length > 0 ? data[0] : null;
   }
-  throw new Error(`Supabase dashboard_state fetch error: ${response.status} ${response.statusText}`);
+  throw new Error(`Supabase dashboard_state fetch error: ${response ? response.status : 'no response'}`);
 };
 
 export const saveDashboardStateToSupabase = async (stateData, supabaseConfig) => {
-  const url = getUrl(supabaseConfig);
-  const key = getKey(supabaseConfig);
-  const payload = {
-    id: 'main',
-    dash_notes: stateData.dashNotes ?? '',
-    sticky_note_color: stateData.stickyNoteColor ?? '#fef08a',
-    dash_todos: stateData.dashTodos ?? [],
-    dashboard_widgets: stateData.dashboardWidgets ?? [],
-    dashboard_mode: stateData.dashboardMode ?? 'detailed',
-    updated_at: new Date().toISOString()
-  };
-  const response = await fetch(`${url}/rest/v1/dashboard_state`, {
-    method: 'POST',
-    headers: {
-      'apikey': key,
-      'Authorization': `Bearer ${key}`,
-      'Content-Type': 'application/json',
-      'Prefer': 'resolution=merge-duplicates'
-    },
-    body: JSON.stringify(payload)
-  });
-  return response.ok;
+  try {
+    const url = getUrl(supabaseConfig);
+    const key = getKey(supabaseConfig);
+    const payload = {
+      id: 'main',
+      dash_notes: stateData.dashNotes ?? '',
+      sticky_note_color: stateData.stickyNoteColor ?? '#fef08a',
+      dash_todos: stateData.dashTodos ?? [],
+      dashboard_widgets: stateData.dashboardWidgets ?? [],
+      dashboard_mode: stateData.dashboardMode ?? 'detailed',
+      updated_at: stateData.updatedAt || new Date().toISOString()
+    };
+    const response = await fetch(`${url}/rest/v1/dashboard_state`, {
+      method: 'POST',
+      headers: {
+        'apikey': key,
+        'Authorization': `Bearer ${key}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'resolution=merge-duplicates'
+      },
+      keepalive: true,
+      body: JSON.stringify(payload)
+    });
+    return response.ok;
+  } catch (err) {
+    console.error("Error saving dashboard state to Supabase:", err);
+    return false;
+  }
 };
 
