@@ -1,6 +1,12 @@
-# Git Push Regel
+# Git Commit & Push Regeln
 
-Der Agent führt **niemals** automatisch `git push` aus.
+Nach jeder abgeschlossenen Aufgabe oder wesentlichen Änderung an Dateien führt der Agent automatisch die folgenden Schritte aus:
 
-- `git status`, `git add`, `git commit` usw. können vom Agenten ausgeführt werden.
-- Der eigentliche `git push` Befehl wird **immer** dem Nutzer überlassen und von diesem manuell im Terminal ausgeführt.
+1. **Staging & Commit**:
+   ```bash
+   git add .
+   git commit -m "<type>: <aussagekräftige Beschreibung auf Deutsch oder Englisch>"
+   ```
+
+2. **KEIN Git Push**:
+   Der Agent führt **niemals** automatisch `git push` aus. Der `git push` Befehl bleibt **immer** dem Nutzer überlassen, der ihn manuell im Terminal ausführt.
