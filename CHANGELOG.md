@@ -4,6 +4,14 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 
 ## [Unreleased]
 
+### Added
+- **📌 Multi-Notizen System & Cloud-Sync (Handy ↔ PC):**
+  - **Erstellung mehrerer Notizen:** Der Benutzer kann über `+ Neue Notiz` beliebig viele unabhängige Notizblätter erstellen.
+  - **Eigene Titel & Farben:** Jede Notiz lässt sich individuell benennen (z. B. *"Anrufe"*, *"Ideen"*, *"Roadmap"*) und farblich anpassen (Gelb, Blau, Grün, Pink, Lila).
+  - **Schneller Notiz-Wechsel:** Horizontale Notiz-Tab-Leiste zum 1-Klick-Umschalten zwischen aktiven Notizblättern.
+  - **Automatische Migration & Abwärtskompatibilität:** Bisherige Einzelnotizen werden beim Start lückenlos als *"Notiz 1"* übernommen.
+  - **Supabase Cloud-Sync (`dash_notes_list`):** Alle Notizen werden geräteübergreifend in Supabase und `localStorage` gesichert.
+
 ### Fixed
 - **📌 Notizblock & TODO Cloud- & Local-Synchronisation Fix (Smartphone ↔ PC):**
   - **Kein Datenverlust beim Neuladen der Seite:** Behebung des Fehlers, dass neu eingegebene Notizen oder To-Dos beim Druck auf F5/Neuladen oder nach App-Wechsel gelöscht oder auf einen alten Stand zurückgesetzt wurden.

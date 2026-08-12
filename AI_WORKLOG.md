@@ -1,5 +1,38 @@
 # AI Worklog - Founder OS
 
+## 2026-08-13 01:48 – Multi-Notizen System Upgrade (COMPLETED)
+
+### Ziel
+Erweiterung des bisherigen einzelnen Notizblocks zu einem voll flexiblen Multi-Notizen-System. Der Benutzer kann beliebig viele Notizen anlegen, benennen, farblich gestalten, verwalten und lückenlos in Supabase Cloud (`dash_notes_list`) sowie `localStorage` synchronisieren.
+
+### Erstellt
+- **Multi-Notes State & Migration (`dashNotesList`, `activeNoteId`)**: Verwaltet beliebig viele Notiz-Objekte `{ id, title, content, color, updatedAt }`. Bisherige Einzelnotizen werden automatisch als "Notiz 1" migriert.
+- **Supabase DB Schema Update**: Neue Spalte `dash_notes_list` (`jsonb`) in `public.dashboard_state` angelegt.
+- **Multi-Notizen UI in `DashboardView.jsx`**:
+  - Horizontaler Notiz-Tab-Bar mit Schnellwechsel-Buttons und `+ Neue Notiz`.
+  - In-Place Titel-Editor zum beliebigen Benennen jeder Notiz.
+  - Farbauswahl-Dots (Gelb, Blau, Grün, Pink, Lila) je Notiz.
+  - Löschen-Button für aktives Notizblatt (`🗑️ Löschen`) mit Sicherheitsabfrage.
+- **Handlungshändler (`handleAddNote`, `handleSelectNote`, `handleUpdateActiveNote`, `handleDeleteNote`)** in `src/App.jsx`.
+
+### Geändert
+- [`src/App.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): Einbindung von `dashNotesList` in State, Migration, `saveDashboardNow`, `syncAllFromCloud` und Event-Listener.
+- [`src/components/DashboardView.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/components/DashboardView.jsx): `simpleNotes` und `notes` Widgets um Notiz-Tabs, Titel-Input und Multi-Notiz-Steuerung erweitert.
+- [`src/services/supabase.js`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/services/supabase.js): `dash_notes_list` im Payload von `saveDashboardStateToSupabase` hinzugefügt.
+- [`README.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/README.md), [`CHANGELOG.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md), [`AI_WORKLOG.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/AI_WORKLOG.md), [`TODO.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md): Dokumentation aktualisiert.
+
+### Warum
+Erfüllt den Nutzerwunsch nach Erstellung und Verwaltung mehrerer unabhängiger Notizen anstelle eines einzelnen Notizfeldes – inklusive nahtlosem Cloud-Sync zwischen Handy und PC.
+
+### Testen
+- Scratch-Test-Skript `test_supabase_sync.js` ausgeführt (3 Multi-Notizen erfolgreich an Supabase gesendet und mit `200 SUCCESS` zurückgelesen).
+- `npm test` ausgeführt und alle Integrationstests verifiziert.
+
+### Offene Punkte
+- Keine.
+
+---
+
 ## 2026-08-13 01:29 – Notizblock & TODO Cloud- & Local-Synchronisation Fix (COMPLETED)
 
 ### Ziel

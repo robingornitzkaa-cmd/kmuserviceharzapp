@@ -27,6 +27,12 @@ export const DashboardView = ({
   setStickyNoteColor,
   dashNotes,
   setDashNotes,
+  dashNotesList = [],
+  activeNoteId,
+  handleAddNote,
+  handleSelectNote,
+  handleUpdateActiveNote,
+  handleDeleteNote,
   saveDashboardNow,
   supabaseSyncStatus = 'connected',
   handleAddSimpleDashTodoSubmit,
@@ -179,8 +185,10 @@ export const DashboardView = ({
               );
 
             case 'simpleNotes': {
+              const activeNote = dashNotesList.find(n => n.id === activeNoteId) || dashNotesList[0] || { id: 'note_1', title: 'Notiz 1', content: '', color: '#fef08a' };
               const noteWordCount = (dashNotes || '').trim() ? (dashNotes || '').trim().split(/\s+/).length : 0;
               const noteCharCount = (dashNotes || '').length;
+
               return (
                 <div key="simpleNotes" className="card" style={{ 
                   background: stickyNoteColor, 
@@ -192,10 +200,11 @@ export const DashboardView = ({
                   flexDirection: 'column',
                   position: 'relative'
                 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(0, 0, 0, 0.1)', paddingBottom: '0.5rem', marginBottom: '0.65rem' }}>
+                  {/* Header & Sync Badge */}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(0, 0, 0, 0.1)', paddingBottom: '0.4rem', marginBottom: '0.5rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                       <h3 style={{ fontSize: '0.95rem', fontWeight: 800, color: '#0f172a', margin: 0, display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                        📌 Notizzettel
+                        📌 Notizen ({dashNotesList.length})
                       </h3>
                       <span style={{ 
                         fontSize: '0.6rem', 
@@ -210,6 +219,7 @@ export const DashboardView = ({
                       </span>
                     </div>
                     
+                    {/* Color selector */}
                     <div style={{ display: 'flex', gap: '0.35rem', alignItems: 'center' }}>
                       {[
                         { color: '#fef08a', label: 'Gelb' },
@@ -221,7 +231,10 @@ export const DashboardView = ({
                         <button
                           key={item.color}
                           type="button"
-                          onClick={() => setStickyNoteColor(item.color)}
+                          onClick={() => {
+                            setStickyNoteColor(item.color);
+                            if (handleUpdateActiveNote) handleUpdateActiveNote({ color: item.color });
+                          }}
                           style={{
                             width: '14px',
                             height: '14px',
@@ -237,37 +250,118 @@ export const DashboardView = ({
                     </div>
                   </div>
 
+                  {/* Tabs bar */}
+                  <div style={{ display: 'flex', gap: '0.3rem', overflowX: 'auto', marginBottom: '0.5rem', paddingBottom: '0.2rem' }}>
+                    {dashNotesList.map(note => (
+                      <button
+                        key={note.id}
+                        type="button"
+                        onClick={() => handleSelectNote && handleSelectNote(note.id)}
+                        style={{
+                          fontSize: '0.72rem',
+                          fontWeight: note.id === activeNoteId ? 800 : 600,
+                          padding: '0.15rem 0.5rem',
+                          borderRadius: '0.3rem',
+                          background: note.id === activeNoteId ? 'rgba(15, 23, 42, 0.15)' : 'rgba(0,0,0,0.05)',
+                          color: '#0f172a',
+                          border: note.id === activeNoteId ? '1px solid #0f172a' : '1px solid transparent',
+                          cursor: 'pointer',
+                          whiteSpace: 'nowrap'
+                        }}
+                      >
+                        📌 {note.title || 'Notiz'}
+                      </button>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={() => handleAddNote && handleAddNote()}
+                      style={{
+                        fontSize: '0.72rem',
+                        fontWeight: 700,
+                        padding: '0.15rem 0.45rem',
+                        borderRadius: '0.3rem',
+                        background: 'rgba(15, 23, 42, 0.08)',
+                        color: '#0f172a',
+                        border: '1px dashed #0f172a',
+                        cursor: 'pointer',
+                        whiteSpace: 'nowrap'
+                      }}
+                      title="Neue Notiz anlegen"
+                    >
+                      + Neue Notiz
+                    </button>
+                  </div>
+
+                  {/* Title editor */}
+                  <div style={{ marginBottom: '0.4rem' }}>
+                    <input
+                      type="text"
+                      value={activeNote.title || ''}
+                      onChange={(e) => handleUpdateActiveNote && handleUpdateActiveNote({ title: e.target.value })}
+                      placeholder="Titel der Notiz..."
+                      style={{
+                        width: '100%',
+                        background: 'rgba(255,255,255,0.3)',
+                        border: '1px solid rgba(0,0,0,0.12)',
+                        borderRadius: '0.25rem',
+                        padding: '0.2rem 0.45rem',
+                        fontSize: '0.85rem',
+                        fontWeight: 700,
+                        color: '#0f172a',
+                        outline: 'none'
+                      }}
+                    />
+                  </div>
+
+                  {/* Content textarea */}
                   <textarea
                     style={{
                       width: '100%',
-                      minHeight: '160px',
+                      minHeight: '140px',
                       background: 'transparent',
                       border: 'none',
                       resize: 'vertical',
                       color: '#0f172a',
-                      fontSize: '0.9rem',
+                      fontSize: '0.88rem',
                       fontFamily: 'inherit',
                       outline: 'none',
                       lineHeight: '1.4'
                     }}
-                    placeholder="Notiere hier deine Gedanken, Telefonnummern oder To-Dos. Wird sofort automatisch geräteübergreifend synchronisiert..."
+                    placeholder="Notiere hier deine Gedanken, Telefonnummern oder To-Dos. Wird sofort geräteübergreifend synchronisiert..."
                     value={dashNotes}
-                    onChange={(e) => setDashNotes(e.target.value)}
+                    onChange={(e) => {
+                      setDashNotes(e.target.value);
+                      if (handleUpdateActiveNote) handleUpdateActiveNote({ content: e.target.value });
+                    }}
                     onBlur={() => saveDashboardNow && saveDashboardNow()}
                   />
 
+                  {/* Footer actions */}
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.5rem', paddingTop: '0.35rem', borderTop: '1px solid rgba(0,0,0,0.08)', fontSize: '0.65rem', color: '#475569' }}>
                     <span>{noteWordCount} Wörter | {noteCharCount} Zeichen</span>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        navigator.clipboard.writeText(dashNotes || '');
-                        if (window.showToast) window.showToast('📋 Notizzettel in Zwischenablage kopiert!');
-                      }}
-                      style={{ border: 'none', background: 'rgba(0,0,0,0.08)', color: '#0f172a', padding: '0.15rem 0.45rem', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', fontWeight: 600 }}
-                    >
-                      📋 Kopieren
-                    </button>
+                    <div style={{ display: 'flex', gap: '0.35rem' }}>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (confirm(`Möchtest du die Notiz "${activeNote.title}" wirklich löschen?`)) {
+                            if (handleDeleteNote) handleDeleteNote(activeNote.id);
+                          }
+                        }}
+                        style={{ border: 'none', background: 'rgba(239, 68, 68, 0.15)', color: '#991b1b', padding: '0.15rem 0.45rem', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', fontWeight: 600 }}
+                      >
+                        🗑️ Löschen
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          navigator.clipboard.writeText(dashNotes || '');
+                          if (window.showToast) window.showToast('📋 Notizzettel in Zwischenablage kopiert!');
+                        }}
+                        style={{ border: 'none', background: 'rgba(0,0,0,0.08)', color: '#0f172a', padding: '0.15rem 0.45rem', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.65rem', fontWeight: 600 }}
+                      >
+                        📋 Kopieren
+                      </button>
+                    </div>
                   </div>
                 </div>
               );
@@ -1025,6 +1119,7 @@ export const DashboardView = ({
             );
 
           case 'notes': {
+            const activeNote = dashNotesList.find(n => n.id === activeNoteId) || dashNotesList[0] || { id: 'note_1', title: 'Notiz 1', content: '', color: '#fef08a' };
             const noteWordCount = (dashNotes || '').trim() ? (dashNotes || '').trim().split(/\s+/).length : 0;
             const noteCharCount = (dashNotes || '').length;
             return (
@@ -1032,7 +1127,7 @@ export const DashboardView = ({
                 <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <h2 className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <FileText size={20} className="text-yellow-500" />
-                    📌 Notizzettel & Aufgaben (Cloud-Sync)
+                    📌 Notizen ({dashNotesList.length}) & Aufgaben (Cloud-Sync)
                   </h2>
                   <span style={{ 
                     fontSize: '0.65rem', 
@@ -1049,8 +1144,56 @@ export const DashboardView = ({
                 
                 <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '1.5rem' }}>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-secondary)' }}>Schnelle Notizen / Entwürfe</label>
+                    {/* Tabs bar */}
+                    <div style={{ display: 'flex', gap: '0.3rem', overflowX: 'auto', paddingBottom: '0.2rem' }}>
+                      {dashNotesList.map(note => (
+                        <button
+                          key={note.id}
+                          type="button"
+                          onClick={() => handleSelectNote && handleSelectNote(note.id)}
+                          className="btn btn-secondary"
+                          style={{
+                            fontSize: '0.72rem',
+                            fontWeight: note.id === activeNoteId ? 800 : 500,
+                            padding: '0.15rem 0.5rem',
+                            height: '24px',
+                            border: note.id === activeNoteId ? '1px solid var(--accent-cyan)' : '1px solid var(--border-color)',
+                            background: note.id === activeNoteId ? 'rgba(6, 182, 212, 0.15)' : 'rgba(255,255,255,0.02)',
+                            color: note.id === activeNoteId ? 'var(--accent-cyan)' : 'var(--text-secondary)',
+                            whiteSpace: 'nowrap'
+                          }}
+                        >
+                          📌 {note.title || 'Notiz'}
+                        </button>
+                      ))}
+                      <button
+                        type="button"
+                        onClick={() => handleAddNote && handleAddNote()}
+                        className="btn btn-secondary"
+                        style={{
+                          fontSize: '0.72rem',
+                          fontWeight: 700,
+                          padding: '0.15rem 0.45rem',
+                          height: '24px',
+                          border: '1px dashed var(--accent-cyan)',
+                          color: 'var(--accent-cyan)',
+                          whiteSpace: 'nowrap'
+                        }}
+                        title="Neue Notiz anlegen"
+                      >
+                        + Neue Notiz
+                      </button>
+                    </div>
+
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem' }}>
+                      <input
+                        type="text"
+                        value={activeNote.title || ''}
+                        onChange={(e) => handleUpdateActiveNote && handleUpdateActiveNote({ title: e.target.value })}
+                        placeholder="Titel der Notiz..."
+                        className="input-field"
+                        style={{ height: '26px', fontSize: '0.8rem', fontWeight: 700, flexGrow: 1 }}
+                      />
                       <div style={{ display: 'flex', gap: '0.25rem', alignItems: 'center' }}>
                         <button
                           type="button"
@@ -1082,7 +1225,11 @@ export const DashboardView = ({
                         <span style={{ color: 'rgba(255,255,255,0.15)', margin: '0 0.15rem' }}>|</span>
                         <button 
                           type="button" 
-                          onClick={() => setDashNotes('')} 
+                          onClick={() => {
+                            if (confirm(`Möchtest du die Notiz "${activeNote.title}" wirklich löschen?`)) {
+                              if (handleDeleteNote) handleDeleteNote(activeNote.id);
+                            }
+                          }}
                           className="btn" 
                           style={{ padding: '0.15rem 0.45rem', fontSize: '0.65rem', background: 'rgba(239, 68, 68, 0.05)', color: 'var(--accent-red)', border: '1px solid rgba(239, 68, 68, 0.15)', height: '22px' }}
                         >
@@ -1096,7 +1243,10 @@ export const DashboardView = ({
                       style={{ flexGrow: 1, minHeight: '160px', fontFamily: 'inherit', fontSize: '0.85rem', lineHeight: '1.4', background: 'rgba(0,0,0,0.2)', resize: 'none' }}
                       placeholder="Notiere hier deine Gedanken, Telefonnummern oder Mitschriften..."
                       value={dashNotes}
-                      onChange={(e) => setDashNotes(e.target.value)}
+                      onChange={(e) => {
+                        setDashNotes(e.target.value);
+                        if (handleUpdateActiveNote) handleUpdateActiveNote({ content: e.target.value });
+                      }}
                       onBlur={() => saveDashboardNow && saveDashboardNow()}
                     />
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.35rem', fontSize: '0.7rem', color: 'var(--text-muted)' }}>

@@ -10,7 +10,7 @@ Die Anwendung zeichnet sich durch ein futuristisches "Glassmorphic Dark Theme" a
 
 ### 1. Dashboard (Zentrale) -- *UPGRADED!*
 - **Personalisierbares Layout & Freie Verschiebung:** Blende Widgets (Finanzen, E-Rechnung, Habits, Google Kalender, Quick Capture) ein/aus und **verschiebe sie frei per Positionsmarkierung (`#1`, `#2`...) und `⬆️` / `⬇️` Buttons im Editor**.
-- **📌 Notizzettel & TODO Cloud-Sync Fix (Handy ↔ PC):** Notizzettel-Inhalte (`dashNotes`), Haftnotiz-Farbe (`stickyNoteColor`) und To-Do-Aufgaben (`dashTodos`) werden automatisch über Supabase geräteübergreifend synchronisiert – mit intelligenter Zeitstempel-Konfliktauflösung, `onBlur` & `beforeunload` Sofort-Speicherung (`keepalive: true`), Cloud-Status Badge (`☁️ Cloud-gesichert`), Wort-/Zeichenzähler und Kopierbutton.
+- **📌 Multi-Notizen System & Cloud-Sync (Handy ↔ PC):** Erstelle, benenne und verwalte beliebig viele Notizblätter mit individuellen Farben (Gelb, Blau, Grün, Pink, Lila). Alle Notizen (`dashNotesList`) werden automatisch in Supabase Cloud gesichert und zwischen Geräten synchronisiert.
 - **Offline-Notizen & Checkliste:** Zettelkasten mit Markdown-Formatierungshilfe und Fallback-Speicherung in `localStorage`.
 - **Wochen-Review & PDF-Bericht:** Archiv für erledigte Aufgaben mit jsPDF-Berichts-Export.
 - **Gamifizierter Habit-Tracker:** Streak-Zähler mit CSS-Konfetti-Animation bei 100 % Abschluss.

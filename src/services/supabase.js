@@ -152,6 +152,7 @@ export const saveDashboardStateToSupabase = async (stateData, supabaseConfig) =>
       id: 'main',
       dash_notes: stateData.dashNotes ?? '',
       sticky_note_color: stateData.stickyNoteColor ?? '#fef08a',
+      dash_notes_list: stateData.dashNotesList ?? [],
       dash_todos: stateData.dashTodos ?? [],
       dashboard_widgets: stateData.dashboardWidgets ?? [],
       dashboard_mode: stateData.dashboardMode ?? 'detailed',

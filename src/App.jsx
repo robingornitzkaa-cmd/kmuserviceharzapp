@@ -275,6 +275,29 @@ function App() {
   });
 
   const [dashNotes, setDashNotes] = useState(() => localStorage.getItem('f_dash_notes') || '');
+  const [dashNotesList, setDashNotesList] = useState(() => {
+    try {
+      const saved = localStorage.getItem('f_dash_notes_list');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+      const oldNote = localStorage.getItem('f_dash_notes') || '';
+      const oldColor = localStorage.getItem('f_sticky_note_color') || '#fef08a';
+      return [
+        {
+          id: 'note_1',
+          title: 'Notiz 1',
+          content: oldNote,
+          color: oldColor,
+          updatedAt: new Date().toISOString()
+        }
+      ];
+    } catch {
+      return [{ id: 'note_1', title: 'Notiz 1', content: '', color: '#fef08a', updatedAt: new Date().toISOString() }];
+    }
+  });
+  const [activeNoteId, setActiveNoteId] = useState(() => localStorage.getItem('f_active_note_id') || 'note_1');
   const [dashTodos, setDashTodos] = useState(() => {
     try {
       const saved = localStorage.getItem('f_dash_todos');
@@ -653,6 +676,12 @@ function App() {
     localStorage.setItem('f_dash_notes', dashNotes);
   }, [dashNotes]);
   useEffect(() => {
+    localStorage.setItem('f_dash_notes_list', JSON.stringify(dashNotesList));
+  }, [dashNotesList]);
+  useEffect(() => {
+    localStorage.setItem('f_active_note_id', activeNoteId);
+  }, [activeNoteId]);
+  useEffect(() => {
     localStorage.setItem('f_dash_todos', JSON.stringify(dashTodos));
   }, [dashTodos]);
   useEffect(() => {
@@ -661,7 +690,7 @@ function App() {
       setDashLocalUpdatedAt(nowIso);
       localStorage.setItem('f_dash_local_updated_at', nowIso);
     }
-  }, [dashNotes, dashTodos, stickyNoteColor, dashboardWidgets, dashboardMode]);
+  }, [dashNotes, dashNotesList, dashTodos, stickyNoteColor, dashboardWidgets, dashboardMode]);
 
   // Phase v9: Sync to Android Widget
   useEffect(() => {
@@ -832,6 +861,7 @@ function App() {
       const ok = await saveDashboardStateToSupabase({
         dashNotes,
         stickyNoteColor,
+        dashNotesList,
         dashTodos,
         dashboardWidgets,
         dashboardMode,
@@ -870,6 +900,7 @@ function App() {
           await saveDashboardStateToSupabase({
             dashNotes: localStorage.getItem('f_dash_notes') ?? dashNotes,
             stickyNoteColor: localStorage.getItem('f_sticky_note_color') ?? stickyNoteColor,
+            dashNotesList: JSON.parse(localStorage.getItem('f_dash_notes_list') || '[]'),
             dashTodos: JSON.parse(localStorage.getItem('f_dash_todos') || '[]'),
             dashboardWidgets: JSON.parse(localStorage.getItem('f_dashboard_widgets') || '[]'),
             dashboardMode: localStorage.getItem('f_dashboard_mode') || dashboardMode,
@@ -880,7 +911,15 @@ function App() {
           const activeElem = document.activeElement;
           const isUserTypingNotes = activeElem && (activeElem.id === 'dash-scratchpad' || activeElem.tagName === 'TEXTAREA');
 
-          if (!isUserTypingNotes && state.dash_notes !== undefined && state.dash_notes !== null) {
+          if (Array.isArray(state.dash_notes_list) && state.dash_notes_list.length > 0) {
+            setDashNotesList(state.dash_notes_list);
+            localStorage.setItem('f_dash_notes_list', JSON.stringify(state.dash_notes_list));
+            const currentActive = state.dash_notes_list.find(n => n.id === activeNoteId) || state.dash_notes_list[0];
+            if (currentActive && !isUserTypingNotes) {
+              setDashNotes(currentActive.content || '');
+              setStickyNoteColor(currentActive.color || '#fef08a');
+            }
+          } else if (!isUserTypingNotes && state.dash_notes !== undefined && state.dash_notes !== null) {
             setDashNotes(state.dash_notes);
             localStorage.setItem('f_dash_notes', state.dash_notes);
           }
@@ -964,6 +1003,7 @@ function App() {
         const ok = await saveDashboardStateToSupabase({
           dashNotes,
           stickyNoteColor,
+          dashNotesList,
           dashTodos,
           dashboardWidgets,
           dashboardMode,
@@ -980,7 +1020,7 @@ function App() {
       }
     }, 400);
     return () => clearTimeout(timer);
-  }, [dashNotes, stickyNoteColor, dashTodos, dashboardWidgets, dashboardMode, supabaseConfig, isOnline, isInitialStateLoaded]);
+  }, [dashNotes, stickyNoteColor, dashNotesList, dashTodos, dashboardWidgets, dashboardMode, supabaseConfig, isOnline, isInitialStateLoaded]);
 
   // Flush pending saves immediately when switching tabs or closing window
   useEffect(() => {
@@ -990,6 +1030,7 @@ function App() {
         saveDashboardStateToSupabase({
           dashNotes: localStorage.getItem('f_dash_notes') || dashNotes,
           stickyNoteColor,
+          dashNotesList: JSON.parse(localStorage.getItem('f_dash_notes_list') || '[]'),
           dashTodos: JSON.parse(localStorage.getItem('f_dash_todos') || '[]'),
           dashboardWidgets,
           dashboardMode,
@@ -2340,6 +2381,65 @@ Hier ist die Frage des Nutzers:
 
   const handleDeleteCustomPromptBlock = (id) => {
     setCustomPromptBlocks(prev => prev.filter(b => b.id !== id));
+  };
+
+  const handleAddNote = () => {
+    const newId = 'note_' + Date.now();
+    const newNote = {
+      id: newId,
+      title: `Notiz ${dashNotesList.length + 1}`,
+      content: '',
+      color: '#fef08a',
+      updatedAt: new Date().toISOString()
+    };
+    setDashNotesList(prev => [...prev, newNote]);
+    setActiveNoteId(newId);
+    setDashNotes('');
+    setStickyNoteColor('#fef08a');
+  };
+
+  const handleSelectNote = (id) => {
+    setActiveNoteId(id);
+    const target = dashNotesList.find(n => n.id === id);
+    if (target) {
+      setDashNotes(target.content || '');
+      setStickyNoteColor(target.color || '#fef08a');
+    }
+  };
+
+  const handleUpdateActiveNote = (updatedFields) => {
+    setDashNotesList(prev => prev.map(note => {
+      if (note.id === activeNoteId) {
+        const updated = { ...note, ...updatedFields, updatedAt: new Date().toISOString() };
+        if (updatedFields.content !== undefined) {
+          setDashNotes(updatedFields.content);
+        }
+        if (updatedFields.color !== undefined) {
+          setStickyNoteColor(updatedFields.color);
+        }
+        return updated;
+      }
+      return note;
+    }));
+  };
+
+  const handleDeleteNote = (idToDelete) => {
+    if (dashNotesList.length <= 1) {
+      const resetNote = [{ id: 'note_1', title: 'Notiz 1', content: '', color: '#fef08a', updatedAt: new Date().toISOString() }];
+      setDashNotesList(resetNote);
+      setActiveNoteId('note_1');
+      setDashNotes('');
+      setStickyNoteColor('#fef08a');
+      return;
+    }
+    const updatedList = dashNotesList.filter(n => n.id !== idToDelete);
+    setDashNotesList(updatedList);
+    if (activeNoteId === idToDelete) {
+      const nextActive = updatedList[0];
+      setActiveNoteId(nextActive.id);
+      setDashNotes(nextActive.content || '');
+      setStickyNoteColor(nextActive.color || '#fef08a');
+    }
   };
 
   const handleAddDashTodo = (text) => {
@@ -4085,6 +4185,12 @@ Hier ist die Frage des Nutzers:
             setStickyNoteColor={setStickyNoteColor}
             dashNotes={dashNotes}
             setDashNotes={setDashNotes}
+            dashNotesList={dashNotesList}
+            activeNoteId={activeNoteId}
+            handleAddNote={handleAddNote}
+            handleSelectNote={handleSelectNote}
+            handleUpdateActiveNote={handleUpdateActiveNote}
+            handleDeleteNote={handleDeleteNote}
             saveDashboardNow={saveDashboardNow}
             handleAddSimpleDashTodoSubmit={handleAddSimpleDashTodoSubmit}
             newDashTodoText={newDashTodoText}

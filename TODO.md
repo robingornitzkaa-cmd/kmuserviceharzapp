@@ -1,6 +1,7 @@
 # TODO - Founder OS
 
 ### Wichtig
+- [x] **📌 Multi-Notizen System & Cloud-Sync (Phase v26):** Erstellung beliebig vieler Notizblätter (`+ Neue Notiz`), Umbenennen (In-Place Titel-Editor), Farbwahl (5 Farben), Tab-Umschaltung, Löschen & automatische Abwärtskompatibilitäts-Migration. Gerätesynchronisation in Supabase (`dash_notes_list`) und `localStorage`.
 - [x] **📌 Notizblock & TODO Cloud- & Local-Synchronisations Fix (Handy ↔ PC):** Zeitstempel-Konfliktauflösung (`f_dash_local_updated_at` vs Supabase `updated_at`), Schutz vor Neulade-Überschreibung, `onBlur` & `beforeunload` Sofort-Speicherung (`keepalive: true`), leere To-Do Array-Synchronisation und Eingabeschutz bei aktivem Tippen.
 - [x] **📱↔️💻 Prompt Vault Bidirektionale Auto-Synchronisierung (Handy & PC):** Echte bidirektionale Synchronisierung (Auto-Push lokaler unsynchronisierter Prompts `synced: false` nach Supabase vor dem Abruf), Auto-Sync bei App-Mount, Re-Connect, Tab-Fokus und 30s Polling. Badge-Anzeige (`☁️ Cloud` vs `📱 Lokal (Sync ausstehend)`).
 - [x] **🏢 KMU & Harz Spezial-Prompt-Bibliothek (Phase v25 / Idee 4):** Vordefinierte Prompt-Bibliothek (`kmuPrompts.js`) mit 12+ Vorlagen für KMU (Sales, Recruiting, DSGVO, Google Business) mit 1-Klick-Übernahme (`➕ In meinen Tresor übernehmen`) in Supabase.
