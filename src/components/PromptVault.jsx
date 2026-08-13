@@ -197,6 +197,8 @@ export const PromptVault = ({
                 <div style={{ fontSize: '0.65rem', color: '#a78bfa', fontWeight: 700, marginBottom: '0.25rem' }}>Prefix (Rolle):</div>
                 <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
                   {[
+                    { label: 'Lead Researcher', text: 'Agiere als B2B Lead Research & Marktanalyst. ' },
+                    { label: 'B2B Sales Strategist', text: 'Agiere als B2B-Vertriebsstrategist für Mittelstand. ' },
                     { label: 'Marketing', text: 'Agiere als KMU-Marketing-Experte für den Harz. ' },
                     { label: 'SEO', text: 'Agiere als SEO- & Google-Ranking-Spezialist. ' },
                     { label: 'Copywriter', text: 'Agiere als Copywriting-Profi für Landingpages. ' },
@@ -237,15 +239,42 @@ export const PromptVault = ({
                 </div>
               </div>
 
+              {/* NEU: Lead- & Research-Bausteine */}
+              <div>
+                <div style={{ fontSize: '0.65rem', color: '#c084fc', fontWeight: 700, marginBottom: '0.25rem' }}>🔬 Lead- & Research-Bausteine:</div>
+                <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
+                  {[
+                    { label: '🎯 Entscheider & Kontakte', text: '\nAnalysiere die wichtigsten Entscheider-Rollen (z.B. CEO, CTO, Head of Sales) und identifiziere bevorzugte Ansprechkanäle.' },
+                    { label: '📊 SWOT-Matrix', text: '\nErstelle eine 4-Felder-SWOT-Matrix (Stärken, Schwächen, Chancen, Risiken) für die Zielbranche.' },
+                    { label: '💻 Digitalisierungsgrad', text: '\nBewerte den aktuellen Digitalisierungsgrad (Website, Booking-System, Social Media, Online-Prozesse) der Unternehmen.' },
+                    { label: '🔍 SEO & Web-Präsenz', text: '\nAnalysiere die Google-Sichtbarkeit, SEO-Keywords und Online-Bewertungen der potenziellen Leads.' },
+                    { label: '💡 Schmerzpunkt-Analyse', text: '\nIdentifiziere die 3 gravierendsten Schmerzpunkte (Pain Points) und operativen Engpässe dieser Zielgruppe.' },
+                    { label: '🏢 Bonität & Firmengröße', text: '\nKlassifiziere potenzielle Leads nach Mitarbeiterzahl, geschätztem Umsatz und Bonitätsrisiko.' }
+                  ].map((b, idx) => (
+                    <button 
+                      key={idx} 
+                      type="button" 
+                      className="tag" 
+                      style={{ cursor: 'pointer', border: 'none', background: 'rgba(192, 132, 252, 0.18)', color: '#e9d5ff', fontSize: '0.65rem', padding: '0.2rem 0.45rem', borderRadius: '0.25rem', border: '1px solid rgba(192, 132, 252, 0.3)' }}
+                      onClick={() => setNewPrompt(prev => ({ ...prev, text: prev.text + b.text }))}
+                    >
+                      ➕ {b.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               {/* Tonalität */}
               <div>
                 <div style={{ fontSize: '0.65rem', color: '#22d3ee', fontWeight: 700, marginBottom: '0.25rem' }}>Tonalität & Stil:</div>
                 <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
                   {[
                     { label: 'Locker & Du', text: '\nSchreibe in lockerem & nahbarem "Du"-Stil.' },
-                    { label: 'Professionell', text: '\nFormuliere professionell, sachlich und fachbezogen.' },
+                    { label: 'Professionell B2B', text: '\nFormuliere professionell, sachlich und B2B-orientiert.' },
                     { label: 'Prägnant', text: '\nSchreibe extrem prägnant, direkt und ohne Floskeln.' },
-                    { label: 'Verkaufsstark', text: '\nNutze einen begeisternden, verkaufsstarken Werbeton.' }
+                    { label: 'Verkaufsstark', text: '\nNutze einen begeisternden, verkaufsstarken Werbeton.' },
+                    { label: 'Analytisch & Datenbasiert', text: '\nFokussiere auf datenbasierte Fakten, Zahlen und Marktstudien.' },
+                    { label: 'CEO-Prägnant', text: '\nFasse Ergebnisse so zusammen, dass ein CEO sie in 60 Sekunden versteht.' }
                   ].map((b, idx) => (
                     <button 
                       key={idx} 
@@ -285,7 +314,9 @@ export const PromptVault = ({
                 <div style={{ fontSize: '0.65rem', color: '#34d399', fontWeight: 700, marginBottom: '0.25rem' }}>Ausgabeformat:</div>
                 <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
                   {[
+                    { label: 'SWOT-Grid', text: '\nFormatiere die SWOT-Analyse als 4-Quadranten Markdown-Raster.' },
                     { label: 'Markdown Tabelle', text: '\nGib das Ergebnis als übersichtliche Markdown-Tabelle aus.' },
+                    { label: 'Executive Summary', text: '\nErstelle zu Beginn eine 3-Sätze Executive Summary.' },
                     { label: 'Emoji Bulletpoints', text: '\nStrukturiere die Antwort in Bulletpoints mit passenden Emojis.' },
                     { label: 'Schritt-für-Schritt', text: '\nErstelle eine detaillierte Schritt-für-Schritt-Anleitung.' },
                     { label: 'JSON Format', text: '\nAntworte ausschließlich im validen JSON-Format.' }
@@ -328,11 +359,11 @@ export const PromptVault = ({
                 <div style={{ fontSize: '0.65rem', color: '#fbbf24', fontWeight: 700, marginBottom: '0.25rem' }}>Suffix (Aufforderung):</div>
                 <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
                   {[
+                    { label: '🛡️ Quellenkritik', text: '\nPrüfe die Belastbarkeit aller Quellen und markiere verbleibende Datenlücken.' },
                     { label: '3 Rückfragen', text: '\nStelle mir am Ende 3 vertiefende Rückfragen zur Präzisierung.' },
                     { label: 'Risikoanalyse', text: '\nFühre eine Risikoanalyse für die vorgeschlagene Lösung durch.' },
                     { label: '3 Alternativen', text: '\nGib mir 3 alternative Headlines oder Einstiegsformulierungen.' },
-                    { label: 'Einfach erklärt', text: '\nErkläre es so einfach, als wäre ich 10 Jahre alt (ELI5).' },
-                    { label: '🛡️ Quellenkritik', text: '\nPrüfe die Belastbarkeit aller Quellen und markiere verbleibende Datenlücken.' }
+                    { label: 'Einfach erklärt', text: '\nErkläre es so einfach, als wäre ich 10 Jahre alt (ELI5).' }
                   ].map((b, idx) => (
                     <button 
                       key={idx} 
@@ -469,7 +500,7 @@ export const PromptVault = ({
               { id: 'concise', label: '✂️ Kurz & Präzise' },
               { id: 'english', label: '🌍 Englisch' },
               { id: 'privacy', label: '🛡️ Datenschutz' },
-              { id: 'deep_research', label: '🔬 Deep Research' }
+              { id: 'deep_research_swot', label: '🔬 Deep Research' }
             ].map(m => (
               <button
                 key={m.id}
@@ -479,9 +510,9 @@ export const PromptVault = ({
                   fontSize: '0.65rem',
                   padding: '0.15rem 0.45rem',
                   borderRadius: '0.25rem',
-                  border: selectedOptMode === m.id ? '1px solid var(--accent-purple)' : '1px solid var(--border-color)',
-                  background: selectedOptMode === m.id ? 'rgba(139, 92, 246, 0.2)' : 'transparent',
-                  color: selectedOptMode === m.id ? '#a78bfa' : 'var(--text-secondary)',
+                  border: selectedOptMode.startsWith(m.id === 'deep_research_swot' ? 'deep_research' : m.id) ? '1px solid var(--accent-purple)' : '1px solid var(--border-color)',
+                  background: selectedOptMode.startsWith(m.id === 'deep_research_swot' ? 'deep_research' : m.id) ? 'rgba(139, 92, 246, 0.2)' : 'transparent',
+                  color: selectedOptMode.startsWith(m.id === 'deep_research_swot' ? 'deep_research' : m.id) ? '#a78bfa' : 'var(--text-secondary)',
                   cursor: 'pointer',
                   transition: 'all 0.15s ease'
                 }}
@@ -490,6 +521,38 @@ export const PromptVault = ({
               </button>
             ))}
           </div>
+
+          {/* Deep Research Framework Sub-Leiste */}
+          {selectedOptMode.startsWith('deep_research') && (
+            <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap', alignItems: 'center', background: 'rgba(147, 51, 234, 0.1)', padding: '0.4rem 0.6rem', borderRadius: '0.4rem', border: '1px solid rgba(168, 85, 247, 0.3)' }}>
+              <span style={{ fontSize: '0.65rem', color: '#e9d5ff', fontWeight: 700 }}>🔬 Framework-Auswahl:</span>
+              {[
+                { id: 'deep_research_swot', label: '📊 Lead & SWOT' },
+                { id: 'deep_research_competitor', label: '🎯 Wettbewerber' },
+                { id: 'deep_research_market', label: '📈 Markt & Trends' },
+                { id: 'deep_research_tools', label: '🛠️ Tool-Vergleich' },
+                { id: 'deep_research_persona', label: '👥 Buyer Persona' }
+              ].map(f => (
+                <button
+                  key={f.id}
+                  type="button"
+                  onClick={() => setSelectedOptMode(f.id)}
+                  style={{
+                    fontSize: '0.65rem',
+                    padding: '0.15rem 0.45rem',
+                    borderRadius: '0.25rem',
+                    border: selectedOptMode === f.id ? '1px solid #c084fc' : '1px solid rgba(255,255,255,0.1)',
+                    background: selectedOptMode === f.id ? 'rgba(192, 132, 252, 0.3)' : 'rgba(0,0,0,0.2)',
+                    color: selectedOptMode === f.id ? '#ffffff' : '#e9d5ff',
+                    fontWeight: selectedOptMode === f.id ? 700 : 500,
+                    cursor: 'pointer'
+                  }}
+                >
+                  {f.label}
+                </button>
+              ))}
+            </div>
+          )}
           
           <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
             <button type="submit" className="btn btn-primary" style={{ flex: '1 1 130px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.35rem' }}>
@@ -512,8 +575,9 @@ export const PromptVault = ({
             <button 
               type="button" 
               onClick={() => {
-                setSelectedOptMode('deep_research');
-                if (handleOptimizePrompt) handleOptimizePrompt('deep_research');
+                const modeToUse = selectedOptMode.startsWith('deep_research') ? selectedOptMode : 'deep_research_swot';
+                setSelectedOptMode(modeToUse);
+                if (handleOptimizePrompt) handleOptimizePrompt(modeToUse);
               }} 
               disabled={ollamaLoading}
               className="btn" 
@@ -528,7 +592,7 @@ export const PromptVault = ({
                 color: '#e9d5ff',
                 fontWeight: 600
               }}
-              title="Erstellt aus dem Thema einen 5-stufigen Deep Research Prompt für KI-Tiefenrecherchen"
+              title="Erstellt einen hochspezialisierten 5-stufigen Deep Research Prompt für das gewählte Recherche-Framework"
             >
               <Sparkles size={15} style={{ color: '#c084fc' }} />
               🔬 Deep Research Prompt

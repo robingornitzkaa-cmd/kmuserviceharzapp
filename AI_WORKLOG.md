@@ -1,5 +1,41 @@
 # AI Worklog - Founder OS
 
+## 2026-08-13 04:53 – Deep Research Frameworks & Erweiterter Prompt-Baukasten (COMPLETED)
+
+### Ziel
+Umsetzung spezialisierter Deep Research Frameworks (Lead- & SWOT-Recherche, Konkurrenzanalyse, Marktforschung, Tool-Vergleich, Buyer Persona) sowie großzügige Erweiterung des Prompt-Baukastens um dezidierte Lead-Research-Bausteine und professionelle KI-Rollen.
+
+### Erstellt
+- **5 Spezialisierte Deep Research Frameworks**:
+  - `deep_research_swot`: Lead- & SWOT-Recherche (Lead-Qualifizierung, Entscheider-Rollen, SWOT-Matrix, Kontaktschema).
+  - `deep_research_competitor`: Wettbewerber- & Konkurrenzanalyse (Produkte, USPs, Preise, Konkurrenz-Schwachstellen).
+  - `deep_research_market`: Marktforschung & Trend-Analyse (Marktvolumen, CAGR, Branchentrends, Regulierungen).
+  - `deep_research_tools`: Tool- & Software-Vergleich (Feature-Matrix, Kosten, DSGVO-Check, Schnittstellen).
+  - `deep_research_persona`: Zielgruppen- & Buyer-Persona (Schmerzpunkte, Kaufmotive, Einwandbehandlung).
+- **Framework Sub-Auswahlleiste in `PromptVault.jsx`**: Interaktive Buttons bei Auswahl von `🔬 Deep Research` zum gezielten Ausführen des gewünschten Recherche-Typs.
+- **Dezidierte Kategorie `🔬 Lead- & Research-Bausteine` im Baukasten**:
+  - *🎯 Entscheider & Kontakte*, *📊 SWOT-Matrix*, *💻 Digitalisierungsgrad*, *🔍 SEO & Web-Präsenz*, *💡 Schmerzpunkt-Analyse*, *🏢 Bonität & Firmengröße*.
+- **Aufstockung bestehender Baukasten-Kategorien**:
+  - Neue Prefixes: B2B Lead Researcher, B2B Sales Strategist.
+  - Neue Tonalitäten: Analytisch & Datenbasiert, CEO-Prägnant.
+  - Neue Formate: SWOT-Grid, Executive Summary.
+
+### Geändert
+- [`src/services/gemini.js`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/services/gemini.js): `optimizePromptWithLocalAI` um 5 spezialisierte Recherche-Modi & 5 integrierte Fallback-Generatoren erweitert.
+- [`src/components/PromptVault.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/components/PromptVault.jsx): UI um Framework-Sub-Leiste, Lead-Research-Bausteine und erweiterte Prompt-Komponenten ergänzt.
+- [`README.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/README.md), [`CHANGELOG.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md), [`AI_WORKLOG.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/AI_WORKLOG.md), [`TODO.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md): Dokumentation aktualisiert.
+
+### Warum
+Erfüllt den Nutzerwunsch nach zielgerichteter KI-Prompt-Optimierung anhand bewährter Recherche-Frameworks (insb. Lead- & SWOT-Recherchen) sowie mehr vorgefertigten Prompt-Bausteinen für den täglichen KMU-Einsatz.
+
+### Testen
+- `npx vitest run` ausgeführt und 100 % der Integrationstests verifiziert.
+
+### Offene Punkte
+- Keine.
+
+---
+
 ## 2026-08-13 01:48 – Multi-Notizen System Upgrade (COMPLETED)
 
 ### Ziel

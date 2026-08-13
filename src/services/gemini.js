@@ -52,16 +52,29 @@ export const optimizePromptWithLocalAI = async ({ promptText, geminiApiKey, mode
     modeInstruction = "Translate and optimize this prompt into high-quality professional English for LLMs (GPT-4/Claude/Gemini). Return ONLY the optimized English prompt text without any intro or explanation:";
   } else if (mode === 'privacy') {
     modeInstruction = "Anonymisiere und optimiere diesen Prompt für ein LLM: Ersetze spezifische Eigennamen oder Firmendaten durch Platzhalter wie {{Firma}}, {{Kunde}}, {{Datum}} und strukturiere die Anweisung. Antworte NUR mit dem überarbeiteten Prompt-Text:";
-  } else if (mode === 'deep_research') {
-    modeInstruction = `Transformiere und erweitere das folgende Thema bzw. den Prompt-Entwurf in einen hochprofessionellen "Deep Research Prompt" für KI-Recherche-Tools (z.B. Gemini Deep Research, Perplexity Pro, OpenAI Deep Research, Claude).
-Der generierte Prompt muss folgende 5 Kernabschnitte aufweisen:
-1. [ZIEL & RECHERCHE-SKOP]: Haupt- und Unter-Forschungsfragen, Zielstellung, Abgrenzung.
-2. [METHODIK & SUCH-STRATEGIEN]: Keywords, Suchbegriffe, zu konsultierende Quellen (Branchenberichte, Statistiken, Fachmedien, Gesetze, Wettbewerber).
-3. [ANALYSE & EVALUATION]: Kriterien, Vergleiche (z.B. Pro/Contra, ROI, Risiko/Chancen Matrix).
-4. [ERGEBNIS-STRUKTUR DES REPORTS]: Detaillierte Gliederung für den finalen Research-Report (Executive Summary, Markt/Daten, Befunde, Risiken, Handlungsempfehlungen).
-5. [QUELLE-PRÜFUNG & CONSTRAINTS]: Regeln für Quellenkritik, Verifizierbarkeit, Objektivität und Verbot von Halluzinationen.
-
-Antworte AUSSCHLIESSLICH mit dem fertigen Deep Research Prompt auf Deutsch (ohne Einleitung oder Meta-Erklärungen):`;
+  } else if (mode.startsWith('deep_research')) {
+    if (mode === 'deep_research_competitor') {
+      modeInstruction = `Transformiere das Thema in einen hochprofessionellen "Wettbewerber- & Konkurrenzanalyse Deep Research Prompt".
+Der Prompt muss enthalten: 1. [ZIEL & KONKURRENZ-SKOP], 2. [ANALYSE DER HAUPTMITBEWERBER] (Preise, Angebote, USPs), 3. [STÄRKEN & SCHWACHSTELLEN DER KONKURRENZ], 4. [MARKT-POSITIONIERUNGS-MATRIX], 5. [EMPFEHLUNGEN FÜR NICHEN-CHANCEN].
+Antworte AUSSCHLIESSLICH mit dem fertigen Prompt auf Deutsch:`;
+    } else if (mode === 'deep_research_market') {
+      modeInstruction = `Transformiere das Thema in einen hochprofessionellen "Marktforschungs- & Trend-Analyse Deep Research Prompt".
+Der Prompt muss enthalten: 1. [MARKTGRÖSSE & WACHSTUMSRATEN], 2. [BRANCHE-TRENDS & REGULIERUNGEN], 3. [KUNDENVERHALTEN & NACHFRAGE], 4. [CHANCEN- & RISIKEN-GRID], 5. [HANDLUNGSOPTIONEN FÜR KMU].
+Antworte AUSSCHLIESSLICH mit dem fertigen Prompt auf Deutsch:`;
+    } else if (mode === 'deep_research_tools') {
+      modeInstruction = `Transformiere das Thema in einen hochprofessionellen "Tool- & Software-Vergleich Deep Research Prompt".
+Der Prompt muss enthalten: 1. [VERGLEICHS-KRITERIEN & TECH-STACK], 2. [FEATURE-MATRIX & PRO/CONTRA], 3. [PREIS-LEISTUNGS-VERHÄLTNIS & LIZENZEN], 4. [DSGVO- & DATENSCHUTZ-CHECK], 5. [EMPFEHLUNGS-MATRIX FÜR KMU].
+Antworte AUSSCHLIESSLICH mit dem fertigen Prompt auf Deutsch:`;
+    } else if (mode === 'deep_research_persona') {
+      modeInstruction = `Transformiere das Thema in einen hochprofessionellen "Zielgruppen- & Buyer-Persona Deep Research Prompt".
+Der Prompt muss enthalten: 1. [PERSONA-PROFIL & DEMOGRAFIE], 2. [HAUPT-SCHMERZPUNKTE & DESIDERATE], 3. [KAUFMOTIVE & TRIGGER-EVENTS], 4. [EINWAND- & EINWANDBEHANDLUNG], 5. [IDEALE ANSPRACHE-STRATEGIE].
+Antworte AUSSCHLIESSLICH mit dem fertigen Prompt auf Deutsch:`;
+    } else {
+      // Default: Lead & SWOT Research
+      modeInstruction = `Transformiere das Thema in einen hochprofessionellen "Lead- & SWOT-Recherche Deep Research Prompt".
+Der Prompt muss enthalten: 1. [ZIEL & LEAD-QUALIFIZIERUNG] (Zielgruppe, Entscheider-Rollen, Kontaktwege), 2. [SWOT-ANALYSE MATRIX] (Stärken, Schwächen, Chancen, Risiken), 3. [RECHERCHE-METHODIK & BRANCHEN-DATEN], 4. [REPORT-STRUKTUR MIT LEAD-LISTING], 5. [QUELLEN-PRÜFUNG & CONSTRAINTS].
+Antworte AUSSCHLIESSLICH mit dem fertigen Prompt auf Deutsch:`;
+    }
   }
 
   const promptToOptimize = `${modeInstruction}\n\n${promptText}`;
@@ -109,40 +122,130 @@ Antworte AUSSCHLIESSLICH mit dem fertigen Deep Research Prompt auf Deutsch (ohne
   }
 
   // 3. Static Pattern Fallback
-  if (mode === 'deep_research') {
-    const deepResearchOptimized = `[DEEP RESEARCH PROMPT]
+  if (mode.startsWith('deep_research')) {
+    if (mode === 'deep_research_competitor') {
+      const competitorFallback = `[DEEP RESEARCH PROMPT: WETTBOWERBER- & KONKURRENZANALYSE]
 
 [1. ZIEL & RECHERCHE-SKOP]
-Führe eine umfassende Tiefenrecherche zum folgenden Thema durch:
+Führe eine umfassende Konkurrenzanalyse durch zum Thema:
 "${promptText}"
 
-Hauptforschungsfragen:
-- Was sind die Kernaspekte, aktuellen Entwicklungen und Trends zu diesem Thema?
-- Welche datenbasierten Fakten, Zahlen und Marktanalysen existieren?
-- Welche Best Practices, Hürden und Erfolgsfaktoren sind bekannt?
+[2. MITBEWERBER-PROFILING & USPs]
+- Identifiziere die Top 5 Marktteilnehmer (direkt & indirekt).
+- Analysiere Produkte, Dienstleistungen, Preismodelle und Alleinstellungsmerkmale (USPs).
+- Untersuche Marketingkanäle, SEO-Keywords und Online-Sichtbarkeit.
 
-[2. METHODIK & SUCH-STRATEGIEN]
-- Nutze primäre und sekundäre Quellen (Branchenstudien, Fachmedien, offizielle Statistiken, Expertenberichte).
-- Suche nach gezielten Begriffen, Synonymen und englischen Fachbegriffen.
-- Vergleiche mindestens 3 unterschiedliche Perspektiven oder Lösungsansätze.
+[3. STÄRKEN- & SCHWACHSTELLEN-ANALYSIS]
+- Erstelle ein Vergleichsraster (Preise, Kundenservice, Qualität, Lieferzeit).
+- Identifiziere häufige Beschwerden/Kritikpunkte von Kunden der Wettbewerber.
 
-[3. ANALYSE & EVALUATION]
-- Erstelle eine strukturierte Vor- und Nachteile-Matrix.
-- Identifiziere typische Risiken, regulatorische Aspekte und finanzielle/zeitliche Faktoren.
-- Gewichte Befunde nach Relevanz für KMU / Praxisanwendung.
+[4. ERGEBNIS-REPORT STRUKTUR]
+1. Executive Summary der Marktlandschaft
+2. Wettbewerber-Übersichtstabelle
+3. Detaillierte Einzel-Profile
+4. Schwachstellen- & Chancen-Matrix für den Markteintritt
+
+[5. CONSTRAINTS]
+- Nur belegbare Fakten, Preise und aktuelle Daten nutzen.`;
+      return { text: competitorFallback, source: "integriertem Wettbewerber-Research Fallback" };
+    }
+
+    if (mode === 'deep_research_market') {
+      const marketFallback = `[DEEP RESEARCH PROMPT: MARKTFORSCHUNG & TRENDS]
+
+[1. MARKTGRÖSSE & WACHSTUM]
+Führe eine Markt- und Trendstudie durch zum Thema:
+"${promptText}"
+
+- Welches Marktvolumen und welche jährlichen Wachstumsraten (CAGR) existieren?
+- Welche Treiber und Hürden bestimmen die Branche derzeit?
+
+[2. BRANCHE-TRENDS & REGULIERUNGEN]
+- Welche technologischen, rechtlichen (z. B. DSGVO) und gesellschaftlichen Trends wirken?
+- Welche neuen Geschäftsmodelle setzen sich durch?
+
+[3. ERGEBNIS-REPORT STRUKTUR]
+1. Executive Summary & Marktkennzahlen
+2. Treiber & Marktbarrieren
+3. Trend-Radarschild für die nächsten 3-5 Jahre
+4. Strategische Handlungsempfehlungen für KMUs`;
+      return { text: marketFallback, source: "integriertem Marktforschungs-Research Fallback" };
+    }
+
+    if (mode === 'deep_research_tools') {
+      const toolsFallback = `[DEEP RESEARCH PROMPT: TOOL- & SOFTWAREVERGLEICH]
+
+[1. EVALUATIONS-SKOP]
+Führe einen objektiven Software- & Anbietervergleich durch für:
+"${promptText}"
+
+[2. VERGLEICHSKRITERIEN]
+- Funktionsumfang & Kern-Features
+- Preismodelle (Freemium, Abos, Versteckte Kosten)
+- Integrationsfähigkeit & API-Schnittstellen (z. B. Zapier, Make, CRM)
+- DSGVO- & Datenschutzkonformität (Serverstandort EU?)
+
+[3. ANBIETER-MATRIX REPORT]
+1. Executive Summary & Top-Empfehlung
+2. Vergleichstabelle aller Anbieter
+3. Vor- & Nachteile-Detailbericht je Tool
+4. Entscheidungs-Checkliste für KMUs`;
+      return { text: toolsFallback, source: "integriertem Tool-Vergleich Research Fallback" };
+    }
+
+    if (mode === 'deep_research_persona') {
+      const personaFallback = `[DEEP RESEARCH PROMPT: ZIELGRUPPEN- & BUYER-PERSONA]
+
+[1. PERSONA-IDENTIFIKATION]
+Führe eine tiefgehende Zielgruppenrecherche durch für:
+"${promptText}"
+
+[2. SCHMERZPUNKTE & DESIDERATE]
+- Was sind die drängendsten Probleme, Sorgen und Ängste der Zielgruppe?
+- Welche emotionalen & rationalen Kaufmotive liegen vor?
+- Welche Trigger-Events lösen eine konkrete Kaufentscheidung aus?
+
+[3. EINWANDBEHANDLUNG & ANSPRACHE]
+- Welche typischen Einwände (Kosten, Zeit, Misstrauen) entstehen?
+- Auf welchen Kanälen (LinkedIn, Google, Empfehlungen) ist die Persona erreichbar?
+
+[4. ERGEBNIS-REPORT STRUKTUR]
+1. Persona-Steckbrief (Demografie, Rolle, Ziele)
+2. Schmerzpunkt- & Wunschanalyse
+3. Einwand- & Argumentationsleitfaden
+4. Empfohlener Messaging- & Copywriting-Ansatz`;
+      return { text: personaFallback, source: "integriertem Persona-Research Fallback" };
+    }
+
+    // Default: Lead & SWOT Research Fallback
+    const deepResearchOptimized = `[DEEP RESEARCH PROMPT: LEAD- & SWOT-RECHERCHE]
+
+[1. ZIEL & LEAD-QUALIFIZIERUNG]
+Führe eine umfassende Lead- und Markt-Recherche durch für:
+"${promptText}"
+
+Lead-Suchparameter:
+- Unternehmensgröße, Branche und regionale Abgrenzung.
+- Typische Entscheider-Rollen (z. B. Geschäftsführer, Vertriebsleiter, IT-Leiter).
+- Bevorzugte Erstkontaktwege (E-Mail, Telefon, Xing/LinkedIn).
+
+[2. SWOT-ANALYSE MATRIX]
+Erstelle eine fundierte SWOT-Matrix:
+- Stärken (Strengths): Welche Vorteile bietet das Angebot der Zielgruppe?
+- Schwächen (Weaknesses): Welche Schwachstellen oder Hürden existieren?
+- Chancen (Opportunities): Welche ungehobenen Marktchancen bestehen?
+- Risiken (Threats): Welche externen Risiken oder Konkurrenzdruck gibt es?
+
+[3. METHODIK & SUCH-STRATEGIEN]
+- Nutze Branchenregister, Unternehmensdatenbanken, Fachberichte & Online-Präsenzen.
+- Analysiere den Digitalisierungsgrad und Social-Media-Präsenz der Leads.
 
 [4. ERGEBNIS-STRUKTUR DES REPORTS]
-1. Executive Summary (Prägnante Zusammenfassung der Kernerkenntnisse)
-2. Ist-Analyse & Hintergrund
-3. Detaillierte Recherche-Ergebnisse (gegliedert nach Unterthemen mit Daten & Fakten)
-4. Vergleichs- / Chancen-Risiken-Matrix
-5. Konkrete Handlungsempfehlungen & Nächste Schritte
-
-[5. QUALITÄTSKRITERIEN & CONSTRAINTS]
-- Basiere alle Aussagen auf prüfbaren Fakten (keine Spekulationen).
-- Weise auf Datenlücken oder widersprüchliche Quellen hin.
-- Ton: Objektiv, analytisch und fundiert.`;
-    return { text: deepResearchOptimized, source: "integriertem Deep-Research Smart-Fallback" };
+1. Executive Summary (Kernerkenntnisse & Marktpotenzial)
+2. SWOT-Matrix mit strategischen Schlussfolgerungen
+3. Lead-Qualifizierungsprofil & Kontaktschema
+4. Konkreter Schritt-für-Schritt-Ansprechplan für den Vertrieb`;
+    return { text: deepResearchOptimized, source: "integriertem Lead & SWOT Research Fallback" };
   }
 
   const optimized = `[SYSTEM PROMPT]

@@ -5,6 +5,11 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **🔬 Deep Research Frameworks & Erweiterter Prompt-Baukasten (Phase v27):**
+  - **5 Spezialisierte Deep Research Frameworks:** Auswahl im Prompt Vault zwischen 📊 Lead & SWOT, 🎯 Wettbewerber-Analyse, 📈 Marktforschung & Trends, 🛠️ Tool-Vergleich und 👥 Buyer Persona.
+  - **Neuer KI-Optimierer:** Generiert per Ollama / Gemini API aus einfachen Themen einen hochspezialisierten Master-Prompt zugeschnitten auf das gewählte Recherche-Framework.
+  - **Kategorie `🔬 Lead- & Research-Bausteine`:** 1-Klick-Module für *Entscheider & Kontakte*, *SWOT-Matrix*, *Digitalisierungsgrad*, *SEO & Web-Präsenz*, *Schmerzpunkt-Analyse* und *Bonität & Firmengröße*.
+  - **Aufgestockter Baukasten:** Neue B2B-Rollen (*Lead Researcher*, *B2B Sales Strategist*), Tonalitäten (*Analytisch & Datenbasiert*, *CEO-Prägnant*) und Formate (*SWOT-Grid*, *Executive Summary*).
 - **📌 Multi-Notizen System & Cloud-Sync (Handy ↔ PC):**
   - **Erstellung mehrerer Notizen:** Der Benutzer kann über `+ Neue Notiz` beliebig viele unabhängige Notizblätter erstellen.
   - **Eigene Titel & Farben:** Jede Notiz lässt sich individuell benennen (z. B. *"Anrufe"*, *"Ideen"*, *"Roadmap"*) und farblich anpassen (Gelb, Blau, Grün, Pink, Lila).
