@@ -42,7 +42,8 @@ export const DocsHub = ({
   ragChat,
   ragGenerating,
   ragInput,
-  setRagInput
+  setRagInput,
+  onOpenLightbox
 }) => {
   const handleLocalFilesImport = (e) => {
     const files = Array.from(e.target.files || []);
@@ -50,14 +51,21 @@ export const DocsHub = ({
 
     let importedCount = 0;
     files.forEach(file => {
+      const isImage = file.type.startsWith('image/') || /\.(png|jpe?g|webp|svg)$/i.test(file.name);
       const reader = new FileReader();
+      
       reader.onload = (event) => {
-        const textContent = event.target.result;
+        const fileContent = event.target.result;
         setDocs(prev => {
           const index = prev.findIndex(d => d.title === file.name);
           if (index !== -1) {
             const updated = [...prev];
-            updated[index] = { ...updated[index], content: textContent, status: 'local' };
+            updated[index] = { 
+              ...updated[index], 
+              content: fileContent, 
+              type: isImage ? 'image' : 'text',
+              status: 'local' 
+            };
             return updated;
           } else {
             return [
@@ -65,7 +73,8 @@ export const DocsHub = ({
               {
                 id: 'local_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
                 title: file.name,
-                content: textContent,
+                content: fileContent,
+                type: isImage ? 'image' : 'text',
                 status: 'local',
                 url: '#'
               }
@@ -74,10 +83,15 @@ export const DocsHub = ({
         });
         importedCount++;
         if (importedCount === files.length) {
-          alert(`✅ ${files.length} Datei(en) erfolgreich in deinen Wissens-Hub importiert!`);
+          alert(`✅ ${files.length} Datei(en)/Grafik(en) erfolgreich in deinen Wissens-Hub importiert!`);
         }
       };
-      reader.readAsText(file);
+
+      if (isImage) {
+        reader.readAsDataURL(file);
+      } else {
+        reader.readAsText(file);
+      }
     });
   };
   return (
@@ -89,13 +103,13 @@ export const DocsHub = ({
         {/* Wissens-Hub (Dokumente) */}
         <div className="card">
           <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h2 className="card-title"><FileText size={20} className="text-cyan-500" /> Wissens-Hub (Dokumente)</h2>
+            <h2 className="card-title"><FileText size={20} className="text-cyan-500" /> Wissens-Hub (Dokumente & Grafiken)</h2>
             <div style={{ display: 'flex', gap: '0.4rem' }}>
               <input
                 type="file"
                 id="local-file-import-input"
                 multiple
-                accept=".txt,.md,.json,.csv"
+                accept=".txt,.md,.json,.csv,.png,.jpg,.jpeg,.webp,.svg,.pdf"
                 onChange={handleLocalFilesImport}
                 style={{ display: 'none' }}
               />

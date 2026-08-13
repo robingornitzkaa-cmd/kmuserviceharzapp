@@ -5,6 +5,29 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **🎯 Coaching Live-Portal & Grafik-/Persona-Anhänge (Phase v27):**
+  - **🖼️ Datei- & Grafik-Anhänge (Direct Upload):** Support von Bilddateien (PNG, JPG, WEBP, SVG) und Dokumenten (PDF) direkt an Coaching-Termine im Command Center, an Kanban-Aufgaben und im Wissens-Hub (DocsHub).
+  - **🔍 Vollbild-Präsentationsmodus (Lightbox):** 1-Klick auf beliebige Grafiken öffnet eine hochauflösende Präsentations-Lightbox mit Herunterladen-Option zum mobilen und Desktop-Vorzeigen.
+  - **🔒 Geschütztes Coaching Live-Portal (`CoachingLivePortal.jsx`):** Dedizierte Präsentations-Ansicht für Zoom/Teams-Calls mit PIN-Schutz (`1234`). Zeigt Coaching-Fortschritt, meilensteine, erledigte To-Dos und Personas-Galerie – bei 100%igem Schutz von privaten Notizen, Finanzen, CRM-Kontakten oder Admin-Funktionen.
+- **🌐 KMU Service Harz Webseiten-Konzeption & Multi-Page Live-Preview (Upgrade):**
+  - **Startseiten Redesign:** Die 3 Leistungs-Teaser auf der Startseite nutzen jetzt das gleiche moderne B2B-Karten-Layout mit Säulen-Badges und kreisrunden Check-Bullets.
+  - **⚡ Vorher-vs-Nachher Vergleichs-Toggle:** Interaktives Element auf der Startseite zur direkten Gegenüberstellung von manueller Zettelwirtschaft vs. moderner Automatisierung.
+  - **🎯 Interaktiver 1-Minuten Schnell-Check (Quiz):** 3-Fragen Selbsttest für Webseiten-Besucher zur Ermittlung ihres digitalen Reifegrades (in %) mit automatischer Auswertung.
+  - **📍 Harzer Praxis-Beispiele (Case Studies):** 3 regionale Erfolgsbeispiele (Tischlerei, Haustechnik, Sanitär) mit konkreten Kennzahlen zur Zeitersparnis.
+  - **❓ FAQ Akkordeon:** Aufklappbare Fragen & Antworten zu Vorkenntnissen, Datenschutz, Kosten & Ablauf.
+
+### Fixed
+- **Navigation & Scroll-to-Top:** Beim Klick auf *"Zum ROI-Rechner"*, *"Alle Details ansehen"* oder Unterseiten-Buttons wird nun automatisch flüssig an den Seitenanfang gewechselt, sodass der Seitenwechsel sofort sichtbar ist.
+- **🎮 Transformation zu Life & Founder OS (Life OS Gamification System):**
+  - **Level, XP & Coins System:** Jede erledigte Tages-Gewohnheit und jede Fokus-Aufgabe belohnt den Nutzer mit XP (z. B. +50 XP) und Life-Coins. Alle 200 XP wird ein automatisches Level-Up getriggert.
+  - **🎁 Belohnungs-Shop (Münzen einlösen):** Interaktiver Modal-Shop zum Freischalten von selbstdefinierten Belohnungen (z. B. *30 Min Zocken*, *Filmabend*, *Lieblings-Cheat Meal*, *Tech-Gadget*). Enthält Fortschrittsbalken, Münzen-Prüfung, Konfetti und Freischalt-Zertifikat.
+  - **🛡️ Disziplin- & Bestrafungs-Manager:** 3 konfigurierbare Anti-Faulheit-Modi bei nicht eingehaltenen Gewohnheiten:
+    - *Modus A (Münz-Abzug / XP-Schulden):* Belohnungs-Shop wird bei negativer Coins-Bilanz gesperrt.
+    - *Modus B (Straf-Aufgaben):* Disziplin-Challenges (z. B. 30 Liegestütze, 10 Min Aufräumen, Sparschwein).
+    - *Modus C (Strike-System):* 3 verpasste Habits führen zu einer 48h Belohnungs-Sperre.
+  - **🛌 Smart Routine & Ruhetags-Erkennung:** Wochentagsbezogene habits (z. B. Kraftsport an Mo/Mi/Fr, Make Academy an Mo-Fr). An regenerativen Tagen (Di/Do/Sa/So) zeigt die App explizit einen **grünen Ruhetag-Hinweis** (`🛌 Kraftsport: Ruhetag / Regenerieren! Kein Workout heute nötig`), um schlechtes Gewissen zu vermeiden.
+  - **⚡ Make Academy & Lern-Tracker:** Integrierte Tages-Fortschrittsanzeige für Make Academy Lerneinheiten.
+  - **Rebranding zu Life & Founder OS:** Erweitertes Dashboard-HUD und angepasste Sidebar-Navigation.
 - **🔬 Deep Research Frameworks & Erweiterter Prompt-Baukasten (Phase v27):**
   - **5 Spezialisierte Deep Research Frameworks:** Auswahl im Prompt Vault zwischen 📊 Lead & SWOT, 🎯 Wettbewerber-Analyse, 📈 Marktforschung & Trends, 🛠️ Tool-Vergleich und 👥 Buyer Persona.
   - **Neuer KI-Optimierer:** Generiert per Ollama / Gemini API aus einfachen Themen einen hochspezialisierten Master-Prompt zugeschnitten auf das gewählte Recherche-Framework.

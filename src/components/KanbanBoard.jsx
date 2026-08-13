@@ -6,7 +6,9 @@ import {
   ChevronRight, 
   Trash2, 
   CheckSquare, 
-  Plus 
+  Image as ImageIcon,
+  Paperclip,
+  Plus
 } from 'lucide-react';
 
 export const KanbanBoard = ({
@@ -31,8 +33,91 @@ export const KanbanBoard = ({
   handleDrop,
   tasks,
   handleDragStart,
-  deleteTask
+  deleteTask,
+  onOpenLightbox,
+  onAttachToTask
 }) => {
+  const handleTaskFileUpload = (taskId, e) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (onAttachToTask) {
+          onAttachToTask(taskId, {
+            name: file.name,
+            type: file.type,
+            dataUrl: event.target.result
+          });
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const renderTaskCard = (t, isDoneColumn = false) => (
+    <div 
+      key={t.id} 
+      className="kanban-card" 
+      style={{ opacity: isDoneColumn ? 0.6 : 1 }}
+      draggable
+      onDragStart={(e) => handleDragStart(e, t.id)}
+    >
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <span className={`card-priority ${isDoneColumn ? '' : `priority-${t.priority}`}`} style={isDoneColumn ? { background: 'rgba(16, 185, 129, 0.1)', color: 'var(--accent-green)' } : {}}>
+          {isDoneColumn ? 'erledigt' : t.priority}
+        </span>
+        <label title="Grafik / Persona anhängen" style={{ cursor: 'pointer', padding: '0.1rem 0.35rem', borderRadius: '0.25rem', background: 'rgba(255,255,255,0.05)', fontSize: '0.7rem', display: 'flex', alignItems: 'center', gap: '0.2rem', color: 'var(--accent-cyan)' }}>
+          <Paperclip size={12} />
+          <input 
+            type="file" 
+            accept="image/*,.pdf" 
+            style={{ display: 'none' }}
+            onChange={(e) => handleTaskFileUpload(t.id, e)}
+          />
+        </label>
+      </div>
+
+      <div className="card-title-text" style={{ textDecoration: isDoneColumn ? 'line-through' : 'none', marginTop: '0.25rem' }}>
+        {mask(t.title, 'inbox')}
+      </div>
+
+      {t.attachments && t.attachments.length > 0 && (
+        <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap', margin: '0.4rem 0' }}>
+          {t.attachments.map((att, idx) => (
+            <div 
+              key={idx}
+              onClick={() => onOpenLightbox && onOpenLightbox(att.dataUrl, att.name)}
+              style={{ 
+                fontSize: '0.65rem', 
+                background: 'rgba(6, 182, 212, 0.12)', 
+                color: 'var(--accent-cyan)', 
+                border: '1px solid rgba(6, 182, 212, 0.3)',
+                borderRadius: '0.25rem',
+                padding: '0.15rem 0.4rem',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.2rem'
+              }}
+              title="Klick für Vollbild-Präsentation"
+            >
+              <ImageIcon size={10} />
+              <span style={{ maxWidth: '90px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{att.name}</span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <div className="card-meta">
+        <span>{t.date}</span>
+        <button onClick={() => deleteTask(t.id)} style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}>
+          <Trash2 size={12} className="text-red-500" />
+        </button>
+      </div>
+    </div>
+  );
+
   return (
     <div>
       {/* Style override for simulation spinner */}
@@ -210,23 +295,7 @@ export const KanbanBoard = ({
               <span className="column-count">{tasks.filter(t => t.column === 'idea').length}</span>
             </div>
             <div className="kanban-cards">
-              {tasks.filter(t => t.column === 'idea').map(t => (
-                <div 
-                  key={t.id} 
-                  className="kanban-card" 
-                  draggable
-                  onDragStart={(e) => handleDragStart(e, t.id)}
-                >
-                  <span className={`card-priority priority-${t.priority}`}>{t.priority}</span>
-                  <div className="card-title-text">{mask(t.title, 'inbox')}</div>
-                  <div className="card-meta">
-                    <span>{t.date}</span>
-                    <button onClick={() => deleteTask(t.id)} style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}>
-                      <Trash2 size={12} className="text-red-500" />
-                    </button>
-                  </div>
-                </div>
-              ))}
+              {tasks.filter(t => t.column === 'idea').map(t => renderTaskCard(t))}
             </div>
           </div>
 
@@ -241,23 +310,7 @@ export const KanbanBoard = ({
               <span className="column-count">{tasks.filter(t => t.column === 'todo').length}</span>
             </div>
             <div className="kanban-cards">
-              {tasks.filter(t => t.column === 'todo').map(t => (
-                <div 
-                  key={t.id} 
-                  className="kanban-card" 
-                  draggable
-                  onDragStart={(e) => handleDragStart(e, t.id)}
-                >
-                  <span className={`card-priority priority-${t.priority}`}>{t.priority}</span>
-                  <div className="card-title-text">{mask(t.title, 'inbox')}</div>
-                  <div className="card-meta">
-                    <span>{t.date}</span>
-                    <button onClick={() => deleteTask(t.id)} style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}>
-                      <Trash2 size={12} className="text-red-500" />
-                    </button>
-                  </div>
-                </div>
-              ))}
+              {tasks.filter(t => t.column === 'todo').map(t => renderTaskCard(t))}
             </div>
           </div>
 
@@ -272,23 +325,7 @@ export const KanbanBoard = ({
               <span className="column-count">{tasks.filter(t => t.column === 'inprogress').length}</span>
             </div>
             <div className="kanban-cards">
-              {tasks.filter(t => t.column === 'inprogress').map(t => (
-                <div 
-                  key={t.id} 
-                  className="kanban-card" 
-                  draggable
-                  onDragStart={(e) => handleDragStart(e, t.id)}
-                >
-                  <span className={`card-priority priority-${t.priority}`}>{t.priority}</span>
-                  <div className="card-title-text">{mask(t.title, 'inbox')}</div>
-                  <div className="card-meta">
-                    <span>{t.date}</span>
-                    <button onClick={() => deleteTask(t.id)} style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}>
-                      <Trash2 size={12} className="text-red-500" />
-                    </button>
-                  </div>
-                </div>
-              ))}
+              {tasks.filter(t => t.column === 'inprogress').map(t => renderTaskCard(t))}
             </div>
           </div>
 
@@ -303,24 +340,7 @@ export const KanbanBoard = ({
               <span className="column-count">{tasks.filter(t => t.column === 'done').length}</span>
             </div>
             <div className="kanban-cards">
-              {tasks.filter(t => t.column === 'done').map(t => (
-                <div 
-                  key={t.id} 
-                  className="kanban-card" 
-                  style={{ opacity: 0.6 }}
-                  draggable
-                  onDragStart={(e) => handleDragStart(e, t.id)}
-                >
-                  <span className="card-priority" style={{ background: 'rgba(16, 185, 129, 0.1)', color: 'var(--accent-green)' }}>erledigt</span>
-                  <div className="card-title-text" style={{ textDecoration: 'line-through' }}>{mask(t.title, 'inbox')}</div>
-                  <div className="card-meta">
-                    <span>{t.date}</span>
-                    <button onClick={() => deleteTask(t.id)} style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}>
-                      <Trash2 size={12} className="text-red-500" />
-                    </button>
-                  </div>
-                </div>
-              ))}
+              {tasks.filter(t => t.column === 'done').map(t => renderTaskCard(t, true))}
             </div>
           </div>
         </div>

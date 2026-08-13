@@ -3,9 +3,33 @@ import { MASTER_LOGBUCH_CONTENT } from '../assets/docs/masterLogbuch.js';
 export { MASTER_LOGBUCH_CONTENT };
 
 export const INITIAL_HABITS = [
-  { id: 'h1', text: '3 Akquise-Mails gesendet?', completed: false },
-  { id: 'h2', text: 'Sport gemacht (30 Min)?', completed: false },
-  { id: 'h3', text: 'Tagesfokus-Aufgaben definiert?', completed: false }
+  { id: 'h1', text: '💪 Kraftsport (30 Min Intensive-Workout)', category: 'fitness', completed: false, days: [1, 3, 5], xp: 50, coins: 25 }, // Mo, Mi, Fr (1, 3, 5)
+  { id: 'h2', text: '⚡ Make Academy Lerneinheit (30 Min Kurs & Praxis)', category: 'learning', completed: false, days: [1, 2, 3, 4, 5], xp: 40, coins: 20 }, // Mo-Fr
+  { id: 'h3', text: '💧 Mindestens 2 Liter Wasser getrunken', category: 'life', completed: false, days: null, xp: 20, coins: 10 }, // Täglich
+  { id: 'h4', text: '🎯 3 wichtigsten Tagesfokus-Aufgaben definiert & angepackt', category: 'business', completed: false, days: [1, 2, 3, 4, 5], xp: 35, coins: 15 },
+  { id: 'h5', text: '📖 15 Min Buch / Fachliteratur gelesen', category: 'learning', completed: false, days: null, xp: 25, coins: 10 }
+];
+
+export const INITIAL_REWARDS = [
+  { id: 'r1', title: '🎮 30 Min Zocken / Gaming-Pause', price: 100, category: 'gaming', description: 'Gönne dir eine halbe Stunde Entspannung beim Zocken – vollkommen ohne schlechtes Gewissen!' },
+  { id: 'r2', title: '🍿 Filmabend oder 2 Serienfolgen', price: 250, category: 'leisure', description: 'Ein entspannter Abend mit deiner Lieblingsserie oder einem guten Film.' },
+  { id: 'r3', title: '🍔 Lieblings-Cheat-Meal / Snack-Gutschein', price: 350, category: 'food', description: 'Genieße deine Lieblings-Mahlzeit als Belohnung für harte Arbeit.' },
+  { id: 'r4', title: '📚 Neues Buch oder Fortbildungskurs kaufen', price: 800, category: 'growth', description: 'Investiere deine gesammelten Punkte in deine persönliche Weiterentwicklung.' },
+  { id: 'r5', title: '🎧 Tech-Gadget / Wunscheinkauf', price: 2500, category: 'reward', description: 'Große Belohnung für kontinuierliche Spitzenleistungen über Wochen!' }
+];
+
+export const INITIAL_PENALTIES = [
+  { id: 'p1', title: '💪 30 Liegestütze oder 50 Kniebeugen sofort machen', costCoins: 50, description: 'Direkte körperliche Disziplin-Aufgabe bei verpasstem Haupt-Habit.' },
+  { id: 'p2', title: '🧹 10 Minuten Schreibtisch & Raum aufräumen', costCoins: 50, description: 'Bringe deine Umgebung in Ordnung, wenn die Disziplin nachlässt.' },
+  { id: 'p3', title: '🐖 5 € in die Sparschwein-Kasse einzahlen', costCoins: 100, description: 'Finanzielle Konsequenz für nicht eingehaltene Tagesziele.' },
+  { id: 'p4', title: '📱 1 Tag Social Media & YouTube Verbot', costCoins: 150, description: 'Fokus-Reset für den nächsten Tag.' }
+];
+
+export const INITIAL_LIFE_GOALS = [
+  { id: 'lg1', title: 'Make Academy: Automatisierungs-Mastery Modul abschließen', category: 'learning', targetDate: '2026-09-30', progress: 40, status: 'active', rewardCoins: 500 },
+  { id: 'lg2', title: 'Kraftsport: 3x pro Woche kontinuierlich für 3 Monate', category: 'fitness', targetDate: '2026-11-01', progress: 65, status: 'active', rewardCoins: 1000 },
+  { id: 'lg3', title: '10 KM Dauerlauf unter 55 Minuten', category: 'fitness', targetDate: '2026-10-15', progress: 20, status: 'active', rewardCoins: 400 },
+  { id: 'lg4', title: 'KMU Service Harz: 5 feste Monats-Kunden gewinnen', category: 'business', targetDate: '2026-12-31', progress: 50, status: 'active', rewardCoins: 2000 }
 ];
 
 export const INITIAL_FOCUS_TASKS = [

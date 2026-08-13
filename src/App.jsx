@@ -49,6 +49,9 @@ import {
 import { 
   MASTER_LOGBUCH_CONTENT,
   INITIAL_HABITS, 
+  INITIAL_REWARDS,
+  INITIAL_PENALTIES,
+  INITIAL_LIFE_GOALS,
   INITIAL_FOCUS_TASKS, 
   INITIAL_INBOX, 
   INITIAL_TASKS, 
@@ -101,6 +104,10 @@ import { KanbanBoard } from './components/KanbanBoard';
 import { CrmPipeline } from './components/CrmPipeline';
 import { DashboardView } from './components/DashboardView';
 import { CommandCenter } from './components/CommandCenter';
+import { RewardShopModal } from './components/RewardShopModal';
+import { PenaltyModal } from './components/PenaltyModal';
+import { WebsiteView } from './components/WebsiteView';
+import { CoachingLivePortal } from './components/CoachingLivePortal';
 
 function App() {
   // Navigation State
@@ -260,6 +267,54 @@ function App() {
   });
   const [nlpCalendarInput, setNlpCalendarInput] = useState('');
 
+  // Coaching Meetings & Attachments State
+  const [coachingMeetings, setCoachingMeetings] = useState(() => {
+    try {
+      const saved = localStorage.getItem('f_coaching_meetings');
+      return saved ? JSON.parse(saved) : [
+        {
+          id: 'cm1',
+          date: new Date().toLocaleDateString('de-DE'),
+          topic: 'Zielgruppen-Personas & Schulungs-Grafiken',
+          results: 'Ergebnisse und Zielgruppen-Personas ausgearbeitet.',
+          attachments: []
+        }
+      ];
+    } catch {
+      return [];
+    }
+  });
+
+  const [portalPin, setPortalPin] = useState(() => localStorage.getItem('f_portal_pin') || '1234');
+  const [isPortalUnlocked, setIsPortalUnlocked] = useState(false);
+  const [lightboxImage, setLightboxImage] = useState({ isOpen: false, url: '', title: '' });
+
+  useEffect(() => {
+    localStorage.setItem('f_coaching_meetings', JSON.stringify(coachingMeetings));
+  }, [coachingMeetings]);
+
+  useEffect(() => {
+    localStorage.setItem('f_portal_pin', portalPin);
+  }, [portalPin]);
+
+  const handleOpenLightbox = (url, title = 'Grafik-Präsentation') => {
+    setLightboxImage({ isOpen: true, url, title });
+  };
+
+  const handleCloseLightbox = () => {
+    setLightboxImage({ isOpen: false, url: '', title: '' });
+  };
+
+  const handleAttachToTask = (taskId, attachmentObj) => {
+    setTasks(prev => prev.map(t => {
+      if (t.id === taskId) {
+        const existing = t.attachments || [];
+        return { ...t, attachments: [...existing, attachmentObj] };
+      }
+      return t;
+    }));
+  };
+
   // Speech-to-Text States (Feature 4 - v5)
   const [isListeningQuickCapture, setIsListeningQuickCapture] = useState(false);
   const [isListeningCrmNotes, setIsListeningCrmNotes] = useState(false);
@@ -389,6 +444,17 @@ function App() {
   const [habitStreak, setHabitStreak] = useState(() => parseInt(localStorage.getItem('f_habit_streak')) || 0);
   const [showConfetti, setShowConfetti] = useState(false);
   const [confettiParticles, setConfettiParticles] = useState([]);
+  
+  // Life OS Gamification & Rewards States
+  const [userCoins, setUserCoins] = useState(() => parseInt(localStorage.getItem('f_coins')) || 150);
+  const [userXP, setUserXP] = useState(() => parseInt(localStorage.getItem('f_xp')) || 120);
+  const [userLevel, setUserLevel] = useState(() => parseInt(localStorage.getItem('f_user_level')) || 1);
+  const [rewards, setRewards] = useState(() => JSON.parse(localStorage.getItem('f_rewards')) || INITIAL_REWARDS);
+  const [penalties, setPenalties] = useState(() => JSON.parse(localStorage.getItem('f_penalties')) || INITIAL_PENALTIES);
+  const [penaltyMode, setPenaltyMode] = useState(() => localStorage.getItem('f_penalty_mode') || 'debt');
+  const [lifeGoals, setLifeGoals] = useState(() => JSON.parse(localStorage.getItem('f_life_goals')) || INITIAL_LIFE_GOALS);
+  const [isRewardModalOpen, setIsRewardModalOpen] = useState(false);
+  const [isPenaltyModalOpen, setIsPenaltyModalOpen] = useState(false);
   
   // Wochen-Review & Archiv States (Feature A3)
   const [weeklyArchive, setWeeklyArchive] = useState(() => {
@@ -2614,8 +2680,29 @@ Hier ist die Frage des Nutzers:
 
   // Habit Tracker Toggle
   const toggleHabit = (id) => {
-    const updatedHabits = habits.map(h => h.id === id ? { ...h, completed: !h.completed } : h);
+    const target = habits.find(h => h.id === id);
+    const isNowCompleted = target ? !target.completed : false;
+    const updatedHabits = habits.map(h => h.id === id ? { ...h, completed: isNowCompleted } : h);
     setHabits(updatedHabits);
+
+    if (isNowCompleted && target) {
+      const earnedXp = target.xp || 30;
+      const earnedCoins = target.coins || 15;
+
+      const newXp = userXP + earnedXp;
+      const newCoins = userCoins + earnedCoins;
+      const calculatedLevel = Math.floor(newXp / 200) + 1;
+
+      setUserXP(newXp);
+      setUserCoins(newCoins);
+      setUserLevel(calculatedLevel);
+
+      localStorage.setItem('f_xp', newXp.toString());
+      localStorage.setItem('f_coins', newCoins.toString());
+      localStorage.setItem('f_user_level', calculatedLevel.toString());
+
+      triggerConfetti();
+    }
 
     const allCompletedNow = updatedHabits.every(h => h.completed);
     const wereAllCompletedBefore = habits.every(h => h.completed);
@@ -3915,6 +4002,24 @@ Hier ist die Frage des Nutzers:
           </button>
 
           <button 
+            type="button"
+            className="btn btn-primary"
+            style={{ 
+              padding: '0.35rem 0.85rem', 
+              fontSize: '0.78rem', 
+              fontWeight: 700,
+              background: 'linear-gradient(135deg, #059669, #10b981)',
+              border: 'none',
+              color: 'white',
+              boxShadow: '0 0 12px rgba(16, 185, 129, 0.4)'
+            }}
+            onClick={() => setActiveTab('website')}
+            title="Öffnet die interaktive Webseiten-Vorschau für KMU Service Harz."
+          >
+            🌐 Webseiten-Preview
+          </button>
+
+          <button 
             className={`btn ${showcaseMode ? 'btn-primary' : 'btn-secondary'}`}
             style={{ 
               padding: '0.35rem 0.75rem', 
@@ -4262,6 +4367,20 @@ Hier ist die Frage des Nutzers:
             triggerConfetti={triggerConfetti}
             habits={habits}
             toggleHabit={toggleHabit}
+            userCoins={userCoins}
+            setUserCoins={setUserCoins}
+            userXP={userXP}
+            userLevel={userLevel}
+            rewards={rewards}
+            setRewards={setRewards}
+            penalties={penalties}
+            setPenalties={setPenalties}
+            penaltyMode={penaltyMode}
+            setPenaltyMode={setPenaltyMode}
+            lifeGoals={lifeGoals}
+            setLifeGoals={setLifeGoals}
+            setIsRewardModalOpen={setIsRewardModalOpen}
+            setIsPenaltyModalOpen={setIsPenaltyModalOpen}
             archiveOpen={archiveOpen}
             setArchiveOpen={setArchiveOpen}
             generateWeeklyArchivePDF={generateWeeklyArchivePDF}
@@ -4281,6 +4400,9 @@ Hier ist die Frage des Nutzers:
             ragPersona={ragPersona}
             setRagPersona={setRagPersona}
             geminiApiKey={geminiApiKey}
+            onOpenLightbox={handleOpenLightbox}
+            coachingMeetings={coachingMeetings}
+            setCoachingMeetings={setCoachingMeetings}
           />
         )}
 
@@ -4309,6 +4431,8 @@ Hier ist die Frage des Nutzers:
             tasks={tasks}
             handleDragStart={handleDragStart}
             deleteTask={deleteTask}
+            onOpenLightbox={handleOpenLightbox}
+            onAttachToTask={handleAttachToTask}
           />
         )}
 
@@ -4424,6 +4548,7 @@ Hier ist die Frage des Nutzers:
             ragGenerating={ragGenerating}
             ragInput={ragInput}
             setRagInput={setRagInput}
+            onOpenLightbox={handleOpenLightbox}
           />
         )}
 
@@ -5316,10 +5441,101 @@ Hier ist die Frage des Nutzers:
 
           </div>
         )}
+
+        {activeTab === 'website' && (
+          <WebsiteView />
+        )}
+
+        {activeTab === 'coaching-portal' && (
+          <CoachingLivePortal
+            isUnlocked={isPortalUnlocked}
+            setIsUnlocked={setIsPortalUnlocked}
+            portalPin={portalPin}
+            setPortalPin={setPortalPin}
+            tasks={tasks}
+            docs={docs}
+            coachingMeetings={coachingMeetings}
+            masterLogbuchContent={docs.find(d => d.id === 'master-logbuch')?.content || ''}
+            onOpenLightbox={handleOpenLightbox}
+            showcaseMode={showcaseMode}
+            mask={mask}
+          />
+        )}
       </>
       )}
 
       </main>
+
+      {/* Global Lightbox Modal for Fullscreen Presentation */}
+      {lightboxImage.isOpen && (
+        <div 
+          style={{ 
+            position: 'fixed', 
+            inset: 0, 
+            background: 'rgba(0, 0, 0, 0.88)', 
+            zIndex: 99999, 
+            display: 'flex', 
+            flexDirection: 'column',
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            padding: '1.5rem' 
+          }}
+          onClick={handleCloseLightbox}
+        >
+          <div 
+            style={{ 
+              position: 'relative', 
+              maxWidth: '92vw', 
+              maxHeight: '88vh', 
+              display: 'flex', 
+              flexDirection: 'column', 
+              alignItems: 'center',
+              background: '#0d1117',
+              borderRadius: '0.75rem',
+              padding: '1.25rem',
+              border: '1px solid rgba(6, 182, 212, 0.4)',
+              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.8)'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem', paddingBottom: '0.5rem', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+              <h3 style={{ margin: 0, fontSize: '1rem', color: 'var(--accent-cyan)', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                🖼️ {lightboxImage.title || 'Grafik-Präsentation'}
+              </h3>
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                {lightboxImage.url && (
+                  <a 
+                    href={lightboxImage.url} 
+                    download={`Coaching_Grafik_${Date.now()}.png`}
+                    className="btn btn-secondary"
+                    style={{ fontSize: '0.75rem', padding: '0.25rem 0.6rem' }}
+                  >
+                    📥 Herunterladen
+                  </a>
+                )}
+                <button 
+                  onClick={handleCloseLightbox} 
+                  className="btn btn-primary"
+                  style={{ fontSize: '0.75rem', padding: '0.25rem 0.6rem', background: 'var(--accent-cyan)', border: 'none' }}
+                >
+                  ✕ Schließen
+                </button>
+              </div>
+            </div>
+
+            <img 
+              src={lightboxImage.url} 
+              alt={lightboxImage.title} 
+              style={{ 
+                maxWidth: '100%', 
+                maxHeight: '75vh', 
+                objectFit: 'contain',
+                borderRadius: '0.5rem'
+              }} 
+            />
+          </div>
+        </div>
+      )}
 
 
 
@@ -5601,9 +5817,30 @@ Hier ist die Frage des Nutzers:
           {toastMessage}
         </div>
       )}
-      </div>
+
+      {/* Life OS Gamification Modals */}
+      <RewardShopModal
+        isOpen={isRewardModalOpen}
+        onClose={() => setIsRewardModalOpen(false)}
+        userCoins={userCoins}
+        setUserCoins={setUserCoins}
+        rewards={rewards}
+        setRewards={setRewards}
+      />
+
+      <PenaltyModal
+        isOpen={isPenaltyModalOpen}
+        onClose={() => setIsPenaltyModalOpen(false)}
+        userCoins={userCoins}
+        setUserCoins={setUserCoins}
+        penaltyMode={penaltyMode}
+        setPenaltyMode={setPenaltyMode}
+        penalties={penalties}
+        setPenalties={setPenalties}
+      />
     </div>
-  );
+  </div>
+);
 }
 
 export default App;

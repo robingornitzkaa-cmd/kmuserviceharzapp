@@ -33,7 +33,10 @@ export const CommandCenter = ({
   isOnline,
   ragPersona,
   setRagPersona,
-  geminiApiKey
+  geminiApiKey,
+  onOpenLightbox,
+  coachingMeetings = [],
+  setCoachingMeetings
 }) => {
   const logbuchDoc = docs.find(d => d.id === 'master-logbuch');
   const logbuchContent = logbuchDoc?.content || '';
@@ -62,6 +65,7 @@ export const CommandCenter = ({
   const [meetingTopic, setMeetingTopic] = useState('');
   const [meetingResults, setMeetingResults] = useState('');
   const [meetingTodosText, setMeetingTodosText] = useState('');
+  const [meetingAttachments, setMeetingAttachments] = useState([]);
 
   // 1. Parsen der To-Dos aus TEIL 7
   const parseLogbuchTodos = (content) => {
@@ -414,12 +418,26 @@ export const CommandCenter = ({
         : d
     ));
 
+    if (setCoachingMeetings) {
+      setCoachingMeetings(prev => [
+        {
+          id: 'cm_' + Date.now(),
+          date: formattedDate,
+          topic: meetingTopic.trim(),
+          results: meetingResults.trim(),
+          attachments: [...meetingAttachments]
+        },
+        ...prev
+      ]);
+    }
+
     // Reset Form & Close Modal
     setMeetingTopic('');
     setMeetingResults('');
     setMeetingTodosText('');
+    setMeetingAttachments([]);
     setIsMeetingModalOpen(false);
-    alert('✅ Coach-Termin erfolgreich im Logbuch dokumentiert und To-Dos übernommen!');
+    alert('✅ Coach-Termin erfolgreich im Logbuch dokumentiert, Grafiken angehängt und To-Dos übernommen!');
   };
 
   const generateStatusMarkdown = () => {
@@ -648,6 +666,35 @@ ${doneTodos.map(t => `- [x] ${t.text}`).join('\n') || '- Keine erledigten Aufgab
                   rows={3}
                   style={{ width: '100%', resize: 'vertical' }}
                 />
+              </div>
+
+              <div>
+                <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '0.25rem' }}>🖼️ Grafik- & Persona-Anhänge (Zielgruppen-Personas, Schulungsgrafiken)</label>
+                <input 
+                  type="file"
+                  accept="image/*,.pdf"
+                  multiple
+                  onChange={(e) => {
+                    const files = Array.from(e.target.files || []);
+                    files.forEach(file => {
+                      const reader = new FileReader();
+                      reader.onload = (ev) => {
+                        setMeetingAttachments(prev => [...prev, { name: file.name, type: file.type, dataUrl: ev.target.result }]);
+                      };
+                      reader.readAsDataURL(file);
+                    });
+                  }}
+                  style={{ fontSize: '0.8rem', width: '100%' }}
+                />
+                {meetingAttachments.length > 0 && (
+                  <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap', marginTop: '0.5rem' }}>
+                    {meetingAttachments.map((att, idx) => (
+                      <span key={idx} className="badge" style={{ background: 'rgba(6, 182, 212, 0.15)', color: 'var(--accent-cyan)', fontSize: '0.7rem' }}>
+                        🖼️ {att.name}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '0.5rem' }}>

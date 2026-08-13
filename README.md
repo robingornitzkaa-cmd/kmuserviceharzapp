@@ -1,6 +1,6 @@
-# Founder OS - KMU Service Harz App
+# Life & Founder OS - Personal Goal, Habit & Business Control Center
 
-Dieses Projekt ist eine maßgeschneiderte, hochgradig ästhetische Web- und Mobilanwendung (Founder OS) für das Beratungsunternehmen von Robin (KMU Service Harz). Sie dient als zentrales Betriebssystem zur Steuerung von CRM, Projekten, Dokumenten, KI-Prompts und Automatisierungsworkflows.
+Dieses Projekt ist eine maßgeschneiderte, hochgradig ästhetische Web- und Mobilanwendung (**Life & Founder OS**) für Robin. Sie dient als zentrales Betriebssystem zur Steuerung von Tageszielen, persönliche Gewohnheiten (Kraftsport, Make Academy, Lesen, Wasser), Gamifizierung mit Belohnungs-Shop & Disziplin-System sowie CRM, Projekten, Dokumenten, KI-Prompts und Automatisierungsworkflows.
 
 Die Anwendung zeichnet sich durch ein futuristisches "Glassmorphic Dark Theme" aus, ist 100 % offline-fähig (localStorage-geschützt) und optimiert für Desktop- und Smartphone-Bedienung. Zudem ist sie als native Android-App mittels Capacitor verpackbar und bietet ein echtes Android-Homescreen-Widget.
 
@@ -8,10 +8,17 @@ Die Anwendung zeichnet sich durch ein futuristisches "Glassmorphic Dark Theme" a
 
 ## 🚀 Wichtigste Funktionen & Tab-Struktur
 
-### 1. Dashboard (Zentrale) -- *UPGRADED!*
+### 1. Dashboard & Life OS Gamification -- *NEU UPGRADED!*
+- **🎮 Life OS Level, XP & Coins System:** Verdiene XP und Life-Coins durch das Abhaken täglicher Habits und Fokus-Ziele. Verfolge deinen Fortschritt mit visueller Level-Bar (Level Up alle 200 XP).
+- **🎁 Belohnungs-Shop (Münzen einlösen):** Tausche verdiente Coins gegen selbstdefinierte Belohnungen ein (z. B. 30 Min Zocken, Filmabend, Cheat Meal, Tech-Gadgets) – ohne schlechtes Gewissen!
+- **🛡️ Bestrafungs- & Disziplin-Manager:** 3 wählbare Anti-Faulheit-Modi bei verpassten Gewohnheiten:
+  - *Modus A (Münz-Abzug / XP-Schulden):* Gesperrter Shop bei negativer Coins-Bilanz.
+  - *Modus B (Straf-Aufgaben):* Körperliche / Disziplin-Challenges (30 Liegestütze, Raum aufräumen, Sparschwein).
+  - *Modus C (Strike-System):* 3 verpasste Habits = 48h Belohnungs-Sperre.
+- **🛌 Smart Routine & Ruhetags-Erkennung:** Automatische Wochentag-Erkennung (z. B. Kraftsport an Mo/Mi/Fr). An regenerativen Tagen zeigt die App explizit einen **grünen Ruhetag-Hinweis** (`🛌 Kraftsport: Ruhetag / Regenerieren! Kein Workout heute nötig`), um schlechtes Gewissen zu vermeiden.
+- **⚡ Make Academy & Lern-Tracker:** Täglicher Schnell-Check für Make Academy Einheiten und Weiterbildung.
 - **Personalisierbares Layout & Freie Verschiebung:** Blende Widgets (Finanzen, E-Rechnung, Habits, Google Kalender, Quick Capture) ein/aus und **verschiebe sie frei per Positionsmarkierung (`#1`, `#2`...) und `⬆️` / `⬇️` Buttons im Editor**.
 - **📌 Multi-Notizen System & Cloud-Sync (Handy ↔ PC):** Erstelle, benenne und verwalte beliebig viele Notizblätter mit individuellen Farben (Gelb, Blau, Grün, Pink, Lila). Alle Notizen (`dashNotesList`) werden automatisch in Supabase Cloud gesichert und zwischen Geräten synchronisiert.
-- **Offline-Notizen & Checkliste:** Zettelkasten mit Markdown-Formatierungshilfe und Fallback-Speicherung in `localStorage`.
 - **Wochen-Review & PDF-Bericht:** Archiv für erledigte Aufgaben mit jsPDF-Berichts-Export.
 - **Gamifizierter Habit-Tracker:** Streak-Zähler mit CSS-Konfetti-Animation bei 100 % Abschluss.
 
@@ -50,6 +57,16 @@ Die Anwendung zeichnet sich durch ein futuristisches "Glassmorphic Dark Theme" a
 - **No-Code Automation Canvas:** Visueller Workflow-Builder zur Demonstration automatisierter Prozesse.
 - **Zettel-zu-Code Visualisierer:** Interaktiver Vergleich von manuellen Papier-Abläufen vs. modernen IT-Schnittstellen.
 - **Kunden-Portal (White-Label):** Umschaltbarer Mandanten-Modus für deine Kunden (Projektstatus, ROI-Ersparnis, Support-Ticket-System).
+
+### 8. KMU Webseiten-Preview (Live Multi-Page & Theme-Switcher) -- *NEU!*
+- **Vollständige Multi-Page Navigation:** Inklusive *Startseite*, *Leistungen*, *ROI-Rechner*, *Über uns*, *Kontakt & Erstgespräch*, *Impressum* und *Datenschutz*.
+- **🎨 Gründungscoach Präsentations-Modus:** 1-Klick Theme-Switcher in der Header-Leiste zwischen **☀️ Hellem Business-Design** (freundlich & klar für Handwerk/KMU) und **🌙 Dunklem Tech-Design** (modern & innovativ).
+- **Entkoppelte Content-Verwaltung:** Texte in [`src/constants/websiteContent.js`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/constants/websiteContent.js) anpassen, um die gesamte Webseite live zu aktualisieren.
+
+### 9. 🎯 Coaching Live-Portal & Grafik-Anhänge (Zoom/Teams-Präsentation) -- *NEU!*
+- **🖼️ Datei- & Grafik-Anhänge:** Lade Grafiken (Zielgruppen-Personas, Schulungsgrafiken, Screenshots, PDFs) direkt in Coaching-Terminen (Command Center), an Kanban-Aufgaben oder im Wissens-Hub (DocsHub) hoch.
+- **🔍 Vollbild-Präsentationsmodus (Lightbox):** 1-Klick auf eine beliebige Grafik öffnet ein hochauflösendes Vollbild-Präsentationsfenster zum Herunterladen und Vorzeigen im Call.
+- **🔒 PIN-geschütztes Coaching Live-Board (`CoachingLivePortal.jsx`):** Eine saubere Präsentationsunterseite (geschützt durch PIN `1234`), die im Zoom-Call geteilt werden kann. Zeigt den Coaching-Fortschritt, meilensteine, Aufgaben und Personas – bei 100%igem Schutz von privaten Notizen, Finanzen oder Kunden-Daten.
 
 ---
 

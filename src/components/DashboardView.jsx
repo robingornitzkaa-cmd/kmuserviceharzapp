@@ -12,11 +12,36 @@ import {
   Download, 
   Mic, 
   CheckSquare, 
-  TrendingUp 
+  TrendingUp,
+  Trophy,
+  Gift,
+  ShieldAlert,
+  Coins,
+  Flame,
+  Sparkles,
+  Dumbbell,
+  Zap,
+  BookOpen,
+  BedDouble,
+  Award
 } from 'lucide-react';
 import { SettingsView, getWidgetOrder } from './SettingsView';
 
 export const DashboardView = ({
+  userCoins = 150,
+  setUserCoins,
+  userXP = 120,
+  userLevel = 1,
+  rewards = [],
+  setRewards,
+  penalties = [],
+  setPenalties,
+  penaltyMode = 'debt',
+  setPenaltyMode,
+  lifeGoals = [],
+  setLifeGoals,
+  setIsRewardModalOpen,
+  setIsPenaltyModalOpen,
   dashboardWidgets,
   setDashboardWidgets,
   isEditingDashboard,
@@ -140,6 +165,226 @@ export const DashboardView = ({
         dashboardWidgets={dashboardWidgets}
         setDashboardWidgets={setDashboardWidgets}
       />
+
+      {/* ==================== LIFE OS TOP HUD & GAMIFICATION BANNER ==================== */}
+      {(() => {
+        const todayDayOfWeek = new Date().getDay(); // 0=Sun, 1=Mon, 2=Tue, 3=Wed, 4=Thu, 5=Fri, 6=Sat
+        const activeHabitsToday = habits.filter(h => !h.days || h.days.includes(todayDayOfWeek));
+        const restHabitsToday = habits.filter(h => h.days && !h.days.includes(todayDayOfWeek));
+        const completedTodayCount = activeHabitsToday.filter(h => h.completed).length;
+        const habitCompletionPercent = activeHabitsToday.length > 0 
+          ? Math.round((completedTodayCount / activeHabitsToday.length) * 100) 
+          : 100;
+
+        const nextLevelXp = userLevel * 200;
+        const currentLevelXpProgress = (userXP % 200);
+        const levelPercent = Math.min(100, Math.round((currentLevelXpProgress / 200) * 100));
+
+        return (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '0.5rem' }}>
+            {/* Top Gamification HUD */}
+            <div style={{
+              background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.8))',
+              border: '1px solid rgba(255, 215, 0, 0.25)',
+              borderRadius: '16px',
+              padding: '18px 24px',
+              display: 'flex',
+              flexWrap: 'wrap',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '16px',
+              boxShadow: '0 10px 30px rgba(0,0,0,0.4)'
+            }}>
+              {/* Level & XP HUD */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '14px', minWidth: '220px' }}>
+                <div style={{
+                  background: 'linear-gradient(135deg, #ffd700, #f59e0b)',
+                  color: '#0f172a',
+                  fontWeight: 900,
+                  fontSize: '1.2rem',
+                  width: '46px',
+                  height: '46px',
+                  borderRadius: '14px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  boxShadow: '0 0 15px rgba(255, 215, 0, 0.4)'
+                }}>
+                  Lvl {userLevel}
+                </div>
+                <div>
+                  <div style={{ fontSize: '0.82rem', color: '#ffd700', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                    Life OS Rang: Level {userLevel}
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
+                    <div style={{ width: '120px', height: '8px', background: 'rgba(255,255,255,0.1)', borderRadius: '4px', overflow: 'hidden' }}>
+                      <div style={{ width: `${levelPercent}%`, height: '100%', background: 'linear-gradient(90deg, #ffd700, #38bdf8)', transition: 'width 0.3s ease' }}></div>
+                    </div>
+                    <span style={{ fontSize: '0.75rem', color: '#94a3b8', fontWeight: 600 }}>{currentLevelXpProgress}/200 XP</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Tages-Fortschritt & Streak */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                <div style={{ textAlign: 'center' }}>
+                  <div style={{ fontSize: '0.78rem', color: '#cbd5e1', fontWeight: 600 }}>Tages-Fortschritt</div>
+                  <div style={{ fontSize: '1.2rem', fontWeight: 800, color: habitCompletionPercent === 100 ? '#4ade80' : '#38bdf8' }}>
+                    {completedTodayCount} / {activeHabitsToday.length} ({habitCompletionPercent}%)
+                  </div>
+                </div>
+                <div style={{ height: '30px', width: '1px', background: 'rgba(255,255,255,0.1)' }}></div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(249, 115, 22, 0.15)', border: '1px solid rgba(249, 115, 22, 0.3)', padding: '6px 14px', borderRadius: '12px' }}>
+                  <Flame size={20} color="#f97316" />
+                  <div>
+                    <div style={{ fontSize: '0.95rem', fontWeight: 800, color: '#fb923c' }}>{habitStreak} Tage Streak</div>
+                    <div style={{ fontSize: '0.7rem', color: '#fdba74' }}>1.5x Multiplikator</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Buttons: Belohnungs-Shop & Disziplin-Manager */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <button
+                  type="button"
+                  onClick={() => setIsRewardModalOpen(true)}
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(245, 158, 11, 0.2))',
+                    border: '1px solid rgba(255, 215, 0, 0.5)',
+                    color: '#ffd700',
+                    padding: '8px 16px',
+                    borderRadius: '12px',
+                    fontWeight: 700,
+                    fontSize: '0.88rem',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    boxShadow: '0 4px 15px rgba(255, 215, 0, 0.15)'
+                  }}
+                >
+                  <Gift size={18} />
+                  Belohnungs-Shop
+                  <span style={{ background: '#ffd700', color: '#0f172a', padding: '2px 8px', borderRadius: '10px', fontSize: '0.78rem' }}>
+                    🪙 {userCoins}
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setIsPenaltyModalOpen(true)}
+                  style={{
+                    background: userCoins < 0 ? 'rgba(239, 68, 68, 0.3)' : 'rgba(255, 255, 255, 0.05)',
+                    border: userCoins < 0 ? '1px solid #ef4444' : '1px solid rgba(255, 255, 255, 0.15)',
+                    color: userCoins < 0 ? '#f87171' : '#cbd5e1',
+                    padding: '8px 14px',
+                    borderRadius: '12px',
+                    fontWeight: 600,
+                    fontSize: '0.82rem',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  <ShieldAlert size={16} color={userCoins < 0 ? '#ef4444' : '#94a3b8'} />
+                  Disziplin ({penaltyMode})
+                </button>
+              </div>
+            </div>
+
+            {/* Smart Daily Routine & Rest-Days Bar */}
+            <div style={{
+              background: 'rgba(30, 41, 59, 0.4)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              borderRadius: '16px',
+              padding: '18px 22px'
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+                <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 700, color: '#f8fafc', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Zap size={18} color="#38bdf8" /> Tages-Habits & Routine (Auf einen Blick)
+                </h3>
+                <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
+                  {new Date().toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long' })}
+                </span>
+              </div>
+
+              {/* Active Today Habits */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '12px', marginBottom: restHabitsToday.length > 0 ? '14px' : '0' }}>
+                {activeHabitsToday.map(h => (
+                  <div
+                    key={h.id}
+                    onClick={() => toggleHabit(h.id)}
+                    style={{
+                      background: h.completed ? 'rgba(34, 197, 94, 0.12)' : 'rgba(15, 23, 42, 0.6)',
+                      border: h.completed ? '1px solid rgba(34, 197, 94, 0.4)' : '1px solid rgba(255, 255, 255, 0.1)',
+                      borderRadius: '12px',
+                      padding: '12px 14px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '12px',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={h.completed}
+                      onChange={() => {}} // Handled by parent div click
+                      style={{ accentColor: '#22c55e', width: '18px', height: '18px', cursor: 'pointer' }}
+                    />
+                    <div style={{ flexGrow: 1 }}>
+                      <div style={{ fontSize: '0.9rem', fontWeight: 600, color: h.completed ? '#4ade80' : '#f8fafc', textDecoration: h.completed ? 'line-through' : 'none' }}>
+                        {h.text}
+                      </div>
+                      <div style={{ fontSize: '0.72rem', color: '#94a3b8', marginTop: '2px', display: 'flex', gap: '8px' }}>
+                        <span>+{h.xp || 30} XP</span>
+                        <span>🪙 +{h.coins || 15} Coins</span>
+                      </div>
+                    </div>
+                    {h.completed && <CheckCircle size={16} color="#4ade80" />}
+                  </div>
+                ))}
+              </div>
+
+              {/* Rest Days (e.g. Kraftsport Ruhetag) */}
+              {restHabitsToday.length > 0 && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '12px' }}>
+                  <div style={{ fontSize: '0.78rem', color: '#64748b', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                    🛌 Heutige Ruhetage / Regeneration
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '10px' }}>
+                    {restHabitsToday.map(h => (
+                      <div
+                        key={h.id}
+                        style={{
+                          background: 'rgba(16, 185, 129, 0.06)',
+                          border: '1px dashed rgba(16, 185, 129, 0.3)',
+                          borderRadius: '10px',
+                          padding: '10px 14px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '10px'
+                        }}
+                      >
+                        <BedDouble size={18} color="#10b981" />
+                        <div>
+                          <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#a7f3d0' }}>
+                            {h.text}: Ruhetag
+                          </div>
+                          <div style={{ fontSize: '0.72rem', color: '#6ee7b7' }}>
+                            Regeneration angesagt. Kein Workout heute nötig!
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })()}
 
       <div className="dashboard-grid">
         {getWidgetOrder(dashboardWidgets).map(widgetKey => {

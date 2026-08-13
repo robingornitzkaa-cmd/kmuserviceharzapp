@@ -1,5 +1,128 @@
 # AI Worklog - Founder OS
 
+## 2026-08-13 22:45 – Phase v27: Coaching Live-Portal & Grafik-/Persona-Anhänge
+
+### Ziel
+Integration von Grafik- & Datei-Anhängen (Zielgruppen-Personas, Schulungsgrafiken, Screenshots, PDFs) an Coaching-Terminen, Aufgaben und im Wissens-Hub sowie Erstellung einer PIN-geschützten Live-Präsentations-Unterseite (`CoachingLivePortal.jsx`) für Zoom-Calls ohne Screen-Share-Datenschutzrisiko.
+
+### Erstellt
+- [`src/components/CoachingLivePortal.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/components/CoachingLivePortal.jsx): Neue PIN-geschützte Präsentationsansicht (`1234`) mit Status-Dashboard ("Wo wir beide stehen"), Meilenstein-Übersicht, Ergebnisse- & Personas-Galerie und Termin-Protokollen.
+
+### Geändert
+- [`src/components/CommandCenter.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/components/CommandCenter.jsx): Upload-Feld für Grafiken/Anhänge beim Eintragen von Coach-Terminen, Speicherung & Anzeige in der Termin-Historie.
+- [`src/components/KanbanBoard.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/components/KanbanBoard.jsx): Anhangs-Button 📎 & Miniatur-Vorschauen auf Kanban-Karten mit Direct Upload & Lightbox-Verknüpfung.
+- [`src/components/DocsHub.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/components/DocsHub.jsx): Unterstützung von Grafik- & Mediendateien (`PNG`, `JPG`, `WEBP`, `SVG`, `PDF`) mit Bildkacheln & Vollbild-Viewer.
+- [`src/components/Sidebar.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/components/Sidebar.jsx): Navigationseintrag **🎯 Coaching Live-Portal** in Desktop- & Mobil-Drawer.
+- [`src/App.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): State-Management für Coaching-Termine (`f_coaching_meetings`), Portal-PIN (`1234`), Globales Lightbox-Modal und Routing.
+- [`src/test/App.test.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/test/App.test.jsx): Integrationstest für Coaching Live-Portal & PIN-Gate (14/14 Pass).
+- [`TODO.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md), [`CHANGELOG.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md), [`README.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/README.md).
+
+### Warum
+Ermöglicht das direkte Anhängen von Personas und Arbeitsergebnissen in der App und das sichere, professionelle Präsentieren im Zoom-Call ohne Freigabe des gesamten PCs.
+
+### Testen
+1. **Coaching Live-Portal testen**: In der Sidebar auf **`🎯 Coaching Live-Portal`** klicken.
+2. PIN `1234` eingeben -> Das Portal schaltet sich frei.
+3. **Grafik anhängen & vorzeigen**: Beim Coach-Termin eintragen oder auf einer Kanban-Karte auf 📎 klicken, eine Grafik auswählen.
+4. Grafik anklicken -> Öffnet die hochauflösende Präsentations-Lightbox.
+
+---
+
+### Ziel
+Vollständiges Redesign der Startseiten-Teaser-Karten (`activePage === 'home'`), Behebung des Navigations-Problems bei Klick auf "Zum ROI-Rechner" (Smooth Scroll to Top beim Seitenwechsel) und Integration von 4 neuen interaktiven Konvertierungs-Features für die Webseite.
+
+### Geändert
+- [`src/components/WebsiteView.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/components/WebsiteView.jsx):
+  - **Fix Navigation & Scroll-To-Top (`navigateTo` Helper):** Bei jedem Klick auf "Zum ROI-Rechner", "Alle Details ansehen" oder einen Unterseiten-Link wird nun flüssig zum Seitenanfang der neuen Unterseite gescrollt, sodass der Seitenwechsel sofort sichtbar ist.
+  - **Redesign der 3 Leistungs-Teaser-Karten auf der Startseite:** Eigenständige Säulen-Badges (`Säule 1`, `Säule 2`, `Säule 3`), kreisrunde HSL-Check-Bullets, klare Buttons.
+  - **Neues Feature 1: Vorher-vs-Nachher Vergleichs-Toggle (`⚡ VORHER VS. NACHHER`):** Interaktiver Umschalter zwischen *🛑 Vorher (Manuelle Zettelwirtschaft)* und *⚡ Nachher (Mit KMU Service Harz)*.
+  - **Neues Feature 2: Interaktiver 1-Minuten Schnell-Check Quiz (`🎯 Schnell-Check`):** 3-Fragen Digitalisierungs-Test mit automatischer Prozent-Auswertung und Erstgesprächs-Empfehlung.
+  - **Neues Feature 3: Harzer Praxis-Beispiele (Case Studies):** 3 regionale Praxis-Beispiele aus Tischlerei, Haustechnik und Sanitär mit konkreten Zeitersparnis-Ergebnissen.
+  - **Neues Feature 4: FAQ Akkordeon (`❓ HÄUFIGE FRAGEN`):** Aufklappbare Antworten auf die häufigsten Bedenken von Handwerkern & KMU (DSGVO, IT-Kenntnisse, Amortisationsdauer).
+
+### Warum
+Behebt das unsaubere Layout auf der Startseite, repariert die Navigations-Verlinkungen und stattet die Webseite mit interaktiven Elementen aus, die Interessenten und den Gründungscoach begeistern.
+
+### Testen
+1. In der App auf **`🌐 Webseiten-Preview`** klicken.
+2. Auf der Startseite den neuen **Vorher-vs-Nachher Toggle** ausprobieren.
+3. Den **1-Minuten Schnell-Check Quiz** durchklicken und das Ergebnis sehen.
+4. Auf **"Zum ROI-Rechner"** oder **"Alle Details ansehen"** klicken -> Beobachten, wie flüssig zum Seitenanfang des ROI-Rechners / der Leistungsseite gewechselt wird.
+
+
+
+### Ziel
+Vollständige Überarbeitung der bisherigen Leistungs- und Unterseiten-Struktur, da das bisherige Layout unstrukturiert und amateurhaft aussah. Ziel war ein hochmodernes, maßgeschneidertes B2B-Agentur-Design mit strukturierter Hierarchie, Säulen-Badges, eigenständigen Vorteilskarten, abgerundeten Icon-Badges und sauberem Shadowing.
+
+### Geändert
+- [`src/components/WebsiteView.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/components/WebsiteView.jsx):
+  - **Säulen-Badges (`Säule 1`, `Säule 2`, `Säule 3`):** Farbige Pill-Badges zur klaren visuellen Zuordnung der Leistungs-Säulen.
+  - **Neues 2-Spalten-Layout pro Leistung:** 
+    - *Linke Spalte:* "Ihre konkreten Vorteile" als hervorgehobene Karten-Reihen mit runden HSL-Check-Bullets (keine Standard HTML `<ul>`-Punkte mehr).
+    - *Rechte Spalte:* "Warum das für Ihren Betrieb entscheidend ist" in eigener Hintergrund-Surface mit klarem CTA-Button pro Säule.
+  - **Typografie & Whitespace:** Sauberes Font-Spacing (`Plus Jakarta Sans` / System Stack), klare Absätze, professionelle Buttons mit Hover-Animationen.
+  - **Hilfe-Banner am Seitenende:** Auffälliges Farbbanner zur schnellen Buchung des kostenfreien Erstgesprächs.
+
+### Warum
+Erfüllt das Nutzerfeedback nach einer hochwertigen, professionellen Optik ohne billigen "Textwüsten-Look".
+
+### Testen
+1. `npm run dev` ausführen.
+2. In der App auf **`🌐 Webseiten-Preview`** klicken und den Reiter **"Leistungen"** wählen.
+3. Den Unterschied zwischen *☀️ Helles Business-Design* und *🌙 Dunkles Tech-Design* prüfen.
+
+
+
+### Ziel
+Vorbereitung und Erstellung einer vollständigen, DSGVO-konformen Multi-Page Webseiten-Vorschau für KMU Service Harz inklusive Präsentations-Modus (Live-Umschaltung zwischen ☀️ Hellem Business-Design und 🌙 Dunklem Tech-Design) für den Gründungscoach-Termin.
+
+### Erstellt
+- [`src/constants/websiteContent.js`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/constants/websiteContent.js): Zentrale, strukturierte Inhalts- & Textdatei für alle Webseiten-Unterseiten (Brand, Hero, Schmerzpunkte, 3 Kernleistungen, ROI-Rechner, Über Uns, Kontaktformular, Impressum, Datenschutz).
+- [`src/components/WebsiteView.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/components/WebsiteView.jsx): Multi-Page Webseiten-Komponente mit interaktivem Theme-Switcher (☀️ Helles Business-Design vs. 🌙 Dunkles Tech-Design), Unterseiten-Navigation (Home, Leistungen, ROI-Rechner, Über uns, Kontakt, Impressum, Datenschutz), Live ROI-Rechner und DSGVO-Formular.
+
+### Geändert
+- [`src/components/Sidebar.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/components/Sidebar.jsx): Hinzufügen des neuen Navigations-Reiters `🌐 Webseiten-Preview` in Desktop- & Mobil-Seitenleiste.
+- [`src/App.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): Import und Rendering der `WebsiteView`-Komponente beim Auswählen des Reiters `website`.
+
+### Warum
+Erlaubt dem Nutzer, vor seinem morgigen Gründungscoach-Termin beide Design-Richtungen (Helles Mittelstands-Design vs. Dunkles Tech-Design) live in der App auszuprobieren, vorzuführen und mit dem Coach abzustimmen, ohne eine einzige Zeile Code doppelt schreiben zu müssen.
+
+### Testen
+1. `npm run dev` im Terminal ausführen.
+2. In der Seitenleiste auf **🌐 Webseiten-Preview** klicken.
+3. Im lila Präsentations-Balken oben zwischen **☀️ Helles Business-Design** und **🌙 Dunkles Tech-Design** umschalten.
+4. Durch die Unterseiten navigieren (*Startseite, Leistungen, ROI-Rechner, Über uns, Kontakt, Impressum, Datenschutz*).
+5. Im ROI-Rechner die Schieberegler verstellen und die Live-Berechnung prüfen.
+
+
+
+### Ziel
+Umwandlung der bisherigen Gründungs-App in ein umfassendes **Life & Founder OS** mit Gamifizierung, Level- & XP-System, Belohnungs-Shop, Disziplin- & Bestrafungs-Manager sowie automatischer Wochentags- und Ruhetags-Erkennung (z. B. Kraftsport, Make Academy).
+
+### Erstellt
+- [`src/components/RewardShopModal.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/components/RewardShopModal.jsx): Interaktiver Belohnungs-Shop zum Einlösen von verdienten Coins für selbstdefinierte Belohnungen (z. B. Zocken, Filmabend, Cheat Meals, Gadgets) inkl. Fortschrittsanzeige & Gutschein-Animation.
+- [`src/components/PenaltyModal.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/components/PenaltyModal.jsx): Disziplin- & Bestrafungs-Manager mit 3 wählbaren Modi (Coins-Abzug/Schulden, körperliche/Disziplin Straf-Aufgaben, 3-Strikes System).
+
+### Geändert
+- [`src/constants/initialData.js`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/constants/initialData.js): Anreichern von `INITIAL_HABITS` mit Wochentagskonfigurationen (`days`), `xp`, `coins` sowie Hinzufügen von `INITIAL_REWARDS`, `INITIAL_PENALTIES` und `INITIAL_LIFE_GOALS`.
+- [`src/App.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx): Integration der Gamifizierung-States (`userXP`, `userCoins`, `userLevel`, `rewards`, `penalties`, `penaltyMode`), automatische XP/Coins/Level-Berechnung beim Abhaken von Habits und Rendern der neuen Modals.
+- [`src/components/DashboardView.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/components/DashboardView.jsx): Einbau des neuen **Life OS Top Banner HUD** (Level, Level-Progress, Tages-Fortschritt, Streak, Belohnungs-Shop Button, Disziplin-Button) und der **Smart Routine & Ruhetag-Leiste** (mit expliziter Vorweisung von regenerativen Ruhetagen für Kraftsport).
+- [`src/components/Sidebar.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/components/Sidebar.jsx): Rebranding auf **Life & Founder OS**.
+- [`src/test/App.test.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/test/App.test.jsx): Integrationstest für Gamification HUD, Belohnungs-Shop und Disziplin-Manager hinzugefügt. (13/13 Tests bestanden).
+- [`README.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/README.md), [`CHANGELOG.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/CHANGELOG.md), [`TODO.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/TODO.md), [`AI_WORKLOG.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/AI_WORKLOG.md): Dokumentation aktualisiert.
+
+### Warum
+Erfüllt den Nutzerwunsch nach Transformation zu einer universellen Life- & Ziel-App mit motivierender Gamifizierung, klaren Belohnungen (Shop) und konstruktiven Disziplin-Maßnahmen sowie klaren Ruhetag-Signalen an nicht-Trainings-Tagen.
+
+### Testen
+1. `npm run dev` im Terminal ausführen und `http://localhost:5173` öffnen.
+2. Auf dem Dashboard den neuen **Life OS Top Banner** prüfen (Level, XP-Fortschritt, Streak, Tages-Fortschritt).
+3. Gewohnheiten (z. B. Make Academy) auf dem Dashboard abhaken -> beobachten, wie XP und Coins steigen und Konfetti erscheint.
+4. An trainingsfreien Tagen von Kraftsport den grünen **Ruhetag-Hinweis** prüfen (`🛌 Kraftsport: Ruhetag`).
+5. Klick auf **Belohnungs-Shop** -> Belohnungen einlösen oder neue hinzufügen.
+6. Klick auf **Disziplin-Manager** -> Bestrafungs-Modi umschalten und Straf-Aufgaben ableisten.
+7. `npm run test` ausführen (13/13 Tests erfolgreich).
+
 ## 2026-08-13 04:53 – Deep Research Frameworks & Erweiterter Prompt-Baukasten (COMPLETED)
 
 ### Ziel

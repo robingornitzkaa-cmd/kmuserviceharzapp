@@ -12,7 +12,9 @@ import {
   ChevronLeft, 
   X, 
   Menu,
-  Zap
+  Zap,
+  Globe,
+  ShieldCheck
 } from 'lucide-react';
 
 export const Sidebar = ({
@@ -37,7 +39,7 @@ export const Sidebar = ({
               <div className="brand-logo">
                 <BrainCircuit size={20} />
               </div>
-              <h1 style={{ display: sidebarCollapsed ? 'none' : 'block' }}>Founder OS</h1>
+              <h1 style={{ display: sidebarCollapsed ? 'none' : 'block' }}>Life & Founder OS</h1>
             </div>
           </div>
           <div className="sidebar-nav-list">
@@ -113,6 +115,24 @@ export const Sidebar = ({
               <TrendingUp size={18} />
               <span className="sidebar-nav-label">Sales & SOPs</span>
             </button>
+            <button 
+              className={`sidebar-nav-item ${activeTab === 'website' ? 'active' : ''}`}
+              onClick={() => setActiveTab('website')}
+              title="🌐 KMU Webseite (Live Preview)"
+              style={{ background: activeTab === 'website' ? '#059669' : 'rgba(5, 150, 105, 0.15)', color: '#ffffff' }}
+            >
+              <Globe size={18} />
+              <span className="sidebar-nav-label">🌐 Webseiten-Preview</span>
+            </button>
+            <button 
+              className={`sidebar-nav-item ${activeTab === 'coaching-portal' ? 'active' : ''}`}
+              onClick={() => setActiveTab('coaching-portal')}
+              title="🎯 Coaching Live-Portal"
+              style={{ background: activeTab === 'coaching-portal' ? 'var(--accent-indigo)' : 'rgba(99, 102, 241, 0.12)', color: '#ffffff', marginTop: '0.25rem' }}
+            >
+              <ShieldCheck size={18} />
+              <span className="sidebar-nav-label">🎯 Coaching Live-Portal</span>
+            </button>
           </div>
           <div className="sidebar-footer">
             <button 
@@ -141,7 +161,7 @@ export const Sidebar = ({
                 <div className="brand-logo">
                   <BrainCircuit size={20} />
                 </div>
-                <h1>Founder OS</h1>
+                <h1>Life & Founder OS</h1>
               </div>
               <button className="hamburger-btn" onClick={() => setMobileMenuOpen(false)}>
                 <X size={20} />
@@ -210,6 +230,22 @@ export const Sidebar = ({
               >
                 <TrendingUp size={18} />
                 <span>Sales & SOPs</span>
+              </button>
+              <button 
+                className={`sidebar-nav-item ${activeTab === 'website' ? 'active' : ''}`} 
+                onClick={() => { setActiveTab('website'); setMobileMenuOpen(false); }}
+                style={{ background: 'rgba(5, 150, 105, 0.25)', color: '#ffffff' }}
+              >
+                <Globe size={18} />
+                <span>🌐 Webseiten-Preview</span>
+              </button>
+              <button 
+                className={`sidebar-nav-item ${activeTab === 'coaching-portal' ? 'active' : ''}`} 
+                onClick={() => { setActiveTab('coaching-portal'); setMobileMenuOpen(false); }}
+                style={{ background: 'rgba(99, 102, 241, 0.25)', color: '#ffffff' }}
+              >
+                <ShieldCheck size={18} />
+                <span>🎯 Coaching Live-Portal</span>
               </button>
             </div>
           </aside>
