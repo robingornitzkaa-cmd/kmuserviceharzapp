@@ -302,7 +302,7 @@ describe('Founder OS App - Integration Tests', () => {
     // Diff-Modal öffnet sich mit dem optimierten Deep Research Prompt
     await waitFor(() => {
       expect(screen.getByText(/KI-Optimierung: Vorher \/ Nachher Vergleich/i)).toBeInTheDocument()
-      expect(screen.getByText(/DEEP RESEARCH PROMPT/i)).toBeInTheDocument()
+      expect(screen.getByText(/LEAD- & SWOT-RECHERCHE/i)).toBeInTheDocument()
     })
 
     fetchSpy.mockRestore()
