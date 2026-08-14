@@ -25,7 +25,9 @@ describe('Founder OS App - Integration Tests', () => {
     fireEvent.click(salesTab)
 
     // Prüfe, ob die ROI-Rechner-Karte angezeigt wird
-    expect(screen.getByText('Showcase ROI-Rechner')).toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.getByText('Showcase ROI-Rechner')).toBeInTheDocument()
+    })
 
     // Finde Eingabefelder über ihre Label-Geschwister (da keine htmlFor-Verknüpfung vorhanden ist)
     const taskNameInput = screen.getByText('Name der manuellen Aufgabe').nextElementSibling
@@ -48,24 +50,30 @@ describe('Founder OS App - Integration Tests', () => {
     expect(screen.getByText(/520/)).toBeInTheDocument()
   })
 
-  test('Wechsel zwischen verschiedenen Tabs funktioniert', () => {
+  test('Wechsel zwischen verschiedenen Tabs funktioniert', async () => {
     render(<App />)
 
     // CRM & Projekte Tab anklicken
     const crmTab = screen.getByRole('button', { name: /CRM & Projekte/i })
     fireEvent.click(crmTab)
-    expect(screen.getByText('Mini-CRM & Sales-Pipeline')).toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.getByText('Mini-CRM & Sales-Pipeline')).toBeInTheDocument()
+    })
 
     // KI Prompts Tab anklicken
     const promptsTab = screen.getByRole('button', { name: /KI Prompts/i })
     fireEvent.click(promptsTab)
-    expect(screen.getByText('Prompt Vault (KI-Tresor)')).toBeInTheDocument()
-    expect(screen.getByText('Social Media Content-Planer')).toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.getByText('Prompt Vault (KI-Tresor)')).toBeInTheDocument()
+      expect(screen.getByText('Social Media Content-Planer')).toBeInTheDocument()
+    })
 
     // Command Center Tab anklicken
     const statusTab = screen.getByRole('button', { name: /Command Center/i })
     fireEvent.click(statusTab)
-    expect(screen.getByText(/masterLogbuch.txt/i)).toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.getByText(/masterLogbuch.txt/i)).toBeInTheDocument()
+    })
 
     // Kachel 5 (Roh-Text Editor) im Akkordeon öffnen
     const rawTextHeader = screen.getByText(/5. masterLogbuch.txt/i)
@@ -80,19 +88,21 @@ describe('Founder OS App - Integration Tests', () => {
     // Dokumente & Sync Tab anklicken
     const docsTab = screen.getByRole('button', { name: /Dokumente & Sync/i })
     fireEvent.click(docsTab)
-    expect(screen.getByText(/Wissens-Hub/i)).toBeInTheDocument()
-    expect(screen.getByText('Supabase Cloud Sync')).toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.getByText(/Wissens-Hub/i)).toBeInTheDocument()
+      expect(screen.getByText('Supabase Cloud Sync')).toBeInTheDocument()
+    })
   })
 
-  test('Showcase-Modus toggle maskiert sensible Daten', () => {
+  test('Showcase-Modus toggle maskiert sensible Daten', async () => {
     render(<App />)
 
     // CRM & Projekte Tab anklicken
     const crmTab = screen.getByRole('button', { name: /CRM & Projekte/i })
     fireEvent.click(crmTab)
-
-    // Name vor der Aktivierung des Showcase-Modus prüfen
-    expect(screen.getAllByText('Dachdeckerei Müller').length).toBeGreaterThan(0)
+    await waitFor(() => {
+      expect(screen.getAllByText('Dachdeckerei Müller').length).toBeGreaterThan(0)
+    })
     expect(screen.queryAllByText('Muster-Bedachungen GmbH').length).toBe(0)
 
     // Showcase-Modus einschalten
@@ -109,14 +119,16 @@ describe('Founder OS App - Integration Tests', () => {
     expect(screen.queryAllByText('Muster-Bedachungen GmbH').length).toBe(0)
   })
 
-  test('Kanban-Board: Hinzufügen einer neuen Aufgabe funktioniert', () => {
+  test('Kanban-Board: Hinzufügen einer neuen Aufgabe funktioniert', async () => {
     render(<App />)
 
     // Inbox & Tasks Tab anklicken
     const tasksTab = screen.getByRole('button', { name: /Inbox & Tasks/i })
     fireEvent.click(tasksTab)
 
-    expect(screen.getByText('Kanban-Board')).toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.getByText('Kanban-Board')).toBeInTheDocument()
+    })
 
     // Neue Aufgabe erstellen
     const taskInput = screen.getByPlaceholderText('Neue Aufgabe...')
@@ -285,7 +297,7 @@ describe('Founder OS App - Integration Tests', () => {
     // KI Prompts Tab anklicken
     const promptsTab = screen.getByRole('button', { name: /KI Prompts/i })
     fireEvent.click(promptsTab)
-    expect(screen.getByText('Prompt Vault (KI-Tresor)')).toBeInTheDocument()
+    expect(await screen.findByText('Prompt Vault (KI-Tresor)')).toBeInTheDocument()
 
     // Prüfe, ob das Optimierungsziel "🔬 Deep Research" gerendert wird
     const deepResearchModeBtn = screen.getByRole('button', { name: /^🔬 Deep Research$/i })
@@ -331,6 +343,7 @@ describe('Founder OS App - Integration Tests', () => {
     // KI Prompts Tab anklicken
     const promptsTab = screen.getByRole('button', { name: /KI Prompts/i })
     fireEvent.click(promptsTab)
+    expect(await screen.findByText('Prompt Vault (KI-Tresor)')).toBeInTheDocument()
 
     // KMU Vorlagen Filter anklicken
     const kmuFilterBtn = screen.getByRole('button', { name: /🏢 KMU Harz Vorlagen/i })

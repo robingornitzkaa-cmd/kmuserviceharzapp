@@ -80,7 +80,8 @@ import {
   pushUnsyncedPromptsToSupabase,
   deletePromptFromSupabase,
   fetchDashboardStateFromSupabase,
-  saveDashboardStateToSupabase
+  saveDashboardStateToSupabase,
+  flushOfflineQueueWithSupabase
 } from './services/supabase';
 import { updateAndroidWidget } from './services/widget';
 import { 
@@ -965,6 +966,9 @@ function App() {
     if (!isOnline) return;
     try {
       setSupabaseSyncStatus('syncing');
+
+      // 0. Flush any buffered offline actions
+      await flushOfflineQueueWithSupabase(supabaseConfig);
 
       // 1. Fetch Dashboard State (Notes, To-Dos, Widgets, Mode, Prompts backup)
       const state = await fetchDashboardStateFromSupabase(supabaseConfig);

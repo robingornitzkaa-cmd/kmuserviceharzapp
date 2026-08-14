@@ -1,3 +1,5 @@
+import { enqueueSyncAction, flushSyncQueue } from './syncQueue';
+
 const DEFAULT_URL = 'https://ypqlssyrlykjzjnoyjoa.supabase.co';
 const DEFAULT_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwcWxzc3lybHlranpqbm95am9hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzMTc5OTYsImV4cCI6MjA5Nzg5Mzk5Nn0.l1gbcQkrgjGJyTsRp3cjCqYIVrme9M48sbqUILhoAes';
 
@@ -35,17 +37,28 @@ export const fetchLeadsFromSupabase = async (supabaseConfig) => {
 export const saveLeadToSupabase = async (leadToSave, supabaseConfig) => {
   const url = getUrl(supabaseConfig);
   const key = getKey(supabaseConfig);
-  const response = await fetch(`${url}/rest/v1/leads`, {
-    method: 'POST',
-    headers: {
-      'apikey': key,
-      'Authorization': `Bearer ${key}`,
-      'Content-Type': 'application/json',
-      'Prefer': 'resolution=merge-duplicates'
-    },
-    body: JSON.stringify(leadToSave)
-  });
-  return response.ok;
+  try {
+    const response = await fetch(`${url}/rest/v1/leads`, {
+      method: 'POST',
+      headers: {
+        'apikey': key,
+        'Authorization': `Bearer ${key}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'resolution=merge-duplicates'
+      },
+      body: JSON.stringify(leadToSave)
+    });
+    if (response.ok) return true;
+    throw new Error(`HTTP ${response.status}`);
+  } catch (err) {
+    console.warn('[Supabase] Lead speichern fehlgeschlagen. Lege in Offline-Queue:', err);
+    enqueueSyncAction({
+      type: 'save_lead',
+      payload: leadToSave,
+      entityId: String(leadToSave.id)
+    });
+    return false;
+  }
 };
 
 export const fetchPromptsFromSupabase = async (supabaseConfig) => {
@@ -80,17 +93,29 @@ export const savePromptToSupabase = async (promptToAdd, supabaseConfig) => {
     history: Array.isArray(promptToAdd.history) ? promptToAdd.history : [],
     updated_at: new Date().toISOString()
   };
-  const response = await fetch(`${url}/rest/v1/prompts`, {
-    method: 'POST',
-    headers: {
-      'apikey': key,
-      'Authorization': `Bearer ${key}`,
-      'Content-Type': 'application/json',
-      'Prefer': 'resolution=merge-duplicates'
-    },
-    body: JSON.stringify(payload)
-  });
-  return response ? response.ok : false;
+
+  try {
+    const response = await fetch(`${url}/rest/v1/prompts`, {
+      method: 'POST',
+      headers: {
+        'apikey': key,
+        'Authorization': `Bearer ${key}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'resolution=merge-duplicates'
+      },
+      body: JSON.stringify(payload)
+    });
+    if (response && response.ok) return true;
+    throw new Error(`HTTP ${response?.status}`);
+  } catch (err) {
+    console.warn('[Supabase] Prompt speichern fehlgeschlagen. Lege in Offline-Queue:', err);
+    enqueueSyncAction({
+      type: 'save_prompt',
+      payload,
+      entityId: String(payload.id)
+    });
+    return false;
+  }
 };
 
 export const pushUnsyncedPromptsToSupabase = async (promptsToPush, supabaseConfig) => {
@@ -112,7 +137,6 @@ export const pushUnsyncedPromptsToSupabase = async (promptsToPush, supabaseConfi
   }
   return { uploadedIds, failedCount };
 };
-
 
 export const deletePromptFromSupabase = async (id, supabaseConfig) => {
   const url = getUrl(supabaseConfig);
@@ -144,20 +168,21 @@ export const fetchDashboardStateFromSupabase = async (supabaseConfig) => {
 };
 
 export const saveDashboardStateToSupabase = async (stateData, supabaseConfig) => {
+  const url = getUrl(supabaseConfig);
+  const key = getKey(supabaseConfig);
+  const payload = {
+    id: 'main',
+    dash_notes: stateData.dashNotes ?? '',
+    sticky_note_color: stateData.stickyNoteColor ?? '#fef08a',
+    dash_notes_list: stateData.dashNotesList ?? [],
+    dash_todos: stateData.dashTodos ?? [],
+    dashboard_widgets: stateData.dashboardWidgets ?? [],
+    dashboard_mode: stateData.dashboardMode ?? 'detailed',
+    prompts_list: stateData.promptsList ?? [],
+    updated_at: stateData.updatedAt || new Date().toISOString()
+  };
+
   try {
-    const url = getUrl(supabaseConfig);
-    const key = getKey(supabaseConfig);
-    const payload = {
-      id: 'main',
-      dash_notes: stateData.dashNotes ?? '',
-      sticky_note_color: stateData.stickyNoteColor ?? '#fef08a',
-      dash_notes_list: stateData.dashNotesList ?? [],
-      dash_todos: stateData.dashTodos ?? [],
-      dashboard_widgets: stateData.dashboardWidgets ?? [],
-      dashboard_mode: stateData.dashboardMode ?? 'detailed',
-      prompts_list: stateData.promptsList ?? [],
-      updated_at: stateData.updatedAt || new Date().toISOString()
-    };
     const response = await fetch(`${url}/rest/v1/dashboard_state`, {
       method: 'POST',
       headers: {
@@ -169,10 +194,67 @@ export const saveDashboardStateToSupabase = async (stateData, supabaseConfig) =>
       keepalive: true,
       body: JSON.stringify(payload)
     });
-    return response.ok;
+    if (response.ok) return true;
+    throw new Error(`HTTP ${response.status}`);
   } catch (err) {
-    console.error("Error saving dashboard state to Supabase:", err);
+    console.warn("[Supabase] Fehler beim Speichern des Dashboard-Status. Lege in Offline-Queue:", err);
+    enqueueSyncAction({
+      type: 'save_dashboard_state',
+      payload,
+      entityId: 'main'
+    });
     return false;
   }
 };
 
+/**
+ * Arbeitet die Offline-Queue mit Supabase ab.
+ * @param {Object} supabaseConfig 
+ */
+export const flushOfflineQueueWithSupabase = async (supabaseConfig) => {
+  return flushSyncQueue(async (item) => {
+    if (item.type === 'save_dashboard_state') {
+      const url = getUrl(supabaseConfig);
+      const key = getKey(supabaseConfig);
+      const res = await fetch(`${url}/rest/v1/dashboard_state`, {
+        method: 'POST',
+        headers: {
+          'apikey': key,
+          'Authorization': `Bearer ${key}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'resolution=merge-duplicates'
+        },
+        body: JSON.stringify(item.payload)
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    } else if (item.type === 'save_prompt') {
+      const url = getUrl(supabaseConfig);
+      const key = getKey(supabaseConfig);
+      const res = await fetch(`${url}/rest/v1/prompts`, {
+        method: 'POST',
+        headers: {
+          'apikey': key,
+          'Authorization': `Bearer ${key}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'resolution=merge-duplicates'
+        },
+        body: JSON.stringify(item.payload)
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    } else if (item.type === 'save_lead') {
+      const url = getUrl(supabaseConfig);
+      const key = getKey(supabaseConfig);
+      const res = await fetch(`${url}/rest/v1/leads`, {
+        method: 'POST',
+        headers: {
+          'apikey': key,
+          'Authorization': `Bearer ${key}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'resolution=merge-duplicates'
+        },
+        body: JSON.stringify(item.payload)
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    }
+  });
+};

@@ -10,9 +10,11 @@
   - Umstellung aller Tabs auf `React.lazy()` und `Suspense` mit `SkeletonLoader.jsx`.
   - Vendor-Chunk-Splitting in `vite.config.js` zur Verkleinerung des Initial-Bundles von 1.13 MB auf 260 kB (76 kB komprimiert).
   - Erfolgreiche Build-Prüfung (`npm run build`).
-- [ ] **🛡️ Groß-Optimierung Batch 3 (Resilienz, Offline-Queue & Datenvalidierung):**
-  - Implementierung von `syncQueue.js` mit automatischem Retry bei Reconnect.
-  - Validierung & Sanitization (`validation.js`) für URLs, Webhooks und Keys.
+- [x] **🛡️ Groß-Optimierung Batch 3 (Resilienz, Offline-Queue & Datenvalidierung):**
+  - Implementierung von `syncQueue.js` mit automatischem Retry bei Reconnect und Deduplizierung.
+  - Validierung & Sanitization (`validation.js`) für URLs, Webhooks, E-Mails, Telefonnummern und API-Keys.
+  - Integration von Offline-Queue in `supabase.js` und `CrmDrawer.jsx`.
+  - 100% Test-Coverage für Validierung und Queue (`validationAndSync.test.js`).
 - [ ] **✨ Groß-Optimierung Batch 4 (UI/UX Polish, A11y & Command Palette `Strg+K`):**
   - Globale Such- und Aktionsleiste (`CommandPaletteModal.jsx`).
   - Multi-Toast-Container (`ToastContainer.jsx`) und universelle `EmptyState.jsx`.

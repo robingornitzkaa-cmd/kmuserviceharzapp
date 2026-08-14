@@ -5,6 +5,11 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **🛡️ Resilienz, Offline-Queue & Datenvalidierung (Groß-Optimierung Batch 3):**
+  - **Offline-First Synchronisations-Warteschlange (`syncQueue.js`):** Pufferung aller fehlgeschlagenen oder offline durchgeführten Supabase-Aktionen (Notizen, Leads, Prompts) im `localStorage` mit automatischem Reconnect-Flush und Deduplizierung.
+  - **Automatische Queue-Abarbeitung:** Integration von `flushOfflineQueueWithSupabase` im Cloud-Sync-Zyklus und Event-Listener für Reconnects.
+  - **Umfassende Validierungs- & Sanitization-Bibliothek (`validation.js`):** Sichere Validierung und Bereinigung von Web-URLs (automatisches Ergänzen von `https://`), Telefonnummern (Klick-to-Call), E-Mail-Adressen, Gemini API-Keys und XSS-Sanitization.
+  - **Sanitization im CRM-Drawer (`CrmDrawer.jsx`):** Automatische Bereinigung und Validierung von Dokumenten- und Weblinks beim Erstellen.
 - **⚡ Performance, Code-Splitting & Lazy Loading (Groß-Optimierung Batch 2):**
   - **Asynchrones Code-Splitting (`React.lazy` & `Suspense`):** Alle 10 schweren Unterseiten (`WebsiteView`, `SopManager`, `PromptVault`, `DocsHub`, `CommandCenter`, `CoachingLivePortal`, `KanbanBoard`, `CrmPipeline`, `LeadsView`, `OnboardingView`) werden nun bedarfsgesteuert erst beim Klick geladen.
   - **Reduzierung des Initial-Bundles um über 75%:** Initiales JavaScript-Paket schrumpfte von 1.13 MB auf nur noch 260 kB (76 kB komprimiert), was zu einem blitzschnellen Erststart auf Smartphones führt.

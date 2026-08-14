@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Mic, FileText, Trash2 } from 'lucide-react';
+import { sanitizeUrl, isValidUrl } from '../utils/validation';
 
 /**
  * CRM Contact Details Drawer Component.
@@ -168,7 +169,8 @@ export const CrmDrawer = ({
               <button 
                 onClick={() => {
                   if (newLinkInput.title && newLinkInput.url) {
-                    addContactLink(activeContact.id, newLinkInput.title, newLinkInput.url);
+                    const cleanUrl = sanitizeUrl(newLinkInput.url);
+                    addContactLink(activeContact.id, newLinkInput.title, cleanUrl);
                     setNewLinkInput({ title: '', url: '' });
                   }
                 }}
