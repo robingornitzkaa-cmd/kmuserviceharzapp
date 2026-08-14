@@ -5,6 +5,19 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **🏗️ Architektur-Fundament & Modularisierung (Groß-Optimierung Batch 1):**
+  - **Kaltakquise-Leads (`LeadsView.jsx`):** Vollständige Entflechtung der Kaltakquise- und Lead-Verwaltung aus `App.jsx` in eine eigenständige, saubere Komponente mit regionalem Filter und Cloud-Sync.
+  - **Kunden-Onboarding (`OnboardingView.jsx`):** Kapselung des interaktiven Onboarding-Leitfadens mit Playbook-Wizard, Digitalisierungs-Potenzialrechner, Web Speech API Diktat und PDF-Generierung via `jspdf`.
+  - **CRM Contact Drawer (`CrmDrawer.jsx`):** Auslagerung des Detail-Panels mit Notizen, Dokumentenlinks und Aktivitäts-Historie.
+  - **Dokumenten-Editor (`DocumentEditorModal.jsx`):** Auslagerung des Texteditor-Modals (Mini-Word) mit Escape-Key Support.
+  - **Präsentations-Lightbox (`LightboxModal.jsx`):** Kapselung des Vollbild-Grafikbetrachters.
+  - **React Error Boundary (`ErrorBoundary.jsx`):** Ausfallsichere Schutz-Komponente für alle Routen gegen unerwartete Laufzeitfehler mit 1-Klick Wiederherstellung.
+  - **Wiederverwendbare Custom Hooks:**
+    - `useLocalStorage.js`: Typsicheres, fehlertolerantes Lesen und Schreiben im Browser-Storage.
+    - `useDebounce.js`: Universelle Entprellung für Suche und Auto-Save.
+    - `useSpeechRecognition.js`: Kapselung der Web Speech API für komfortables Diktieren.
+    - `useOnlineStatus.js`: Echtzeit-Erkennung von Online- und Offline-Zuständen.
+    - `useToast.js`: Flexibles Toast-Notification-System mit Auto-Dismiss.
 - **🎯 Coaching Live-Portal & Grafik-/Persona-Anhänge (Phase v27):**
   - **🖼️ Datei- & Grafik-Anhänge (Direct Upload):** Support von Bilddateien (PNG, JPG, WEBP, SVG) und Dokumenten (PDF) direkt an Coaching-Termine im Command Center, an Kanban-Aufgaben und im Wissens-Hub (DocsHub).
   - **🔍 Vollbild-Präsentationsmodus (Lightbox):** 1-Klick auf beliebige Grafiken öffnet eine hochauflösende Präsentations-Lightbox mit Herunterladen-Option zum mobilen und Desktop-Vorzeigen.

@@ -1,7 +1,29 @@
 # TODO - Founder OS
 
 ### Wichtig
-- [x] **☁️ Supabase Cloud Prompt-Synchronisierung & DB Schema Fix (Phase v28):** Supabase DB Migration (`public.prompts` um `is_pinned` (boolean), `history` (jsonb) & `updated_at` erweitert; `dashboard_state` um `prompts_list` (jsonb) erweitert). Behebung der PostgREST HTTP 400 Restriktion. Dual-Backup in `dashboard_state` und lückenlose synchrone Speicherung beim Erstellen, Pinnen, Vorlagen-Übernehmen, Versionieren & Löschen von KI-Prompts.
+- [x] **🏗️ Groß-Optimierung Batch 1 (Architektur-Fundament & Modularisierung):**
+  - Entflechtung von `App.jsx` in `LeadsView.jsx`, `OnboardingView.jsx`, `CrmDrawer.jsx`, `DocumentEditorModal.jsx` und `LightboxModal.jsx`.
+  - Integration der `ErrorBoundary.jsx` zur Ausfallsicherung aller Ansichten.
+  - Implementierung von Custom Hooks: `useLocalStorage.js`, `useDebounce.js`, `useSpeechRecognition.js`, `useOnlineStatus.js`, `useToast.js`.
+  - Erfolgreiche Build-Prüfung (`npm run build`).
+- [ ] **⚡ Groß-Optimierung Batch 2 (Performance, Code-Splitting & Lazy Loading):**
+  - Umstellung aller Tabs auf `React.lazy()` und `Suspense` mit `SkeletonLoader.jsx`.
+  - Vendor-Chunk-Splitting in `vite.config.js` zur Verkleinerung des Initial-Bundles (< 300 kB).
+  - Memoization (`useCallback`, `useMemo`, `React.memo`) an Render-Hotspots.
+- [ ] **🛡️ Groß-Optimierung Batch 3 (Resilienz, Offline-Queue & Datenvalidierung):**
+  - Implementierung von `syncQueue.js` mit automatischem Retry bei Reconnect.
+  - Validierung & Sanitization (`validation.js`) für URLs, Webhooks und Keys.
+- [ ] **✨ Groß-Optimierung Batch 4 (UI/UX Polish, A11y & Command Palette `Strg+K`):**
+  - Globale Such- und Aktionsleiste (`CommandPaletteModal.jsx`).
+  - Multi-Toast-Container (`ToastContainer.jsx`) und universelle `EmptyState.jsx`.
+  - Vollständige Keyboard-Navigation und Focus-Trap für Modals.
+- [ ] **🏆 Groß-Optimierung Batch 5 (Feature-Ausbau, Activity Stream & Backup Manager):**
+  - Chronologischer Activity-Stream / Audit-Log für das Cockpit.
+  - 1-Klick JSON-Vollbackup & Wiederherstellung (`BackupManagerModal.jsx`).
+  - Erweiterter NLP-Parser für Notizen & Termine (`nlpParser.js`).
+- [ ] **🧪 Groß-Optimierung Batch 6 (Qualitätssicherung, Tests & Doku-Abschluss):**
+  - Vitest Test-Suite Ausbau für Services und Hooks.
+  - Aktualisierung von `README.md` und `STATUS.md`.
 - [x] **🎯 Coaching Live-Portal & Grafik-/Persona-Anhänge (Phase v27):** Direkte Datei- & Grafik-Upload-Funktion (PNG, JPG, WEBP, SVG, PDF) an Coaching-Termine, Kanban-Aufgaben und im Wissens-Hub (DocsHub). Vollbild-Präsentationsmodus (Lightbox). Geschütztes **Coaching Live-Portal** (`CoachingLivePortal.jsx`) mit PIN-Sperre (`1234`) zur sauberen Präsentation von Meilensteinen, Zielgruppen-Personas und Ergebnisse in Zoom/Teams-Calls ohne Bildschirm-Share-Risiko. Full Test Coverage (14/14 Pass).
 - [x] **🌐 KMU Service Harz Webseiten-Konzeption & Multi-Page Live-Preview:** Erstellung einer vollständigen Multi-Page Webseiten-Vorschau (`WebsiteView.jsx`) mit allen Unterseiten (*Startseite, Leistungen, ROI-Rechner, Über uns, Kontakt, Impressum, Datenschutz*), 100% DSGVO-konformer Struktur, **Präsentations-Modus (Theme-Switcher ☀️ Helles Business-Design vs. 🌙 Dunkles Tech-Design)**, **Vorher-vs-Nachher Toggle**, **1-Minuten Schnell-Check Quiz**, **Harzer Case Studies** und **FAQ Akkordeon**.
 - [x] **🎮 Life & Founder OS Transformation (Life OS Gamification System):** Umwandlung der App in ein universelles Life & Goal OS. Integriertes Level-, XP- und Coins-System, interaktiver **Belohnungs-Shop** (Münzen einlösen für Zocken, Cheat Meals, Gadgets), **Disziplin- & Bestrafungs-Manager** (Coins-Schulden, Straf-Aufgaben, 3-Strikes System) und **Smart Routine mit automatischer Ruhetags-Erkennung** (z. B. Kraftsport Ruhetage an verordnungsfreien Tagen). Full Test Coverage (13/13 Pass).
