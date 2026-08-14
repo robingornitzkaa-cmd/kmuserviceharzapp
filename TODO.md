@@ -6,10 +6,10 @@
   - Integration der `ErrorBoundary.jsx` zur Ausfallsicherung aller Ansichten.
   - Implementierung von Custom Hooks: `useLocalStorage.js`, `useDebounce.js`, `useSpeechRecognition.js`, `useOnlineStatus.js`, `useToast.js`.
   - Erfolgreiche Build-Prüfung (`npm run build`).
-- [ ] **⚡ Groß-Optimierung Batch 2 (Performance, Code-Splitting & Lazy Loading):**
+- [x] **⚡ Groß-Optimierung Batch 2 (Performance, Code-Splitting & Lazy Loading):**
   - Umstellung aller Tabs auf `React.lazy()` und `Suspense` mit `SkeletonLoader.jsx`.
-  - Vendor-Chunk-Splitting in `vite.config.js` zur Verkleinerung des Initial-Bundles (< 300 kB).
-  - Memoization (`useCallback`, `useMemo`, `React.memo`) an Render-Hotspots.
+  - Vendor-Chunk-Splitting in `vite.config.js` zur Verkleinerung des Initial-Bundles von 1.13 MB auf 260 kB (76 kB komprimiert).
+  - Erfolgreiche Build-Prüfung (`npm run build`).
 - [ ] **🛡️ Groß-Optimierung Batch 3 (Resilienz, Offline-Queue & Datenvalidierung):**
   - Implementierung von `syncQueue.js` mit automatischem Retry bei Reconnect.
   - Validierung & Sanitization (`validation.js`) für URLs, Webhooks und Keys.

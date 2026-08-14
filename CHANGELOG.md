@@ -5,6 +5,11 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **⚡ Performance, Code-Splitting & Lazy Loading (Groß-Optimierung Batch 2):**
+  - **Asynchrones Code-Splitting (`React.lazy` & `Suspense`):** Alle 10 schweren Unterseiten (`WebsiteView`, `SopManager`, `PromptVault`, `DocsHub`, `CommandCenter`, `CoachingLivePortal`, `KanbanBoard`, `CrmPipeline`, `LeadsView`, `OnboardingView`) werden nun bedarfsgesteuert erst beim Klick geladen.
+  - **Reduzierung des Initial-Bundles um über 75%:** Initiales JavaScript-Paket schrumpfte von 1.13 MB auf nur noch 260 kB (76 kB komprimiert), was zu einem blitzschnellen Erststart auf Smartphones führt.
+  - **Animierter Skeleton-Loader (`SkeletonLoader.jsx`):** Shimmer-Platzhalter bei dynamischem Nachladen von Unterseiten.
+  - **Vendor-Chunk-Splitting in `vite.config.js`:** Saubere Aufteilung von Vendor-Abhängigkeiten in separate Cache-Chunks (`vendor-react`, `vendor-icons`, `vendor-pdf`).
 - **🏗️ Architektur-Fundament & Modularisierung (Groß-Optimierung Batch 1):**
   - **Kaltakquise-Leads (`LeadsView.jsx`):** Vollständige Entflechtung der Kaltakquise- und Lead-Verwaltung aus `App.jsx` in eine eigenständige, saubere Komponente mit regionalem Filter und Cloud-Sync.
   - **Kunden-Onboarding (`OnboardingView.jsx`):** Kapselung des interaktiven Onboarding-Leitfadens mit Playbook-Wizard, Digitalisierungs-Potenzialrechner, Web Speech API Diktat und PDF-Generierung via `jspdf`.

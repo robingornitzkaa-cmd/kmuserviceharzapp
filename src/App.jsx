@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { registerPlugin, Capacitor } from '@capacitor/core';
 
 const WidgetBridge = registerPlugin('WidgetBridge');
@@ -94,26 +94,28 @@ import {
   downloadAllDocsFromDrive
 } from './services/googleDrive';
 
-// COMPONENTS IMPORT
+// COMPONENTS IMPORT (Eager)
 import { Sidebar } from './components/Sidebar';
-import { PromptVault } from './components/PromptVault';
-import { SopManager } from './components/SopManager';
-import { DocsHub } from './components/DocsHub';
-import { SettingsView } from './components/SettingsView';
-import { KanbanBoard } from './components/KanbanBoard';
-import { CrmPipeline } from './components/CrmPipeline';
 import { DashboardView } from './components/DashboardView';
-import { CommandCenter } from './components/CommandCenter';
-import { LeadsView } from './components/LeadsView';
-import { OnboardingView } from './components/OnboardingView';
 import { CrmDrawer } from './components/CrmDrawer';
 import { DocumentEditorModal } from './components/DocumentEditorModal';
 import { LightboxModal } from './components/LightboxModal';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { RewardShopModal } from './components/RewardShopModal';
 import { PenaltyModal } from './components/PenaltyModal';
-import { WebsiteView } from './components/WebsiteView';
-import { CoachingLivePortal } from './components/CoachingLivePortal';
+import { SkeletonLoader } from './components/common/SkeletonLoader';
+
+// Lazy Loaded Tab Views (Asynchronous Code Splitting)
+const CommandCenter = lazy(() => import('./components/CommandCenter').then(m => ({ default: m.CommandCenter })));
+const KanbanBoard = lazy(() => import('./components/KanbanBoard').then(m => ({ default: m.KanbanBoard })));
+const CrmPipeline = lazy(() => import('./components/CrmPipeline').then(m => ({ default: m.CrmPipeline })));
+const LeadsView = lazy(() => import('./components/LeadsView').then(m => ({ default: m.LeadsView })));
+const OnboardingView = lazy(() => import('./components/OnboardingView').then(m => ({ default: m.OnboardingView })));
+const PromptVault = lazy(() => import('./components/PromptVault').then(m => ({ default: m.PromptVault })));
+const DocsHub = lazy(() => import('./components/DocsHub').then(m => ({ default: m.DocsHub })));
+const SopManager = lazy(() => import('./components/SopManager').then(m => ({ default: m.SopManager })));
+const WebsiteView = lazy(() => import('./components/WebsiteView').then(m => ({ default: m.WebsiteView })));
+const CoachingLivePortal = lazy(() => import('./components/CoachingLivePortal').then(m => ({ default: m.CoachingLivePortal })));
 
 function App() {
   // Navigation State
@@ -4297,6 +4299,7 @@ Hier ist die Frage des Nutzers:
           );
         })() : (
           <ErrorBoundary onReset={() => setActiveTab('dashboard')}>
+            <Suspense fallback={<SkeletonLoader tabName={activeTab} />}>
             <>
         {/* ==================== TAB 1: DASHBOARD ==================== */}
         {activeTab === 'dashboard' && (
@@ -4659,6 +4662,7 @@ Hier ist die Frage des Nutzers:
           />
         )}
             </>
+            </Suspense>
           </ErrorBoundary>
         )}
 
