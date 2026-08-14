@@ -893,12 +893,15 @@ function App() {
           mergedMap.set(String(p.id), { ...p, synced: true });
         });
 
-        // Retain local prompts that failed to push or are strictly local
+        // Retain local prompts that failed to push or are strictly local, and auto-push missing ones
         currentLocal.forEach(p => {
           if (p && p.id) {
             const strId = String(p.id);
             if (!mergedMap.has(strId)) {
               mergedMap.set(strId, p);
+              if (isOnline) {
+                savePromptToSupabase(p, config).catch(e => console.error("Auto-push missing prompt error:", e));
+              }
             }
           }
         });
@@ -924,6 +927,7 @@ function App() {
       setDashLocalUpdatedAt(nowIso);
       localStorage.setItem('f_dash_local_updated_at', nowIso);
 
+      const currentPrompts = JSON.parse(localStorage.getItem('f_prompts') || '[]') || prompts;
       const ok = await saveDashboardStateToSupabase({
         dashNotes,
         stickyNoteColor,
@@ -931,6 +935,7 @@ function App() {
         dashTodos,
         dashboardWidgets,
         dashboardMode,
+        promptsList: currentPrompts,
         updatedAt: nowIso
       }, supabaseConfig);
 
@@ -953,7 +958,7 @@ function App() {
     try {
       setSupabaseSyncStatus('syncing');
 
-      // 1. Fetch Dashboard State (Notes, To-Dos, Widgets, Mode)
+      // 1. Fetch Dashboard State (Notes, To-Dos, Widgets, Mode, Prompts backup)
       const state = await fetchDashboardStateFromSupabase(supabaseConfig);
       if (state) {
         const remoteTime = state.updated_at ? new Date(state.updated_at).getTime() : 0;
@@ -963,6 +968,7 @@ function App() {
         // If local has unsaved edits newer than remote cloud timestamp (by > 1.5s), push local to cloud instead of overwriting local
         if (localTime > remoteTime && (localTime - remoteTime > 1500)) {
           const nowIso = localTimeStr || new Date().toISOString();
+          const currentPrompts = JSON.parse(localStorage.getItem('f_prompts') || '[]') || prompts;
           await saveDashboardStateToSupabase({
             dashNotes: localStorage.getItem('f_dash_notes') ?? dashNotes,
             stickyNoteColor: localStorage.getItem('f_sticky_note_color') ?? stickyNoteColor,
@@ -970,6 +976,7 @@ function App() {
             dashTodos: JSON.parse(localStorage.getItem('f_dash_todos') || '[]'),
             dashboardWidgets: JSON.parse(localStorage.getItem('f_dashboard_widgets') || '[]'),
             dashboardMode: localStorage.getItem('f_dashboard_mode') || dashboardMode,
+            promptsList: currentPrompts,
             updatedAt: nowIso
           }, supabaseConfig);
         } else {
@@ -1004,6 +1011,13 @@ function App() {
           if (state.dashboard_mode) {
             setDashboardMode(state.dashboard_mode);
             localStorage.setItem('f_dashboard_mode', state.dashboard_mode);
+          }
+          if (Array.isArray(state.prompts_list) && state.prompts_list.length > 0) {
+            const currentLocal = JSON.parse(localStorage.getItem('f_prompts') || '[]');
+            if (currentLocal.length === 0) {
+              setPrompts(state.prompts_list);
+              localStorage.setItem('f_prompts', JSON.stringify(state.prompts_list));
+            }
           }
           if (state.updated_at) {
             setDashLocalUpdatedAt(state.updated_at);

@@ -17,6 +17,10 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
   - **❓ FAQ Akkordeon:** Aufklappbare Fragen & Antworten zu Vorkenntnissen, Datenschutz, Kosten & Ablauf.
 
 ### Fixed
+- **☁️ Supabase Cloud Prompt-Synchronisierung (Phase v28):**
+  - **Schema-Korrektur in Supabase:** Hinzufügen der fehlenden Spalten `is_pinned` (boolean) und `history` (jsonb) in der Supabase `public.prompts` Tabelle, wodurch die REST-API Aufrufe von PostgREST zuvor abgelehnt wurden.
+  - **Doppelte Ausfallsicherheit (Dual-Backup):** Prompts werden nun wie Notizen und Widgets zusätzlich verschlüsselt in der `dashboard_state` Cloud-Zeile gesichert.
+  - **Synchone Zustandsspeicherung:** Synchrone Updates von State, LocalStorage und Supabase Cloud-Upsert beim Erstellen, Pinnen, Vorlagen-Übernehmen, Versionieren und Löschen.
 - **Navigation & Scroll-to-Top:** Beim Klick auf *"Zum ROI-Rechner"*, *"Alle Details ansehen"* oder Unterseiten-Buttons wird nun automatisch flüssig an den Seitenanfang gewechselt, sodass der Seitenwechsel sofort sichtbar ist.
 - **🎮 Transformation zu Life & Founder OS (Life OS Gamification System):**
   - **Level, XP & Coins System:** Jede erledigte Tages-Gewohnheit und jede Fokus-Aufgabe belohnt den Nutzer mit XP (z. B. +50 XP) und Life-Coins. Alle 200 XP wird ein automatisches Level-Up getriggert.

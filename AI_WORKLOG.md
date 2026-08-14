@@ -1,5 +1,38 @@
 # AI Worklog - Founder OS
 
+## 2026-08-14 22:55 – Phase v28: Reparatur der Supabase Cloud Prompt-Synchronisierung & DB-Schema Fix
+
+### Ziel
+Behebung des wiederkehrenden Fehlers, dass KI-Prompts aus dem Prompt Vault nicht mit Supabase Cloud synchronisiert / online gespeichert wurden, während Notizen und Dashboard-Daten problemlos synchronisierten.
+
+### Ursache
+1. **Supabase Datenbank-Schema Unstimmigkeit:** Die PostgREST-Schnittstelle von Supabase lehnte das Speichern von Prompts mit HTTP 400 Bad Request ab, da in der Supabase-Tabelle `public.prompts` die Spalten `is_pinned` (boolean) und `history` (jsonb) fehlten.
+2. **Fehlendes Dual-Backup in `dashboard_state`:** Während Notizen, To-Dos und Widgets zusätzlich als JSONB in der unfehlbaren `dashboard_state` Tabelle (Zeile `id='main'`) gesichert wurden, verließen sich Prompts rein auf die unvollständige `prompts` Tabelle.
+3. **Synchrones State- & Cloud-Triggering:** Beim Erstellen, Pinnen, Übernehmen, Versionieren und Löschen von Prompts sichern synchrone LocalStorage- und Instant-Cloud-Saves nun jeden Schritt doppelt.
+
+### Geändert / Repariert
+- **Supabase DB Migration (via SQL):**
+  - Spalten `is_pinned` (boolean), `history` (jsonb) und `updated_at` (timestamp) zur Supabase-Tabelle `public.prompts` hinzugefügt.
+  - Backup-Spalte `prompts_list` (jsonb) zur Tabelle `public.dashboard_state` hinzugefügt.
+- [`src/services/supabase.js`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/services/supabase.js):
+  - `savePromptToSupabase` Payload auf `is_pinned`, `history` und `updated_at` erweitert -> gibt nun `200/201 OK` zurück.
+  - `saveDashboardStateToSupabase` speichert die Prompts-Liste zusätzlich im `dashboard_state` als doppelter Failsafe.
+- [`src/App.jsx`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/src/App.jsx):
+  - `syncPromptsBidirectional`: Automatische Nach-Synchronisierung (Auto-Push) für alle lokalen Prompts, die noch nicht auf Supabase existieren.
+  - `saveDashboardNow`: Speichert jetzt auch stets `promptsList` mit im Haupt-State.
+  - `syncAllFromCloud`: Wiederherstellungs-Backup für Prompts aus `dashboard_state` bei leerem Speicher.
+  - `handleAddPrompt`, `deletePrompt`, `togglePinPrompt`, `handleAdoptKmuPrompt`, `handleRestorePromptVersion`, `importPromptsJSON`: Aktualisieren jetzt sofort synchron `setPrompts`, `localStorage` und triggern Supabase Upsert + `saveDashboardNow()`.
+
+### Warum
+Stellt sicher, dass das Erstellen, Ändern, Pinnen und Löschen von KI-Prompts geräteübergreifend (Handy ↔ PC) 100% zuverlässig und fehlersicher in Supabase Cloud gespeichert wird.
+
+### Testen
+1. In der App auf **`KI Prompts`** klicken.
+2. Einen neuen Prompt erstellen oder bei einer KMU-Vorlage auf **"In meinen Tresor übernehmen"** klicken.
+3. Auf den lila Button **`Sync`** klicken oder die Seite neu laden -> Der Prompt bleibt geräteübergreifend gesichert und zeigt das grüne Cloud-Badge!
+
+---
+
 ## 2026-08-13 22:45 – Phase v27: Coaching Live-Portal & Grafik-/Persona-Anhänge
 
 ### Ziel

@@ -76,11 +76,10 @@ export const savePromptToSupabase = async (promptToAdd, supabaseConfig) => {
     title: promptToAdd.title || '',
     category: promptToAdd.category || 'General',
     text: promptToAdd.text || '',
-    is_pinned: Boolean(promptToAdd.isPinned)
+    is_pinned: Boolean(promptToAdd.isPinned !== undefined ? promptToAdd.isPinned : promptToAdd.is_pinned),
+    history: Array.isArray(promptToAdd.history) ? promptToAdd.history : [],
+    updated_at: new Date().toISOString()
   };
-  if (promptToAdd.history && Array.isArray(promptToAdd.history)) {
-    payload.history = promptToAdd.history;
-  }
   const response = await fetch(`${url}/rest/v1/prompts`, {
     method: 'POST',
     headers: {
@@ -156,6 +155,7 @@ export const saveDashboardStateToSupabase = async (stateData, supabaseConfig) =>
       dash_todos: stateData.dashTodos ?? [],
       dashboard_widgets: stateData.dashboardWidgets ?? [],
       dashboard_mode: stateData.dashboardMode ?? 'detailed',
+      prompts_list: stateData.promptsList ?? [],
       updated_at: stateData.updatedAt || new Date().toISOString()
     };
     const response = await fetch(`${url}/rest/v1/dashboard_state`, {
