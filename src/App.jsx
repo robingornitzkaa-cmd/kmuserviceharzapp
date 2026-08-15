@@ -671,6 +671,7 @@ function App() {
     try {
       const saved = localStorage.getItem('f_dashboard_widgets');
       return saved ? JSON.parse(saved) : {
+        mediaDrop: true,
         financial: true,
         einvoice: true,
         quickcapture: true,
@@ -686,6 +687,7 @@ function App() {
       };
     } catch {
       return {
+        mediaDrop: true,
         financial: true,
         einvoice: true,
         quickcapture: true,
@@ -730,7 +732,19 @@ function App() {
   const [newLinkTitle, setNewLinkTitle] = useState('');
   const [newLinkUrl, setNewLinkUrl] = useState('');
 
+  const [mediaGallery, setMediaGallery] = useState(() => {
+    try {
+      const saved = localStorage.getItem('f_media_gallery');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
   // Persistent Storage Sync
+  useEffect(() => {
+    localStorage.setItem('f_media_gallery', JSON.stringify(mediaGallery));
+  }, [mediaGallery]);
   useEffect(() => {
     localStorage.setItem('f_dashboard_widgets', JSON.stringify(dashboardWidgets));
   }, [dashboardWidgets]);
@@ -1033,6 +1047,10 @@ function App() {
               localStorage.setItem('f_prompts', JSON.stringify(state.prompts_list));
             }
           }
+          if (Array.isArray(state.media_gallery)) {
+            setMediaGallery(state.media_gallery);
+            localStorage.setItem('f_media_gallery', JSON.stringify(state.media_gallery));
+          }
           if (state.updated_at) {
             setDashLocalUpdatedAt(state.updated_at);
             localStorage.setItem('f_dash_local_updated_at', state.updated_at);
@@ -1101,6 +1119,7 @@ function App() {
           dashTodos,
           dashboardWidgets,
           dashboardMode,
+          mediaGallery,
           updatedAt: nowIso
         }, supabaseConfig);
         if (ok) {
@@ -1114,7 +1133,7 @@ function App() {
       }
     }, 400);
     return () => clearTimeout(timer);
-  }, [dashNotes, stickyNoteColor, dashNotesList, dashTodos, dashboardWidgets, dashboardMode, supabaseConfig, isOnline, isInitialStateLoaded]);
+  }, [dashNotes, stickyNoteColor, dashNotesList, dashTodos, dashboardWidgets, dashboardMode, mediaGallery, supabaseConfig, isOnline, isInitialStateLoaded]);
 
   // Flush pending saves immediately when switching tabs or closing window
   useEffect(() => {
@@ -1128,6 +1147,7 @@ function App() {
           dashTodos: JSON.parse(localStorage.getItem('f_dash_todos') || '[]'),
           dashboardWidgets,
           dashboardMode,
+          mediaGallery: JSON.parse(localStorage.getItem('f_media_gallery') || '[]'),
           updatedAt: nowIso
         }, supabaseConfig);
       }
@@ -1143,7 +1163,7 @@ function App() {
       window.removeEventListener('beforeunload', handleUnloadOrHide);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [dashNotes, stickyNoteColor, dashTodos, dashboardWidgets, dashboardMode, supabaseConfig, isOnline, isInitialStateLoaded]);
+  }, [dashNotes, stickyNoteColor, dashTodos, dashboardWidgets, dashboardMode, mediaGallery, supabaseConfig, isOnline, isInitialStateLoaded]);
 
   // Wochen-Review & Archiv Logik & Sync (Feature A3)
   useEffect(() => {
@@ -4399,6 +4419,9 @@ Hier ist die Frage des Nutzers:
         {/* ==================== TAB 1: DASHBOARD ==================== */}
         {activeTab === 'dashboard' && (
           <DashboardView
+            mediaGallery={mediaGallery}
+            setMediaGallery={setMediaGallery}
+            onOpenLightbox={handleOpenLightbox}
             dashboardWidgets={dashboardWidgets}
             setDashboardWidgets={setDashboardWidgets}
             isEditingDashboard={isEditingDashboard}
@@ -4872,7 +4895,8 @@ Hier ist die Frage des Nutzers:
           f_tasks: tasks,
           f_calendar_events: calendarEvents,
           f_coaching_meetings: coachingMeetings,
-          f_portal_pin: portalPin
+          f_portal_pin: portalPin,
+          f_media_gallery: mediaGallery
         }}
         onRestoreSuccess={() => {
           setToastMessage('✅ Backup erfolgreich eingespielt! Seite lädt neu...');

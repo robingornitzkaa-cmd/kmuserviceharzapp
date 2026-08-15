@@ -458,4 +458,12 @@ describe('Founder OS App - Integration Tests', () => {
     expect(screen.getByText(/Phase 1: Fundament, Behörden & Finanzen/i)).toBeInTheDocument()
     expect(screen.getByText(/Tragfähigkeitsbescheinigung sichern/i)).toBeInTheDocument()
   })
+
+  test('Screenshot & Foto Cloud-Drop Widget ist sichtbar und interaktiv', () => {
+    render(<App />)
+
+    // Widget ist auf Dashboard sichtbar
+    expect(screen.getByText(/Screenshot & Foto Cloud-Drop/i)).toBeInTheDocument()
+    expect(screen.getByText(/\+ Screenshot hochladen/i)).toBeInTheDocument()
+  })
 })

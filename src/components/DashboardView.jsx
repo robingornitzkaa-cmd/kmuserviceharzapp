@@ -27,8 +27,12 @@ import {
 } from 'lucide-react';
 import { SettingsView, getWidgetOrder } from './SettingsView';
 import { VoiceQuickCaptureWidget } from './VoiceQuickCaptureWidget';
+import { MediaDropWidget } from './MediaDropWidget';
 
 export const DashboardView = ({
+  mediaGallery = [],
+  setMediaGallery,
+  onOpenLightbox,
   userCoins = 150,
   setUserCoins,
   userXP = 120,
@@ -393,6 +397,17 @@ export const DashboardView = ({
           if (!dashboardWidgets[widgetKey]) return null;
 
           switch(widgetKey) {
+            case 'mediaDrop':
+              return (
+                <MediaDropWidget
+                  key="mediaDrop"
+                  mediaGallery={mediaGallery}
+                  setMediaGallery={setMediaGallery}
+                  onOpenLightbox={onOpenLightbox}
+                  saveDashboardNow={saveDashboardNow}
+                />
+              );
+
             case 'simpleGoal':
               return (
                 <div key="simpleGoal" className="card" style={{ gridColumn: 'span 2', background: 'rgba(6, 182, 212, 0.03)', border: '1px solid rgba(6, 182, 212, 0.2)' }}>

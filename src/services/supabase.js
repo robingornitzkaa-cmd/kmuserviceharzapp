@@ -179,6 +179,7 @@ export const saveDashboardStateToSupabase = async (stateData, supabaseConfig) =>
     dashboard_widgets: stateData.dashboardWidgets ?? [],
     dashboard_mode: stateData.dashboardMode ?? 'detailed',
     prompts_list: stateData.promptsList ?? [],
+    media_gallery: stateData.mediaGallery ?? [],
     updated_at: stateData.updatedAt || new Date().toISOString()
   };
 

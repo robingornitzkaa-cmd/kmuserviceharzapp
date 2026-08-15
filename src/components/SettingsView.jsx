@@ -2,14 +2,15 @@ import React from 'react';
 import { Settings, ArrowUp, ArrowDown, RotateCcw } from 'lucide-react';
 
 export const DEFAULT_WIDGET_ORDER = [
-  'simpleGoal',
+  'mediaDrop',
+  'quickcapture',
   'simpleNotes',
   'simpleTodos',
+  'simpleGoal',
   'simpleCalendar',
   'simpleLinks',
   'financial',
   'einvoice',
-  'quickcapture',
   'calendar',
   'habits',
   'weekly',
@@ -31,9 +32,10 @@ export const SettingsView = ({
   if (!isEditingDashboard) return null;
 
   const widgetDefinitions = {
+    mediaDrop: { label: '📷 Screenshot & Foto Drop', desc: 'Handy ↔ PC Bild- & Screenshot-Ablage' },
+    quickcapture: { label: '🎙️ Voice Quick-Capture Studio', desc: 'Sprach- & Diktier-Studio mit Multi-Ziel-Routing' },
     financial: { label: 'Finanz-Cockpit & Pipeline', desc: 'Umsatzprognose & Ø Stundensätze' },
     einvoice: { label: 'E-Rechnung (ZUGFeRD)', desc: 'B2B Rechnungs- & XML Generator' },
-    quickcapture: { label: '🎙️ Voice Quick-Capture Studio', desc: 'Sprach- & Diktier-Studio mit Multi-Ziel-Routing' },
     calendar: { label: 'Google Kalender', desc: 'Tagestermine & Meetings' },
     habits: { label: 'Habit Tracker & Streak', desc: 'Gewohnheiten & CSS-Konfetti' },
     weekly: { label: 'Wochen-Review & Archiv', desc: 'Reflexionen & PDF-Wochenbericht' },
