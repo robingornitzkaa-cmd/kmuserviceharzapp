@@ -104,6 +104,7 @@ import { LightboxModal } from './components/LightboxModal';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { RewardShopModal } from './components/RewardShopModal';
 import { PenaltyModal } from './components/PenaltyModal';
+import { BackupManagerModal } from './components/BackupManagerModal';
 import { SkeletonLoader } from './components/common/SkeletonLoader';
 
 // Lazy Loaded Tab Views (Asynchronous Code Splitting)
@@ -464,6 +465,7 @@ function App() {
   const [lifeGoals, setLifeGoals] = useState(() => JSON.parse(localStorage.getItem('f_life_goals')) || INITIAL_LIFE_GOALS);
   const [isRewardModalOpen, setIsRewardModalOpen] = useState(false);
   const [isPenaltyModalOpen, setIsPenaltyModalOpen] = useState(false);
+  const [isBackupModalOpen, setIsBackupModalOpen] = useState(false);
   
   // Wochen-Review & Archiv States (Feature A3)
   const [weeklyArchive, setWeeklyArchive] = useState(() => {
@@ -2213,6 +2215,74 @@ Hier ist die Frage des Nutzers:
     return () => clearInterval(interval);
   }, [projects]);
 
+  // Voice Quick-Capture Studio Multi-Target Dispatcher
+  const handleVoiceCaptureDispatch = ({ text, target, timestamp }) => {
+    if (!text || !text.trim()) return;
+    const cleanText = text.trim();
+
+    if (target === 'todo') {
+      handleAddDashTodo(cleanText);
+      setToastMessage(`✍️ Als To-Do erfasst: "${cleanText.slice(0, 30)}..."`);
+      setShowToast(true);
+    } else if (target === 'note') {
+      if (dashNotesList && dashNotesList.length > 0) {
+        handleUpdateActiveNote(dashNotes ? `${dashNotes}\n\n- ${cleanText}` : cleanText);
+      } else {
+        handleAddNote();
+        setDashNotes(cleanText);
+      }
+      setToastMessage('📌 Auf Notizzettel gespeichert!');
+      setShowToast(true);
+    } else if (target === 'goal') {
+      setDashboardGoal(cleanText);
+      setToastMessage('🎯 Als Tages-Fokus gesetzt!');
+      setShowToast(true);
+    } else if (target === 'crm') {
+      const newLead = {
+        id: 'lead_v_' + Date.now(),
+        companyName: `Sprachnotiz: ${cleanText.slice(0, 25)}...`,
+        contactPerson: 'Per Voice erfasst',
+        phone: '',
+        status: 'Neu',
+        industry: 'Dienstleistung',
+        painPoints: cleanText,
+        notes: cleanText,
+        dateAdded: new Date().toISOString().split('T')[0],
+        comments: []
+      };
+      setLeads(prev => [newLead, ...(prev || [])]);
+      setToastMessage('👥 Neuer CRM-Lead erfasst!');
+      setShowToast(true);
+    } else if (target === 'calendar') {
+      const newEv = {
+        id: 'ev_' + Date.now(),
+        title: cleanText,
+        time: 'Heute',
+        desc: 'Per Voice Quick-Capture Studio erfasst',
+        date: new Date().toISOString().split('T')[0]
+      };
+      setCalendarEvents(prev => [...(prev || []), newEv]);
+      setToastMessage('📅 Termin in Tages-Agenda eingetragen!');
+      setShowToast(true);
+    }
+  };
+
+  // Roadmap XP & Coins Claim Handler
+  const handleClaimRoadmapXp = (xpReward = 100, coinsReward = 30, milestoneTitle = 'Meilenstein') => {
+    setUserXP(prevXp => {
+      const newXp = prevXp + xpReward;
+      const calculatedLevel = Math.floor(newXp / 200) + 1;
+      if (calculatedLevel > userLevel) {
+        setUserLevel(calculatedLevel);
+      }
+      return newXp;
+    });
+    setUserCoins(prevCoins => prevCoins + coinsReward);
+    triggerConfetti();
+    setToastMessage(`🎉 Meilenstein "${milestoneTitle}" erreicht! +${xpReward} XP & +${coinsReward} Coins!`);
+    setShowToast(true);
+  };
+
   // Quick Capture Handler
   const handleQuickCapture = (e) => {
     e.preventDefault();
@@ -2226,7 +2296,8 @@ Hier ist die Frage des Nutzers:
     
     setInbox([newInboxItem, ...inbox]);
     setQuickCapture('');
-    alert('Notiz in der Inbox gespeichert!');
+    setToastMessage('Notiz in der Inbox gespeichert!');
+    setShowToast(true);
   };
 
   // Phase v14: Handlers für einfache Dashboard-Widgets
@@ -3968,6 +4039,26 @@ Hier ist die Frage des Nutzers:
             style={{
               padding: '0.35rem 0.75rem',
               fontSize: '0.75rem',
+              background: 'rgba(56, 189, 248, 0.12)',
+              borderColor: 'rgba(56, 189, 248, 0.35)',
+              color: 'var(--accent-cyan)',
+              marginRight: '0.35rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.35rem'
+            }}
+            onClick={() => setIsBackupModalOpen(true)}
+            title="1-Klick Data Hub & Backup Manager öffnen (JSON Voll-Backup / Restore)"
+          >
+            <Database size={14} /> 📦 Data Hub
+          </button>
+
+          <button
+            type="button"
+            className="btn btn-secondary"
+            style={{
+              padding: '0.35rem 0.75rem',
+              fontSize: '0.75rem',
               background: 'rgba(99, 102, 241, 0.1)',
               borderColor: 'rgba(99, 102, 241, 0.3)',
               color: 'var(--accent-purple)',
@@ -4373,6 +4464,7 @@ Hier ist die Frage des Nutzers:
             handleQuickCapture={handleQuickCapture}
             handleQuickCaptureSpeech={handleQuickCaptureSpeech}
             isListeningQuickCapture={isListeningQuickCapture}
+            onVoiceCaptureDispatch={handleVoiceCaptureDispatch}
             googleConnected={googleConnected}
             setGoogleConnected={setGoogleConnected}
             isConnectingGoogle={isConnectingGoogle}
@@ -4431,6 +4523,7 @@ Hier ist die Frage des Nutzers:
             onOpenLightbox={handleOpenLightbox}
             coachingMeetings={coachingMeetings}
             setCoachingMeetings={setCoachingMeetings}
+            onClaimRoadmapXp={handleClaimRoadmapXp}
           />
         )}
 
@@ -4750,6 +4843,41 @@ Hier ist die Frage des Nutzers:
         setPenaltyMode={setPenaltyMode}
         penalties={penalties}
         setPenalties={setPenalties}
+      />
+
+      {/* 1-Klick Data Hub & Backup Manager Modal */}
+      <BackupManagerModal
+        isOpen={isBackupModalOpen}
+        onClose={() => setIsBackupModalOpen(false)}
+        liveState={{
+          f_dash_notes: dashNotes,
+          f_dash_notes_list: dashNotesList,
+          f_active_note_id: activeNoteId,
+          f_sticky_note_color: stickyNoteColor,
+          f_dash_todos: dashTodos,
+          f_dashboard_widgets: dashboardWidgets,
+          f_dashboard_mode: dashboardMode,
+          f_habits: habits,
+          f_life_level: userLevel,
+          f_life_xp: userXP,
+          f_life_coins: userCoins,
+          f_rewards: rewards,
+          f_penalty_mode: penaltyMode,
+          f_leads: leads,
+          f_contacts: contacts,
+          f_projects: projects,
+          f_prompts: prompts,
+          f_docs: docs,
+          f_inbox: inbox,
+          f_tasks: tasks,
+          f_calendar_events: calendarEvents,
+          f_coaching_meetings: coachingMeetings,
+          f_portal_pin: portalPin
+        }}
+        onRestoreSuccess={() => {
+          setToastMessage('✅ Backup erfolgreich eingespielt! Seite lädt neu...');
+          setShowToast(true);
+        }}
       />
     </div>
   </div>

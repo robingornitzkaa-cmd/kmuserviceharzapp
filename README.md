@@ -9,18 +9,18 @@ Die Anwendung zeichnet sich durch ein futuristisches "Glassmorphic Dark Theme" a
 ## 🚀 Wichtigste Funktionen & Tab-Struktur
 
 ### 1. Dashboard & Life OS Gamification -- *NEU UPGRADED!*
+- **🎙️ Voice Quick-Capture Studio:** 1-Tap Sprach- und Diktierstudio mit Web Audio API Synthesizer-Feedback, Live Wave-Puls, Tag-Pills (`#Wichtig`, `#Kunde`, `#Idee`...) und 1-Klick Multi-Routing direkt in *To-Do*, *Notiz*, *Tages-Fokus*, *CRM-Lead* oder *Termin*.
+- **📦 1-Klick Data Hub & Backup Manager:** Vollständiges Export- und Import-Center für alle 7 OS-Datenmodule (CRM, Prompts, Notizen, Gamification, Tasks, Roadmap, Settings) mit Drag & Drop, Schema-Inspektor und automatischem Notfall-Snapshot vor jedem Restore.
 - **🎮 Life OS Level, XP & Coins System:** Verdiene XP und Life-Coins durch das Abhaken täglicher Habits und Fokus-Ziele. Verfolge deinen Fortschritt mit visueller Level-Bar (Level Up alle 200 XP).
 - **🎁 Belohnungs-Shop (Münzen einlösen):** Tausche verdiente Coins gegen selbstdefinierte Belohnungen ein (z. B. 30 Min Zocken, Filmabend, Cheat Meal, Tech-Gadgets) – ohne schlechtes Gewissen!
-- **🛡️ Bestrafungs- & Disziplin-Manager:** 3 wählbare Anti-Faulheit-Modi bei verpassten Gewohnheiten:
-  - *Modus A (Münz-Abzug / XP-Schulden):* Gesperrter Shop bei negativer Coins-Bilanz.
-  - *Modus B (Straf-Aufgaben):* Körperliche / Disziplin-Challenges (30 Liegestütze, Raum aufräumen, Sparschwein).
-  - *Modus C (Strike-System):* 3 verpasste Habits = 48h Belohnungs-Sperre.
-- **🛌 Smart Routine & Ruhetags-Erkennung:** Automatische Wochentag-Erkennung (z. B. Kraftsport an Mo/Mi/Fr). An regenerativen Tagen zeigt die App explizit einen **grünen Ruhetag-Hinweis** (`🛌 Kraftsport: Ruhetag / Regenerieren! Kein Workout heute nötig`), um schlechtes Gewissen zu vermeiden.
+- **🛡️ Bestrafungs- & Disziplin-Manager:** 3 wählbare Anti-Faulheit-Modi bei verpassten Gewohnheiten (Münz-Abzug / XP-Schulden, Straf-Aufgaben, 3-Strikes System).
+- **🛌 Smart Routine & Ruhetags-Erkennung:** Automatische Wochentag-Erkennung (z. B. Kraftsport an Mo/Mi/Fr). An regenerativen Tagen zeigt die App explizit einen **grünen Ruhetag-Hinweis**, um schlechtes Gewissen zu vermeiden.
 - **⚡ Make Academy & Lern-Tracker:** Täglicher Schnell-Check für Make Academy Einheiten und Weiterbildung.
-- **Personalisierbares Layout & Freie Verschiebung:** Blende Widgets (Finanzen, E-Rechnung, Habits, Google Kalender, Quick Capture) ein/aus und **verschiebe sie frei per Positionsmarkierung (`#1`, `#2`...) und `⬆️` / `⬇️` Buttons im Editor**.
-- **📌 Multi-Notizen System & Cloud-Sync (Handy ↔ PC):** Erstelle, benenne und verwalte beliebig viele Notizblätter mit individuellen Farben (Gelb, Blau, Grün, Pink, Lila). Alle Notizen (`dashNotesList`) werden automatisch in Supabase Cloud gesichert und zwischen Geräten synchronisiert.
-- **Wochen-Review & PDF-Bericht:** Archiv für erledigte Aufgaben mit jsPDF-Berichts-Export.
-- **Gamifizierter Habit-Tracker:** Streak-Zähler mit CSS-Konfetti-Animation bei 100 % Abschluss.
+- **Personalisierbares Layout & Freie Verschiebung:** Blende Widgets ein/aus und **verschiebe sie frei per Positionsmarkierung (`#1`, `#2`...) und `⬆️` / `⬇️` Buttons im Editor**.
+- **📌 Multi-Notizen System & Cloud-Sync (Handy ↔ PC):** Erstelle, benenne und verwalte beliebig viele Notizblätter mit individuellen Farben. Alle Notizen werden automatisch in Supabase Cloud gesichert.
+
+### 1b. Gründungs-Roadmap & Command Center -- *NEU!*
+- **🗺️ Interaktive Gründungs-Roadmap & Meilenstein-Matrix:** 4 strategische Gründungsphasen (1: Fundament/Recht/Banken, 2: Pilot-Kunden Harz, 3: Automation Stack, 4: B2B-Skalierung). Mit Ampelstatus (`⚪`, `🟡`, `🔴`, `🟢`), interaktiven Checklisten und XP-Belohnungen für das Life OS bei Meilenstein-Abschluss.
 
 ### 2. Inbox & Tasks (Posteingang)
 - **WhatsApp-Gateway & Webhook-Simulation:** Teste den Empfang strukturierter WhatsApp-Nachrichten samt HTTP-Post-Weiterleitung.

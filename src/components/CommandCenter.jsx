@@ -26,6 +26,7 @@ import {
 } from 'lucide-react';
 
 import { askFirmengehirn } from '../services/gemini';
+import { FoundingRoadmapMatrix } from './FoundingRoadmapMatrix';
 
 export const CommandCenter = ({
   docs,
@@ -36,7 +37,8 @@ export const CommandCenter = ({
   geminiApiKey,
   onOpenLightbox,
   coachingMeetings = [],
-  setCoachingMeetings
+  setCoachingMeetings,
+  onClaimRoadmapXp
 }) => {
   const logbuchDoc = docs.find(d => d.id === 'master-logbuch');
   const logbuchContent = logbuchDoc?.content || '';
@@ -705,6 +707,11 @@ ${doneTodos.map(t => `- [x] ${t.text}`).join('\n') || '- Keine erledigten Aufgab
           </div>
         </div>
       )}
+
+      {/* Gründungs-Roadmap & Meilenstein-Matrix */}
+      <div style={{ marginBottom: '1.5rem' }}>
+        <FoundingRoadmapMatrix onClaimXp={onClaimRoadmapXp} />
+      </div>
 
       {/* Haupt-Layout im Akkordeon-Stil */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>

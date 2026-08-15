@@ -26,6 +26,7 @@ import {
   Award
 } from 'lucide-react';
 import { SettingsView, getWidgetOrder } from './SettingsView';
+import { VoiceQuickCaptureWidget } from './VoiceQuickCaptureWidget';
 
 export const DashboardView = ({
   userCoins = 150,
@@ -108,6 +109,7 @@ export const DashboardView = ({
   handleQuickCapture,
   handleQuickCaptureSpeech,
   isListeningQuickCapture,
+  onVoiceCaptureDispatch,
   googleConnected,
   setGoogleConnected,
   isConnectingGoogle,
@@ -1054,43 +1056,24 @@ export const DashboardView = ({
 
     case 'quickcapture':
       return (
-        <div key="quickcapture" className="card quick-capture-section">
-          <div className="card-header">
-            <h2 className="card-title"><Plus size={20} className="text-purple-500" /> Neue Idee oder Notiz erfassen</h2>
-          </div>
-          <form onSubmit={handleQuickCapture} className="quick-capture-box" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-            <input 
-              type="text" 
-              className="input-field" 
-              style={{ flexGrow: 1 }}
-              placeholder="Schreibe eine schnelle Notiz oder diktiere sie per Mikrofon-Button..."
-              value={quickCapture}
-              onChange={(e) => setQuickCapture(e.target.value)}
-            />
-            <button
-              type="button"
-              onClick={handleQuickCaptureSpeech}
-              className={`btn-icon-only ${isListeningQuickCapture ? 'listening-pulse' : ''}`}
-              style={{ 
-                padding: '0.5rem', 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center', 
-                height: '38px', 
-                width: '38px',
-                minWidth: '38px',
-                background: isListeningQuickCapture ? 'rgba(239, 68, 68, 0.2)' : 'rgba(255,255,255,0.05)',
-                border: isListeningQuickCapture ? '1px solid rgb(239, 68, 68)' : '1px solid var(--border-color)',
-                color: isListeningQuickCapture ? '#ef4444' : 'var(--text-secondary)',
-                cursor: 'pointer'
-              }}
-              title="Notiz per Sprache diktieren (Web Speech API)"
-            >
-              <Mic size={16} />
-            </button>
-            <button type="submit" className="btn btn-primary" style={{ height: '38px' }}>Erfassen</button>
-          </form>
-        </div>
+        <VoiceQuickCaptureWidget
+          key="quickcapture"
+          onDispatch={onVoiceCaptureDispatch || ((payload) => {
+            if (payload.target === 'todo') {
+              handleAddDashTodo(payload.text);
+            } else if (payload.target === 'goal') {
+              if (setDashboardGoal) setDashboardGoal(payload.text);
+            } else if (payload.target === 'note') {
+              if (handleUpdateActiveNote) {
+                handleUpdateActiveNote(dashNotes ? `${dashNotes}\n\n- ${payload.text}` : payload.text);
+              }
+            } else if (payload.target === 'calendar') {
+              if (setSimpleEventText) setSimpleEventText(payload.text);
+            } else {
+              if (setQuickCapture) setQuickCapture(payload.text);
+            }
+          })}
+        />
       );
 
     case 'calendar':

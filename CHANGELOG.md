@@ -5,6 +5,23 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **🎙️ Voice Quick-Capture Studio (Feature 2 - v28):**
+  - **Diktier- und Audio-Studio im Cockpit (`VoiceQuickCaptureWidget.jsx`):** 1-Tap Sprachaufzeichnung mit animiertem Wave-Puls und synthetischem Doppelton-Feedback via Web Audio API (Start-, Stop- und Success-Chime).
+  - **Multi-Ziel-Routing:** 1-Klick Einsortierung diktierter oder getippter Gedanken in `To-Do` (Aufgabenliste), `Notiz` (Notizblätter), `Tages-Fokus` (Hauptziel), `CRM / Lead` (Kundenkartei) oder `Termin` (Kalenderagenda).
+  - **Interaktive Tag-Pills:** Schnelles Hinzufügen von Schlagworten (`#Wichtig`, `#Kunde`, `#Idee`, `#Habit`, `#Dringend`, `#HarzKMU`).
+- **📦 1-Klick Data Hub & Backup Manager (Feature 3 - v28):**
+  - **Voll- & Selektiv-Backup (`BackupManagerModal.jsx`, `backupService.js`):** 1-Klick JSON-Export aller 7 Kernmodule oder gezielte Auswahl einzelner Datenbereiche (CRM, Notizen, Prompts, Gamification, Tasks, Roadmap, Settings).
+  - **Sicherer Restore mit Pre-Flight Inspektor:** Drag & Drop Import von `.json`-Backups mit Schema-Validierung, Entitäten-Zähler (Leads, Prompts, Level/XP) und Versionsprüfung.
+  - **Automatischer Notfall-Rollback Snapshot:** Vor jedem Restore wird automatisch ein Snapshot des aktuellen Stands erstellt, der im Notfall mit 1 Klick wiederhergestellt werden kann.
+  - **Header-Schnellzugriff:** Neuer Topbar-Button `📦 Data Hub`.
+- **🗺️ Interaktive Gründungs-Roadmap & Meilenstein-Matrix (Feature 13 - v28):**
+  - **4-Phasen-Modell für KMU Service Harz (`FoundingRoadmapMatrix.jsx`, `roadmapData.js`):**
+    - *Phase 1:* Fundament, Behörden & Finanzen (Gewerbe, Einstiegsgeld, Tragfähigkeit, Notar, B2B-Konto)
+    - *Phase 2:* Pilot-Kunden & Harz-Netzwerk (3 Pilot-Betriebe, Onboarding im Praxiseinsatz, Case Studies)
+    - *Phase 3:* Digitaler Produkt- & Automations-Stack (Make.com, E-Rechnung, Mandantenportal)
+    - *Phase 4:* Skalierung & KMU Service Harz Marktreife (Monats-Retainer, WiReGo-Kooperation, Neukunden-Funnel)
+  - **Ampelsystem & Interaktivität:** Status-Pills (`⚪ Geplant`, `🟡 In Arbeit`, `🔴 Blockiert`, `🟢 Erledigt`), interaktive Kriterien-Checklisten und Fristen.
+  - **Life OS Gamification Integration:** Direkte Gutschrift von XP (+150 XP) und Life-Coins (+50 Coins) beim Erreichen von Meilensteinen mit Konfetti-Animation.
 - **🛡️ Resilienz, Offline-Queue & Datenvalidierung (Groß-Optimierung Batch 3):**
   - **Offline-First Synchronisations-Warteschlange (`syncQueue.js`):** Pufferung aller fehlgeschlagenen oder offline durchgeführten Supabase-Aktionen (Notizen, Leads, Prompts) im `localStorage` mit automatischem Reconnect-Flush und Deduplizierung.
   - **Automatische Queue-Abarbeitung:** Integration von `flushOfflineQueueWithSupabase` im Cloud-Sync-Zyklus und Event-Listener für Reconnects.

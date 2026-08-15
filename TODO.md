@@ -1,6 +1,9 @@
 # TODO - Founder OS
 
 ### Wichtig
+- [x] **🎙️ Voice Quick-Capture Studio (Feature 2 - v28):** Diktier- und Audio-Studio im Cockpit mit Web Audio API Chime, Wave-Puls, Tag-Pills (`#Wichtig`, `#Kunde`, `#Idee`, `#Habit`, `#Dringend`, `#HarzKMU`) und 1-Klick-Multiziel-Routing (To-Do, Notizzettel, Tagesziel, CRM-Lead, Kalendertermin).
+- [x] **📦 1-Klick Data Hub & Backup Manager (Feature 3 - v28):** Systemweites Backup- & Restore-Center (`BackupManagerModal.jsx`, `backupService.js`) mit 1-Klick JSON-Vollbackup, selektivem 7-Modul-Export, Drag-and-Drop Import mit Pre-Flight Schema-Inspektor und automatischem Notfall-Rollback Snapshot.
+- [x] **🗺️ Interaktive Gründungs-Roadmap & Meilenstein-Matrix (Feature 13 - v28):** Strategische 4-Phasen-Matrix (`FoundingRoadmapMatrix.jsx`, `roadmapData.js`) im Command Center von Behörden/Recht über Pilotkunden und Automation-Stack bis zur Skalierung im Harz. Inklusive Ampel-Status (`⚪`, `🟡`, `🔴`, `🟢`), Kriterien-Checklisten, XP- & Coins-Belohnung bei Abschluss und Synchronisation.
 - [x] **🏗️ Groß-Optimierung Batch 1 (Architektur-Fundament & Modularisierung):**
   - Entflechtung von `App.jsx` in `LeadsView.jsx`, `OnboardingView.jsx`, `CrmDrawer.jsx`, `DocumentEditorModal.jsx` und `LightboxModal.jsx`.
   - Integration der `ErrorBoundary.jsx` zur Ausfallsicherung aller Ansichten.

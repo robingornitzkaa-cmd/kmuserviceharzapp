@@ -33,7 +33,7 @@ export const SettingsView = ({
   const widgetDefinitions = {
     financial: { label: 'Finanz-Cockpit & Pipeline', desc: 'Umsatzprognose & Ø Stundensätze' },
     einvoice: { label: 'E-Rechnung (ZUGFeRD)', desc: 'B2B Rechnungs- & XML Generator' },
-    quickcapture: { label: 'Quick Capture', desc: 'Schnelle Notiz- & Idee-Erfassung' },
+    quickcapture: { label: '🎙️ Voice Quick-Capture Studio', desc: 'Sprach- & Diktier-Studio mit Multi-Ziel-Routing' },
     calendar: { label: 'Google Kalender', desc: 'Tagestermine & Meetings' },
     habits: { label: 'Habit Tracker & Streak', desc: 'Gewohnheiten & CSS-Konfetti' },
     weekly: { label: 'Wochen-Review & Archiv', desc: 'Reflexionen & PDF-Wochenbericht' },
