@@ -5,6 +5,11 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **📱 100% Offline-Fähigkeit & PWA-Integration (Progressive Web App):**
+  - **Service Worker & Workbox Caching (`vite-plugin-pwa`, `vite.config.js`):** Vollständiges Offline-Caching aller Kern-Dateien (HTML, JS, CSS, Icons) und externer Google Fonts über Workbox Runtime-Caching.
+  - **Web App Manifest (`manifest.webmanifest`):** Vollbild-Start, Theme-Color (`#0f172a`), App-Icons und Standalone-Modus für mobile Geräte (Android & iOS).
+  - **Automatisches Service-Worker Lifecycle Management (`src/main.jsx`):** Sofortige Aktivierung und Hintergrund-Updates bei erneuter Internetverbindung.
+  - **Capacitor Sync (`npx cap sync`):** Synchronisation der offline-optimierten Web-Assets in das native Android-Projekt.
 - **🌐 KMU Service Harz Website-Relaunch & Neue Positionierung:**
   - **Neues Leitmotiv & Positionierung:** *„Der Handwerker für digitale Infrastruktur“* & *„Schluss mit dem Büro-Sonntag. Lautlose digitale Workflows für Handwerk & Mittelstand im Harz.“*
   - **Dreistufige Preistreppe (Productized Services):**
