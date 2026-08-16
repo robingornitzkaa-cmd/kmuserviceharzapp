@@ -5,6 +5,18 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **🌐 KMU Service Harz Website-Relaunch & Neue Positionierung:**
+  - **Neues Leitmotiv & Positionierung:** *„Der Handwerker für digitale Infrastruktur“* & *„Schluss mit dem Büro-Sonntag. Lautlose digitale Workflows für Handwerk & Mittelstand im Harz.“*
+  - **Dreistufige Preistreppe (Productized Services):**
+    - *Stufe 1: Büro-Potenzial-Audit (500 € Festpreis)* – 90 Min Analyse vor Ort oder per Video, schriftlicher ROI-Fahrplan mit den 3 größten Zeitfressern.
+    - *Stufe 2: Das Standard-Setup (2.000 € Festpreis, Bestseller)* – Vollständige Integration (Drive/Mail/WhatsApp ➔ Lexoffice ➔ DATEV), 100% E-Rechnung (EN 16931 / ZUGFeRD) & GoBD, 14 Tage Begleitung, 35–50% Fördermittel-Zuschuss (Digitalbonus).
+    - *Stufe 3: Digitaler Hausmeister (200 € / Monat)* – 24/7 Schnittstellen-Monitoring, sofortige Drittanbieter-Update-Korrekturen, 1h Kontingent.
+  - **Showcase & Praxis-Fallstudie „GoClean Harz“:** Interaktiver Vorher/Nachher-Gegenüberstellungs-Schalter, Metriken-Kacheln (6+ Std. Ersparnis/Woche, 0 Zettelstapel, 100% GoBD/DATEV), Kundenzitat und visueller 3-Schritte-Belegablauf (Smartphone ➔ Lexoffice ➔ DATEV).
+  - **Praxisnaher Handwerker-ROI-Rechner:** Schieberegler für Mitarbeiterzahl (1–20), wöchentliche Belege/Zettel (10–150) und Meister-/Bürostundensatz (35–95 €/h) mit Berechnung geretteter Büro-Sonntage pro Jahr, monatlich gewonnener Stunden und Euro-Ersparnis.
+  - **„Ihre Werkzeuge bleiben“-Brücken-Grid:** Vorstellung der nahtlosen Integration von Lexoffice, DATEV, WhatsApp Business, Google Workspace und Make.com.
+  - **🎨 3-Design-Theme-Switcher:** Live-Umschaltung in der Header-Leiste zwischen 🌲 *Harz & Handwerk* (Waldgrün/Bernstein), ⚡ *Modernes Tech-Handwerk* (Schieferblau/Smaragd) und 🛠️ *Industrie & Klarheit* (Anthrazit/Orange), plus Hell/Dunkel-Kontrast-Modus.
+  - **Standort- & Rechtsangaben:** Vollständige DDG § 5 & MStV § 18 Konformität für KMU Service Harz UG (haftungsbeschränkt) i.G. / Robin Gornitzka mit Standort 38685 Langelsheim & Landkreis Goslar.
+
 - **🎙️ Voice Quick-Capture Studio (Feature 2 - v28):**
   - **Diktier- und Audio-Studio im Cockpit (`VoiceQuickCaptureWidget.jsx`):** 1-Tap Sprachaufzeichnung mit animiertem Wave-Puls und synthetischem Doppelton-Feedback via Web Audio API (Start-, Stop- und Success-Chime).
   - **Multi-Ziel-Routing:** 1-Klick Einsortierung diktierter oder getippter Gedanken in `To-Do` (Aufgabenliste), `Notiz` (Notizblätter), `Tages-Fokus` (Hauptziel), `CRM / Lead` (Kundenkartei) oder `Termin` (Kalenderagenda).

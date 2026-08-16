@@ -1,133 +1,360 @@
 export const WEBSITE_CONTENT = {
   brand: {
-    name: "KMU Service Harz",
-    claim: "Digitale Prozesse & KI für den Mittelstand im Harz",
-    subtitle: "Ihr regionaler Partner für Webdesign, IT-Automatisierung & Zeitersparnis",
+    name: "KMU Service Harz UG (haftungsbeschränkt) i.G.",
+    shortName: "KMU Service Harz",
+    claim: "Schluss mit dem Büro-Sonntag. Lautlose digitale Workflows für Handwerk & Mittelstand im Harz.",
+    positioning: "Der Handwerker für digitale Infrastruktur",
+    subtitle: "Wir befreien kleine Betriebe von Zettelwirtschaft, Beleg-Chaos und bürokratischen Zeitfressern.",
     owner: "Robin Gornitzka",
-    location: "Wernigerode / Harz, Deutschland",
+    location: "38685 Langelsheim (Wirtschaftsregion Harz)",
+    regionDetail: "Landkreis Goslar + 20 km Umkreis (Langelsheim, Goslar, Seesen, Bad Harzburg, Liebenburg, Lutter, Clausthal-Zellerfeld sowie Wernigerode & Halberstadt)",
     email: "kontakt@kmu-service-harz.de",
     phone: "+49 (0) 151 / 123 456 78",
-    badge: "📍 Regionaler Digitalpartner im Harz"
+    badge: "📍 Regionaler Partner für Handwerk & Mittelstand im Harz"
   },
   nav: [
     { id: "home", label: "Startseite" },
-    { id: "services", label: "Leistungen" },
-    { id: "roi", label: "ROI-Rechner" },
+    { id: "services", label: "Preise & Angebote" },
+    { id: "showcase", label: "GoClean Fallstudie" },
+    { id: "roi", label: "Büro-Sonntag-Rechner" },
     { id: "about", label: "Über uns" },
-    { id: "contact", label: "Kontakt & Erstgespräch" },
+    { id: "contact", label: "Erstgespräch buchen" },
     { id: "impressum", label: "Impressum" },
     { id: "privacy", label: "Datenschutz" }
   ],
   hero: {
-    badge: "🚀 Digitalisierung & Automatisierung ohne Chaos",
-    headline: "Mehr Zeit fürs Kerngeschäft: Digitale Prozesse & moderne Webauftritte",
-    subheadline: "Wir unterstützen kleine und mittlere Unternehmen (KMU) sowie Handwerksbetriebe in der Harz-Region dabei, Zettelwirtschaft abzuschaffen, Kundenanfragen zu automatisieren und moderne IT-Lösungen stressfrei einzusetzen.",
-    ctaPrimary: "Kostenloses Erstgespräch buchen",
-    ctaSecondary: "Einsparpotenzial berechnen",
+    badge: "🛠️ Der Handwerker für digitale Infrastruktur",
+    headline: "Schluss mit dem Büro-Sonntag: Lautlose Workflows für Handwerk & Mittelstand im Harz.",
+    subheadline: "Wir befreien Betriebe von manueller Zettelwirtschaft, Beleg-Chaos und doppelter Datenerfassung. Ihre bestehenden Programme bleiben – wir verbinden sie unsichtbar im Hintergrund.",
+    ctaPrimary: "Kostenloses 15-Min. Erstgespräch sichern",
+    ctaSecondary: "Einsparpotenzial & Sonntage berechnen",
     trustBadges: [
-      "🛡️ 100% DSGVO-konform",
-      "📍 Regional vor Ort im Harz",
-      "⚡ Blitzschnelle Ladezeiten",
-      "🤝 Persönlicher Ansprechpartner"
+      "🛡️ 100 % DSGVO & EU-Server",
+      "📍 Vor Ort im Landkreis Goslar & Harz",
+      "🤝 Feste Paketpreise statt Stundensätze",
+      "🏛️ Bis zu 50 % staatlich förderbar",
+      "⚡ Lexoffice & DATEV kompatibel"
     ]
   },
   painPoints: {
-    title: "Kennen Sie diese Zeitfresser im Betrieb?",
+    badge: "WARUM HANDWERKER AM WOCHENENDE ARBEITEN",
+    title: "Schluss mit zeitraubender Zettelwirtschaft & Beleg-Chaos",
+    subtitle: "In vielen Betrieben versickern durchschnittlich 7 % der Arbeitszeit in unproduktiver Büroarbeit. Das muss nicht sein.",
     items: [
       {
-        icon: "📋",
-        problem: "Zettelwirtschaft & Zettelchaos",
-        description: "Anfragen, Stundenzettel oder Aufträge gehen in Papierstapeln unter oder müssen mehrfach manuell abgetippt werden."
+        icon: "calendar-x",
+        problem: "Der zähe „Büro-Sonntag“",
+        description: "Nach 50 Stunden Einsatz auf der Baustelle verbringen Meister und Familie das Wochenende mit Rechnungen, Stundenzetteln und Ablage."
       },
       {
-        icon: "⏳",
-        problem: "Wertvolle Arbeitszeit verschwendet",
-        description: "Meister und Mitarbeiter verbringen täglich Stunden mit zeitraubender Büroarbeit statt mit rentablen Kundenaufträgen."
+        icon: "clock-alert",
+        problem: "32 verlorene Stunden pro Monat",
+        description: "Zettel von der Baustelle abends mühsam am PC abtippen. Wertvolle Meisterstunden versickern in doppelter Datenerfassung."
       },
       {
-        icon: "🌐",
-        problem: "Veraltete oder fehlende Webseite",
-        description: "Kunden oder neue Fachkräfte finden im Netz nur veraltete Kontaktdaten – oder Ihre Mitbewerber gewinnen den Auftrag."
+        icon: "receipt-tax",
+        problem: "Beleg-Chaos & Steuerberater-Ärger",
+        description: "Fehlende Quittungen führen zu zeitraubenden Rückfragen und teuren Extragebühren bei der monatlichen DATEV-Vorkontierung."
+      },
+      {
+        icon: "shield-alert",
+        problem: "Gesetzlicher Druck & E-Rechnung",
+        description: "Verunsicherung bezüglich der gesetzlichen B2B-E-Rechnungspflicht (EN 16931 / ZUGFeRD) und GoBD-Konformität."
       }
     ]
   },
-  services: [
-    {
-      id: "webdesign",
-      icon: "🌐",
-      title: "Moderne Webauftritte & Digitale Visitenkarten",
-      short: "Ladezeiten unter 1 Sekunde, 100% DSGVO-konform und perfekt auf dem Smartphone lesbar.",
-      details: [
-        "Inklusive rechtssicherem Impressum & Datenschutzerklärung",
-        "Keine unnötigen Cookies oder Cookie-Banner nötig",
-        "Suchmaschinenoptimiert (SEO) für die Harz-Region",
-        "Vollständige Mobil-Optimierung für Smartphones & Tablets"
-      ]
-    },
-    {
-      id: "automation",
-      icon: "⚡",
-      title: "Prozess- & Workflow-Automatisierung",
-      short: "Wiederkehrende Aufgaben wie Kundenanfragen, Formularverarbeitung und E-Mail-Workflows automatisch erledigen.",
-      details: [
-        "Automatische Erfassung von Anfragen aus Kontaktformularen",
-        "Schnittstellen-Anbindung (Make.com, CRM, E-Mail)",
-        "E-Rechnungs-Vorbereitung & digitale Belegkette",
-        "Deutliche Reduzierung von Tippfehlern und Wartezeiten"
-      ]
-    },
-    {
-      id: "ai",
-      icon: "🧠",
-      title: "KI-Integration & Prompt-Vorlagen für KMU",
-      short: "Künstliche Intelligenz praxisnah im Betriebsalltag nutzen – ohne Informatikstudium.",
-      details: [
-        "Maßgeschneiderte KI-Vorlagen für Kundenkommunikation & Texte",
-        "Mitarbeiter-Schulung für den sicheren Umgang mit KI",
-        "DSGVO-konforme Nutzung von KI-Tools",
-        "Praxisnaher Einsatz im Handwerk, Handel & Dienstleistung"
-      ]
-    }
-  ],
-  about: {
-    title: "Über KMU Service Harz",
-    subtitle: "Ihr digitaler Wegbegleiter vor Ort",
-    story: "Als lokaler Partner im Harz helfe ich kleinen und mittelständischen Unternehmen dabei, die Chancen der Digitalisierung pragmatisch zu nutzen. Kein kompliziertes Berater-Chinesisch, sondern einfache, verständliche Lösungen, die ab Tag 1 Arbeitszeit sparen.",
-    ownerTitle: "Inhaber & Gründer",
-    principles: [
-      { title: "Verständlich statt kompliziert", desc: "Wir sprechen Ihre Sprache und erklären Technik ohne Fachchinesisch." },
-      { title: "Pragmatisch & messbar", desc: "Jede Lösung muss Ihnen spürbar Zeit oder Kosten einsparen." },
-      { title: "Regional & erreichbar", desc: "Persönlicher Ansprechpartner direkt aus dem Harz." }
+  usps: {
+    badge: "UNSER VERSPRECHEN",
+    title: "Warum Betriebe im Harz mit uns zusammenarbeiten",
+    items: [
+      {
+        title: "Bestehende Systeme bleiben",
+        desc: "Keine neue, komplizierte Software. Wir bauen unsichtbare Brücken zwischen dem, was Sie schon nutzen (E-Mail, WhatsApp, Lexoffice, Google Workspace, DATEV)."
+      },
+      {
+        title: "Sprache des Handwerks",
+        desc: "Wir sprechen auf Augenhöhe über Feierabend, Zeitersparnis und Entlastung – null unverständliches IT-Fachchinesisch."
+      },
+      {
+        title: "Garantierte Ergebnisse & Festpreise",
+        desc: "Feste Pakete mit transparenten Festpreisen statt unberechenbarer IT-Beratungshonorare und unendlicher Stundenzettel."
+      },
+      {
+        title: "Bis zu 50 % Fördermittel-Hebel",
+        desc: "Bis zu 35–50 % der Investitionskosten können über regionale Förderprogramme (z. B. Digitalbonus Niedersachsen) bezuschusst werden."
+      },
+      {
+        title: "100 % DSGVO & vor Ort im Harz",
+        desc: "Hosting ausschließlich auf europäischen Servern, persönliche Betreuung und schnelle Erreichbarkeit direkt vor Ort."
+      }
     ]
   },
+  integrations: {
+    badge: "KEINE NEUE SOFTWARE NÖTIG",
+    title: "Ihre gewohnten Werkzeuge bleiben. Wir verbinden sie im Hintergrund.",
+    subtitle: "Sie und Ihre Mitarbeiter nutzen WhatsApp, E-Mail und Lexoffice wie gewohnt. Die Daten fließen automatisch an die richtige Stelle.",
+    tools: [
+      {
+        name: "Lexware Office (Lexoffice)",
+        role: "Buchhaltung & Belege",
+        desc: "Automatischer Belegeingang und transparente Rechnungslegung."
+      },
+      {
+        name: "DATEV Datenservice",
+        role: "Steuerberater-Kanzlei",
+        desc: "Revisionssichere Übergabe an Kanzleien ohne Belegsucherei."
+      },
+      {
+        name: "WhatsApp Business",
+        role: "Baustellen-Erfassung",
+        desc: "Belege und Zettel einfach per Smartphone-Foto direkt ins Büro senden."
+      },
+      {
+        name: "Google Workspace & Mail",
+        role: "Cloud & Dokumente",
+        desc: "Strukturierte, automatische Ablage und Kundenkommunikation."
+      },
+      {
+        name: "Make.com & n8n",
+        role: "Automations-Motor",
+        desc: "Lautlose, stabile Schnittstellen ohne manuelle Eingriffe."
+      }
+    ]
+  },
+  pricingTiers: [
+    {
+      id: "audit",
+      level: "Stufe 1",
+      title: "Das Büro-Potenzial-Audit",
+      tagline: "Niedrigschwelliger Einstieg zum Kennenlernen",
+      price: "500 €",
+      priceSuffix: "Festpreis (zzgl. MwSt.)",
+      fundingNote: "100 % risikofreie Analyse",
+      description: "90-minütige 1:1-Analyse Ihrer Betriebsabläufe vor Ort im Harz oder per Video.",
+      highlight: false,
+      features: [
+        "90 Minuten persönliche 1:1-Prozessanalyse",
+        "Schriftlicher ROI-Fahrplan mit konkreten Zahlen",
+        "Aufdeckung der 3 größten Zeitfresser schwarz auf weiß",
+        "Genaue Berechnung Ihrer monatlichen Zeitersparnis",
+        "Sofort umsetzbare Quick-Win-Empfehlungen",
+        "Keine Folgeverpflichtung – ideal zum Start"
+      ],
+      ctaText: "Audit anfragen (500 €)",
+      targetTopic: "Stufe 1: Büro-Potenzial-Audit (500 €)"
+    },
+    {
+      id: "setup",
+      level: "Stufe 2",
+      badge: "⭐ MEISTGEWÄHLT / BESTSELLER",
+      title: "Das Standard-Setup",
+      tagline: "Schlüsselfertige Workflow-Einrichtung",
+      price: "2.000 €",
+      priceSuffix: "Festpreis (1.500 € – 2.800 € netto)",
+      fundingNote: "🏛️ Bis zu 35–50 % staatlich förderbar (effektiv ab ca. 1.000 €)",
+      description: "Vollständige Implementierung automatisierter Workflows für Belege, DATEV und E-Rechnung.",
+      highlight: true,
+      features: [
+        "Automatisierter Belegeingang (Drive, Mail, WhatsApp ➔ Lexoffice)",
+        "Revisionssichere Übergabe an DATEV für den Steuerberater",
+        "100 % E-Rechnungs- und GoBD-Konformität (EN 16931 / ZUGFeRD)",
+        "14 Tage intensive Einführungsbegleitung für Ihr Team",
+        "Fördermittel-Unterstützung (Digitalbonus Niedersachsen)",
+        "Garantierter Festpreis ohne versteckte Zusatzkosten"
+      ],
+      ctaText: "Standard-Setup sichern",
+      targetTopic: "Stufe 2: Standard-Setup (2.000 €)"
+    },
+    {
+      id: "care",
+      level: "Stufe 3",
+      badge: "AaaS (Automation as a Service)",
+      title: "Digitaler Hausmeister",
+      tagline: "Laufende Betreuung & Schnittstellen-Pflege",
+      price: "200 €",
+      priceSuffix: "pro Monat (150 € – 300 € netto)",
+      fundingNote: "Monatlich kündbar",
+      description: "Wir halten Ihre digitalen Workflows im Hintergrund stabil, aktuell und sicher.",
+      highlight: false,
+      features: [
+        "Laufendes 24/7-Monitoring aller aktiven Schnittstellen",
+        "Sofortige Fehlerbehebung bei Drittanbieter-Updates (Lexoffice, Google, DATEV)",
+        "DSGVO- & Datensicherheits-Checks nach EU-Standards",
+        "Inkl. 1 Stunde monatliches Kontingent für Workflow-Anpassungen",
+        "Persönlicher Ansprechpartner für Fragen & Notfälle",
+        "Volle Flexibilität – keine Knebelverträge"
+      ],
+      ctaText: "Hausmeister buchen",
+      targetTopic: "Stufe 3: Digitaler Hausmeister (200 €/Mo)"
+    }
+  ],
+  showcase: {
+    badge: "REFERENZPROJEKT AUS DER REGION",
+    title: "Praxis-Fallstudie: GoClean Harz",
+    subtitle: "Wie ein regionaler Gebäudedienstleister über 6 Stunden Büroarbeit pro Woche einspart.",
+    clientName: "GoClean Harz",
+    industry: "Gebäudereinigung, Gartenpflege & Winterdienst (Langelsheim / Goslar)",
+    challenge: "Zettelwirtschaft bei der Einsatzdokumentation, verspätete Rechnungen an Hausverwaltungen, mühsame Belegsuche und Belegstapel am Monatsende.",
+    solution: "Vollautomatisierter Belegfluss direkt von den Einsatzfahrzeugen per Smartphone nach Lexoffice und revisionssichere Bereitstellung für die DATEV-Kanzlei.",
+    quote: "„Früher haben wir sonntags Belege sortiert und Rechnungen abgetippt. Heute machen die Mitarbeiter ein Foto vor Ort – fertig. Wir haben pro Woche über 6 Stunden gewonnen und den Kopf am Wochenende komplett frei.“",
+    quoteAuthor: "Inhaber GoClean Harz",
+    metrics: [
+      { value: "6+ Std.", label: "Zeitersparnis pro Woche", sub: "Gewonnene Feierabende" },
+      { value: "0", label: "Zettelstapel am Monatsende", sub: "100 % digitalisiert" },
+      { value: "100 %", label: "GoBD- & DATEV-konform", sub: "Revisionssicher" },
+      { value: "100 %", label: "Freie Wochenenden", sub: "Kein Büro-Sonntag mehr" }
+    ],
+    beforeAfter: {
+      before: {
+        title: "VORHER (Zettelwirtschaft & Chaos)",
+        items: [
+          "Knitterige Tankquittungen und Materialbelege im Handschuhfach",
+          "Stundenzettel am Sonntagabend mühsam in Excel übertragen",
+          "Steuerberater moniert fehlende Belege zur Monatsmitte",
+          "Verzögerte Rechnungsstellung an Hausverwaltungen"
+        ]
+      },
+      after: {
+        title: "NACHHER (Lautlose Automatisierung)",
+        items: [
+          "Belegfoto per Smartphone landet in Sekundenschnelle in Lexoffice",
+          "Zeiten und Einsätze werden mobil ohne Zettel erfasst",
+          "DATEV-Übergabe auf Knopfdruck – null Rückfragen der Kanzlei",
+          "Rechnungen gehen taggleich raus – schnellerer Geldeingang"
+        ]
+      }
+    },
+    workflowSteps: [
+      {
+        num: "01",
+        title: "1. Foto vor Ort",
+        desc: "Mitarbeiter fotografiert Beleg auf der Baustelle oder im Fahrzeug."
+      },
+      {
+        num: "02",
+        title: "2. Lautlose Erfassung",
+        desc: "Automatische Textextraktion und Zuordnung in Lexoffice."
+      },
+      {
+        num: "03",
+        title: "3. DATEV-Kanzlei",
+        desc: "Revisionssichere Bereitstellung für den Steuerberater."
+      }
+    ]
+  },
+  roiCalculator: {
+    badge: "INTERAKTIVER WIRTSCHAFTLICHKEITS-CHECK",
+    title: "Büro-Sonntag- & Zeitersparnis-Rechner",
+    subtitle: "Berechnen Sie in 10 Sekunden, wie viele freie Sonntage und Arbeitsstunden Ihr Betrieb zurückgewinnt.",
+    defaults: {
+      employees: 5,
+      receiptsPerWeek: 35,
+      hourlyRate: 55
+    }
+  },
+  funding: {
+    badge: "STAATLICHE ZUSCHÜSSE",
+    title: "35 % bis 50 % Förderung für Ihre Digitalisierung",
+    desc: "Kleine und mittelständische Unternehmen in Niedersachsen und Sachsen-Anhalt können für Digitalisierungs- und Automatisierungsprojekte attraktive Fördergelder nutzen.",
+    programs: [
+      {
+        name: "Digitalbonus Niedersachsen",
+        quota: "Bis zu 50 % Zuschuss",
+        desc: "Für Handwerk & KMU im Landkreis Goslar und ganz Niedersachsen."
+      },
+      {
+        name: "Digital Innovation Sachsen-Anhalt",
+        quota: "Bis zu 50 % Zuschuss",
+        desc: "Für Betriebe in Wernigerode, Halberstadt und angrenzenden Regionen."
+      }
+    ],
+    note: "Wir unterstützen Sie bei der angebotsseitigen Vorbereitung für Ihren Förderantrag."
+  },
+  about: {
+    badge: "REGIONAL & BODENSTÄNDIG",
+    title: "Über KMU Service Harz",
+    subtitle: "Der Handwerker für digitale Infrastruktur aus Langelsheim",
+    story: "Als regionaler Partner mit Sitz in Langelsheim kenne ich die Herausforderungen des Mittelstands und Handwerks im Harz ganz genau. Wir verkaufen Ihnen keine teuren Luftschlösser oder unverständliches IT-Berater-Chinesisch. Stattdessen bauen wir stabile, verlässliche Brücken zwischen Ihren bestehenden Programmen – damit Sie sonntags frei haben und sich auf Ihr Handwerk konzentrieren können.",
+    ownerName: "Robin Gornitzka",
+    ownerRole: "Gründer & Geschäftsführer",
+    location: "38685 Langelsheim / Wirtschaftsregion Harz",
+    values: [
+      {
+        title: "Bestehende Systeme bleiben",
+        desc: "Kein Zwang zu neuer, teurer Software. Wir nutzen das, was Sie bereits haben."
+      },
+      {
+        title: "Sprache des Handwerks",
+        desc: "Klare Worte, Feierabend, Entlastung und verlässliche Ergebnisse statt Buzzwords."
+      },
+      {
+        title: "Feste Paketpreise",
+        desc: "Transparente Festpreise ohne unkalkulierbare Beratungs-Stundenzettel."
+      },
+      {
+        title: "Vor Ort im Harz",
+        desc: "Persönlich ansprechbar im Landkreis Goslar, Wernigerode und Umgebung."
+      }
+    ]
+  },
+  faq: [
+    {
+      q: "Müssen wir oder unsere Mitarbeiter dafür neue Software lernen?",
+      a: "Nein, genau das ist unser Grundsatz! Ihre Mitarbeiter machen Fotos mit dem Smartphone oder senden Belege per WhatsApp/E-Mail – ganz so, wie sie es privat gewohnt sind. Wir bauen die Technik im Hintergrund so auf, dass niemand geschult werden muss."
+    },
+    {
+      q: "Funktioniert das mit unserem bestehenden Steuerberater (DATEV)?",
+      a: "Ja, absolut. Wir binden die Schnittstellen (z. B. DATEV Rechnungsdatenservice und Belegdatenservice) direkt an Lexoffice an. Ihr Steuerberater erhält alle Belege monatlich lückenlos, vorkontiert und revisionssicher nach GoBD."
+    },
+    {
+      q: "Was genau beinhaltet das Büro-Potenzial-Audit für 500 €?",
+      a: "Wir analysieren in 90 Minuten 1:1 Ihre aktuellen Arbeitsabläufe (vor Ort bei Ihnen im Betrieb oder per Video). Sie erhalten einen schriftlichen ROI-Fahrplan, der Ihre 3 größten Zeitfresser schwarz auf weiß beziffert und zeigt, wie viele Stunden Sie monatlich sparen können."
+    },
+    {
+      q: "Wie läuft die staatliche Förderung (bis zu 50 %) ab?",
+      a: "Programme wie der Digitalbonus Niedersachsen fördern die Digitalisierung von Prozessen in Handwerk und KMU mit 35 % bis 50 % Zuschuss. Wir stellen sicher, dass unser Projekt-Setup den Förderrichtlinien entspricht."
+    },
+    {
+      q: "Wie schnell sind die automatisierten Workflows eingerichtet?",
+      a: "Das Standard-Setup ist in der Regel innerhalb von 1 bis 2 Wochen vollständig einsatzbereit – inklusive Testphase und 14 Tagen intensiver Einführungsbegleitung."
+    },
+    {
+      q: "Ist die Lösung 100 % DSGVO-konform?",
+      a: "Ja, zu 100 %. Wir arbeiten ausschließlich mit europäischen Rechenzentren, verschlüsselten Verbindungen und ohne unbefugte Weitergabe von Daten."
+    }
+  ],
   contact: {
-    title: "Lassen Sie uns gemeinsam Zeit sparen",
-    subtitle: "Vereinbaren Sie jetzt ein unverbindliches Erstgespräch (ca. 15–20 Minuten).",
+    badge: "UNVERBINDLICHES ERSTGESPRÄCH",
+    title: "Lassen Sie uns gemeinsam den Büro-Sonntag abschaffen",
+    subtitle: "Vereinbaren Sie jetzt ein unverbindliches 15-Minuten-Telefonat oder wählen Sie direkt Ihr Wunschpaket.",
     formHeading: "Erstgespräch anfragen",
     fields: {
-      name: "Ihr Name / Ansprechpartner",
-      company: "Firmenname / Branche",
+      name: "Ihr Name & Vorname",
+      company: "Firmenname & Gewerk / Branche",
       email: "E-Mail-Adresse",
-      phone: "Telefonnummer (optional)",
-      topic: "Worum geht es vorrangig?",
-      message: "Kurze Nachricht oder Anliegen"
+      phone: "Telefonnummer für den Rückruf",
+      topic: "Gewünschtes Paket / Thema",
+      message: "Ihre aktuelle Herausforderung (z. B. Beleg-Chaos, Lexoffice-Anbindung)"
     },
     topicOptions: [
-      "Neue Webseite / Digitalauftritt",
-      "Prozess-Automatisierung & Büro-Entlastung",
-      "KI-Schulung & Vorlagen",
-      "Allgemeines Beratungsgespräch"
+      "Kostenloses 15-Minuten Kennenlerngespräch",
+      "Stufe 1: Büro-Potenzial-Audit (500 € Festpreis)",
+      "Stufe 2: Das Standard-Setup (2.000 € Bestseller)",
+      "Stufe 3: Digitaler Hausmeister (200 € / Monat)",
+      "Fragen zu Fördermitteln (Digitalbonus)",
+      "Sonstige Anfrage"
     ]
   },
   impressum: {
     title: "Impressum",
     legalNotice: "Angaben gemäß § 5 DDG (Digitale-Dienste-Gesetz)",
     details: [
-      { label: "Dienstanbieter", value: "KMU Service Harz - Robin Gornitzka" },
-      { label: "Anschrift", value: "Wernigerode / Harz, Deutschland" },
+      { label: "Dienstanbieter", value: "KMU Service Harz UG (haftungsbeschränkt) i.G." },
+      { label: "Geschäftsführer & Inhaber", value: "Robin Gornitzka" },
+      { label: "Anschrift", value: "38685 Langelsheim, Deutschland" },
       { label: "E-Mail", value: "kontakt@kmu-service-harz.de" },
       { label: "Telefon", value: "+49 (0) 151 / 123 456 78" },
-      { label: "Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV", value: "Robin Gornitzka, Wernigerode" }
+      { label: "Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV", value: "Robin Gornitzka, 38685 Langelsheim" }
     ],
     disclaimer: "Haftungsausschluss: Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen."
   },
@@ -146,6 +373,10 @@ export const WEBSITE_CONTENT = {
       {
         heading: "3. Ihre Rechte (Auskunft, Löschung, Widerruf)",
         content: "Sie haben jederzeit das Recht auf unentgeltliche Auskunft über Ihre gespeicherten personenbezogenen Daten, deren Herkunft und Empfänger und den Zweck der Datenverarbeitung sowie ein Recht auf Berichtigung oder Löschung dieser Daten."
+      },
+      {
+        heading: "4. Europäische Server & Verschlüsselung",
+        content: "Alle Formularübertragungen erfolgen SSL-/TLS-verschlüsselt und werden ausschließlich auf Servern innerhalb der Europäischen Union verarbeitet."
       }
     ]
   }
