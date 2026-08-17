@@ -55,8 +55,8 @@ export const LeadsView = ({
     try {
       localStorage.removeItem('f_sb_config');
       const cleanConfig = {
-        url: 'https://ypqlssyrlykjzjnoyjoa.supabase.co',
-        anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwcWxzc3lybHlranpqbm95am9hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzMTc5OTYsImV4cCI6MjA5Nzg5Mzk5Nn0.l1gbcQkrgjGJyTsRp3cjCqYIVrme9M48sbqUILhoAes'
+        url: import.meta.env.VITE_SUPABASE_URL || 'https://ypqlssyrlykjzjnoyjoa.supabase.co',
+        anonKey: import.meta.env.VITE_SUPABASE_ANON_KEY || ''
       };
       if (setSupabaseConfig) setSupabaseConfig(cleanConfig);
       const data = await fetchLeadsFromSupabase(cleanConfig);

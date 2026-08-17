@@ -36,7 +36,7 @@ export const CoachingLivePortal = ({
 
   const handleUnlock = (e) => {
     e.preventDefault();
-    if (pinInput === portalPin || pinInput === '1234') {
+    if (pinInput === portalPin) {
       setIsUnlocked(true);
       setPinError('');
       setPinInput('');

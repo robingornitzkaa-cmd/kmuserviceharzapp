@@ -4,6 +4,15 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 
 ## [Unreleased]
 
+### Fixed
+- **🔒 Sicherheit: Entfernen von Hardcoded Fallback-PINs & Passworthärtung:**
+  - In `App.jsx` wurde die statische Fallback-PIN `'2026'` bei der Verifizierung entfernt. Geänderte Master-PINs greifen nun strikt ohne Hintertür.
+  - In `CoachingLivePortal.jsx` wurde der Fallback `'1234'` entfernt. Das Portal wird nun ausschließlich durch die konfigurierte `portalPin` freigeschaltet.
+  - Hinzufügen von Regressions-Tests in `App.test.jsx` zur Absicherung benutzerdefinierter PINs.
+- **🛡️ Sicherheit & Architektur: Zentralisierung der Supabase Backend-Konfiguration:**
+  - Vollständige Bereinigung hartcodierter JWT-Anon-Keys aus `supabase.js`, `LeadsView.jsx` und `App.jsx`.
+  - Saubere Injektion und Standardisierung über `import.meta.env.VITE_SUPABASE_URL` und `import.meta.env.VITE_SUPABASE_ANON_KEY` in `.env`.
+
 ### Added
 - **📱 100% Offline-Fähigkeit & PWA-Integration (Progressive Web App):**
   - **Service Worker & Workbox Caching (`vite-plugin-pwa`, `vite.config.js`):** Vollständiges Offline-Caching aller Kern-Dateien (HTML, JS, CSS, Icons) und externer Google Fonts über Workbox Runtime-Caching.

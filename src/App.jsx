@@ -548,7 +548,7 @@ function App() {
   const [supabaseConfig, setSupabaseConfig] = useState(() => {
     return JSON.parse(localStorage.getItem('f_sb_config')) || {
       url: import.meta.env.VITE_SUPABASE_URL || 'https://ypqlssyrlykjzjnoyjoa.supabase.co',
-      anonKey: import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwcWxzc3lybHlranpqbm95am9hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzMTc5OTYsImV4cCI6MjA5Nzg5Mzk5Nn0.l1gbcQkrgjGJyTsRp3cjCqYIVrme9M48sbqUILhoAes'
+      anonKey: import.meta.env.VITE_SUPABASE_ANON_KEY || ''
     };
   });
   const [supabaseLogs, setSupabaseLogs] = useState([]);
@@ -3799,7 +3799,7 @@ Hier ist die Frage des Nutzers:
       const expectedHash = import.meta.env.VITE_APP_PASSWORD_HASH;
       
       let isValid = false;
-      if (inputTrimmed === masterPin || inputTrimmed === '2026') {
+      if (inputTrimmed === masterPin) {
         isValid = true;
       } else if (expectedHash && expectedHash.trim() !== '') {
         const hash = await hashPassword(loginPassword);
@@ -3814,7 +3814,7 @@ Hier ist die Frage des Nutzers:
         sessionStorage.setItem('f_app_authenticated', 'true');
         setLoginPassword('');
       } else {
-        setLoginError('Ungültiger PIN / Passwort. (Standard-PIN ist 2026)');
+        setLoginError('Ungültiger PIN / Passwort.');
       }
     } catch (err) {
       console.error(err);

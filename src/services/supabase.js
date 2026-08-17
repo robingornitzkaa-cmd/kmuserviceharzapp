@@ -1,7 +1,7 @@
 import { enqueueSyncAction, flushSyncQueue } from './syncQueue';
 
-const DEFAULT_URL = 'https://ypqlssyrlykjzjnoyjoa.supabase.co';
-const DEFAULT_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwcWxzc3lybHlranpqbm95am9hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzMTc5OTYsImV4cCI6MjA5Nzg5Mzk5Nn0.l1gbcQkrgjGJyTsRp3cjCqYIVrme9M48sbqUILhoAes';
+const DEFAULT_URL = import.meta.env.VITE_SUPABASE_URL || 'https://ypqlssyrlykjzjnoyjoa.supabase.co';
+const DEFAULT_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
 const getUrl = (config) => {
   if (config && typeof config.url === 'string' && config.url.includes('supabase.co')) {

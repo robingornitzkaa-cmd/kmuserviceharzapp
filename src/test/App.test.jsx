@@ -6,6 +6,7 @@ import App from '../App'
 describe('Founder OS App - Integration Tests', () => {
   beforeEach(() => {
     localStorage.clear()
+    sessionStorage.clear()
     localStorage.setItem('f_app_authenticated', 'true')
   })
 
@@ -267,7 +268,8 @@ describe('Founder OS App - Integration Tests', () => {
   })
 
   test('Master-PIN Lock Screen sperrt unangemeldete Besucher und schaltet mit PIN 2026 frei', () => {
-    localStorage.clear() // Simuliere unangemeldeten Besucher
+    localStorage.clear()
+    sessionStorage.clear()
     render(<App />)
 
     // Lock Screen wird gerendert
@@ -284,6 +286,26 @@ describe('Founder OS App - Integration Tests', () => {
     fireEvent.click(screen.getByRole('button', { name: /App freischalten/i }))
 
     // Dashboard ist freigeschaltet
+    expect(screen.getByText(/Voice Quick-Capture Studio/i)).toBeInTheDocument()
+  })
+
+  test('Master-PIN Lock Screen akzeptiert bei benutzerdefiniertem PIN nur diesen und lehnt Default 2026 ab', () => {
+    localStorage.clear()
+    sessionStorage.clear()
+    localStorage.setItem('f_master_pin', '9876') // Benutzerdefinierter PIN gesetzt
+    render(<App />)
+
+    expect(screen.getByText('Founder OS – Geschützt')).toBeInTheDocument()
+    const pinInput = screen.getByPlaceholderText(/PIN eingeben/i)
+
+    // Versuch mit altem Default-PIN 2026 muss fehlschlagen
+    fireEvent.change(pinInput, { target: { value: '2026' } })
+    fireEvent.click(screen.getByRole('button', { name: /App freischalten/i }))
+    expect(screen.getByText(/Ungültiger PIN/i)).toBeInTheDocument()
+
+    // Richtiger neuer PIN 9876 schaltet frei
+    fireEvent.change(pinInput, { target: { value: '9876' } })
+    fireEvent.click(screen.getByRole('button', { name: /App freischalten/i }))
     expect(screen.getByText(/Voice Quick-Capture Studio/i)).toBeInTheDocument()
   })
 
@@ -411,6 +433,28 @@ describe('Founder OS App - Integration Tests', () => {
     // Prüfen ob Live Board sichtbar ist
     expect(await screen.findByText('Coaching Live- & Präsentations-Board')).toBeInTheDocument()
     expect(screen.getByText('Coaching-Gesamtfortschritt')).toBeInTheDocument()
+  })
+
+  test('Coaching Live-Portal sperrt Default-PIN 1234 wenn ein benutzerdefinierter PIN gesetzt ist', async () => {
+    localStorage.setItem('f_portal_pin', '5678')
+    render(<App />)
+
+    const portalTab = screen.getByRole('button', { name: /Coaching Live-Portal/i })
+    fireEvent.click(portalTab)
+
+    expect(await screen.findByText('Coaching Live-Portal')).toBeInTheDocument()
+    const pinInput = await screen.findByPlaceholderText('PIN eingeben...')
+
+    // Versuch mit Default 1234 muss fehlschlagen
+    fireEvent.change(pinInput, { target: { value: '1234' } })
+    const unlockBtn = screen.getByRole('button', { name: /Portal Freischalten/i })
+    fireEvent.click(unlockBtn)
+    expect(await screen.findByText(/Falsche PIN/i)).toBeInTheDocument()
+
+    // Neuer PIN 5678 schaltet frei
+    fireEvent.change(pinInput, { target: { value: '5678' } })
+    fireEvent.click(unlockBtn)
+    expect(await screen.findByText('Coaching Live- & Präsentations-Board')).toBeInTheDocument()
   })
 
   test('Data Hub & Backup Manager: Modal öffnet sich und rendert Export/Import-Tabs', () => {

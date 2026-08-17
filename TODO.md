@@ -1,6 +1,12 @@
 # TODO - Founder OS
 
 ### Wichtig
+- [x] **🔒 [Sicherheit] Hardcoded PIN-Bypasses entfernt (Task 1):** Statische Fallback-PINs (`2026` in `App.jsx`, `1234` in `CoachingLivePortal.jsx`) entfernt; geänderte Master-PINs und Portal-PINs greifen jetzt strikt ohne Hintertür. Inklusive Regressionstests.
+- [x] **🛡️ [Sicherheit] Supabase Anon-Key zentralisiert (Task 2):** Hardcoded JWT-Anon-Keys aus `supabase.js`, `LeadsView.jsx` und `App.jsx` entfernt und sauber an `.env` (`VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`) gebunden.
+- [ ] **🧹 [Wartbarkeit] Toten Code aus `App.jsx` bereinigen (Task 3):** Duplizierte Onboarding- und Lead-Handler (Zeilen 1822–2235) in `App.jsx` restlos entfernen.
+- [ ] **⚙️ [Code-Qualität] 157 Linter-Warnungen beheben (Task 4):** Unbenutzte Imports (`BrainCircuit`, `CheckCircle`, `Info`) und unnötige Regex-Escapes bereinigen.
+- [ ] **💾 [Stabilität] IndexedDB für Bild-Uploads einbinden (Task 5):** `mediaGallery` und Dateianhänge aus `localStorage` in IndexedDB auslagern, um 5MB-QuotaExceeded-Abstürze zu verhindern.
+- [ ] **🧩 [Architektur] Einführung von React Context / State Management (Task 6):** Aufteilung der 90+ States in `App.jsx` in modulare Context-Provider (`AuthContext`, `DataContext`, `SettingsContext`).
 - [x] **📱 100% PWA Offline-Fähigkeit & Service Worker Caching:** Vollständige Offline-Lauffähigkeit via `vite-plugin-pwa`, Workbox Asset- & Font-Caching, Web App Manifest und Capacitor Asset-Sync für unterbrechungsfreie Nutzung auch ohne Internetverbindung.
 - [x] **🎙️ Voice Quick-Capture Studio (Feature 2 - v28):** Diktier- und Audio-Studio im Cockpit mit Web Audio API Chime, Wave-Puls, Tag-Pills (`#Wichtig`, `#Kunde`, `#Idee`, `#Habit`, `#Dringend`, `#HarzKMU`) und 1-Klick-Multiziel-Routing (To-Do, Notizzettel, Tagesziel, CRM-Lead, Kalendertermin).
 - [x] **📦 1-Klick Data Hub & Backup Manager (Feature 3 - v28):** Systemweites Backup- & Restore-Center (`BackupManagerModal.jsx`, `backupService.js`) mit 1-Klick JSON-Vollbackup, selektivem 7-Modul-Export, Drag-and-Drop Import mit Pre-Flight Schema-Inspektor und automatischem Notfall-Rollback Snapshot.
