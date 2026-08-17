@@ -77,15 +77,15 @@ export const DashboardView = ({
   setSimpleEventTime,
   simpleEventText,
   setSimpleEventText,
-  calendarEvents,
+  calendarEvents = [],
   deleteCalendarEvent,
-  dashboardLinks,
+  dashboardLinks = [],
   handleDeleteQuickLink,
   handleAddQuickLink,
-  newLinkTitle,
-  setNewLinkTitle,
-  newLinkUrl,
-  setNewLinkUrl,
+  newLinkTitle = '',
+  setNewLinkTitle = () => {},
+  newLinkUrl = '',
+  setNewLinkUrl = () => {},
   activeUmsatz,
   activeProjectsList,
   pipelineUmsatz,
@@ -785,7 +785,7 @@ export const DashboardView = ({
                   </div>
 
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem', overflowY: 'auto', maxHeight: '180px' }}>
-                    {dashboardLinks.map(link => (
+                    {(dashboardLinks || []).map(link => (
                       <div 
                         key={link.id}
                         style={{ 
@@ -808,23 +808,29 @@ export const DashboardView = ({
                         </a>
                         <button
                           type="button"
-                          onClick={() => handleDeleteDashboardLink(link.id)}
+                          onClick={() => handleDeleteQuickLink && handleDeleteQuickLink(link.id)}
                           className="btn-icon-only text-red-500"
                           style={{ padding: '0.2rem', minWidth: 'auto', minHeight: 'auto', background: 'none' }}
+                          title="Link löschen"
                         >
                           <Trash2 size={14} />
                         </button>
                       </div>
                     ))}
+                    {(!dashboardLinks || dashboardLinks.length === 0) && (
+                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontStyle: 'italic', textAlign: 'center', padding: '1rem' }}>
+                        Keine Quick-Links angelegt.
+                      </div>
+                    )}
                   </div>
 
-                  <form onSubmit={handleAddDashboardLink} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', background: 'rgba(0,0,0,0.15)', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid var(--border-color)' }}>
+                  <form onSubmit={handleAddQuickLink} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', background: 'rgba(0,0,0,0.15)', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid var(--border-color)' }}>
                     <input
                       type="text"
                       className="input-field"
                       placeholder="Link-Name (z.B. Supabase Dashboard)"
-                      value={newLinkTitle}
-                      onChange={(e) => setNewLinkTitle(e.target.value)}
+                      value={newLinkTitle || ''}
+                      onChange={(e) => setNewLinkTitle && setNewLinkTitle(e.target.value)}
                       style={{ fontSize: '0.8rem' }}
                       required
                     />
@@ -833,8 +839,8 @@ export const DashboardView = ({
                         type="url"
                         className="input-field"
                         placeholder="URL (https://...)"
-                        value={newLinkUrl}
-                        onChange={(e) => setNewLinkUrl(e.target.value)}
+                        value={newLinkUrl || ''}
+                        onChange={(e) => setNewLinkUrl && setNewLinkUrl(e.target.value)}
                         style={{ flexGrow: 1, fontSize: '0.8rem' }}
                         required
                       />

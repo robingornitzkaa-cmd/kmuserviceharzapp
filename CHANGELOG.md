@@ -19,6 +19,9 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
   - **Dokumentation in README.md:** Übersichtstabelle aller Testbefehle und Testkonzepte.
 
 ### Fixed
+- **⚡ Bugfix Cockpit Quick-Links (ReferenceError):**
+  - Behebung des `ReferenceError: handleAddDashboardLink is not defined` beim Aktivieren oder Nutzen des Quick-Link-Widgets im Gründer-Cockpit (`DashboardView.jsx`).
+  - Vereinheitlichung der Handler- und Prop-Namen (`handleAddQuickLink` und `handleDeleteQuickLink`) sowie Absicherung gegen `undefined` mit Fallback-Werten.
 - **🔒 Sicherheit: Entfernen von Hardcoded Fallback-PINs & Passworthärtung:**
   - In `App.jsx` wurde die statische Fallback-PIN `'2026'` bei der Verifizierung entfernt. Geänderte Master-PINs greifen nun strikt ohne Hintertür.
   - In `CoachingLivePortal.jsx` wurde der Fallback `'1234'` entfernt. Das Portal wird nun ausschließlich durch die konfigurierte `portalPin` freigeschaltet.
