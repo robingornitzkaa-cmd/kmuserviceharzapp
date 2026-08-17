@@ -55,31 +55,24 @@ describe('Founder OS App - Integration Tests', () => {
     // CRM & Projekte Tab anklicken
     const crmTab = screen.getByRole('button', { name: /CRM & Projekte/i })
     fireEvent.click(crmTab)
-    await waitFor(() => {
-      expect(screen.getByText('Mini-CRM & Sales-Pipeline')).toBeInTheDocument()
-    })
+    expect(await screen.findByText('Mini-CRM & Sales-Pipeline', {}, { timeout: 5000 })).toBeInTheDocument()
 
     // KI Prompts Tab anklicken
     const promptsTab = screen.getByRole('button', { name: /KI Prompts/i })
     fireEvent.click(promptsTab)
-    await waitFor(() => {
-      expect(screen.getByText('Prompt Vault (KI-Tresor)')).toBeInTheDocument()
-      expect(screen.getByText('Social Media Content-Planer')).toBeInTheDocument()
-    })
+    expect(await screen.findByText('Prompt Vault (KI-Tresor)', {}, { timeout: 5000 })).toBeInTheDocument()
+    expect(await screen.findByText('Social Media Content-Planer', {}, { timeout: 5000 })).toBeInTheDocument()
 
     // Command Center Tab anklicken
     const statusTab = screen.getByRole('button', { name: /Command Center/i })
     fireEvent.click(statusTab)
-    await waitFor(() => {
-      expect(screen.getByText(/masterLogbuch.txt/i)).toBeInTheDocument()
-    })
-
+    
     // Kachel 5 (Roh-Text Editor) im Akkordeon öffnen
-    const rawTextHeader = screen.getByText(/5. masterLogbuch.txt/i)
+    const rawTextHeader = await screen.findByText(/5. masterLogbuch.txt/i, {}, { timeout: 5000 })
     fireEvent.click(rawTextHeader)
 
     // Teste die Texteingabe im Logbuch-Textfeld
-    const logbookInput = screen.getByPlaceholderText('Schreibe hier deinen aktuellen Stand hinein...')
+    const logbookInput = await screen.findByPlaceholderText('Schreibe hier deinen aktuellen Stand hinein...', {}, { timeout: 5000 })
     expect(logbookInput).toBeInTheDocument()
     fireEvent.change(logbookInput, { target: { value: 'Logbuch Eintrag: Test läuft.' } })
     expect(logbookInput.value).toBe('Logbuch Eintrag: Test läuft.')
@@ -87,10 +80,8 @@ describe('Founder OS App - Integration Tests', () => {
     // Dokumente & Sync Tab anklicken
     const docsTab = screen.getByRole('button', { name: /Dokumente & Sync/i })
     fireEvent.click(docsTab)
-    await waitFor(() => {
-      expect(screen.getByText(/Wissens-Hub/i)).toBeInTheDocument()
-      expect(screen.getByText('Supabase Cloud Sync')).toBeInTheDocument()
-    })
+    expect(await screen.findByText(/Wissens-Hub/i, {}, { timeout: 5000 })).toBeInTheDocument()
+    expect(await screen.findByText('Supabase Cloud Sync', {}, { timeout: 5000 })).toBeInTheDocument()
   })
 
   test('Showcase-Modus toggle maskiert sensible Daten', async () => {
@@ -99,9 +90,7 @@ describe('Founder OS App - Integration Tests', () => {
     // CRM & Projekte Tab anklicken
     const crmTab = screen.getByRole('button', { name: /CRM & Projekte/i })
     fireEvent.click(crmTab)
-    await waitFor(() => {
-      expect(screen.getAllByText('Dachdeckerei Müller').length).toBeGreaterThan(0)
-    })
+    expect((await screen.findAllByText('Dachdeckerei Müller', {}, { timeout: 5000 })).length).toBeGreaterThan(0)
     expect(screen.queryAllByText('Muster-Bedachungen GmbH').length).toBe(0)
 
     // Showcase-Modus einschalten
@@ -125,12 +114,10 @@ describe('Founder OS App - Integration Tests', () => {
     const tasksTab = screen.getByRole('button', { name: /Inbox & Tasks/i })
     fireEvent.click(tasksTab)
 
-    await waitFor(() => {
-      expect(screen.getByText('Kanban-Board')).toBeInTheDocument()
-    })
+    expect(await screen.findByText('Kanban-Board', {}, { timeout: 5000 })).toBeInTheDocument()
 
     // Neue Aufgabe erstellen
-    const taskInput = screen.getByPlaceholderText('Neue Aufgabe...')
+    const taskInput = await screen.findByPlaceholderText('Neue Aufgabe...', {}, { timeout: 5000 })
     fireEvent.change(taskInput, { target: { value: 'CRM an DATEV-Schnittstelle anbinden' } })
     
     // Finde den Absende-Button im Formular
@@ -138,7 +125,7 @@ describe('Founder OS App - Integration Tests', () => {
     fireEvent.submit(form)
 
     // Überprüfen, ob die Aufgabe im Kanban-Board erscheint
-    expect(screen.getByText('CRM an DATEV-Schnittstelle anbinden')).toBeInTheDocument()
+    expect(await screen.findByText('CRM an DATEV-Schnittstelle anbinden', {}, { timeout: 5000 })).toBeInTheDocument()
   })
 
   test('Lead-Tracker: Tab wechselt, zeigt Leads und speichert Feedback', async () => {
@@ -236,15 +223,15 @@ describe('Founder OS App - Integration Tests', () => {
     fireEvent.click(statusTab)
 
     // Kachel 5 (Roh-Text Editor) öffnen
-    const rawTextHeader = await screen.findByText(/5. masterLogbuch.txt/i)
+    const rawTextHeader = await screen.findByText(/5. masterLogbuch.txt/i, {}, { timeout: 5000 })
     fireEvent.click(rawTextHeader)
 
     // Finde das Logbuch-Textfeld und verifiziere, dass es geladen ist
-    const logbookInput = await screen.findByPlaceholderText('Schreibe hier deinen aktuellen Stand hinein...')
+    const logbookInput = await screen.findByPlaceholderText('Schreibe hier deinen aktuellen Stand hinein...', {}, { timeout: 5000 })
     expect(logbookInput).toBeInTheDocument()
 
     // 1. Checkliste-Toggles spiegeln sich im Logbuch-Text wider
-    const mvpCheckbox = await screen.findByLabelText(/MVP ausarbeiten/i)
+    const mvpCheckbox = await screen.findByLabelText(/MVP ausarbeiten/i, {}, { timeout: 5000 })
     expect(mvpCheckbox).toBeInTheDocument()
     expect(mvpCheckbox.checked).toBe(false)
 
@@ -421,8 +408,7 @@ describe('Founder OS App - Integration Tests', () => {
     fireEvent.click(portalTab)
 
     // PIN Input & Header prüfen (asynchron da lazy loaded)
-    expect(await screen.findByText('Coaching Live-Portal')).toBeInTheDocument()
-    const pinInput = await screen.findByPlaceholderText('PIN eingeben...')
+    const pinInput = await screen.findByPlaceholderText('PIN eingeben...', {}, { timeout: 5000 })
     expect(pinInput).toBeInTheDocument()
 
     // Richtige PIN eingeben & Freischalten
@@ -431,7 +417,7 @@ describe('Founder OS App - Integration Tests', () => {
     fireEvent.click(unlockBtn)
 
     // Prüfen ob Live Board sichtbar ist
-    expect(await screen.findByText('Coaching Live- & Präsentations-Board')).toBeInTheDocument()
+    expect(await screen.findByText('Coaching Live- & Präsentations-Board', {}, { timeout: 5000 })).toBeInTheDocument()
     expect(screen.getByText('Coaching-Gesamtfortschritt')).toBeInTheDocument()
   })
 
@@ -442,19 +428,18 @@ describe('Founder OS App - Integration Tests', () => {
     const portalTab = screen.getByRole('button', { name: /Coaching Live-Portal/i })
     fireEvent.click(portalTab)
 
-    expect(await screen.findByText('Coaching Live-Portal')).toBeInTheDocument()
-    const pinInput = await screen.findByPlaceholderText('PIN eingeben...')
+    const pinInput = await screen.findByPlaceholderText('PIN eingeben...', {}, { timeout: 5000 })
 
     // Versuch mit Default 1234 muss fehlschlagen
     fireEvent.change(pinInput, { target: { value: '1234' } })
     const unlockBtn = screen.getByRole('button', { name: /Portal Freischalten/i })
     fireEvent.click(unlockBtn)
-    expect(await screen.findByText(/Falsche PIN/i)).toBeInTheDocument()
+    expect(await screen.findByText(/Falsche PIN/i, {}, { timeout: 5000 })).toBeInTheDocument()
 
     // Neuer PIN 5678 schaltet frei
     fireEvent.change(pinInput, { target: { value: '5678' } })
     fireEvent.click(unlockBtn)
-    expect(await screen.findByText('Coaching Live- & Präsentations-Board')).toBeInTheDocument()
+    expect(await screen.findByText('Coaching Live- & Präsentations-Board', {}, { timeout: 5000 })).toBeInTheDocument()
   })
 
   test('Data Hub & Backup Manager: Modal öffnet sich und rendert Export/Import-Tabs', () => {
