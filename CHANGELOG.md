@@ -4,6 +4,20 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 
 ## [Unreleased]
 
+### Added
+- **🧪 Modulare Feature-Test-Abteilung & Schnelle Test-Infrastruktur (`src/test/features/`):**
+  - **8 dedizierte Feature-Test-Suiten:**
+    - `crm.test.jsx`: Mini-CRM & Sales-Pipeline, Lead-Neuanlage, Phasenwechsel & Löschen.
+    - `kanban.test.jsx`: Aufgaben-Erstellung, Spalten-Zuweisung, Status & Inbox-Konvertierung.
+    - `salesAndSop.test.jsx`: ROI-Kalkulator-Formeln, Fördermittel-Regionen & aktive SOP-Checklisten.
+    - `promptVault.test.jsx`: Prompt-Vault Baukasten, Vorlagen-Erstellung, Platzhalter & Suche.
+    - `commandCenter.test.jsx`: Master-Logbuch Bearbeitung, Roadmap-Matrix & Meilensteine.
+    - `coaching.test.jsx`: PIN-Gate Schutz, Life OS Belohnungs-Shop & Disziplin-Strafen.
+    - `syncAndBackup.test.jsx`: Data Hub JSON-Schema Backup, Notfall-Snapshots & Offline Sync-Queue.
+    - `dashboard.test.jsx`: Voice Quick-Capture Studio, Tag-Pills & Multi-Target Routing.
+  - **Komfortable NPM-Schnellstartbefehle:** `npm run test:crm`, `npm run test:kanban`, `npm run test:sales`, `npm run test:prompts`, `npm run test:command`, `npm run test:coaching`, `npm run test:sync`, `npm run test:dashboard`, `npm run test:features` (führt alle Feature-Tests in ~3.9s aus) und `npm run test:all`.
+  - **Dokumentation in README.md:** Übersichtstabelle aller Testbefehle und Testkonzepte.
+
 ### Fixed
 - **🔒 Sicherheit: Entfernen von Hardcoded Fallback-PINs & Passworthärtung:**
   - In `App.jsx` wurde die statische Fallback-PIN `'2026'` bei der Verifizierung entfernt. Geänderte Master-PINs greifen nun strikt ohne Hintertür.

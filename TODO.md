@@ -33,9 +33,11 @@
   - Chronologischer Activity-Stream / Audit-Log für das Cockpit.
   - 1-Klick JSON-Vollbackup & Wiederherstellung (`BackupManagerModal.jsx`).
   - Erweiterter NLP-Parser für Notizen & Termine (`nlpParser.js`).
-- [ ] **🧪 Groß-Optimierung Batch 6 (Qualitätssicherung, Tests & Doku-Abschluss):**
-  - Vitest Test-Suite Ausbau für Services und Hooks.
-  - Aktualisierung von `README.md` und `STATUS.md`.
+- [x] **🧪 Groß-Optimierung Batch 6 (Modulare Test-Abteilung & Qualitätssicherung):**
+  - 8 eigenständige Feature-Test-Suiten in `src/test/features/` (CRM, Kanban, ROI/SOPs, Prompts, CommandCenter, Coaching, Sync/Backup, Dashboard).
+  - 100% Pass-Rate (31/31 Tests grün in unter 4 Sekunden).
+  - Komfort-Skripte in `package.json` für blitzschnelle isolierte Feature-Tests.
+  - Vollständige Aktualisierung von `README.md`, `CHANGELOG.md` und `TODO.md`.
 - [x] **🎯 Coaching Live-Portal & Grafik-/Persona-Anhänge (Phase v27):** Direkte Datei- & Grafik-Upload-Funktion (PNG, JPG, WEBP, SVG, PDF) an Coaching-Termine, Kanban-Aufgaben und im Wissens-Hub (DocsHub). Vollbild-Präsentationsmodus (Lightbox). Geschütztes **Coaching Live-Portal** (`CoachingLivePortal.jsx`) mit PIN-Sperre (`1234`) zur sauberen Präsentation von Meilensteinen, Zielgruppen-Personas und Ergebnisse in Zoom/Teams-Calls ohne Bildschirm-Share-Risiko. Full Test Coverage (14/14 Pass).
 - [x] **🌐 KMU Service Harz Webseiten-Relaunch & Neue Positionierung:** Vollständige Überarbeitung der Webseiten-Vorschau (`WebsiteView.jsx`, `websiteContent.js`) passend zur Unternehmensstrategie:
   - *Neues Leitmotiv & Positionierung:* „Der Handwerker für digitale Infrastruktur“ & „Schluss mit dem Büro-Sonntag“.

@@ -9,7 +9,17 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:crm": "vitest run src/test/features/crm.test.jsx",
+    "test:kanban": "vitest run src/test/features/kanban.test.jsx",
+    "test:sales": "vitest run src/test/features/salesAndSop.test.jsx",
+    "test:prompts": "vitest run src/test/features/promptVault.test.jsx",
+    "test:command": "vitest run src/test/features/commandCenter.test.jsx",
+    "test:coaching": "vitest run src/test/features/coaching.test.jsx",
+    "test:sync": "vitest run src/test/features/syncAndBackup.test.jsx",
+    "test:dashboard": "vitest run src/test/features/dashboard.test.jsx",
+    "test:features": "vitest run src/test/features",
+    "test:all": "vitest run"
   },
   "dependencies": {
     "@capacitor/android": "^8.4.1",

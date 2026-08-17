@@ -119,15 +119,36 @@ Die Anwendung ist für den mobilen Einsatz als native Android-App vorbereitet.
 
 ---
 
-## 🧪 Testanleitung (Wie teste ich die App?)
+## 🧪 Test-Abteilung & Qualitätssicherung
 
-1. **Showcase-Modus:** Aktiviere in der Kopfleiste den Schalter "Showcase". Alle Kunden- und Firmendaten werden anonymisiert, um Robin die Präsentation beim Kunden zu ermöglichen.
-2. **Reset-Funktion:** Nutze den roten "Reset"-Button im Header, um den `localStorage` zu löschen und Demodaten frisch einzuspielen.
-3. **Tab-Splitting & Master-Logbuch testen:**
-   - Klicke oben auf **KI Prompts** ➔ Nutze den RAG Bot, erstelle eigene Prompt-Bausteine oder verwalte Posts im Content-Planer.
-   - Klicke oben auf **Dokumente & Sync** ➔ Auf der rechten Seite siehst du permanent dein **masterLogbuch.txt** mit all deinen echten Strategie-Variablen und To-Dos. Nimm hier eine Änderung vor – sie wird sofort im Browser gespeichert.
-   - Erstelle links im Wissens-Hub ein neues Dokument. Klicke auf "Google Drive & NotebookLM aktualisieren" und beobachte das Terminal-Log, bis das Dokument von `☁️ Nur Lokal` auf `✅ Synchronisiert` wechselt.
-4. **Automatisierte Tests ausführen:**
-   - Führe `npm run test` im Terminal aus.
-   - Vitest führt alle Integrationstests aus und verifiziert das fehlerfreie Zusammenspiel aller UI-Tabs und Berechnungen.
+Das Projekt verfügt über eine vollständige, modulare **Test-Abteilung** mit 8 eigenständigen Feature-Test-Suiten in `src/test/features/`. Dadurch können Tests für einzelne Features in unter 1 Sekunde ausgeführt werden, ohne die gesamte App laden zu müssen.
+
+### ⚡ Schnelle Feature-Tests (Gezielte Ausführung)
+
+| Feature / Bereich | NPM-Befehl | Was wird getestet? |
+| :--- | :--- | :--- |
+| **Mini-CRM & Pipeline** | `npm run test:crm` | Neuanlage von Leads, Phasenwechsel, Filter & Löschen |
+| **Kanban & Aufgaben** | `npm run test:kanban` | Task-Erstellung, Spalten-Zuweisung, Inbox-Konvertierung |
+| **Sales, SOPs & ROI** | `npm run test:sales` | ROI-Kalkulator-Formeln, Regionen-Förderung, SOP-Checklisten |
+| **KI-Tresor (Prompt Vault)** | `npm run test:prompts` | Prompt-Erstellung, Platzhalter, Kategorien & Suche |
+| **Command Center & Roadmap** | `npm run test:command` | Master-Logbuch Bearbeitung, Roadmap-Matrix, Meilensteine |
+| **Coaching & Gamification** | `npm run test:coaching` | PIN-Gate Schutz, Belohnungs-Shop & Disziplin-Strafen |
+| **Sync & Backup Manager** | `npm run test:sync` | 1-Klick Backup JSON-Schema, Notfall-Snapshots, Sync-Queue |
+| **Dashboard & Voice Capture** | `npm run test:dashboard` | Voice-Diktat Routing, Hashtags & Fokus-Timer |
+
+### 🚀 Gesamte Test-Läufe
+
+- **Alle Feature-Tests zusammen (~3.9s):**
+  ```bash
+  npm run test:features
+  ```
+- **Interaktiver Entwickler-Watch-Modus (Hot-Reload bei Code-Änderung):**
+  ```bash
+  npm run test:watch
+  ```
+- **Gesamter Integrations-Test:**
+  ```bash
+  npm run test:all
+  ```
+
 
