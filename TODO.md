@@ -1,6 +1,7 @@
 # TODO - Founder OS
 
 ### Wichtig
+- [x] **☁️ [Sync] Supabase Cloud-Sync Reparatur für Notizen & To-Dos:** Behebung des HTTP 400 Fehlers (`media_gallery` Spalte in `dashboard_state`), Anon-Key Fallbacks in `App.jsx` & `supabase.js`, Ersetzen des Pseudo-Sync-Timeouts durch echten bidirektionalen Sync und Beseitigung der 1.5s Zeitstempel-Blockade.
 - [x] **⚡ [Prompts] God of Prompt Integration (67 Vorlagen, 17 Fachgebiete):** Vollständige Extraktion, Formatierung und native Integration der God-of-Prompt-Bibliothek in den Prompt Vault. Inklusive Subkategorien-Filterleiste, 1-Klick-Übernahme, Batch-Import, JSON-Exportdatei (`public/godofprompt_library_export.json`) und Tests.
 - [x] **🔒 [Sicherheit] Hardcoded PIN-Bypasses entfernt (Task 1):** Statische Fallback-PINs (`2026` in `App.jsx`, `1234` in `CoachingLivePortal.jsx`) entfernt; geänderte Master-PINs und Portal-PINs greifen jetzt strikt ohne Hintertür. Inklusive Regressionstests.
 - [x] **🛡️ [Sicherheit] Supabase Anon-Key zentralisiert (Task 2):** Hardcoded JWT-Anon-Keys aus `supabase.js`, `LeadsView.jsx` und `App.jsx` entfernt und sauber an `.env` (`VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`) gebunden.

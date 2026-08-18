@@ -4,6 +4,14 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 
 ## [Unreleased]
 
+### Fixed
+- **☁️ Supabase Cloud-Sync Reparatur für Notizen & To-Dos (Handy ↔ PC):**
+  - **Behebung des HTTP 400 Schema-Fehlers:** Die fehlende Spalte `media_gallery` in `public.dashboard_state` führte bei jedem Speichervorgang zu einem API-Abbruch. Spalte in Supabase nachgerüstet und Payload-Struktur standardisiert.
+  - **Absicherung des Supabase Anon-Key Fallbacks (`supabase.js`, `App.jsx`):** Robuster Fallback verhindert 401-Fehler bei unvollständigen oder alten `localStorage`-Konfigurationen auf Mobilgeräten.
+  - **Echter Sync statt Pseudo-Timer (`triggerSupabaseSync`):** 2.4s Mock-Timeout durch echte bidirektionale Push/Pull-Logik mit Live-Log und Statusanzeige ersetzt. Lokale Änderungen werden vor dem Remote-Abruf sofort zur Cloud übertragen.
+  - **Entfernung des `keepalive`-Payload-Limits:** Browser-Quota-Fehler bei längeren Texten und Notizen in WebViews behoben.
+  - **Capacitor & PWA Sync:** Aktualisierung der gebauten Android-Assets via `npx cap copy`.
+
 ### Added
 - **⚡ God of Prompt - 67 kuratierte B2B- & Strategy-Prompts (`src/constants/godOfPromptLibrary.js`):**
   - **17 hochrelevante Fachgebiete direkt in den Prompt Vault integriert:**

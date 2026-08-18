@@ -1,19 +1,19 @@
-import { enqueueSyncAction, flushSyncQueue } from './syncQueue';
+import { enqueueSyncAction, flushSyncQueue } from './syncQueue.js';
 
-const DEFAULT_URL = import.meta.env.VITE_SUPABASE_URL || 'https://ypqlssyrlykjzjnoyjoa.supabase.co';
-const DEFAULT_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+const DEFAULT_URL = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_URL) || 'https://ypqlssyrlykjzjnoyjoa.supabase.co';
+const DEFAULT_KEY = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_ANON_KEY) || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwcWxzc3lybHlranpqbm95am9hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzMTc5OTYsImV4cCI6MjA5Nzg5Mzk5Nn0.l1gbcQkrgjGJyTsRp3cjCqYIVrme9M48sbqUILhoAes';
 
 const getUrl = (config) => {
   if (config && typeof config.url === 'string' && config.url.includes('supabase.co')) {
-    return config.url;
+    return config.url.trim();
   }
   return DEFAULT_URL;
 };
 
 const getKey = (config) => {
   const k = config && (config.anonKey || config.key);
-  if (k && typeof k === 'string' && k.length > 20) {
-    return k;
+  if (k && typeof k === 'string' && k.trim().length > 20) {
+    return k.trim();
   }
   return DEFAULT_KEY;
 };
@@ -192,7 +192,6 @@ export const saveDashboardStateToSupabase = async (stateData, supabaseConfig) =>
         'Content-Type': 'application/json',
         'Prefer': 'resolution=merge-duplicates'
       },
-      keepalive: true,
       body: JSON.stringify(payload)
     });
     if (response.ok) return true;

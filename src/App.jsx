@@ -547,10 +547,21 @@ function App() {
   const [supabaseLastSync, setSupabaseLastSync] = useState(() => localStorage.getItem('f_sb_last_sync') || 'Noch nie');
   const [isInitialStateLoaded, setIsInitialStateLoaded] = useState(false);
   const [supabaseConfig, setSupabaseConfig] = useState(() => {
-    return JSON.parse(localStorage.getItem('f_sb_config')) || {
-      url: import.meta.env.VITE_SUPABASE_URL || 'https://ypqlssyrlykjzjnoyjoa.supabase.co',
-      anonKey: import.meta.env.VITE_SUPABASE_ANON_KEY || ''
-    };
+    const fallbackUrl = import.meta.env.VITE_SUPABASE_URL || 'https://ypqlssyrlykjzjnoyjoa.supabase.co';
+    const fallbackKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwcWxzc3lybHlranpqbm95am9hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzMTc5OTYsImV4cCI6MjA5Nzg5Mzk5Nn0.l1gbcQkrgjGJyTsRp3cjCqYIVrme9M48sbqUILhoAes';
+    try {
+      const saved = JSON.parse(localStorage.getItem('f_sb_config'));
+      if (saved && typeof saved === 'object') {
+        const url = (saved.url && typeof saved.url === 'string' && saved.url.trim()) || fallbackUrl;
+        const anonKey = (saved.anonKey && typeof saved.anonKey === 'string' && saved.anonKey.trim().length > 20)
+          ? saved.anonKey.trim()
+          : ((saved.key && typeof saved.key === 'string' && saved.key.trim().length > 20) ? saved.key.trim() : fallbackKey);
+        return { url, anonKey };
+      }
+      return { url: fallbackUrl, anonKey: fallbackKey };
+    } catch {
+      return { url: fallbackUrl, anonKey: fallbackKey };
+    }
   });
   const [supabaseLogs, setSupabaseLogs] = useState([]);
   const [ollamaLoading, setOllamaLoading] = useState(false);
@@ -777,11 +788,9 @@ function App() {
     localStorage.setItem('f_dash_todos', JSON.stringify(dashTodos));
   }, [dashTodos]);
   useEffect(() => {
-    if (isInitialStateLoaded) {
-      const nowIso = new Date().toISOString();
-      setDashLocalUpdatedAt(nowIso);
-      localStorage.setItem('f_dash_local_updated_at', nowIso);
-    }
+    const nowIso = new Date().toISOString();
+    setDashLocalUpdatedAt(nowIso);
+    localStorage.setItem('f_dash_local_updated_at', nowIso);
   }, [dashNotes, dashNotesList, dashTodos, stickyNoteColor, dashboardWidgets, dashboardMode]);
 
   // Phase v9: Sync to Android Widget
@@ -962,11 +971,15 @@ function App() {
         dashboardWidgets,
         dashboardMode,
         promptsList: currentPrompts,
+        mediaGallery,
         updatedAt: nowIso
       }, supabaseConfig);
 
       if (ok) {
         setSupabaseSyncStatus('connected');
+        const nowStr = new Date().toLocaleString('de-DE');
+        setSupabaseLastSync(nowStr);
+        localStorage.setItem('f_sb_last_sync', nowStr);
       } else {
         setSupabaseSyncStatus('error');
       }
@@ -980,7 +993,7 @@ function App() {
 
   // Synchronize all core data (Dashboard State, Prompts, Leads) from Supabase Cloud
   const syncAllFromCloud = async (showToastOnFinish = false) => {
-    if (!isOnline) return;
+    if (!isOnline) return false;
     try {
       setSupabaseSyncStatus('syncing');
 
@@ -994,8 +1007,8 @@ function App() {
         const localTimeStr = localStorage.getItem('f_dash_local_updated_at');
         const localTime = localTimeStr ? new Date(localTimeStr).getTime() : 0;
 
-        // If local has unsaved edits newer than remote cloud timestamp (by > 1.5s), push local to cloud instead of overwriting local
-        if (localTime > remoteTime && (localTime - remoteTime > 1500)) {
+        // If local has edits strictly newer than remote cloud timestamp, push local to cloud instead of overwriting local
+        if (localTime > remoteTime) {
           const nowIso = localTimeStr || new Date().toISOString();
           const currentPrompts = JSON.parse(localStorage.getItem('f_prompts') || '[]') || prompts;
           await saveDashboardStateToSupabase({
@@ -1006,6 +1019,7 @@ function App() {
             dashboardWidgets: JSON.parse(localStorage.getItem('f_dashboard_widgets') || '[]'),
             dashboardMode: localStorage.getItem('f_dashboard_mode') || dashboardMode,
             promptsList: currentPrompts,
+            mediaGallery: JSON.parse(localStorage.getItem('f_media_gallery') || '[]'),
             updatedAt: nowIso
           }, supabaseConfig);
         } else {
@@ -1076,9 +1090,11 @@ function App() {
       if (showToastOnFinish) {
         showToast('☁️ Erfolgreich mit Cloud synchronisiert!');
       }
+      return true;
     } catch (e) {
       console.error("Fehler beim Synchronisieren mit Supabase:", e);
       setSupabaseSyncStatus('error');
+      return false;
     } finally {
       setIsInitialStateLoaded(true);
     }
@@ -1113,6 +1129,7 @@ function App() {
     const timer = setTimeout(async () => {
       try {
         const nowIso = localStorage.getItem('f_dash_local_updated_at') || new Date().toISOString();
+        const currentPrompts = JSON.parse(localStorage.getItem('f_prompts') || '[]') || prompts;
         const ok = await saveDashboardStateToSupabase({
           dashNotes,
           stickyNoteColor,
@@ -1120,11 +1137,15 @@ function App() {
           dashTodos,
           dashboardWidgets,
           dashboardMode,
+          promptsList: currentPrompts,
           mediaGallery,
           updatedAt: nowIso
         }, supabaseConfig);
         if (ok) {
           setSupabaseSyncStatus('connected');
+          const nowStr = new Date().toLocaleString('de-DE');
+          setSupabaseLastSync(nowStr);
+          localStorage.setItem('f_sb_last_sync', nowStr);
         } else {
           setSupabaseSyncStatus('error');
         }
@@ -1746,7 +1767,7 @@ Hier ist die Frage des Nutzers:
     alert(`Erfolgreich! E-Rechnung über ${gross.toLocaleString('de-DE', { minimumFractionDigits: 2 })} € wurde an Lexoffice übertragen und in deiner Inbox verbucht.`);
   };
 
-  const triggerSupabaseSync = () => {
+  const triggerSupabaseSync = async () => {
     if (supabaseSyncStatus === 'syncing') return;
     setSupabaseSyncStatus('syncing');
     setSupabaseLogsOpen(true);
@@ -1762,62 +1783,56 @@ Hier ist die Frage des Nutzers:
     ]);
  
     if (!isOnline) {
-      setTimeout(() => {
-        setSupabaseLogs(prev => [
-          ...prev,
-          `[${getTimestamp()}] ❌ FEHLER: Keine Internetverbindung erkannt.`,
-          `[${getTimestamp()}] 🔌 Synchronisation abgebrochen. Lokale Kopie (localStorage) ist intakt.`
-        ]);
-        setSupabaseSyncStatus('error');
-      }, 1000);
+      setSupabaseLogs(prev => [
+        ...prev,
+        `[${getTimestamp()}] ❌ FEHLER: Keine Internetverbindung erkannt.`,
+        `[${getTimestamp()}] 🔌 Synchronisation abgebrochen. Lokale Kopie (localStorage) ist intakt.`
+      ]);
+      setSupabaseSyncStatus('error');
       return;
     }
  
-    setSupabaseLogs(prev => [
-      ...prev,
-      `[${getTimestamp()}] 📡 Authentifizierung mit anon-key erfolgreich.`
-    ]);
- 
-    setTimeout(() => {
+    try {
       setSupabaseLogs(prev => [
         ...prev,
-        `[${getTimestamp()}] 📤 Analysiere lokale Tabellen (localStorage-Mirror)...`,
-        `[${getTimestamp()}] 💾 Syncing 'contacts' (${contacts.length} Zeilen)...`,
-        `[${getTimestamp()}] 💾 Syncing 'prompts' (${prompts.length} Zeilen)...`,
-        `[${getTimestamp()}] 💾 Syncing 'leads' (${leads.length} Zeilen)...`,
-        `[${getTimestamp()}] 💾 Syncing 'tasks' (${tasks.length} Zeilen)...`
+        `[${getTimestamp()}] 📡 Authentifizierung mit Supabase Cloud erfolgreich.`
       ]);
-    }, 800);
- 
-    // Real API fetch in background during sync
-    const performLiveSync = async () => {
-      try {
-        await syncAllFromCloud();
-      } catch (e) {
-        console.error("Supabase sync failed", e);
+
+      // 1. Force push local unsaved dashboard changes
+      setSupabaseLogs(prev => [
+        ...prev,
+        `[${getTimestamp()}] 📤 Übertrage Notizen & Aufgaben (${dashTodos.length} To-Dos, ${dashNotesList.length} Notizen)...`
+      ]);
+      await saveDashboardNow();
+
+      // 2. Perform full bidirectional sync
+      setSupabaseLogs(prev => [
+        ...prev,
+        `[${getTimestamp()}] 🔄 Synchronisiere Prompts, Leads und Server-Updates...`
+      ]);
+      const syncOk = await syncAllFromCloud(false);
+
+      if (syncOk) {
+        const nowStr = new Date().toLocaleString('de-DE');
+        setSupabaseLogs(prev => [
+          ...prev,
+          `[${getTimestamp()}] 🎉 Cloud-Synchronisation erfolgreich abgeschlossen!`,
+          `[${getTimestamp()}] ⏱️ Letzter erfolgreicher Sync: ${nowStr}`
+        ]);
+        showToast('☁️ Erfolgreich mit Cloud synchronisiert!');
+      } else {
+        throw new Error('Teile des Syncs konnten nicht abgeschlossen werden');
       }
-    };
-    performLiveSync();
- 
-    setTimeout(() => {
+    } catch (err) {
+      console.error('Manueller Supabase Sync fehlgeschlagen:', err);
       setSupabaseLogs(prev => [
         ...prev,
-        `[${getTimestamp()}] 💾 Syncing 'inbox' (${inbox.length} Zeilen)...`,
-        `[${getTimestamp()}] 💾 Syncing 'client_tickets' (${clientTickets.length} Zeilen)...`,
-        `[${getTimestamp()}] 📥 Empfange Updates von Remote-Datenbank...`
+        `[${getTimestamp()}] ❌ FEHLER beim Sync: ${err.message || err}`,
+        `[${getTimestamp()}] 💾 Lokale Daten sind weiterhin im Offline-Speicher gesichert.`
       ]);
-    }, 1600);
- 
-    setTimeout(() => {
-      const nowStr = new Date().toLocaleString('de-DE');
-      setSupabaseLastSync(nowStr);
-      localStorage.setItem('f_sb_last_sync', nowStr);
-      setSupabaseSyncStatus('connected');
-      setSupabaseLogs(prev => [
-        ...prev,
-        `[${getTimestamp()}] 🎉 Cloud-Synchronisation erfolgreich abgeschlossen! (Latenz: 24ms)`
-      ]);
-    }, 2400);
+      setSupabaseSyncStatus('error');
+      showToast('⚠️ Cloud-Sync fehlgeschlagen. Lokale Daten bleiben erhalten.');
+    }
   };
 
   const handleSaveLeadFeedback = async (e) => {
