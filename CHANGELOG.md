@@ -20,18 +20,23 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
   - **Capacitor & PWA Sync:** Aktualisierung der gebauten Android-Assets via `npx cap copy`.
 
 ### Added
-- **⚡ God of Prompt - 67 kuratierte B2B- & Strategy-Prompts (`src/constants/godOfPromptLibrary.js`):**
-  - **17 hochrelevante Fachgebiete direkt in den Prompt Vault integriert:**
-    - *Market Research (Marktforschung)*, *Trend Analysis (Trend-Radar)*, *Literature Review (Wissenschaftliche Synthese)*, *Competitive Analysis (Wettbewerbsanalyse)*, *Deep Research (Tiefenrecherche)*.
-    - *Brainstorming (Ideenfindung)*, *Business Plans (Geschäftsplan-Erstellung)*, *Go-to-Market (Markteintritt & $10k MRR Roadmaps)*, *Positioning & Messaging (Positionierung & Buyer Personas)*.
-    - *SWOT & Frameworks (Strategiematrizen)*, *OKRs & Goals (Ziel- und KPI-Frameworks)*, *Pricing Strategy (Preismodelle & Preissensitivität)*, *Roadmaps (Produkt- & Innovationsfahrpläne)*.
-    - *Competitive Strategy (First-Principles & Pareto-Wachstum)*, *Documentation (Code- & Styleguide-Dokumentation)*, *Debugging (Systematische Fehlersuche & Security-Audits)*, *Testing (Testdatensätze & Testpyramiden)*.
-  - **Interaktiver Subkategorien-Filter & 1-Klick-Übernahme:**
-    - Eigener Tab `⚡ God of Prompt (67)` mit horizontaler Subkategorien-Leiste.
+- **⚡ God of Prompt - 453 umfassende B2B-, Strategie- & Operations-Prompts (`src/constants/godOfPromptLibrary.js`):**
+  - **20 hochrelevante Fachgebiete (453 vollwertige Vorlagen) direkt in den Prompt Vault integriert:**
+    - *SOPs & Processes (160+ Vorlagen - 24 kuratiert)*: Standard Operating Procedures, Onboarding-Playbooks, Qualitätsmanagement & Rechnungsdurchlauf.
+    - *Workflow Design (127+ Vorlagen - 24 kuratiert)*: Make.com & Zapier Automatisierung, Prozessoptimierung, Schnittstellen-Design.
+    - *Project Management (70+ Vorlagen - 24 kuratiert)*: WSJF-Priorisierung, Meilenstein-Planung, Scope-Management, Retrospektiven.
+    - *Market Research (23 Vorlagen)*, *Trend Analysis (23 Vorlagen)*, *Literature Review (23 Vorlagen)*, *Competitive Analysis (24 Vorlagen)*, *Deep Research (23 Vorlagen)*.
+    - *Brainstorming (24 Vorlagen)*, *Business Plans (24 Vorlagen)*, *Go-to-Market (24 Vorlagen)*, *Positioning & Messaging (24 Vorlagen)*.
+    - *SWOT & Frameworks (24 Vorlagen)*, *OKRs & Goals (23 Vorlagen)*, *Pricing Strategy (24 Vorlagen)*, *Roadmaps (20 Vorlagen)*.
+    - *Competitive Strategy (14 Vorlagen)*, *Documentation (17 Vorlagen)*, *Debugging (23 Vorlagen)*, *Testing (24 Vorlagen)*.
+  - **Interaktiver 20-Fachgebiete-Filter & 1-Klick-Übernahme:**
+    - Eigener Tab `⚡ God of Prompt (453)` mit horizontaler 20-Subkategorien-Leiste und Zähler.
     - 1-Klick-Übernahme (`➕ In meinen Tresor übernehmen`) speichert Vorlagen sofort als editierbare Prompts im persönlichen Tresor inklusive Supabase-Sync.
     - Direkte Verlinkung zum jeweiligen Original-Prompt auf `godofprompt.ai`.
+  - **Performance-Optimiertes Chunk-Splitting (`vite.config.js`):**
+    - Isolierung der 453 Prompts in einen eigenen Code-Chunk (`vendor-prompts-library`), sodass das Initial-Bundle der App bei schlanken 309 kB bleibt.
   - **JSON-Export & Batch-Import:**
-    - `⚡ Alle (67) importieren`: 1-Klick Batch-Import aller 67 Prompts in den aktiven Tresor.
+    - `⚡ Alle (453) importieren`: 1-Klick Batch-Import aller 453 Prompts in den aktiven Tresor.
     - `📥 JSON`: Direkter Download der exportierten JSON-Bibliothek (`public/godofprompt_library_export.json`).
   - **100% Test-Abdeckung:** Integrationstests in `src/test/features/promptVault.test.jsx` (61/61 Tests grün).
   - **8 dedizierte Feature-Test-Suiten:**

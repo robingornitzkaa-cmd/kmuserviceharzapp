@@ -668,7 +668,7 @@ export const PromptVault = ({
             <div style={{ marginTop: '0.35rem', paddingTop: '0.5rem', borderTop: '1px dashed rgba(250, 204, 21, 0.3)', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
                 <span style={{ fontSize: '0.65rem', color: '#fde047', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                  <Zap size={11} /> 17 Fachgebiete ({gopPrompts.length} kuratierte Prompts):
+                  <Zap size={11} /> {new Set(gopPrompts.map(p => p.subcategory).filter(Boolean)).size} Fachgebiete ({gopPrompts.length} kuratierte Prompts):
                 </span>
                 <div style={{ display: 'flex', gap: '0.35rem' }}>
                   {handleImportAllGopPrompts && (
