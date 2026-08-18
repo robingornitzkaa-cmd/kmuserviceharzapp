@@ -157,8 +157,8 @@ export const MediaDropWidget = ({
       }}
     >
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.85rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.85rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flex: '1 1 auto', minWidth: '220px' }}>
           <div style={{
             width: '28px',
             height: '28px',
@@ -167,12 +167,13 @@ export const MediaDropWidget = ({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: 'var(--accent-cyan)'
+            color: 'var(--accent-cyan)',
+            flexShrink: 0
           }}>
             <Camera size={16} />
           </div>
           <div>
-            <h4 style={{ margin: 0, fontSize: '0.9rem', fontWeight: 700, color: 'white', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+            <h4 style={{ margin: 0, fontSize: '0.9rem', fontWeight: 700, color: 'white', display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
               📷 Screenshot & Foto Cloud-Drop
               <span style={{ fontSize: '0.65rem', padding: '0.1rem 0.4rem', borderRadius: '1rem', background: 'rgba(6, 182, 212, 0.15)', color: 'var(--accent-cyan)' }}>
                 Handy ↔ PC Sync
@@ -189,7 +190,7 @@ export const MediaDropWidget = ({
           onClick={() => fileInputRef.current?.click()}
           disabled={isUploading}
           className="btn btn-primary"
-          style={{ padding: '0.35rem 0.75rem', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }}
+          style={{ padding: '0.35rem 0.75rem', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.3rem', flexShrink: 0 }}
         >
           <Upload size={14} /> {isUploading ? 'Lädt...' : '+ Screenshot hochladen'}
         </button>

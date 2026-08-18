@@ -208,12 +208,14 @@ export const VoiceQuickCaptureWidget = ({
       border: isListening ? '1px solid #ef4444' : '1px solid rgba(255, 255, 255, 0.08)',
       boxShadow: isListening ? '0 0 25px rgba(239, 68, 68, 0.25)' : 'var(--card-shadow)',
       borderRadius: '0.85rem',
-      padding: '1.1rem',
-      transition: 'all 0.3s ease'
+      padding: '1rem',
+      transition: 'all 0.3s ease',
+      width: '100%',
+      boxSizing: 'border-box'
     }}>
       {/* Header mit Aufnahme-Status & Sound-Toggle */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.75rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flex: '1 1 auto', minWidth: '220px' }}>
           <div style={{
             width: '28px',
             height: '28px',
@@ -222,12 +224,13 @@ export const VoiceQuickCaptureWidget = ({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: isListening ? '#ef4444' : 'var(--accent-cyan)'
+            color: isListening ? '#ef4444' : 'var(--accent-cyan)',
+            flexShrink: 0
           }}>
             <Sparkles size={16} />
           </div>
           <div>
-            <h4 style={{ margin: 0, fontSize: '0.9rem', fontWeight: 700, color: 'white', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+            <h4 style={{ margin: 0, fontSize: '0.9rem', fontWeight: 700, color: 'white', display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
               Voice Quick-Capture Studio
               {isListening && (
                 <span style={{ 
@@ -243,12 +246,12 @@ export const VoiceQuickCaptureWidget = ({
               )}
             </h4>
             <p style={{ margin: 0, fontSize: '0.7rem', color: 'var(--text-secondary)' }}>
-              Spreche oder tippe deine Gedanken – mit 1 Klick ins richtige System sortiert.
+              Spreche oder tippe deine Gedanken – mit 1 Klick sortiert.
             </p>
           </div>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexShrink: 0 }}>
           <button
             type="button"
             onClick={() => setSoundEnabled(!soundEnabled)}
@@ -258,7 +261,12 @@ export const VoiceQuickCaptureWidget = ({
               borderRadius: '0.35rem', 
               background: 'rgba(255,255,255,0.05)',
               border: '1px solid var(--border-color)',
-              color: soundEnabled ? 'var(--accent-cyan)' : 'var(--text-muted)'
+              color: soundEnabled ? 'var(--accent-cyan)' : 'var(--text-muted)',
+              minWidth: '32px',
+              minHeight: '32px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
             }}
             title={soundEnabled ? 'Audio-Feedback aktiv' : 'Audio-Feedback stumm'}
           >
@@ -268,7 +276,7 @@ export const VoiceQuickCaptureWidget = ({
       </div>
 
       {/* Eingabefeld & Wellenform-Animation */}
-      <div style={{ position: 'relative', marginBottom: '0.75rem' }}>
+      <div style={{ position: 'relative', marginBottom: '0.75rem', width: '100%' }}>
         <textarea
           ref={inputRef}
           value={inputText}
@@ -305,8 +313,8 @@ export const VoiceQuickCaptureWidget = ({
             position: 'absolute',
             right: '8px',
             top: '8px',
-            width: '34px',
-            height: '34px',
+            width: '36px',
+            height: '36px',
             borderRadius: '0.4rem',
             background: isListening ? '#ef4444' : 'rgba(56, 189, 248, 0.15)',
             border: isListening ? '1px solid #ef4444' : '1px solid rgba(56, 189, 248, 0.3)',
@@ -345,7 +353,7 @@ export const VoiceQuickCaptureWidget = ({
       {/* Tag-Pills & Schnell-Aktionen */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.75rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
-          <Tag size={12} color="var(--text-muted)" />
+          <Tag size={12} color="var(--text-muted)" style={{ flexShrink: 0 }} />
           {QUICK_TAGS.map(t => (
             <button
               key={t}
@@ -353,7 +361,7 @@ export const VoiceQuickCaptureWidget = ({
               onClick={() => handleAddTag(t)}
               style={{
                 fontSize: '0.65rem',
-                padding: '0.15rem 0.45rem',
+                padding: '0.2rem 0.45rem',
                 borderRadius: '0.3rem',
                 background: inputText.includes(t) ? 'rgba(56, 189, 248, 0.25)' : 'rgba(255,255,255,0.05)',
                 border: inputText.includes(t) ? '1px solid var(--accent-cyan)' : '1px solid var(--border-color)',
@@ -374,19 +382,19 @@ export const VoiceQuickCaptureWidget = ({
                 type="button"
                 onClick={handleCopy}
                 className="btn-icon-only"
-                style={{ fontSize: '0.7rem', padding: '0.2rem 0.45rem', background: 'rgba(255,255,255,0.05)', borderRadius: '0.3rem', border: '1px solid var(--border-color)' }}
+                style={{ fontSize: '0.7rem', padding: '0.25rem 0.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '0.3rem', border: '1px solid var(--border-color)', minWidth: '30px', minHeight: '30px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                 title="In Zwischenablage kopieren"
               >
-                {copied ? <Check size={12} color="#10b981" /> : <Copy size={12} />}
+                {copied ? <Check size={13} color="#10b981" /> : <Copy size={13} />}
               </button>
               <button
                 type="button"
                 onClick={() => setInputText('')}
                 className="btn-icon-only"
-                style={{ fontSize: '0.7rem', padding: '0.2rem 0.45rem', background: 'rgba(255,255,255,0.05)', borderRadius: '0.3rem', border: '1px solid var(--border-color)', color: '#ef4444' }}
+                style={{ fontSize: '0.7rem', padding: '0.25rem 0.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '0.3rem', border: '1px solid var(--border-color)', color: '#ef4444', minWidth: '30px', minHeight: '30px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                 title="Text löschen"
               >
-                <Trash2 size={12} />
+                <Trash2 size={13} />
               </button>
             </>
           )}
@@ -396,7 +404,7 @@ export const VoiceQuickCaptureWidget = ({
       {/* Multi-Target Routing Buttons */}
       <div style={{ 
         display: 'grid', 
-        gridTemplateColumns: 'repeat(auto-fit, minmax(105px, 1fr))', 
+        gridTemplateColumns: 'repeat(auto-fit, minmax(88px, 1fr))', 
         gap: '0.4rem', 
         borderTop: '1px solid rgba(255,255,255,0.06)', 
         paddingTop: '0.75rem' 
@@ -420,8 +428,9 @@ export const VoiceQuickCaptureWidget = ({
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '0.35rem',
-                padding: '0.45rem 0.5rem',
+                gap: '0.3rem',
+                padding: '0.45rem 0.35rem',
+                minHeight: '36px',
                 borderRadius: '0.45rem',
                 background: isLastDispatched 
                   ? '#10b981' 
@@ -434,7 +443,8 @@ export const VoiceQuickCaptureWidget = ({
                 fontWeight: 600,
                 cursor: 'pointer',
                 transition: 'all 0.2s',
-                transform: isLastDispatched ? 'scale(1.02)' : 'none'
+                transform: isLastDispatched ? 'scale(1.02)' : 'none',
+                whiteSpace: 'nowrap'
               }}
               title={target.desc}
             >

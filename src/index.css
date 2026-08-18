@@ -333,6 +333,20 @@ body {
   }
 }
 
+/* Multi-Note & Aufgaben-Grid */
+.dashboard-notes-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 1.5rem;
+}
+
+@media (max-width: 900px) {
+  .dashboard-notes-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.25rem !important;
+  }
+}
+
 /* Quick Capture Modal/Area */
 .quick-capture-box {
   display: flex;
@@ -1930,7 +1944,8 @@ body {
   .hub-grid,
   .canvas-main-grid,
   .make-simulator-grid,
-  .inbox-tasks-grid {
+  .inbox-tasks-grid,
+  .dashboard-notes-grid {
     grid-template-columns: 1fr !important;
     gap: 1rem !important;
   }
@@ -1942,7 +1957,8 @@ body {
   .hub-grid > div,
   .canvas-main-grid > div,
   .make-simulator-grid > div,
-  .inbox-tasks-grid > div {
+  .inbox-tasks-grid > div,
+  .dashboard-notes-grid > div {
     grid-column: span 1 !important;
   }
   

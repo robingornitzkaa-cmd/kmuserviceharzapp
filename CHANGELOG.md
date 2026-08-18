@@ -5,6 +5,13 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Fixed
+- **📱 Mobile UI & Layout-Optimierung für Smartphone-Hochformat (Portrait Mode):**
+  - **Multi-Notizen & Aufgaben-Grid (`DashboardView.jsx`, `index.css`):** Das starre 2-Spalten-Layout (`1.2fr 1fr`) wurde auf mobile Einspaltigkeit (`repeat(auto-fit, minmax(280px, 1fr))`) umgestellt. Notizen und To-Do-Checkliste stapeln sich auf Mobilgeräten sauber untereinander, sodass kein Querformat-Drehen mehr nötig ist.
+  - **Voice Quick-Capture Studio (`VoiceQuickCaptureWidget.jsx`):** Flexibles Wrapping im Header, verbesserte Touch-Ziele für Sprachaufnahme (36x36px) und Tag-Pills sowie dynamisches Button-Grid (`minmax(88px, 1fr)`), damit alle 5 Routing-Ziele ohne horizontales Abschneiden bedienbar sind.
+  - **Einfache Widgets (Notizen, To-Dos, Termine, Quick-Links):** Textumbruch (`word-break: break-word`), flexible Eingabefelder mit `min-width: 0`, standardisierte Mindesthöhen (36-38px) für Touch-Bedienung und ausgerichtete Lösch-Icons.
+  - **Life OS Gamification HUD & Screenshot Cloud-Drop:** Responsives Wrapping für Level-HUD, Streak-Badge, Belohnungs-Shop und Screenshot-Upload-Button.
+  - **E-Rechnungs- & Finanzcockpit:** Einspaltiges Stacking der Formularfelder und Aktions-Buttons auf Bildschirmen unter 900px.
+
 - **☁️ Supabase Cloud-Sync Reparatur für Notizen & To-Dos (Handy ↔ PC):**
   - **Behebung des HTTP 400 Schema-Fehlers:** Die fehlende Spalte `media_gallery` in `public.dashboard_state` führte bei jedem Speichervorgang zu einem API-Abbruch. Spalte in Supabase nachgerüstet und Payload-Struktur standardisiert.
   - **Absicherung des Supabase Anon-Key Fallbacks (`supabase.js`, `App.jsx`):** Robuster Fallback verhindert 401-Fehler bei unvollständigen oder alten `localStorage`-Konfigurationen auf Mobilgeräten.

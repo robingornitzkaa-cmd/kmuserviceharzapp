@@ -1,6 +1,7 @@
 # TODO - Founder OS
 
 ### Wichtig
+- [x] **📱 [UI/Mobile] Mobile Responsive Layout-Optimierung für Cockpit & Widgets:** Vollständige Anpassung aller Dashboard-Elemente für Smartphone-Hochformat (Portrait): Notizen & To-Do-Checkliste einspaltig gestapelt statt 2-Spalten-Quetschung, Voice Quick-Capture mit dynamischem Button-Grid (`minmax(88px, 1fr)`), vergrößerte Touch-Flächen (36-38px), flexible Eingabefelder mit `min-width: 0` und Umbruch von langen Texten ohne Querformat-Zwang.
 - [x] **☁️ [Sync] Supabase Cloud-Sync Reparatur für Notizen & To-Dos:** Behebung des HTTP 400 Fehlers (`media_gallery` Spalte in `dashboard_state`), Anon-Key Fallbacks in `App.jsx` & `supabase.js`, Ersetzen des Pseudo-Sync-Timeouts durch echten bidirektionalen Sync und Beseitigung der 1.5s Zeitstempel-Blockade.
 - [x] **⚡ [Prompts] God of Prompt Integration (67 Vorlagen, 17 Fachgebiete):** Vollständige Extraktion, Formatierung und native Integration der God-of-Prompt-Bibliothek in den Prompt Vault. Inklusive Subkategorien-Filterleiste, 1-Klick-Übernahme, Batch-Import, JSON-Exportdatei (`public/godofprompt_library_export.json`) und Tests.
 - [x] **🔒 [Sicherheit] Hardcoded PIN-Bypasses entfernt (Task 1):** Statische Fallback-PINs (`2026` in `App.jsx`, `1234` in `CoachingLivePortal.jsx`) entfernt; geänderte Master-PINs und Portal-PINs greifen jetzt strikt ohne Hintertür. Inklusive Regressionstests.
