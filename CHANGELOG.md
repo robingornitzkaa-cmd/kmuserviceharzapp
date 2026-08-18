@@ -5,7 +5,20 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
-- **🧪 Modulare Feature-Test-Abteilung & Schnelle Test-Infrastruktur (`src/test/features/`):**
+- **⚡ God of Prompt - 67 kuratierte B2B- & Strategy-Prompts (`src/constants/godOfPromptLibrary.js`):**
+  - **17 hochrelevante Fachgebiete direkt in den Prompt Vault integriert:**
+    - *Market Research (Marktforschung)*, *Trend Analysis (Trend-Radar)*, *Literature Review (Wissenschaftliche Synthese)*, *Competitive Analysis (Wettbewerbsanalyse)*, *Deep Research (Tiefenrecherche)*.
+    - *Brainstorming (Ideenfindung)*, *Business Plans (Geschäftsplan-Erstellung)*, *Go-to-Market (Markteintritt & $10k MRR Roadmaps)*, *Positioning & Messaging (Positionierung & Buyer Personas)*.
+    - *SWOT & Frameworks (Strategiematrizen)*, *OKRs & Goals (Ziel- und KPI-Frameworks)*, *Pricing Strategy (Preismodelle & Preissensitivität)*, *Roadmaps (Produkt- & Innovationsfahrpläne)*.
+    - *Competitive Strategy (First-Principles & Pareto-Wachstum)*, *Documentation (Code- & Styleguide-Dokumentation)*, *Debugging (Systematische Fehlersuche & Security-Audits)*, *Testing (Testdatensätze & Testpyramiden)*.
+  - **Interaktiver Subkategorien-Filter & 1-Klick-Übernahme:**
+    - Eigener Tab `⚡ God of Prompt (67)` mit horizontaler Subkategorien-Leiste.
+    - 1-Klick-Übernahme (`➕ In meinen Tresor übernehmen`) speichert Vorlagen sofort als editierbare Prompts im persönlichen Tresor inklusive Supabase-Sync.
+    - Direkte Verlinkung zum jeweiligen Original-Prompt auf `godofprompt.ai`.
+  - **JSON-Export & Batch-Import:**
+    - `⚡ Alle (67) importieren`: 1-Klick Batch-Import aller 67 Prompts in den aktiven Tresor.
+    - `📥 JSON`: Direkter Download der exportierten JSON-Bibliothek (`public/godofprompt_library_export.json`).
+  - **100% Test-Abdeckung:** Integrationstests in `src/test/features/promptVault.test.jsx` (61/61 Tests grün).
   - **8 dedizierte Feature-Test-Suiten:**
     - `crm.test.jsx`: Mini-CRM & Sales-Pipeline, Lead-Neuanlage, Phasenwechsel & Löschen.
     - `kanban.test.jsx`: Aufgaben-Erstellung, Spalten-Zuweisung, Status & Inbox-Konvertierung.

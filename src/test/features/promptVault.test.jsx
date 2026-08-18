@@ -98,6 +98,17 @@ const PromptVaultTestWrapper = ({ initialPrompts = [] }) => {
       ragResponseMeta={null}
       applyPromptTemplate={vi.fn()}
       onInsertCustomBlockIntoPrompt={vi.fn()}
+      kmuPrompts={[
+        { id: 'kmu_1', title: 'Angebots-Nachfassung (Handwerk & KMU)', category: 'Sales', text: 'KMU Text...' }
+      ]}
+      handleAdoptKmuPrompt={(p) => setPrompts([...prompts, { id: 'p_' + Date.now(), title: p.title, category: p.category, text: p.text }])}
+      gopPrompts={[
+        { id: 'gop_1', title: 'Market Elasticity Analysis Prompt for ChatGPT', category: 'Strategie', subcategory: 'Market Research', text: 'Elasticity prompt text...', source: 'https://godofprompt.ai' },
+        { id: 'gop_2', title: 'Fix Code Errors With Systematic Debugging', category: 'Code', subcategory: 'Debugging', text: 'Debugging prompt text...', source: 'https://godofprompt.ai' }
+      ]}
+      handleAdoptGopPrompt={(p) => setPrompts([...prompts, { id: 'p_' + Date.now(), title: p.title, category: p.category, text: p.text }])}
+      handleImportAllGopPrompts={vi.fn()}
+      handleDownloadGopExportJSON={vi.fn()}
     />
   );
 };
@@ -149,5 +160,27 @@ describe('Prompt Vault Feature - KI-Tresor & Content-Planer', () => {
 
     fireEvent.click(deleteBtn);
     expect(screen.queryByText('Temporärer Test-Prompt')).not.toBeInTheDocument();
+  });
+
+  it('wechselt zum God of Prompt Tab und übernimmt eine Vorlage in den Tresor', () => {
+    render(<PromptVaultTestWrapper />);
+    
+    // Switch to God of Prompt tab
+    const gopTabBtn = screen.getByRole('button', { name: /God of Prompt/i });
+    fireEvent.click(gopTabBtn);
+
+    // Verify GOP prompt is displayed with its subcategory tag
+    expect(screen.getByText('Market Elasticity Analysis Prompt for ChatGPT')).toBeInTheDocument();
+    expect(screen.getByText('Market Research')).toBeInTheDocument();
+
+    // Click "In meinen Tresor übernehmen"
+    const adoptBtns = screen.getAllByRole('button', { name: /In meinen Tresor übernehmen/i });
+    fireEvent.click(adoptBtns[0]);
+
+    // Switch back to "Alle" tab and verify the adopted prompt is now in the user's active vault
+    const allTabBtn = screen.getByRole('button', { name: /^Alle\s*\(/i });
+    fireEvent.click(allTabBtn);
+
+    expect(screen.getByText('Market Elasticity Analysis Prompt for ChatGPT')).toBeInTheDocument();
   });
 });

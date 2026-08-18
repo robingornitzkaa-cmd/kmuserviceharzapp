@@ -10,7 +10,9 @@ import {
   Download,
   Upload,
   RefreshCw,
-  Sparkles
+  Sparkles,
+  ExternalLink,
+  Zap
 } from 'lucide-react';
 
 export const PromptVault = ({
@@ -64,10 +66,15 @@ export const PromptVault = ({
   handleSendRagQuery,
   kmuPrompts = [],
   handleAdoptKmuPrompt,
-  handleRestorePromptVersion
+  handleRestorePromptVersion,
+  gopPrompts = [],
+  handleAdoptGopPrompt,
+  handleImportAllGopPrompts,
+  handleDownloadGopExportJSON
 }) => {
   const [selectedOptMode, setSelectedOptMode] = useState('structured');
   const [historyModalData, setHistoryModalData] = useState({ isOpen: false, promptId: null, promptTitle: '', history: [] });
+  const [selectedGopSubcategory, setSelectedGopSubcategory] = useState('all');
 
   return (
     <div className="hub-grid" style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '1.5rem' }}>
@@ -617,13 +624,16 @@ export const PromptVault = ({
               { key: 'Marketing', label: 'Marketing' },
               { key: 'Code', label: 'Code' },
               { key: 'Strategie', label: 'Strategie' },
-              { key: 'kmu_templates', label: '🏢 KMU Harz Vorlagen' }
+              { key: 'kmu_templates', label: '🏢 KMU Harz Vorlagen' },
+              { key: 'godofprompt', label: '⚡ God of Prompt' }
             ].map(cat => {
               const isActive = promptCategoryFilter === cat.key;
               const count = cat.key === 'all' 
                 ? prompts.length 
                 : cat.key === 'kmu_templates' 
                 ? kmuPrompts.length 
+                : cat.key === 'godofprompt'
+                ? gopPrompts.length
                 : prompts.filter(p => p.category === cat.key).length;
               return (
                 <button
@@ -634,9 +644,9 @@ export const PromptVault = ({
                     padding: '0.2rem 0.5rem',
                     fontSize: '0.7rem',
                     borderRadius: '0.25rem',
-                    border: isActive ? '1px solid var(--accent-cyan)' : '1px solid var(--border-color)',
-                    background: isActive ? 'rgba(6, 182, 212, 0.15)' : 'rgba(255, 255, 255, 0.02)',
-                    color: isActive ? 'var(--accent-cyan)' : 'var(--text-secondary)',
+                    border: isActive ? (cat.key === 'godofprompt' ? '1px solid #facc15' : '1px solid var(--accent-cyan)') : '1px solid var(--border-color)',
+                    background: isActive ? (cat.key === 'godofprompt' ? 'rgba(250, 204, 21, 0.15)' : 'rgba(6, 182, 212, 0.15)') : 'rgba(255, 255, 255, 0.02)',
+                    color: isActive ? (cat.key === 'godofprompt' ? '#facc15' : 'var(--accent-cyan)') : 'var(--text-secondary)',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
@@ -652,10 +662,135 @@ export const PromptVault = ({
               );
             })}
           </div>
+
+          {/* Subkategorien-Filter für God of Prompt */}
+          {promptCategoryFilter === 'godofprompt' && (
+            <div style={{ marginTop: '0.35rem', paddingTop: '0.5rem', borderTop: '1px dashed rgba(250, 204, 21, 0.3)', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
+                <span style={{ fontSize: '0.65rem', color: '#fde047', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                  <Zap size={11} /> 17 Fachgebiete ({gopPrompts.length} kuratierte Prompts):
+                </span>
+                <div style={{ display: 'flex', gap: '0.35rem' }}>
+                  {handleImportAllGopPrompts && (
+                    <button
+                      type="button"
+                      onClick={handleImportAllGopPrompts}
+                      className="btn btn-secondary"
+                      style={{ padding: '0.15rem 0.4rem', fontSize: '0.6rem', color: '#facc15', border: '1px solid rgba(250, 204, 21, 0.4)', background: 'rgba(250, 204, 21, 0.1)' }}
+                      title="Alle Vorlagen auf einmal in deinen Tresor kopieren"
+                    >
+                      ⚡ Alle ({gopPrompts.length}) importieren
+                    </button>
+                  )}
+                  {handleDownloadGopExportJSON && (
+                    <button
+                      type="button"
+                      onClick={handleDownloadGopExportJSON}
+                      className="btn btn-secondary"
+                      style={{ padding: '0.15rem 0.4rem', fontSize: '0.6rem', color: 'var(--text-secondary)' }}
+                      title="Als .json Export herunterladen"
+                    >
+                      <Download size={10} /> JSON
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', gap: '0.25rem', flexWrap: 'wrap' }}>
+                {['all', ...Array.from(new Set(gopPrompts.map(p => p.subcategory).filter(Boolean)))].map(sub => {
+                  const isSubActive = selectedGopSubcategory === sub;
+                  const count = sub === 'all' 
+                    ? gopPrompts.length 
+                    : gopPrompts.filter(p => p.subcategory === sub).length;
+                  return (
+                    <button
+                      key={sub}
+                      type="button"
+                      onClick={() => setSelectedGopSubcategory(sub)}
+                      style={{
+                        padding: '0.15rem 0.35rem',
+                        fontSize: '0.65rem',
+                        borderRadius: '0.2rem',
+                        border: isSubActive ? '1px solid #facc15' : '1px solid rgba(255,255,255,0.08)',
+                        background: isSubActive ? 'rgba(250, 204, 21, 0.25)' : 'rgba(0,0,0,0.2)',
+                        color: isSubActive ? '#ffffff' : 'var(--text-muted)',
+                        fontWeight: isSubActive ? 700 : 400,
+                        cursor: 'pointer'
+                      }}
+                    >
+                      {sub === 'all' ? 'Alle Gebiete' : sub} ({count})
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="prompt-vault">
-          {promptCategoryFilter === 'kmu_templates' ? (
+          {promptCategoryFilter === 'godofprompt' ? (
+            gopPrompts
+              .filter(p => {
+                const matchesSub = selectedGopSubcategory === 'all' || p.subcategory === selectedGopSubcategory;
+                const matchesSearch = p.title.toLowerCase().includes(promptSearch.toLowerCase()) || 
+                                      p.text.toLowerCase().includes(promptSearch.toLowerCase()) ||
+                                      (p.subcategory && p.subcategory.toLowerCase().includes(promptSearch.toLowerCase()));
+                return matchesSub && matchesSearch;
+              })
+              .map(p => (
+                <div key={p.id} className="prompt-card" style={{ border: '1px solid rgba(250, 204, 21, 0.35)', background: 'rgba(250, 204, 21, 0.02)' }}>
+                  <div className="prompt-head">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                      <Zap size={13} className="text-yellow-400" />
+                      <span className="prompt-title" style={{ color: '#fef08a' }}>{p.title}</span>
+                    </div>
+                    <div style={{ display: 'flex', gap: '0.25rem', alignItems: 'center' }}>
+                      {p.subcategory && (
+                        <span className="prompt-cat" style={{ background: 'rgba(250, 204, 21, 0.2)', color: '#facc15', border: '1px solid rgba(250, 204, 21, 0.3)' }}>
+                          {p.subcategory}
+                        </span>
+                      )}
+                      <span className="prompt-cat">{p.category}</span>
+                    </div>
+                  </div>
+                  <div className="prompt-body" style={{ maxHeight: '220px', overflowY: 'auto' }}>{p.text}</div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.5rem', flexWrap: 'wrap', gap: '0.35rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                      <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>⚡ God of Prompt Vorlage</span>
+                      {p.source && (
+                        <a 
+                          href={p.source} 
+                          target="_blank" 
+                          rel="noreferrer" 
+                          style={{ fontSize: '0.65rem', color: '#fde047', display: 'inline-flex', alignItems: 'center', gap: '0.15rem', textDecoration: 'none' }}
+                          title="Original auf godofprompt.ai öffnen"
+                        >
+                          <ExternalLink size={10} /> Link
+                        </a>
+                      )}
+                    </div>
+                    <div style={{ display: 'flex', gap: '0.35rem' }}>
+                      <button
+                        type="button"
+                        onClick={() => copyPromptText(p.text)}
+                        className="btn btn-secondary"
+                        style={{ padding: '0.3rem 0.5rem', fontSize: '0.7rem' }}
+                      >
+                        <ClipboardCopy size={11} /> Kopieren
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleAdoptGopPrompt ? handleAdoptGopPrompt(p) : handleAdoptKmuPrompt && handleAdoptKmuPrompt(p)}
+                        className="btn btn-primary"
+                        style={{ padding: '0.3rem 0.65rem', fontSize: '0.7rem', background: 'linear-gradient(135deg, #eab308, #06b6d4)', border: 'none', color: '#000', fontWeight: 600 }}
+                      >
+                        ➕ In meinen Tresor übernehmen
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))
+          ) : promptCategoryFilter === 'kmu_templates' ? (
             kmuPrompts
               .filter(p => p.title.toLowerCase().includes(promptSearch.toLowerCase()) || p.text.toLowerCase().includes(promptSearch.toLowerCase()))
               .map(p => (

@@ -38,8 +38,9 @@ Die Anwendung zeichnet sich durch ein futuristisches "Glassmorphic Dark Theme" a
 
 ### 5. KI Prompts (Prompt-Zentrale) -- *UPGRADED!*
 - **Prompt Vault & Baukasten:** Speichere, verwalte, filtere, pinne (`📌`) und exportiere/importiere Prompts. Mit Platzhalter-Variablen (`{{Variable}}`) und Sync-Badges (`☁️ Cloud` vs `📱 Lokal`).
-- **🏢 KMU & Harz Spezial-Prompts:** 12+ vordefinierte Vorlagen für Sales, Recruiting, DSGVO, Google Beiträge und Handwerk mit 1-Klick-Übernahme (`➕ In meinen Tresor übernehmen`).
-- **🔬 Deep Research Frameworks & Baukasten (Phase v27):** 5 spezialisierte Recherche-Frameworks (📊 Lead & SWOT, 🎯 Wettbewerber, 📈 Markt & Trends, 🛠️ Tool-Vergleich, 👥 Buyer Persona) und 25+ Prompt-Bausteine (Lead-Qualifizierung, Entscheider-Analyse, SWOT-Grid, Digitalisierungs-Check).
+- **⚡ God of Prompt Library (67 kuratierte Vorlagen):** 17 Fachgebiete (Market Research, Trend Analysis, Literature Review, Competitive Analysis, Deep Research, Brainstorming, Business Plans, Go-to-Market, Positioning, SWOT, OKRs, Pricing, Roadmaps, Competitive Strategy, Documentation, Debugging, Testing) mit Subkategorien-Filter, 1-Klick-Übernahme (`➕ In meinen Tresor übernehmen`) und Batch-Import.
+- **🏢 KMU & Harz Spezial-Prompts:** 12+ vordefinierte Vorlagen für Sales, Recruiting, DSGVO, Google Beiträge und Handwerk mit 1-Klick-Übernahme.
+- **🔬 Deep Research Frameworks & Baukasten (Phase v27):** 5 spezialisierte Recherche-Frameworks (📊 Lead & SWOT, 🎯 Wettbewerber, 📈 Markt & Trends, 🛠️ Tool-Vergleich, 👥 Buyer Persona) und 25+ Prompt-Bausteine.
 - **📱↔️💻 Prompt Vault & Bidirektionaler Cloud-Sync:** Automatische bidirektionale Synchronisation mit Supabase, Prompt-Bibliothek für KMU, Favoriten und Deep Research Master-Prompt Generierung. mit 1-Klick-Wiederherstellen (`🔄 Diese Version wiederherstellen`).
 - **🔬 Deep Research Prompt Modus & Quick-Button:** 1-Klick-Aktionsbutton (`🔬 Deep Research Prompt`) sowie Optimierungsziel (`🔬 Deep Research`), um beliebige Themen in 5-stufige Tiefenrecherche-Prompts (für Gemini Deep Research, Perplexity Pro, OpenAI Deep Research, Claude) zu transformieren.
 - **Supabase Auto-Cloud-Sync:** Neue Prompts werden beim Erstellen oder Löschen sofort geräteübergreifend (Handy ↔ PC) synchronisiert.

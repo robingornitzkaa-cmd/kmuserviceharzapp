@@ -66,6 +66,7 @@ import {
   ONBOARDING_PLAYBOOKS 
 } from './constants/initialData';
 import { KMU_HARZ_PROMPTS } from './constants/kmuPrompts';
+import { GOD_OF_PROMPT_LIBRARY } from './constants/godOfPromptLibrary';
 
 // SERVICES IMPORT
 import { 
@@ -3173,6 +3174,58 @@ Hier ist die Frage des Nutzers:
     showToast(`🏢 Vorlage "${kmuPrompt.title}" in deinen Tresor übernommen!`);
   };
 
+  const handleAdoptGopPrompt = async (gopPrompt) => {
+    const promptToAdd = {
+      id: 'p_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+      title: gopPrompt.title,
+      category: gopPrompt.category || 'Strategie',
+      text: gopPrompt.text,
+      isPinned: false,
+      synced: false,
+      history: []
+    };
+    if (isOnline) {
+      try {
+        const ok = await savePromptToSupabase(promptToAdd, supabaseConfig);
+        if (ok) promptToAdd.synced = true;
+      } catch (err) {
+        console.error("Fehler beim Speichern des God-of-Prompt-Prompts in Supabase:", err);
+      }
+    }
+    setPrompts(prev => [promptToAdd, ...prev]);
+    showToast(`⚡ "${gopPrompt.title}" in deinen Tresor übernommen!`);
+  };
+
+  const handleImportAllGopPrompts = () => {
+    const newItems = GOD_OF_PROMPT_LIBRARY.map(p => ({
+      id: p.id || ('gop_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4)),
+      title: p.title,
+      category: p.category || 'Strategie',
+      text: p.text,
+      isPinned: false,
+      synced: false,
+      history: []
+    }));
+    setPrompts(prev => {
+      const map = new Map();
+      prev.forEach(p => map.set(p.id, p));
+      newItems.forEach(p => map.set(p.id, p));
+      return Array.from(map.values());
+    });
+    showToast(`⚡ Alle ${newItems.length} God of Prompt Vorlagen in deinen Tresor importiert!`);
+  };
+
+  const handleDownloadGopExportJSON = () => {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(GOD_OF_PROMPT_LIBRARY, null, 2));
+    const downloadAnchor = document.createElement('a');
+    downloadAnchor.setAttribute("href", dataStr);
+    downloadAnchor.setAttribute("download", `godofprompt_library_export.json`);
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+    showToast('📥 God of Prompt Bibliothek als JSON heruntergeladen!');
+  };
+
   const handleRestorePromptVersion = async (promptId, versionItem) => {
     let updatedPrompt = null;
     setPrompts(prev => prev.map(p => {
@@ -4655,6 +4708,10 @@ Hier ist die Frage des Nutzers:
             kmuPrompts={KMU_HARZ_PROMPTS}
             handleAdoptKmuPrompt={handleAdoptKmuPrompt}
             handleRestorePromptVersion={handleRestorePromptVersion}
+            gopPrompts={GOD_OF_PROMPT_LIBRARY}
+            handleAdoptGopPrompt={handleAdoptGopPrompt}
+            handleImportAllGopPrompts={handleImportAllGopPrompts}
+            handleDownloadGopExportJSON={handleDownloadGopExportJSON}
           />
         )}
 
