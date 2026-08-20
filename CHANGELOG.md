@@ -5,19 +5,19 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
-- **📍 Harz B2B Lead-Datenbank - 295 validierte KMU & Handwerksbetriebe (`leads_master_harz.csv`):**
-  - **Lückenlose Erfassung aller 77 Batches & 11 Cluster im Harz:**
+- **📍 Harz B2B Lead-Datenbank - 298 validierte KMU & Handwerksbetriebe (`leads_master_harz.csv`):**
+  - **Lückenlose Erfassung aller 77 Batches & 11 Cluster im Harz (Schritt-für-Schritt Live-Recherche):**
     - *Cluster 1 (Wernigerode & Ortsteile):* **67 validierte Leads** über alle 7 Gewerke.
-    - *Cluster 2 (Ilsenburg inkl. Drübeck & Darlingerode):* **15 validierte Leads**.
-    - *Cluster 3 (Blankenburg inkl. Derenburg, Cattenstedt, Heimburg, Timmenrode):* **27 validierte Leads**.
-    - *Cluster 4 (Elbingerode-Umfeld / Oberharz am Brocken):* **20 validierte Leads**.
-    - *Cluster 5 (Gemeinde Nordharz / passende Ortsteile):* **16 validierte Leads**.
+    - *Cluster 2 (Ilsenburg inkl. Drübeck & Darlingerode):* **21 validierte Leads**.
+    - *Cluster 3 (Blankenburg inkl. Derenburg, Cattenstedt, Heimburg, Wienrode):* **30 validierte Leads**.
+    - *Cluster 4 (Elbingerode-Umfeld / Oberharz am Brocken):* **25 validierte Leads**.
+    - *Cluster 5 (Gemeinde Nordharz / passende Ortsteile):* **18 validierte Leads**.
     - *Cluster 6 (Bad Harzburg & Ortsteile):* **28 validierte Leads**.
-    - *Cluster 7 (Langelsheim & Ortsteile Astfeld, Lautenthal, Wolfshagen):* **19 validierte Leads**.
-    - *Cluster 8 (Goslar inkl. Oker, Baßgeige, Jerstedt, Vienenburg):* **29 validierte Leads**.
-    - *Cluster 9 (Liebenburg & Ortsteile Othfresen, Dörnten):* **17 validierte Leads**.
-    - *Cluster 10 (Seesen & Ortsteile Bornhausen, Rhüden, Münchehof):* **20 validierte Leads**.
-    - *Cluster 11 (Clausthal-Zellerfeld & Ortsteile Altenau, Wildemann, Buntenbock):* **20 validierte Leads**.
+    - *Cluster 7 (Langelsheim & Ortsteile Astfeld, Lautenthal, Wolfshagen, Lutter):* **22 validierte Leads**.
+    - *Cluster 8 (Goslar inkl. Oker, Baßgeige, Jürgenohl, Vienenburg):* **29 validierte Leads**.
+    - *Cluster 9 (Liebenburg & Ortsteile Othfresen, Dörnten, Groß Döhren):* **17 validierte Leads**.
+    - *Cluster 10 (Seesen & Ortsteile Bornhausen, Rhüden, Münchehof, Mechtshausen):* **21 validierte Leads**.
+    - *Cluster 11 (Clausthal-Zellerfeld & Ortsteile Altenau, Wildemann):* **20 validierte Leads**.
   - **7 Fokusbranchen:** Gebäudereinigung (`GR`), Hausmeister/Facility-Service (`FM`), GaLaBau (`GL`), Sanitär/Heizung/Klima (`SHK`), Elektro (`EL`), Dachdecker/Zimmerei (`DZ`), Bau/Sanierung (`BS`).
   - **Strikte Datenqualität:** 23 Spalten (Semikolon-separiert), Inhaber-/Geschäftsführer-Namen, verifizierte Telefonnummern, Websites, E-Mails, Rechtsformen, Adressen und Quellennachweise.
 
