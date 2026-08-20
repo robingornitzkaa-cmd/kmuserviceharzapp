@@ -5,21 +5,29 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
-- **📍 Harz B2B Lead-Datenbank - 298 validierte KMU & Handwerksbetriebe (`leads_master_harz.csv`):**
-  - **Lückenlose Erfassung aller 77 Batches & 11 Cluster im Harz (Schritt-für-Schritt Live-Recherche):**
+- **📍 Harz & Vorharz B2B Lead-Datenbank - 518 validierte KMU & Handwerksbetriebe (`leads_master_harz.csv`):**
+  - **Lückenlose Erfassung aller 133 Batches & 19 Cluster im 40–50 km Radius um Langelsheim (Schritt-für-Schritt Live-Recherche):**
     - *Cluster 1 (Wernigerode & Ortsteile):* **67 validierte Leads** über alle 7 Gewerke.
     - *Cluster 2 (Ilsenburg inkl. Drübeck & Darlingerode):* **21 validierte Leads**.
-    - *Cluster 3 (Blankenburg inkl. Derenburg, Cattenstedt, Heimburg, Wienrode):* **30 validierte Leads**.
+    - *Cluster 3 (Blankenburg inkl. Derenburg, Cattenstedt, Heimburg, Wienrode):* **33 validierte Leads**.
     - *Cluster 4 (Elbingerode-Umfeld / Oberharz am Brocken):* **25 validierte Leads**.
     - *Cluster 5 (Gemeinde Nordharz / passende Ortsteile):* **18 validierte Leads**.
-    - *Cluster 6 (Bad Harzburg & Ortsteile):* **28 validierte Leads**.
+    - *Cluster 6 (Bad Harzburg & Ortsteile):* **29 validierte Leads**.
     - *Cluster 7 (Langelsheim & Ortsteile Astfeld, Lautenthal, Wolfshagen, Lutter):* **22 validierte Leads**.
     - *Cluster 8 (Goslar inkl. Oker, Baßgeige, Jürgenohl, Vienenburg):* **29 validierte Leads**.
     - *Cluster 9 (Liebenburg & Ortsteile Othfresen, Dörnten, Groß Döhren):* **17 validierte Leads**.
     - *Cluster 10 (Seesen & Ortsteile Bornhausen, Rhüden, Münchehof, Mechtshausen):* **21 validierte Leads**.
-    - *Cluster 11 (Clausthal-Zellerfeld & Ortsteile Altenau, Wildemann):* **20 validierte Leads**.
+    - *Cluster 11 (Clausthal-Zellerfeld & Ortsteile Altenau, Wildemann):* **19 validierte Leads**.
+    - *Cluster 12 (Bad Grund & Osterode am Harz):* **29 validierte Leads**.
+    - *Cluster 13 (Braunlage, St. Andreasberg & Herzberg am Harz):* **27 validierte Leads**.
+    - *Cluster 14 (Bad Lauterberg, Bad Sachsa & Walkenried):* **26 validierte Leads**.
+    - *Cluster 15 (Salzgitter-Süd/Bad & Bockenem / Ambergau):* **27 validierte Leads**.
+    - *Cluster 16 (Schladen-Werla, Hornburg & Baddeckenstedt / Holle):* **26 validierte Leads**.
+    - *Cluster 17 (Osterwieck & Fallstein):* **25 validierte Leads**.
+    - *Cluster 18 (Thale & Bodetal):* **27 validierte Leads**.
+    - *Cluster 19 (Quedlinburg, Gernrode & Bad Suderode):* **30 validierte Leads**.
   - **7 Fokusbranchen:** Gebäudereinigung (`GR`), Hausmeister/Facility-Service (`FM`), GaLaBau (`GL`), Sanitär/Heizung/Klima (`SHK`), Elektro (`EL`), Dachdecker/Zimmerei (`DZ`), Bau/Sanierung (`BS`).
-  - **Strikte Datenqualität:** 23 Spalten (Semikolon-separiert), Inhaber-/Geschäftsführer-Namen, verifizierte Telefonnummern, Websites, E-Mails, Rechtsformen, Adressen und Quellennachweise.
+  - **Strikte Datenqualität:** 23 Spalten (Semikolon-separiert), Inhaber-/Geschäftsführer-Namen, verifizierte Telefonnummern, Websites, E-Mails, Rechtsformen, Adressen und Quellennachweise. Inklusive Dokumentationsplan [`leads_erweiterungsplan_40km_harz.md`](file:///c:/Users/gorni/Desktop/kmuserviceharzapp/leads_erweiterungsplan_40km_harz.md).
 
 ### Fixed
 
