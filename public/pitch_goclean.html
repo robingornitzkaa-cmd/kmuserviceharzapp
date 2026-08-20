@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KMU Service Harz × GoClean Harz – VIP Pitch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 100%);
+      --card-bg: rgba(30, 41, 59, 0.7);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --accent: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.2);
+      --accent-emerald: #34d399;
+      --accent-amber: #fbbf24;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: #090d16;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      user-select: none;
+    }
+
+    /* Presentation Stage */
+    .deck-container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      background: var(--bg-gradient);
+    }
+
+    .slide {
+      position: absolute;
+      width: min(92vw, 1100px);
+      height: min(84vh, 680px);
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 28px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.6), 0 0 40px -10px var(--accent-glow);
+      padding: 48px 56px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(0.96) translateY(12px);
+      transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s;
+      overflow: hidden;
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1) translateY(0);
+      z-index: 10;
+    }
+
+    /* Slide Header */
+    .slide-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 20px;
+    }
+
+    .brand-tag {
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-tag .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    .slide-number-badge {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 4px 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    /* Slide Content */
+    .slide-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 24px 0;
+    }
+
+    .headline-category {
+      font-size: 1.05rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .headline {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 3.8vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      margin-bottom: 32px;
+    }
+
+    .headline span.gradient-text {
+      background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .headline span.emerald-text {
+      background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .headline span.amber-text {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Points Grid */
+    .points-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-width: 900px;
+    }
+
+    .point-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+      line-height: 1.45;
+      color: #e2e8f0;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 14px 20px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.2s ease;
+    }
+
+    .point-item:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(56, 189, 248, 0.3);
+      transform: translateX(4px);
+    }
+
+    .point-item .icon {
+      font-size: 1.35rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .point-item strong {
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    /* Highlight box for Slide 3 */
+    .memory-box {
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%);
+      border: 1px solid rgba(251, 191, 36, 0.3);
+      border-left: 4px solid var(--accent-amber);
+      padding: 14px 20px;
+      border-radius: 14px;
+      margin-top: 6px;
+      font-size: 1.1rem;
+      color: #fef3c7;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    /* Slide Footer / Speaker Note hint */
+    .slide-footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .speaker-tip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.08);
+      padding: 6px 14px;
+      border-radius: 12px;
+      font-size: 0.88rem;
+    }
+
+    /* Floating Navigation Controls */
+    .controls {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 8px 16px;
+      border-radius: 40px;
+      backdrop-filter: blur(12px);
+      z-index: 100;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .btn-ctrl {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-main);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-ctrl:hover {
+      background: var(--accent);
+      color: #090d16;
+      border-color: var(--accent);
+    }
+
+    .dot-indicators {
+      display: flex;
+      gap: 8px;
+      padding: 0 8px;
+    }
+
+    .dot-nav {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .dot-nav.active {
+      background: var(--accent);
+      width: 24px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    .shortcut-hints {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 6px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    /* Print Styles (Creates ready-to-print 4-page PDF) */
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+      }
+      .controls, .shortcut-hints {
+        display: none !important;
+      }
+      .deck-container {
+        height: auto !important;
+        display: block !important;
+        background: none !important;
+      }
+      .slide {
+        position: relative !important;
+        width: 100% !important;
+        height: 100vh !important;
+        page-break-after: always !important;
+        page-break-inside: avoid !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: none !important;
+        background: #ffffff !important;
+        color: #111827 !important;
+        border: 2px solid #e5e7eb !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        padding: 40px !important;
+      }
+      .headline {
+        color: #111827 !important;
+      }
+      .headline span {
+        color: #0284c7 !important;
+        -webkit-text-fill-color: #0284c7 !important;
+      }
+      .point-item {
+        background: #f8fafc !important;
+        color: #1e293b !important;
+        border: 1px solid #e2e8f0 !important;
+      }
+      .point-item strong {
+        color: #0f172a !important;
+      }
+      .memory-box {
+        background: #fffbeb !important;
+        color: #92400e !important;
+        border: 1px solid #fcd34d !important;
+      }
+      .speaker-tip {
+        color: #0369a1 !important;
+        background: #f0f9ff !important;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .slide {
+        padding: 24px 20px;
+        height: 90vh;
+      }
+      .headline {
+        font-size: 1.6rem;
+        margin-bottom: 20px;
+      }
+      .point-item {
+        font-size: 0.95rem;
+        padding: 10px 14px;
+      }
+      .controls {
+        bottom: 12px;
+      }
+      .shortcut-hints {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="deck-container">
+
+    <!-- FOLIE 1: DIE IDEE -->
+    <div class="slide active" id="slide-1">
+      <div class="slide-header">
+        <div class="brand-tag">
+          <span class="dot"></span>
+          KMU Service Harz × GoClean Harz
+        </div>
+        <div class="slide-number-badge">Folie 01 / 04</div>
+      </div>
+
+      <div class="slide-body">
+        <div class="headline-category">Die Idee</div>
+        <h1 class="headline">
+          Weniger Zettel.<br />
+          <span class="gradient-text">Mehr Feierabend.</span>
+        </h1>
+
+        <div class="points-list">
+          <div class="point-item">
+            <span class="icon">🚀</span>
+            <div><strong>Was macht KMU Service Harz?</strong> Wir befreien kleine Betriebe lautlos im Hintergrund von Zettelwirtschaft und manuellem Büro-Chaos.</div>
+          </div>
+          <div class="point-item">
+            <span class="icon">🔇</span>
+            <div><strong>Lautlos & ohne IT-Kram:</strong> Deine Abläufe laufen einfach automatisch – ohne dass du dich mit komplizierter Software rumschlagen musst.</div>
+          </div>
+          <div class="point-item">
+            <span class="icon">✨</span>
+            <div><strong>Das Ziel:</strong> Du machst erstklassige Arbeit beim Kunden vor Ort – ich halte dir im Hintergrund den Rücken frei.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <div class="speaker-tip">
+          💬 <em>Für dich: „Ich will einfach, dass du nach der Baustelle wirklich Feierabend hast.“</em>
+        </div>
+        <div>KMU Service Harz</div>
+      </div>
+    </div>
+
+    <!-- FOLIE 2: DAS PROBLEM -->
+    <div class="slide" id="slide-2">
+      <div class="slide-header">
+        <div class="brand-tag">
+          <span class="dot"></span>
+          KMU Service Harz × GoClean Harz
+        </div>
+        <div class="slide-number-badge">Folie 02 / 04</div>
+      </div>
+
+      <div class="slide-body">
+        <div class="headline-category">Das Problem</div>
+        <h1 class="headline">
+          Warum gutes Handwerk oft<br />
+          <span class="amber-text">im Büro erstickt.</span>
+        </h1>
+
+        <div class="points-list">
+          <div class="point-item">
+            <span class="icon">⏳</span>
+            <div><strong>Nach 8 Stunden Vollgas:</strong> Zettel sortieren, WhatsApp-Nachrichten suchen, Rechnungen abtippen.</div>
+          </div>
+          <div class="point-item">
+            <span class="icon">🛑</span>
+            <div><strong>Verlorene Zeit:</strong> Wertvolle Stunden, die für Erholung, Familie oder lukrative neue Aufträge fehlen.</div>
+          </div>
+          <div class="point-item">
+            <span class="icon">📉</span>
+            <div><strong>Die Wachstumsbremse:</strong> Wenn das Büro bremst, kann <em>GoClean Harz</em> nicht so schnell wachsen, wie es eigentlich könnte.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <div class="speaker-tip">
+          💬 <em>Für dich: „Jeder manuelle Zettel-Handgriff kostet Nerven, die du für die Kunden brauchst.“</em>
+        </div>
+        <div>KMU Service Harz</div>
+      </div>
+    </div>
+
+    <!-- FOLIE 3: UNSER DEAL -->
+    <div class="slide" id="slide-3">
+      <div class="slide-header">
+        <div class="brand-tag">
+          <span class="dot"></span>
+          KMU Service Harz × GoClean Harz
+        </div>
+        <div class="slide-number-badge">Folie 03 / 04</div>
+      </div>
+
+      <div class="slide-body">
+        <div class="headline-category">Unser Deal</div>
+        <h1 class="headline">
+          VIP-Status für<br />
+          <span class="emerald-text">GoClean Harz.</span>
+        </h1>
+
+        <div class="points-list">
+          <div class="point-item">
+            <span class="icon">🤝</span>
+            <div><strong>100% professionell – für dich 100% kostenlos:</strong> Du bist mein VIP-Kunde #1 und mein Aushängeschild.</div>
+          </div>
+          <div class="point-item">
+            <span class="icon">⭐</span>
+            <div><strong>All-Inclusive VIP-Support:</strong> Ich helfe dir überall, wo es im Büro brennt (auch bei Sonderwünschen, die ich später keinem anderen Kunden anbiete).</div>
+          </div>
+          
+          <div class="memory-box">
+            <span class="icon">💡</span>
+            <div><strong>Nie wieder Zettel-Chaos:</strong> Weißt du noch, als wir neulich Scheine verlegt haben, die der Kunde gar nicht wollte? Genau solchen manuellen Fehlern machen wir jetzt für immer ein Ende.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <div class="speaker-tip">
+          💬 <em>Für dich: „Du hast Null Risiko, Null Kosten – nur ein blitzsauberes Büro.“</em>
+        </div>
+        <div>KMU Service Harz</div>
+      </div>
+    </div>
+
+    <!-- FOLIE 4: DER NÄCHSTE SCHRITT -->
+    <div class="slide" id="slide-4">
+      <div class="slide-header">
+        <div class="brand-tag">
+          <span class="dot"></span>
+          KMU Service Harz × GoClean Harz
+        </div>
+        <div class="slide-number-badge">Folie 04 / 04</div>
+      </div>
+
+      <div class="slide-body">
+        <div class="headline-category">Der nächste Schritt</div>
+        <h1 class="headline">
+          Ein Kaffee. 30 Minuten.<br />
+          <span class="gradient-text">Null Vorbereitung.</span>
+        </h1>
+
+        <div class="points-list">
+          <div class="point-item">
+            <span class="icon">☕</span>
+            <div><strong>Keine Arbeit für dich:</strong> Du musst rein gar nichts vorbereiten, heraussuchen oder mitbringen.</div>
+          </div>
+          <div class="point-item">
+            <span class="icon">🗣️</span>
+            <div><strong>Einfach erzählen:</strong> Wie läuft ein normaler Tag bei dir ab? <em>(Anfrage ➔ Auftrag ➔ Rechnung)</em>.</div>
+          </div>
+          <div class="point-item">
+            <span class="icon">🎯</span>
+            <div><strong>Mein Vorteil:</strong> Ich verstehe die echte Praxis live und ungeschönt statt graue Theorie.</div>
+          </div>
+          <div class="point-item">
+            <span class="icon">⚡</span>
+            <div><strong>Dein Ergebnis:</strong> Ich baue dir im Hintergrund die perfekte Entlastung – du lehnst dich einfach zurück.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <div class="speaker-tip">
+          💬 <em>Für dich: „Wann trinken wir diese Woche ganz entspannt einen Kaffee zusammen?“</em>
+        </div>
+        <div>KMU Service Harz</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Interactive Controls -->
+  <div class="controls">
+    <button class="btn-ctrl" id="prevBtn" title="Vorherige Folie (Pfeil Links)">◀ Zurück</button>
+    <div class="dot-indicators" id="dotsContainer">
+      <div class="dot-nav active" onclick="goToSlide(0)"></div>
+      <div class="dot-nav" onclick="goToSlide(1)"></div>
+      <div class="dot-nav" onclick="goToSlide(2)"></div>
+      <div class="dot-nav" onclick="goToSlide(3)"></div>
+    </div>
+    <button class="btn-ctrl" id="nextBtn" title="Nächste Folie (Pfeil Rechts)">Weiter ▶</button>
+    <button class="btn-ctrl" id="pdfBtn" title="Drucken / Als PDF speichern" style="background: rgba(56, 189, 248, 0.15); border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;">🖨️ PDF</button>
+  </div>
+
+  <div class="shortcut-hints">
+    ⌨️ <strong>Tasten:</strong> [◀ / ▶] oder [Leertaste] zum Blättern | [F] Vollbild | [P] Drucken
+  </div>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.dot-nav');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const pdfBtn = document.getElementById('pdfBtn');
+
+    function updateSlide() {
+      slides.forEach((slide, index) => {
+        if (index === currentSlide) {
+          slide.classList.add('active');
+        } else {
+          slide.classList.remove('active');
+        }
+      });
+
+      dots.forEach((dot, index) => {
+        if (index === currentSlide) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
+      });
+
+      prevBtn.style.opacity = currentSlide === 0 ? '0.4' : '1';
+      nextBtn.textContent = currentSlide === slides.length - 1 ? 'Fertig 🎉' : 'Weiter ▶';
+    }
+
+    function nextSlide() {
+      if (currentSlide < slides.length - 1) {
+        currentSlide++;
+        updateSlide();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateSlide();
+      }
+    }
+
+    function goToSlide(index) {
+      currentSlide = index;
+      updateSlide();
+    }
+
+    prevBtn.addEventListener('click', prevSlide);
+    nextBtn.addEventListener('click', () => {
+      if (currentSlide === slides.length - 1) {
+        currentSlide = 0;
+        updateSlide();
+      } else {
+        nextSlide();
+      }
+    });
+
+    pdfBtn.addEventListener('click', () => {
+      window.print();
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        prevSlide();
+      } else if (e.key === 'f' || e.key === 'F') {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(() => {});
+        } else {
+          document.exitFullscreen().catch(() => {});
+        }
+      } else if (e.key === 'p' || e.key === 'P') {
+        window.print();
+      }
+    });
+
+    // Touch Swipe navigation
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    document.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    });
+
+    document.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    });
+
+    function handleSwipe() {
+      if (touchEndX < touchStartX - 50) {
+        nextSlide();
+      }
+      if (touchEndX > touchStartX + 50) {
+        prevSlide();
+      }
+    }
+
+    updateSlide();
+  </script>
+</body>
+</html>

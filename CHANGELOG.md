@@ -5,6 +5,11 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **📊 Interaktive 4-Folien VIP-Pitch-Präsentation (`pitch_goclean.html` & `public/pitch_goclean.html`):**
+  - Minimalistische, psychologisch optimierte Pitch-Präsentation für den ersten Testkunden *GoClean Harz*.
+  - Enthält Tastatur-Navigation ([◀ / ▶], [Leertaste], [F] für Vollbild), Touch-Swipe-Support für Mobilgeräte und ein Druck-Stylesheet für perfekten 4-Seiten-PDF-Export.
+  - Fokussiert auf Bürostress-Befreiung, 100% kostenlosen VIP-Support und 0% Vorbereitungsaufwand.
+
 - **⚡ God of Prompt - Live-Extraktion aller 474 Strategie-, Businessplan- & Finanz-Vorlagen (`src/constants/godOfPromptLibrary.js`):**
   - **Umfassende Aktualisierung & Erweiterung auf 1.304 Gesamt-Vorlagen** mit 20 neu erschienenen Live-Prompts von `godofprompt.ai`:
     - *Business Plans:* **143 Vorlagen** (Geschäftspläne, Finanzmodellierung, Cashflow-Prognosen, Pitch Decks, SaaS-Ideen, KI-Integration).
