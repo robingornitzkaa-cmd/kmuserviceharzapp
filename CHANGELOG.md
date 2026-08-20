@@ -5,6 +5,18 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **⚡ God of Prompt - Live-Extraktion aller 474 Strategie-, Businessplan- & Finanz-Vorlagen (`src/constants/godOfPromptLibrary.js`):**
+  - **Umfassende Aktualisierung & Erweiterung auf 1.304 Gesamt-Vorlagen** mit 20 neu erschienenen Live-Prompts von `godofprompt.ai`:
+    - *Business Plans:* **143 Vorlagen** (Geschäftspläne, Finanzmodellierung, Cashflow-Prognosen, Pitch Decks, SaaS-Ideen, KI-Integration).
+    - *Go-to-Market (GTM):* **110 Vorlagen** (Product-Market Fit (PMF), Launch-Sequenzen, Erstkunden-Akquise, Partnerschaften, Pre-Launch Audits).
+    - *SWOT & Frameworks:* **66 Vorlagen** (Dynamische SWOT-Matrizen, PESTEL, Porter's Five Forces, Problem-Solving Frameworks).
+    - *Positioning & Messaging:* **62 Vorlagen** (Brand Voice, B2B-Sales-Skripte, Nischen-Positionierung, Value Proposition, Elevator Pitches).
+    - *OKRs & Goals:* **28 Vorlagen** (Quartals-OKRs, KPI-Bäume, Team-Zielsysteme, Performance-Tracking).
+    - *Pricing Strategy:* **28 Vorlagen** (Value-Based Pricing, Tiered-Pricing, Preiselastizität, Rabatt- & Bündelungsstrategien).
+    - *Roadmaps:* **20 Vorlagen** (Outcome-driven Produkt-Roadmaps, Meilenstein-Planung, Feature-Priorisierung).
+    - *Competitive Strategy:* **17 Vorlagen** (Burggraben-Analysen, Konkurrenz-Stresstests, Gegenstrategien).
+  - **Nahtlose Integration:** 100% PWA- & Android-kompatibel (`godofprompt_library_export.json`), dynamische Subkategorie-Filter und 1-Klick-Übernahme in den Prompt-Tresor.
+
 - **📍 Harz & Vorharz B2B Lead-Datenbank - 518 validierte KMU & Handwerksbetriebe (`leads_master_harz.csv`):**
   - **Lückenlose Erfassung aller 133 Batches & 19 Cluster im 40–50 km Radius um Langelsheim (Schritt-für-Schritt Live-Recherche):**
     - *Cluster 1 (Wernigerode & Ortsteile):* **67 validierte Leads** über alle 7 Gewerke.
