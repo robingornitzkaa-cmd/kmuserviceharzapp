@@ -22,8 +22,8 @@ describe('Founder OS App - Integration Tests', () => {
     render(<App />)
 
     // Klicke auf das Sales & SOPs Tab in der Navigation
-    const salesTab = screen.getByRole('button', { name: /Sales & SOPs/i })
-    fireEvent.click(salesTab)
+    const salesTabs = screen.getAllByRole('button', { name: /Sales & SOPs/i })
+    fireEvent.click(salesTabs[0])
 
     // Prüfe, ob die ROI-Rechner-Karte angezeigt wird
     expect(await screen.findByText('Showcase ROI-Rechner', {}, { timeout: 5000 })).toBeInTheDocument()
@@ -53,18 +53,18 @@ describe('Founder OS App - Integration Tests', () => {
     render(<App />)
 
     // CRM & Projekte Tab anklicken
-    const crmTab = screen.getByRole('button', { name: /CRM & Projekte/i })
+    const crmTab = screen.getAllByRole('button', { name: /CRM & Projekte/i })[0]
     fireEvent.click(crmTab)
     expect(await screen.findByText('Mini-CRM & Sales-Pipeline', {}, { timeout: 5000 })).toBeInTheDocument()
 
     // KI Prompts Tab anklicken
-    const promptsTab = screen.getByRole('button', { name: /KI Prompts/i })
+    const promptsTab = screen.getAllByRole('button', { name: /KI Prompts/i })[0]
     fireEvent.click(promptsTab)
     expect(await screen.findByText('Prompt Vault (KI-Tresor)', {}, { timeout: 5000 })).toBeInTheDocument()
     expect(await screen.findByText('Social Media Content-Planer', {}, { timeout: 5000 })).toBeInTheDocument()
 
     // Command Center Tab anklicken
-    const statusTab = screen.getByRole('button', { name: /Command Center/i })
+    const statusTab = screen.getAllByRole('button', { name: /Command Center/i })[0]
     fireEvent.click(statusTab)
     
     // Kachel 5 (Roh-Text Editor) im Akkordeon öffnen
@@ -78,7 +78,7 @@ describe('Founder OS App - Integration Tests', () => {
     expect(logbookInput.value).toBe('Logbuch Eintrag: Test läuft.')
 
     // Dokumente & Sync Tab anklicken
-    const docsTab = screen.getByRole('button', { name: /Dokumente & Sync/i })
+    const docsTab = screen.getAllByRole('button', { name: /Dokumente & Sync/i })[0]
     fireEvent.click(docsTab)
     expect(await screen.findByText(/Wissens-Hub/i, {}, { timeout: 5000 })).toBeInTheDocument()
     expect(await screen.findByText('Supabase Cloud Sync', {}, { timeout: 5000 })).toBeInTheDocument()
