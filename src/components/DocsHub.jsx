@@ -8,7 +8,11 @@ import {
   AlertTriangle, 
   Database, 
   ChevronRight, 
-  Send
+  Send,
+  Search,
+  Copy,
+  Check,
+  Tag
 } from 'lucide-react';
 
 export const DocsHub = ({
@@ -45,6 +49,44 @@ export const DocsHub = ({
   setRagInput,
   onOpenLightbox
 }) => {
+  const [docSearchQuery, setDocSearchQuery] = useState('');
+  const [selectedTagFilter, setSelectedTagFilter] = useState('all');
+  const [copiedDocId, setCopiedDocId] = useState(null);
+
+  const availableTags = [
+    { id: 'all', label: 'Alle' },
+    { id: 'vertrieb', label: '🚀 Vertrieb' },
+    { id: 'steuerberater', label: '💼 Steuerberater' },
+    { id: 'handwerk', label: '🔨 Handwerk' },
+    { id: 'vorlage', label: '📄 Vorlagen' },
+    { id: 'legal', label: '🔒 Legal & GoBD' },
+    { id: 'onboarding', label: '📋 Onboarding' }
+  ];
+
+  const handleQuickCopyDoc = (doc, e) => {
+    e.stopPropagation();
+    if (!doc.content) return;
+    if (navigator?.clipboard?.writeText) {
+      navigator.clipboard.writeText(doc.content);
+    }
+    setCopiedDocId(doc.id);
+    setTimeout(() => setCopiedDocId(null), 2000);
+  };
+
+  const filteredDocs = docs.filter(doc => {
+    const query = docSearchQuery.toLowerCase().trim();
+    const matchesSearch = !query || 
+      (doc.title && doc.title.toLowerCase().includes(query)) ||
+      (doc.content && doc.content.toLowerCase().includes(query)) ||
+      (Array.isArray(doc.tags) && doc.tags.some(t => t.toLowerCase().includes(query)));
+
+    const matchesTag = selectedTagFilter === 'all' || 
+      (Array.isArray(doc.tags) && doc.tags.includes(selectedTagFilter)) ||
+      doc.category === selectedTagFilter;
+
+    return matchesSearch && matchesTag;
+  });
+
   const handleLocalFilesImport = (e) => {
     const files = Array.from(e.target.files || []);
     if (files.length === 0) return;
@@ -139,78 +181,176 @@ export const DocsHub = ({
           </div>
 
           <div className="drive-section">
-            <h3 style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', textTransform: 'uppercase', marginBottom: '0.5rem', letterSpacing: '0.05em' }}>
-              Dokumenten-Ablage (Lokal & Google Drive)
-            </h3>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+              <h3 style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', textTransform: 'uppercase', margin: 0, letterSpacing: '0.05em' }}>
+                Dokumenten-Ablage (Lokal & Google Drive)
+              </h3>
+              <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
+                {filteredDocs.length} von {docs.length} Dokumenten
+              </span>
+            </div>
+
+            {/* Search & Tag Filter Bar */}
+            <div style={{ marginBottom: '1rem', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+              <div style={{ position: 'relative' }}>
+                <Search size={14} style={{ position: 'absolute', left: '0.65rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+                <input
+                  type="text"
+                  className="input-field"
+                  placeholder="Dokumente durchsuchen (z.B. Steuerberater, Pitch, Handwerk)..."
+                  value={docSearchQuery}
+                  onChange={(e) => setDocSearchQuery(e.target.value)}
+                  style={{ paddingLeft: '2rem', fontSize: '0.75rem', height: '32px' }}
+                />
+              </div>
+
+              {/* Tag Filter Chips */}
+              <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
+                {availableTags.map(tag => {
+                  const count = tag.id === 'all' 
+                    ? docs.length 
+                    : docs.filter(d => (Array.isArray(d.tags) && d.tags.includes(tag.id)) || d.category === tag.id).length;
+                  if (count === 0 && tag.id !== 'all') return null;
+                  const isActive = selectedTagFilter === tag.id;
+                  return (
+                    <button
+                      key={tag.id}
+                      type="button"
+                      onClick={() => setSelectedTagFilter(tag.id)}
+                      className={`btn ${isActive ? 'btn-primary' : 'btn-secondary'}`}
+                      style={{
+                        padding: '0.2rem 0.55rem',
+                        fontSize: '0.7rem',
+                        borderRadius: '1rem',
+                        background: isActive ? 'var(--accent-cyan)' : 'rgba(255,255,255,0.03)',
+                        color: isActive ? '#000000' : 'var(--text-secondary)',
+                        border: isActive ? 'none' : '1px solid var(--border-color)',
+                        fontWeight: isActive ? 700 : 500
+                      }}
+                    >
+                      {tag.label} ({count})
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
             <div className="docs-list" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              {docs.map(doc => {
-                let badgeBg = 'rgba(59, 130, 246, 0.15)';
-                let badgeColor = '#60a5fa';
-                let badgeText = '☁️ Nur Lokal';
+              {filteredDocs.length === 0 ? (
+                <div style={{ padding: '1.5rem', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.8rem', background: 'rgba(255,255,255,0.01)', borderRadius: '0.5rem', border: '1px dashed var(--border-color)' }}>
+                  Keine Dokumente gefunden, die den Such- und Filterkriterien entsprechen.
+                </div>
+              ) : (
+                filteredDocs.map(doc => {
+                  let badgeBg = 'rgba(59, 130, 246, 0.15)';
+                  let badgeColor = '#60a5fa';
+                  let badgeText = '☁️ Nur Lokal';
 
-                if (doc.status === 'synced') {
-                  badgeBg = 'rgba(16, 185, 129, 0.15)';
-                  badgeColor = '#34d399';
-                  badgeText = '✅ Synchronisiert';
-                } else if (doc.status === 'modified') {
-                  badgeBg = 'rgba(245, 158, 11, 0.15)';
-                  badgeColor = '#fbbf24';
-                  badgeText = '⚠️ Bearbeitet';
-                }
+                  if (doc.status === 'synced') {
+                    badgeBg = 'rgba(16, 185, 129, 0.15)';
+                    badgeColor = '#34d399';
+                    badgeText = '✅ Synchronisiert';
+                  } else if (doc.status === 'modified') {
+                    badgeBg = 'rgba(245, 158, 11, 0.15)';
+                    badgeColor = '#fbbf24';
+                    badgeText = '⚠️ Bearbeitet';
+                  }
 
-                return (
-                  <div 
-                    key={doc.id} 
-                    className="doc-link-item"
-                    onClick={() => handleOpenDocInEditor(doc.id)}
-                    style={{ 
-                      display: 'flex', 
-                      justifyContent: 'space-between', 
-                      alignItems: 'center', 
-                      padding: '0.6rem 0.75rem', 
-                      background: 'rgba(255,255,255,0.02)', 
-                      border: '1px solid var(--border-color)', 
-                      borderRadius: '0.5rem',
-                      cursor: 'pointer',
-                      transition: 'all 0.2s'
-                    }}
-                  >
-                    <div className="doc-info" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <FileText size={16} className="text-cyan-500" />
-                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                        <span className="doc-title" style={{ fontSize: '0.8rem', fontWeight: 600 }}>{mask(doc.title, 'inbox')}</span>
-                        <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textAlign: 'left' }}>
-                          {doc.content ? `${doc.content.substring(0, 45)}...` : 'Kein Inhalt'}
+                  const isCopied = copiedDocId === doc.id;
+
+                  return (
+                    <div 
+                      key={doc.id} 
+                      className="doc-link-item"
+                      onClick={() => handleOpenDocInEditor(doc.id)}
+                      style={{ 
+                        display: 'flex', 
+                        justifyContent: 'space-between', 
+                        alignItems: 'center', 
+                        padding: '0.6rem 0.75rem', 
+                        background: 'rgba(255,255,255,0.02)', 
+                        border: '1px solid var(--border-color)', 
+                        borderRadius: '0.5rem',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s'
+                      }}
+                    >
+                      <div className="doc-info" style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', flex: 1, minWidth: 0 }}>
+                        <FileText size={16} className="text-cyan-500" style={{ marginTop: '0.15rem', flexShrink: 0 }} />
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', minWidth: 0, flex: 1 }}>
+                          <span className="doc-title" style={{ fontSize: '0.8rem', fontWeight: 600, wordBreak: 'break-word' }}>
+                            {mask(doc.title, 'inbox')}
+                          </span>
+                          <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textAlign: 'left', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '90%' }}>
+                            {doc.content ? `${doc.content.substring(0, 50).replace(/\n/g, ' ')}...` : 'Kein Inhalt'}
+                          </span>
+
+                          {/* Document Tags */}
+                          {doc.tags && Array.isArray(doc.tags) && doc.tags.length > 0 && (
+                            <div style={{ display: 'flex', gap: '0.25rem', marginTop: '0.3rem', flexWrap: 'wrap' }}>
+                              {doc.tags.map((tag, tIdx) => (
+                                <span
+                                  key={tIdx}
+                                  style={{
+                                    fontSize: '0.6rem',
+                                    padding: '0.05rem 0.35rem',
+                                    borderRadius: '0.25rem',
+                                    background: 'rgba(6, 182, 212, 0.08)',
+                                    color: 'var(--accent-cyan)',
+                                    border: '1px solid rgba(6, 182, 212, 0.2)'
+                                  }}
+                                >
+                                  #{tag}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexShrink: 0, marginLeft: '0.5rem' }}>
+                        <span style={{ fontSize: '0.65rem', fontWeight: 600, padding: '0.15rem 0.35rem', borderRadius: '0.25rem', background: badgeBg, color: badgeColor }}>
+                          {badgeText}
                         </span>
+                        
+                        {/* Quick Copy Button */}
+                        <button
+                          type="button"
+                          onClick={(e) => handleQuickCopyDoc(doc, e)}
+                          className="btn-icon-only"
+                          title={isCopied ? "Inhalt in die Zwischenablage kopiert!" : "Inhalt in Zwischenablage kopieren"}
+                          style={{ padding: '0.2rem', background: isCopied ? 'rgba(16, 185, 129, 0.2)' : 'transparent', borderRadius: '0.25rem' }}
+                        >
+                          {isCopied ? (
+                            <Check size={13} className="text-emerald-400" />
+                          ) : (
+                            <Copy size={13} className="text-cyan-500" />
+                          )}
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={(e) => downloadDocAsFile(doc, e)}
+                          className="btn-icon-only"
+                          title="Als Textdatei herunterladen"
+                          style={{ padding: '0.2rem', background: 'transparent' }}
+                        >
+                          <Download size={13} className="text-cyan-500" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={(e) => handleDeleteDoc(doc.id, e)}
+                          className="btn-icon-only"
+                          title="Dokument löschen"
+                          style={{ padding: '0.2rem', background: 'transparent' }}
+                        >
+                          <Trash2 size={13} className="text-red-500" />
+                        </button>
                       </div>
                     </div>
-
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <span style={{ fontSize: '0.65rem', fontWeight: 600, padding: '0.15rem 0.35rem', borderRadius: '0.25rem', background: badgeBg, color: badgeColor }}>
-                        {badgeText}
-                      </span>
-                      <button
-                        type="button"
-                        onClick={(e) => downloadDocAsFile(doc, e)}
-                        className="btn-icon-only"
-                        title="Als Textdatei herunterladen"
-                        style={{ padding: '0.2rem', background: 'transparent' }}
-                      >
-                        <Download size={13} className="text-cyan-500" />
-                      </button>
-                      <button
-                        type="button"
-                        onClick={(e) => handleDeleteDoc(doc.id, e)}
-                        className="btn-icon-only"
-                        title="Dokument löschen"
-                        style={{ padding: '0.2rem', background: 'transparent' }}
-                      >
-                        <Trash2 size={13} className="text-red-500" />
-                      </button>
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                })
+              )}
             </div>
           </div>
         </div>

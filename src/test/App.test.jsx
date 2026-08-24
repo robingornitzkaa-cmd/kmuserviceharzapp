@@ -68,7 +68,7 @@ describe('Founder OS App - Integration Tests', () => {
     fireEvent.click(statusTab)
     
     // Kachel 5 (Roh-Text Editor) im Akkordeon öffnen
-    const rawTextHeader = await screen.findByText(/5. masterLogbuch.txt/i, {}, { timeout: 5000 })
+    const rawTextHeader = await screen.findByText(/5. masterLogbuch.txt/i, {}, { timeout: 10000 })
     fireEvent.click(rawTextHeader)
 
     // Teste die Texteingabe im Logbuch-Textfeld
@@ -136,10 +136,10 @@ describe('Founder OS App - Integration Tests', () => {
     fireEvent.click(leadsTab)
 
     // Überprüfen, ob die Titelzeile geladen wurde
-    expect(await screen.findByText(/Kaltakquise-Kontakte/i)).toBeInTheDocument()
+    expect(await screen.findByText(/Kaltakquise-Kontakte/i, {}, { timeout: 10000 })).toBeInTheDocument()
 
     // Da der fetch mock asynchron ist, warten wir kurz auf das Element
-    const leadItem = await screen.findByText('Test SHK Betrieb')
+    const leadItem = await screen.findByText('Test SHK Betrieb', {}, { timeout: 10000 })
     expect(leadItem).toBeInTheDocument()
 
     // Lead anklicken

@@ -5,6 +5,31 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **💼 B2B-Vertriebs- und Auslieferungs-Suite für KMU Service Harz (R1–R4):**
+  - **R1: Steuerberater-Multiplikatoren-Kit & Handwerker-Direct-Mail-Kampagne:**
+    - *Kanzlei-Pitch & Partnerdeck (`DOCS/Steuerberater_Kanzlei_Pitch_Deck_und_Leitfaden.md`):* DATEV Rechnungsdatenservice 1.0 vs. Buchungsdatenservice, Pendelordner-Befreiung, GoBD-Verfahrensdokumentation und 0-Euro-Kanzlei-Partnermodell.
+    - *Mandanten-Flyer (`DOCS/Mandanten_Flyer_Vorlage_Handwerk.md`):* Ausdruckbare Vorlage für Kanzleien zur Weitergabe an Handwerker mit 500 € Kanzlei-Empfehlungsgutschein (`KANZLEI-HARZ-500`) und QR-Code.
+    - *Direct-Mail 1-Seiter (`DOCS/Direct_Mail_1_Seiter_518_Harzer_Handwerksmeister.md`):* Haptischer Brief an alle 518 regionalen Harzer Handwerksmeister mit dem Hook „Schluss mit dem Büro-Sonntag“, 50% Fördermittel-Indikation und 500 € Audit-Gutschein (`MEISTER-HARZ-2026`).
+    - *Telefon- & Kaltakquise-Leitfaden (`DOCS/Telefon_und_Kaltakquise_Leitfaden_Handwerk.md`):* Skripte für Vorzimmer/Assistenz und Meister auf der Baustelle sowie 5-Punkte-Validation-Pivot-Einwandbehandlungs-Matrix.
+    - *In-App DocsHub Integration:* Registrierung aller 4 Vorlagen in `INITIAL_DOCS` mit Tag-Pills, Filterchips und 1-Klick-Kopierfunktion.
+  - **R2: Automatisierter 500 € „Büro-Stress-Test & ROI-Report“ PDF-Generator (`src/services/pdfReportGenerator.js`):**
+    - *4-teiliger Prüfbericht:* Teil 1 (Prozess-Röntgenbild Status Quo mit 4-Stationen-Ablauf Baustelle -> Pendelordner), Teil 2 (Rote Schattenkosten-Berechnung in Euro mit roter Badge `#dc2626`), Teil 3 (Soll-Roadmap Make/Lexoffice/DATEV), Teil 4 (Fördermittel-Matrix NDS/LSA/TH/BUND/NONE, 100% Anrechnungs-Garantie der 500 € Audit-Gebühr auf Stufe 2 und Amortisation in < 2,5 Monaten).
+    - *jsPDF Vektor-Layout:* 2-seitiger, hochauflösender Vektor-PDF-Export mit Firmen-Branding, Diagrammen, Tabellen und Unterschriftenblock.
+    - *UI-Export:* 1-Klick-Download-Buttons im Onboarding-Bereich (`OnboardingView.jsx`) und Showcase-ROI-Rechner (`SopManager.jsx`).
+  - **R3: Mandanten-Portal & AaaS-Wartungs-Dashboard (`src/components/ClientPortalView.jsx`):**
+    - *Dediziertes Mandanten-Dashboard:* Umschaltbare Kundenansicht mit Firmen-Header und Modus-Schalter.
+    - *Live Schnittstellen-Monitoring:* Statuskarten für Make.com Core, Lexoffice API, DATEV Belegbilderservice, GoBD Cloud-Archiv und GPT-4o Vision OCR mit 1-Klick-Diagnose (Blueprint 4 Simulation).
+    - *Produktivitäts- & ROI-Metriken:* Zähler für verarbeitete Monatsbelege, gerettete Büro-Sonntage und kumulierte Zeiteinsparung in Stunden & Euro.
+    - *1-Klick Support-Ticket-System:* 5 Pflichtkategorien, Prioritäten mit SLA-Indikation und Kontingentverwaltung für den „Digitalen Hausmeister (200 € / Monat)“ mit 60-Minuten-Pool-Tracker.
+  - **R4: E-Rechnungs- & ZUGFeRD / XRechnung Prüf-Studio (`src/services/eInvoiceParser.js`, `src/components/EInvoiceValidator.jsx`):**
+    - *EN 16931 Validierungs-Engine:* Semantischer XML-Parser für UN/CEFACT CII (`rsm:CrossIndustryInvoice`) und OASIS UBL 2.1 (`Invoice`/`CreditNote`).
+    - *PDF/A-3 Extractor:* Client-seitiges Auslesen von eingebettetem XML (`factur-x.xml` / `zugferd-invoice.xml`) aus ZUGFeRD-PDFs.
+    - *Ampel-Prüfprotokoll:* Feldprüfung aller Pflichtangaben (BT-1 bis BT-115, Leitweg-ID, USt-IdNr, Kreditor/Debitor, strukturierte Positionen) und mathematische Konsistenzprüfung (BR-CO-10 bis BR-CO-18 mit 0,02 € Rundungstoleranz).
+    - *Interaktives UI:* Drag & Drop Upload, Beispielrechnungen, Detail-Akkordeons, Positions-Tabelle und PDF/JSON Prüfbericht-Export.
+  - **🧪 Umfassende Test-Suite & Qualitätssicherung:**
+    - 21 Test-Suiten mit 233 Tests zu 100% bestanden (`npm run test:all`).
+    - Tier 1–5 Testabdeckung inklusive Opaque-Box E2E Tests und Adversarial Hardening.
+
 - **⚡ Schlüsselfertiges Onboarding-System & Make.com Workflow-Tresor (Businessplan 2026):**
   - **4 Make.com Blueprints (Direkt-Import für Make.com):**
     - `blueprint_1_belegerfassung_lexoffice_datev.json`: WhatsApp & E-Mail Belegeingang -> KI-OCR (GPT-4o Vision) -> GoBD Cloud-Archiv -> Lexware Office Vorkontierung -> DATEV Belegbilderservice (Stufe 2 Core Bestseller: 2.000 € Festpreis).

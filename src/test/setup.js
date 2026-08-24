@@ -14,21 +14,30 @@ vi.mock('@capacitor/core', () => ({
 
 // Mock für jsPDF, um Canvas-Fehler im Headless-Modus zu verhindern
 vi.mock('jspdf', () => {
-  const jsPDFMock = vi.fn().mockImplementation(() => ({
-    text: vi.fn(),
-    save: vi.fn(),
-    addImage: vi.fn(),
-    setFontSize: vi.fn(),
-    setFont: vi.fn(),
-    rect: vi.fn(),
-    setFillColor: vi.fn(),
-    setTextColor: vi.fn(),
-    line: vi.fn(),
-    setDrawColor: vi.fn(),
-    setLineWidth: vi.fn(),
-  }))
-  return { jsPDF: jsPDFMock }
-})
+  const jsPDFMock = vi.fn().mockImplementation(function() {
+    this.text = vi.fn();
+    this.save = vi.fn();
+    this.addImage = vi.fn();
+    this.setFontSize = vi.fn();
+    this.setFont = vi.fn();
+    this.rect = vi.fn();
+    this.roundedRect = vi.fn();
+    this.circle = vi.fn();
+    this.setFillColor = vi.fn();
+    this.setTextColor = vi.fn();
+    this.line = vi.fn();
+    this.setDrawColor = vi.fn();
+    this.setLineWidth = vi.fn();
+    this.addPage = vi.fn();
+    this.setPage = vi.fn();
+    this.getNumberOfPages = vi.fn().mockReturnValue(2);
+    this.splitTextToSize = vi.fn().mockImplementation((text) => Array.isArray(text) ? text : [String(text)]);
+    this.getTextWidth = vi.fn().mockReturnValue(40);
+    this.output = vi.fn().mockReturnValue('mock-pdf-blob');
+    return this;
+  });
+  return { jsPDF: jsPDFMock, default: jsPDFMock };
+});
 
 // Zusätzliche Web-Speech-API Mocks, da SpeechRecognition in jsdom fehlt
 if (typeof window !== 'undefined') {

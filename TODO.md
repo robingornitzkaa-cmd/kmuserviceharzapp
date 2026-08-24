@@ -1,6 +1,26 @@
 # TODO - Founder OS
 
 ### Wichtig
+- [x] **💼 [B2B-Vertriebs- & Auslieferungs-Suite] Steuerberater-Multiplikatoren-Kit & Handwerker-Direct-Mail-Kampagne (R1):**
+  - Standalone Markdown Vorlagen in `DOCS/`: Kanzlei-Pitch-Deck & Leitfaden (DATEV RDS 1.0 vs BDS, 0-Euro-Partnermodell), Mandanten-Flyer (500 € Gutschein `KANZLEI-HARZ-500`), Direct-Mail 1-Seiter an 518 Meister („Schluss mit dem Büro-Sonntag“ & 500 € Gutschein `MEISTER-HARZ-2026`) und Telefon- & Kaltakquise-Leitfaden (Vorzimmer- & Baustellen-Skripte, 5-Punkte Validation-Pivot).
+  - Registrierung in `INITIAL_DOCS` (`initialData.js`) und Integration in `DocsHub.jsx` mit Volltextsuche, Tag-Filterchips und 1-Klick Quick-Copy.
+- [x] **📊 [ROI- & Stresstest] Automatisierter 500 € „Büro-Stress-Test & ROI-Report“ PDF-Generator (R2):**
+  - Reine Client-seitige PDF-Engine (`src/services/pdfReportGenerator.js`) mit 4-teiligem Prüfbericht: 1. Prozess-Röntgenbild Status Quo (4 Stationen), 2. Rote Schattenkosten-Berechnung in Euro (`weeklyWastedHours * 4.33 * masterHourlyRate * 12`), 3. Soll-Roadmap Make/Lexoffice/DATEV (4 Phasen), 4. Fördermittel-Matrix & Amortisations-Kalkulation mit 100% 500€ Audit-Gutschrift auf Stufe 2 und Amortisation in < 2,5 Monaten.
+  - 1-Klick-Export-Buttons in `OnboardingView.jsx` (Audit-Tab) und `SopManager.jsx` (Showcase-Rechner).
+- [x] **🏢 [Mandanten-Portal] Interaktives Mandanten-Portal & AaaS-Wartungs-Dashboard (R3):**
+  - Dedizierte Komponente `src/components/ClientPortalView.jsx` mit Firmen-Header, Modus-Umschalter und Mandanten-Auswahl.
+  - Live Interface Monitoring (Make.com, Lexoffice, DATEV Belegbilderservice, GoBD Cloud-Archiv, GPT-4o Vision OCR) und 1-Klick Blueprint 4 Diagnose-Simulation mit Live-Logs & Latenzanzeige.
+  - Produktivitäts-Metriken (164 Monatsbelege, 4/4 gerettete Sonntage, ~42.5 Std./Monat Zeiteinsparung, ~3.612,50 € monetärer Wert).
+  - 1-Klick Support-Ticket-System mit 5 Pflichtkategorien, SLA-Priorisierung und Kontingentverwaltung für den „Digitalen Hausmeister (200 € / Monat)“ mit 60-Minuten-Pool-Tracker.
+- [x] **📑 [E-Rechnung & Compliance] E-Rechnungs- & ZUGFeRD / XRechnung Prüf-Studio (R4):**
+  - Semantische Validierungs-Engine `src/services/eInvoiceParser.js` nach EN 16931 für UN/CEFACT CII (`rsm:CrossIndustryInvoice`) und OASIS UBL 2.1 (`Invoice`/`CreditNote`).
+  - Client-seitiger PDF/A-3 Extractor für eingebettetes XML (`factur-x.xml` / `zugferd-invoice.xml`).
+  - 3-Stufen-Ampelprotokoll (🟢 PASS, 🟡 WARN, 🔴 FAIL) für alle Pflichtfelder (BT-1 bis BT-115, Leitweg-ID, USt-IdNr, Kreditor/Debitor) und mathematische Konsistenzprüfung (BR-CO-10 bis BR-CO-18 mit 0,02 € Rundungstoleranz).
+  - Interaktives Prüf-Studio `src/components/EInvoiceValidator.jsx` mit Drag & Drop Upload, Beispielrechnungen, Posten-Tabelle, XML-Inspektor und PDF/JSON Zertifikat-Download.
+- [x] **🧪 [Test-Suite & Qualitätssicherung] Vollständige E2E Opaque-Box & Tier 1–5 Test-Suite:**
+  - 21 Test-Dateien mit 233 Vitest Tests zu 100% grün (`npm run test:all`).
+  - Produktions-Build (`npm run build`) fehlerfrei kompiliert mit PWA Precache.
+
 - [x] **⚡ [Onboarding & Automation] Schlüsselfertiges Onboarding-System & Make.com Workflow-Tresor (Businessplan 2026):**
   - *4 fertige Make.com JSON-Blueprints (Direkt-Import für Make.com):* `blueprint_1_belegerfassung_lexoffice_datev.json` (WhatsApp/Mail -> GPT-4o Vision OCR -> Lexware Office -> DATEV Belegbilderservice), `blueprint_2_handwerker_lead_qualifier_booking.json` (24/7 KI-Notdienst & Kalender-Slot), `blueprint_3_baustellen_audio_zeiterfassung_fotos.json` (Whisper Sprach-Zeiterfassung & Drive-Foto-Archiv) und `blueprint_4_aaas_system_monitoring_healthcheck.json` (24/7 Schnittstellen-Monitoring).
   - *Make.com Blueprint-Hub im Sales & SOPs Tab (`SopManager.jsx`, `makeBlueprintsData.js`):* Interaktive Szenario-Karten, 1-Klick JSON-Download, Test-Payload-Kopierer, Modul-Knoten-Pipeline und Schritt-für-Schritt Einrichtungsleitfaden (`public/make-blueprints/README_MAKE_SETUP_GUIDE.md`).

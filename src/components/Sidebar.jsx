@@ -116,6 +116,15 @@ export const Sidebar = ({
               <span className="sidebar-nav-label">Sales & SOPs</span>
             </button>
             <button 
+              className={`sidebar-nav-item ${activeTab === 'einvoice' ? 'active' : ''}`}
+              onClick={() => setActiveTab('einvoice')}
+              title="📑 E-Rechnungs Prüf-Studio"
+              style={{ background: activeTab === 'einvoice' ? '#0284c7' : 'rgba(2, 132, 199, 0.15)', color: '#ffffff' }}
+            >
+              <FileText size={18} />
+              <span className="sidebar-nav-label">📑 E-Rechnungs-Studio</span>
+            </button>
+            <button 
               className={`sidebar-nav-item ${activeTab === 'website' ? 'active' : ''}`}
               onClick={() => setActiveTab('website')}
               title="🌐 KMU Webseite (Live Preview)"
@@ -230,6 +239,14 @@ export const Sidebar = ({
               >
                 <TrendingUp size={18} />
                 <span>Sales & SOPs</span>
+              </button>
+              <button 
+                className={`sidebar-nav-item ${activeTab === 'einvoice' ? 'active' : ''}`} 
+                onClick={() => { setActiveTab('einvoice'); setMobileMenuOpen(false); }}
+                style={{ background: 'rgba(2, 132, 199, 0.25)', color: '#ffffff' }}
+              >
+                <FileText size={18} />
+                <span>📑 E-Rechnungs-Studio</span>
               </button>
               <button 
                 className={`sidebar-nav-item ${activeTab === 'website' ? 'active' : ''}`} 

@@ -202,14 +202,408 @@ export const INITIAL_CONTENT = [
 ];
 
 export const INITIAL_DOCS = [
-  { id: 'master-logbuch', title: 'masterLogbuch.txt', content: MASTER_LOGBUCH_CONTENT, status: 'local', url: '#' },
-  { id: 'd1', title: 'Businessplan 2026 - KMU Service Harz.md', content: 'Offizieller Businessplan 2026: 4-stufige Value Ladder (500 € Audit, 2.000 € Standard-Setup, ab 6.000 € Meisterbetrieb, 200 €/Monat Retainer) mit 100% Dienstleistungsmarge.', status: 'synced', url: '#' },
-  { id: 'd_contract2000', title: 'Vertrag_Standard_Setup_2000EUR.md', content: 'Dienstleistungsvertrag für das 2.000 € Standard-Setup (Lautlose Belegerfassung, DATEV Belegbilderservice, Lexoffice, GoBD & 14 Tage Einführungsbegleitung).', status: 'synced', url: '#' },
-  { id: 'd_avv', title: 'DSGVO_Auftragsverarbeitungsvertrag_AVV.md', content: 'Muster-Auftragsverarbeitungsvertrag (AVV nach Art. 28 DSGVO) für Make.com, OpenAI, Lexoffice und Cloud-Speicher.', status: 'synced', url: '#' },
-  { id: 'd_gobd', title: 'GoBD_Verfahrensdokumentation_Ersetzendes_Scannen.md', content: 'GoBD-Verfahrensdokumentation für ersetzendes Scannen nach dem Standard der Bundessteuerberaterkammer.', status: 'synced', url: '#' },
-  { id: 'd_aaas_contract', title: 'AaaS_Wartungsvertrag_200EUR.md', content: 'Wartungs- und SLA-Vertrag für den Digitalen Hausmeister (200 € / Monat Retainer) mit 24/7 Monitoring und Scope-Creep-Schutz.', status: 'synced', url: '#' },
-  { id: 'd_checklist', title: 'Systemzugangs_und_Sicherheits_Checkliste.md', content: 'Onboarding-Checkliste zur Erfassung aller Kunden-Zugänge (Lexoffice, DATEV Mandantennummer, Cloud-Speicher, WhatsApp Business).', status: 'synced', url: '#' },
-  { id: 'd_abnahme', title: 'Abnahmeprotokoll_und_Mitarbeiter_Cheatsheet.md', content: 'Förmliches Abnahmeprotokoll und ausdruckbares Mitarbeiter-Cheat-Sheet für die mobile Belegerfassung.', status: 'synced', url: '#' }
+  { 
+    id: 'master-logbuch', 
+    title: 'masterLogbuch.txt', 
+    content: MASTER_LOGBUCH_CONTENT, 
+    status: 'local', 
+    url: '#',
+    tags: ['logbuch', 'intern']
+  },
+  { 
+    id: 'd_pitch_steuerberater', 
+    title: 'Steuerberater_Kanzlei_Pitch_Deck_und_Leitfaden.md', 
+    tags: ['vertrieb', 'steuerberater', 'vorlage', 'kanzlei', 'datev'],
+    category: 'vertrieb',
+    status: 'synced', 
+    url: '#',
+    content: `# Steuerberater-Kanzlei-Pitch-Deck & Leitfaden: Befreiung vom Pendelordner
+
+> **KMU Service Harz — Die externe IT-Werkbank für Steuerberater im Harz**
+> *Partnerschaftsmodell zur automatisierten Belegübergabe (DATEV RDS 1.0), GoBD-Verfahrensdokumentation und Entlastung der Kanzlei-Finanzbuchhaltung.*
+
+---
+
+## 1. Executive Summary & Kanzlei-Nutzen
+
+Steuerberatungskanzleien im Harz (Goslar, Wernigerode, Osterode, Halberstadt, Nordhausen) stehen vor einer doppelten Herausforderung: **Akuter Fachkräftemangel in der Finanzbuchhaltung** bei gleichzeitig hohem manuellem Nachbearbeitungsaufwand für Handwerker- und KMU-Mandanten.
+
+Typische Symptome bei Handwerksbetrieben:
+- Belege treffen unvollständig am 9. des Folgemonats per Schuhkarton, Pendelordner oder unleserlichem WhatsApp-Foto ein.
+- Fehlende Vorsteuerbelege, unklare Barquittungen von Tankstellen und Baustoffhändlern.
+- Hoher Zeitaufwand für Kanzlei-Mitarbeiter durch telefonisches Hinterhertelefonieren statt qualifizierter Beratung.
+
+**Die Lösung durch KMU Service Harz:**
+Wir agieren als **externe IT-Werkbank und digitaler Vor-Ort-Hausmeister**. Wir fahren direkt auf den Betriebshof des Handwerkers, binden Handwerker-Software und Vor-Systeme (Lexware Office / sevDesk / WhatsApp-Gateway) direkt an die Kanzlei-Schnittstellen an und liefern revisionssichere, vorkontierte Belegdaten.
+
+---
+
+## 2. Slide-by-Slide Kanzlei-Präsentationsdeck
+
+### Slide 1: Titelblatt
+- **Headline:** Vom Pendelordner zur automatischen DATEV-Übergabe
+- **Subline:** Wie Ihre Steuerkanzlei 10+ Stunden monatlich pro Handwerker-Mandant gewinnt – ohne IT-Support leisten zu müssen.
+- **Presenter:** KMU Service Harz (Christian Gornitzka, Goslar)
+
+### Slide 2: Das Kanzlei-Dilemma in der Finanzbuchhaltung
+- **Status Quo:** 68 % der Kanzlei-Arbeitszeit bei gewerblichen Mandanten entfällt auf manuelle Belegbeschaffung und Datenkorrektur.
+- **Problem:** Steuerfachangestellte müssen IT-Support leisten (z. B. Scanner-Probleme, Format-Fehler bei E-Rechnungen), wofür keine Zeit und kein Honorar vorhanden ist.
+- **Folge:** Frustrierte Mitarbeiter, Überstunden vor dem USt-Voranmeldetermin und verschenkte Kapazitäten für betriebswirtschaftliche Beratung.
+
+### Slide 3: Die Lösung: Schlüsselfertiges Vor-Ort-Setup
+- **Was KMU Service Harz übernimmt:**
+  1. Einrichtung der mobilen Belegerfassung für Monteure (WhatsApp-Foto / E-Mail-Parser).
+  2. OCR-basierte Extraktion aller Pflichtangaben nach § 14 UStG.
+  3. Lautlose Schnittstellenkopplung zu Ihrer DATEV-Umgebung.
+  4. Schulung der Handwerker-Mitarbeiter vor Ort (keine Kanzlei-Ressourcen nötig).
+  5. GoBD-Verfahrensdokumentation für ersetzendes Scannen nach BStBK-Standard.
+
+### Slide 4: Saubere Rollentrennung: DATEV RDS 1.0 vs. Buchungsdatenservice (BDS)
+Ein zentrales Anliegen jeder Kanzlei ist die Wahrung der Buchungshoheit und die Vermeidung von fehlerhaften Buchungssätzen aus ungeprüften Kundensystemen.
+
+| Kriterium | DATEV Rechnungsdatenservice 1.0 (RDS 1.0) | DATEV Buchungsdatenservice (BDS) |
+|---|---|---|
+| **Datenübertragung** | Revisionssichere Belegbilder + strukturierte XML-Metadaten (Rechnungsnummer, Datum, Netto, MwSt, Kreditor) nach *DATEV Belege online*. | Komplette Buchungssätze inklusive Sach- und Personenkonten direkt in *DATEV Kanzlei-Rechnungswesen*. |
+| **Buchungshoheit** | **100 % bei der Steuerkanzlei** (Kanzlei behält volle Kontrolle über Kontierung, Steuerschlüssel und Abgrenzung). | Liegt beim Mandanten bzw. Vorsystem (Risiko von Falschkontierungen durch Laien). |
+| **Einsatzempfehlung** | **Standard-Empfehlung für 95 % aller Handwerksbetriebe:** Maximale Zeitersparnis bei voller fachlicher Kanzleikontrolle. | Nur für qualifizierte Großbetriebe mit ausgebildeter interner Buchhaltung. |
+| **Vorteil Kanzlei** | Belege sind am 1. des Monats digital verfügbar, lesbar, vollzählig und vorgeheftet. | Entlastung nur, wenn Mandant fehlerfrei vorkontiert. |
+
+### Slide 5: Rechtssicherheit & GoBD-Verfahrensdokumentation
+- Handwerker dürfen Papierbelege nach dem Scannen nur vernichten, wenn eine ordnungsgemäße Verfahrensdokumentation zum ersetzenden Scannen vorliegt.
+- KMU Service Harz liefert für jeden Mandanten eine **maßgeschneiderte GoBD-Verfahrensdokumentation nach dem Muster der Bundessteuerberaterkammer (BStBK)** und des DWS-Instituts.
+- Inklusive Mitarbeiter-Arbeitsanweisung, Scan-Protokoll und technischer Systemdokumentation für die nächste Betriebsprüfung.
+
+### Slide 6: Das Null-Kosten- & Null-Risiko-Modell für Ihre Kanzlei
+- **Für die Kanzlei:** 0,00 € Kosten, 0 Stunden Einrichtungsaufwand.
+- **Abrechnung:** KMU Service Harz rechnet direkt und transparent mit dem Handwerksbetrieb ab (Festpreis 2.000 € Standard-Setup oder 500 € Potenzial-Audit).
+- **Fördermittel-Hebel:** Wir nutzen staatliche Förderprogramme für den Mandanten (Digitalbonus Niedersachsen: bis zu 50 % Zuschuss; Digital Innovation Sachsen-Anhalt: bis zu 50 % Zuschuss; INQA-Coaching: bis zu 80 % Zuschuss).
+- **Kanzlei-Bonus:** Ihre Fibu-Kosten pro Mandant sinken um bis zu 40 %, die Mandantenzufriedenheit steigt dramatisch.
+
+### Slide 7: Der 3-Schritte Pilot-Prozess
+1. **Schritt 1 (Auswahl):** Sie benennen 2 bis 3 Ihrer arbeitsintensivsten Handwerker-Mandanten („Sorgenkinder mit Schuhkarton“).
+2. **Schritt 2 (Setup):** KMU Service Harz führt das 90-minütige Vor-Ort-Audit durch und richtet die Belegerfassung binnen 14 Tagen ein.
+3. **Schritt 3 (Review):** Nach dem ersten Monatsabschluss bewerten Kanzlei und Mandant gemeinsam die Zeiteinsparung.
+
+---
+
+## 3. Leitfaden für Kanzleigespräche & Einwandbehandlung
+
+### Gesprächs-Einstieg mit dem Kanzlei-Inhaber
+> *„Guten Tag Herr Steuerberater [Name], wir unterstützen Handwerksbetriebe hier in der Region Goslar/Harz dabei, ihre Belege untermonatlich digital so aufzubereiten, dass sie pünktlich und ohne Rückfragen im DATEV Belege online Ihrer Kanzlei ankommen. Wie viele Ihrer Handwerks-Mandanten bringen Ihnen die Belege aktuell noch im Pendelordner oder unsortiert per Mail?“*
+
+### Typische Kanzlei-Einwände und Antworten
+
+#### 1. „Wir wollen nicht, dass Mandanten selbst buchen und Fehler machen.“
+*Antwort:* „Genau deshalb setzen wir zu 100 % auf den **DATEV Rechnungsdatenservice 1.0 (RDS 1.0)** und nicht auf den Buchungsdatenservice. Der Mandant übermittelt lediglich das lesbare Belegbild mit extrahierten Metadaten (Lieferant, Rechnungsnummer, Betrag, Belegdatum). Die Kontierung und Verbuchung bleibt vollständig in der Hoheit Ihrer Kanzlei-Mitarbeiter.“
+
+#### 2. „Unsere Kanzlei hat keine Zeit, neue Software mit Mandanten einzurichten.“
+*Antwort:* „Sie müssen keine einzige Minute investieren. KMU Service Harz übernimmt das komplette Onboarding vor Ort beim Handwerker: Von der Handykamera der Monteure bis zur Schnittstellenfreigabe in DATEV. Sie erhalten lediglich fertige Belege in DATEV Unternehmen online.“
+
+#### 3. „Wir empfehlen Mandanten bereits DATEV Unternehmen online, aber die Handwerker nutzen es nicht.“
+*Antwort:* „Das kennen wir aus der Praxis: Handwerker scheitern oft an der Bedienung komplexer Web-Portale auf der Baustelle. Wir bauen die Brücke: Der Monteur fotografiert die Tankquittung einfach per WhatsApp, unsere Middleware prüft und bereitet den Beleg auf, und er landet automatisch in Ihrem DATEV Belege online.“
+
+---
+
+## 4. Kanzlei-Checkliste für den gemeinsamen Start
+
+- [ ] Auswahl von 2 Pilot-Mandanten (Handwerksbetriebe mit 3–25 Mitarbeitern).
+- [ ] Bereitstellung der Mandantennummer und DATEV-Beraternummer für die RDS 1.0 Freigabe.
+- [ ] Aushändigung des ausdruckbaren Mandanten-Flyers oder Empfehlungsschreibens.
+- [ ] Festlegung des Ziel-Starttermins (z. B. zum Beginn des nächsten Abrechnungsquartals).
+- [ ] Gemeinsame 15-minütige Feedback-Runde nach dem ersten digitalen Monatsabschluss.
+
+---
+*Dokumenten-Referenz: KMU Service Harz — Version 2026.1 | Vertrauliche Kanzlei-Unterlage*`
+  },
+  { 
+    id: 'd_mandanten_flyer', 
+    title: 'Mandanten_Flyer_Vorlage_Handwerk.md', 
+    tags: ['vertrieb', 'steuerberater', 'handwerk', 'vorlage', 'flyer'],
+    category: 'vertrieb',
+    status: 'synced', 
+    url: '#',
+    content: `# Mandanten-Flyer-Vorlage: Schluss mit Zettelwirtschaft im Handwerk
+
+> **Ausdruckbare Informationsvorlage für Steuerberatungskanzleien zur Weitergabe an Handwerks-Mandanten**
+> *Format: DIN A4 (Vorder- & Rückseite) oder digitaler PDF-Beileger zur monatlichen BWA*
+
+---
+
+# EMPFOHLEN VON IHRER STEUERBERATUNGSKANZLEI
+### Schluss mit dem Büro-Sonntag & Beleg-Chaos auf der Baustelle!
+
+**Wie Harzer Handwerksbetriebe ihre Belegablage komplett auf Autopilot stellen – ohne teure Software oder IT-Vorkenntnisse.**
+
+---
+
+### Kennen Sie diese typischen Zeitfresser im Handwerksalltag?
+
+- **Sonntags am Schreibtisch:** Statt Zeit mit der Familie verbringen Sie das Wochenende mit dem Sortieren von Quittungen und dem Abtippen von Eingangsrechnungen.
+- **Verlorene Baustellen-Belege:** Zerknitterte Tank- und Materialbelege liegen im Firmenwagen oder gehen zwischen Baustelle und Werkstatt verloren – und kosten bares Geld beim Vorsteuerabzug.
+- **Druck bei der Monatsabgabe:** Am Monatsanfang herrscht Hektik, weil der Steuerberater fehlende Rechnungen nachfordert.
+
+---
+
+### Die Lösung: Ihre Belege fließen automatisch zu Ihrem Steuerberater
+
+In enger Abstimmung mit Ihrer Steuerkanzlei richtet **KMU Service Harz** eine lautlose, digitale Belegerfassung für Ihren Betrieb ein:
+
+1. **Kein Belege-Suchen mehr – Einfach WhatsApp-Foto:**  
+   Ihre Monteure fotografieren Quittungen an der Tankstelle oder beim Baustoffhändler direkt mit dem Smartphone. Keine neue App, keine komplizierten Passwörter.
+2. **Gesetzliche E-Rechnungspflicht (2025/2026) gelöst:**  
+   Eingehende ZUGFeRD- und XRechnung-Formate werden automatisch im Hintergrund erkannt, geprüft und rechtssicher archiviert.
+3. **100 % DATEV- & GoBD-Rechtssicherheit:**  
+   Alle Belege landen pünktlich, lesbar und revisionssicher im DATEV-System Ihres Steuerberaters. Inklusive offizieller Verfahrensdokumentation für das Finanzamt.
+
+---
+
+### In 3 einfachen Schritten zu freien Wochenenden:
+
+- **Schritt 1: 90-Minuten Potenzial-Audit vor Ort:**  
+  Wir analysieren Ihre aktuellen Abläufe auf dem Betriebshof und ermitteln schwarz auf weiß Ihr monatliches Einsparpotenzial an Zeit und Kosten.
+- **Schritt 2: Lautlose Einrichtung durch KMU Service Harz:**  
+  Wir verbinden Ihre Systeme (z. B. Lexoffice / Handwerker-Software) mit dem DATEV-Portal Ihrer Kanzlei und weisen Ihre Mitarbeiter ein.
+- **Schritt 3: Fertig!**  
+  Nie wieder Belege suchen. Ihre Kanzlei erhält alle Unterlagen pünktlich zum Monatsanfang.
+
+---
+
+### Exklusiver Kanzlei-Empfehlungsgutschein
+
+\`\`\`
++----------------------------------------------------------------------------------------------------+
+|  🎁 WERTGUTSCHEIN: 500,- €                                                                        |
+|                                                                                                    |
+|  Kostenfreies 90-Minuten Büro-Potenzial-Audit & ROI-Check für Mandanten unserer Kanzlei.          |
+|                                                                                                    |
+|  Gutscheincode: KANZLEI-HARZ-500                                                                   |
+|  Einlösbar bei: KMU Service Harz | Christian Gornitzka                                            |
+|  Telefon: 05321 / 739 820 | Web: https://kmuserviceharz.de/stresstest                             |
++----------------------------------------------------------------------------------------------------+
+\`\`\`
+
+---
+
+### Jetzt Büro-Stress-Test in 2 Minuten online starten (QR-Code):
+
+👉 **https://kmuserviceharz.de/stresstest?ref=kanzlei**
+
+**KMU Service Harz** | Christian Gornitzka  
+Marktstraße 12, 38640 Goslar | Tel: 05321 / 739 820 | info@kmuserviceharz.de  
+*In Kooperation mit Ihrer Steuerberatungskanzlei*`
+  },
+  { 
+    id: 'd_direct_mail_518', 
+    title: 'Direct_Mail_1_Seiter_518_Harzer_Handwerksmeister.md', 
+    tags: ['vertrieb', 'handwerk', 'vorlage', 'directmail', 'kampagne'],
+    category: 'vertrieb',
+    status: 'synced', 
+    url: '#',
+    content: `# Postalisches Anschreiben (Direct-Mail 1-Seiter): 518 Harzer Handwerksmeister
+
+> **Kampagnen-Vorlage für den haptischen Postversand an 518 verifizierte Handwerksmeister in der Harz-Region**
+> *Zielgruppe: Inhaber & Geschäftsführer von SHK-, Elektro-, Dachdecker-, Bau-, Holz- und Metallbaubetrieben (3–25 Mitarbeiter).*
+
+---
+
+KMU Service Harz | Christian Gornitzka | Marktstraße 12, 38640 Goslar
+
+[Firma des Handwerksmeisters]  
+z. Hd. der Geschäftsleitung / Herrn Meister [Nachname]  
+[Straße & Hausnummer]  
+[PLZ & Ort im Harz]  
+
+**Goslar, den [Aktuelles Datum]**
+
+### **Betreff: Schluss mit dem Büro-Sonntag: Warum 518 Handwerksmeister im Harz ihre Wochenenden nicht mehr am Schreibtisch verbringen müssen.**
+
+Sehr geehrter Herr [Nachname],
+
+Ihre Monteure leisten auf der Baustelle saubere Arbeit. Aber wenn am Freitagnachmittag eigentlich Feierabend sein sollte, beginnt für Sie als Chef die unbezahlte zweite Schicht: 
+
+Zerknitterte Stundenzettel vom Armaturenbrett kratzen, fehlende Materialquittungen beim Großhändler nachfordern und am Sonntagvormittag Rechnungen und Belege für den Steuerberater abtippen.
+
+**Damit ist jetzt Schluss.**
+
+Wir haben uns als regionaler Automatisierungspartner im Harz auf genau eine Aufgabe spezialisiert: Wir befreien Handwerksbetriebe von zeitraubender Zettelwirtschaft und richten eine lautlose Beleg- und Zeiterfassung ein – direkt zwischen Baustelle, Handykamera und Steuerberater.
+
+---
+
+### **Ihre 3 handfesten Vorteile im Betriebsalltag:**
+
+1. **Keine neue Software lernen:**  
+   Ihre Mitarbeiter auf der Baustelle nutzen einfach WhatsApp oder die Handykamera. Quittung an der Kasse fotografieren – in 3 Sekunden fertig.
+2. **100 % E-Rechnungs- und GoBD-Sicherheit:**  
+   Alle Eingangs- und Ausgangsbelege fließen revisionssicher und automatisch vorkontiert in das System Ihres Steuerberaters (z. B. DATEV / Lexware Office).
+3. **Bis zu 50 % staatlicher Zuschuss:**  
+   Über Förderprogramme wie den *Digitalbonus Niedersachsen* oder *Digital Innovation Sachsen-Anhalt* übernimmt der Staat bis zur Hälfte der gesamten Umsetzungskosten.
+
+---
+
+### **Wir schenken Ihnen unser 500-Euro-Büro-Potenzial-Audit:**
+
+Finden Sie in 2 Minuten heraus, wie viele Stunden und Euro Sie in Ihrem Betrieb monatlich einsparen können.
+
+Scannen Sie den untenstehenden QR-Code mit der Smartphone-Kamera oder öffnen Sie:  
+👉 **https://kmuserviceharz.de/stresstest?ref=meister518**
+
+\`\`\`
++---------------------------------------------------------------------------------+
+|    [ QR-CODE ZUM LIVE-BÜRO-STRESSTEST: https://kmuserviceharz.de/stresstest ]   |
+|    Gutschein-Code für 500 € Audit-Befreiung: MEISTER-HARZ-2026                 |
++---------------------------------------------------------------------------------+
+\`\`\`
+
+Beantworten Sie 5 kurze Fragen zu Ihren aktuellen Büroabläufen. Sie erhalten sofort Ihr individuelles **Prozess-Röntgenbild** und eine exakte Amortisationsrechnung.
+
+Mit handwerklichen Grüßen aus Goslar,
+
+**Christian Gornitzka**  
+Gründer & Automatisierungs-Partner für das Harzer Handwerk  
+**KMU Service Harz** | Marktstraße 12, 38640 Goslar  
+Telefon: 05321 / 739 820 | E-Mail: info@kmuserviceharz.de | Web: https://kmuserviceharz.de`
+  },
+  { 
+    id: 'd_telefonleitfaden', 
+    title: 'Telefon_und_Kaltakquise_Leitfaden_Handwerk.md', 
+    tags: ['vertrieb', 'handwerk', 'vorlage', 'kaltakquise', 'leitfaden'],
+    category: 'vertrieb',
+    status: 'synced', 
+    url: '#',
+    content: `# Telefon- & Kaltakquise-Leitfaden: Handwerksbetriebe im Harz
+
+> **Vertriebsleitfaden für KMU Service Harz zur Kalt- und Warmakquise von Handwerksmeistern**
+> *Spezifisch ausgelegt auf die regionale Handwerksmentalität im Harz (Goslar, Osterode, Wernigerode, Blankenburg, Halberstadt, Nordhausen).*
+
+---
+
+## 1. Übersicht & Vertriebsstrategie
+
+Handwerksmeister sind vielbeschäftigte Praktiker auf Baustellen oder im Kundendienst. Sie haben eine extrem niedrige Toleranz für klassisches „Marketing-Geschwätz“ oder theoretische IT-Präsentationen. 
+
+**Erfolgsfaktoren im Handwerker-Vertrieb:**
+- Augenhöhe, klarer Klartext, lokale Verankerung im Harz („Kollege aus Goslar“).
+- Sofortige Ansprache des echten Schmerzes (Büro-Sonntage, verlorene Tankquittungen, E-Rechnungspflicht).
+- Kein Verkauf von Software, sondern Angebot einer **schlüsselfertigen Entlastung (Digitaler Hausmeister)**.
+
+---
+
+## 2. Teil 1: Das Vorzimmer- & Assistenz-Skript (Sekretariat / Büro / Ehefrau)
+
+**Ziel:** Kein Abwimmeln („Schicken Sie mal eine Broschüre“), sondern Weiterleitung zum Meister oder Vereinbarung eines festen 2-Minuten Telefontermins.
+
+### Der sympathische Kanzlei- & E-Rechnungs-Opener
+> *„Guten Tag Frau [Name / z.B. Meyer], mein Name ist [Ihr Name] von KMU Service Harz aus Goslar. Ich rufe ganz kurz an bezüglich der Belegübergabe an Ihre Steuerkanzlei und der neuen E-Rechnungspflicht. Ist Herr [Meister] gerade im Büro oder auf der Baustelle erreichbar?“*
+
+### Einwandbehandlung im Vorzimmer
+
+#### Einwand A: „Um was geht es denn genau?“
+> **Antwort:** *„Wir unterstützen regionale Handwerksbetriebe dabei, die Stundenzettel und Quittungen von der Baustelle direkt per Handykamera oder WhatsApp ins Büro zu übertragen, damit die Wochenendarbeit bei der Buchhaltung wegfällt. Ich wollte Herrn [Meister] kurz unseren 2-Minuten Stresstest dazu vorstellen. Wann erreiche ich ihn am besten?“*
+
+#### Einwand B: „Der Chef hat absolut keine Zeit, die Auftragslage ist voll.“
+> **Antwort:** *„Das weiß ich genau – und genau deshalb rufe ich an. Weil der Chef nach 10 Stunden auf der Baustelle abends nicht noch 2 Stunden Rechnungen abtippen sollte. Wann hat er morgens vor dem Ausrücken 2 Minuten Zeit – eher um 07:15 Uhr oder abends ab 16:30 Uhr?“*
+
+#### Einwand C: „Schicken Sie uns einfach etwas per E-Mail.“
+> **Antwort:** *„Sehr gerne. Damit ich Herrn [Meister] keine 20-seitige Werbebroschüre schicke: Schreiben Sie Ihre Rechnungen schon digital mit Lexoffice/Handwerkerprogramm oder noch mit Word/Excel? [...] Perfekt, dann schicke ich den passenden 1-Seiter direkt an Ihre Hand an die [info@firma.de].“*
+
+---
+
+## 3. Teil 2: Das Baustellen-Skript (Direktkontakt Handwerksmeister)
+
+**Ziel:** In 45 Sekunden Interesse wecken und das 500 € Büro-Potenzial-Audit vor Ort oder per 2-Minuten Stresstest vereinbaren.
+
+### Der Direkteinstieg
+> *„Moin Herr [Meister], [Ihr Name] von KMU Service Harz hier aus Goslar. Störe ich Sie gerade mitten auf der Baustelle oder haben Sie 45 Sekunden Zeit?“*
+
+### Die 3 Schmerz-Hooks (Je nach Gesprächssituation wählen):
+
+#### Hook 1: Regulatorisch (E-Rechnungspflicht 2025/2026)
+> *„Herr [Meister], ab 2025/2026 müssen alle B2B-Rechnungen digital als XML (ZUGFeRD/XRechnung) empfangen und verarbeitet werden. Wir sorgen dafür, dass Ihr Betrieb das lautlos im Hintergrund erfüllt – ohne dass Sie für tausende Euro neue Software anschaffen oder Schulungen besuchen müssen.“*
+
+#### Hook 2: Zeitlich (Der Büro-Sonntag & Zettelwirtschaft)
+> *„Herr [Meister], ich rufe an, damit Sie am Sonntag nicht mehr am Schreibtisch sitzen und Materialzettel oder Tankquittungen sortieren müssen. Wir haben einen 2-Minuten Stresstest entwickelt, der Ihnen zeigt, wie Ihre Monteure Belege in 3 Sekunden per WhatsApp erfassen und Sie 4 Stunden pro Woche sparen.“*
+
+#### Hook 3: Finanziell (Schattenkosten & 50 % Förderzuschuss)
+> *„Wussten Sie, dass das Land Niedersachsen / Sachsen-Anhalt über den Digitalbonus bis zu 50 % der Kosten übernimmt, wenn Handwerksbetriebe ihre Belegablage automatisieren? Wir prüfen in 2 Minuten, wie viel Förderung für Ihren Betrieb bereitsteht.“*
+
+---
+
+## 4. Teil 3: Die 5-Punkte Einwand-Matrix (Validieren ➔ Pivot ➔ Next Step)
+
+| Einwand des Meisters | 1. Validieren (Druck rausnehmen) | 2. Pivot (Strategische Umkehr) | 3. Next Step (Konkretes Mikro-Ziel) |
+|---|---|---|---|
+| **1. „Wir machen das schon immer so mit Ordnern.“** | *„Absolut verständlich. Ihr Betrieb läuft seit Jahren erfolgreich und die Auftragsbücher sind voll.“* | *„Das Problem ist nicht Ihre Arbeitsweise, sondern das Finanzamt und die Kanzlei: Reine Papierbelege und einfache PDFs genügen bei Betriebsprüfungen nicht mehr (GoBD).“* | *„Lassen Sie uns in 5 Minuten prüfen, ob Ihr Rechnungseingang finanzamtssicher ist. Passt Ihnen morgen früh 07:30 Uhr?“* |
+| **2. „Unsere Software (z. B. Lexoffice / Handwerker-ERP) reicht.“** | *„Super, das ist ein erstklassiges System, das wir bei vielen Kunden anbinden.“* | *„Der teure Bruch entsteht immer zwischen Baustelle und Software: Wenn Monteure Quittungen im Transporter vergessen oder der Chef Zettel händisch abtippen muss.“* | *„Ich zeige Ihnen in 5 Minuten am Bildschirm, wie die Quittungen von der Baustelle direkt in Lexoffice landen.“* |
+| **3. „Keine Zeit für komplizierte IT-Projekte.“** | *„Glaube ich Ihnen sofort. Niemand im Handwerk hat Zeit für stundenlange Software-Schulungen.“* | *„Deshalb machen wir kein IT-Projekt, sondern agieren als digitaler Hausmeister: Wir richten alles schlüsselfertig für Sie ein. Ihre Monteure drücken nur auf die Handykamera.“* | *„Wenn unser Stresstest Ihnen nicht schwarz auf weiß 3 Stunden Freizeit pro Woche bringt, hören Sie nie wieder von mir. Fairer Deal?“* |
+| **4. „Wir sind mit 3–5 Mann viel zu klein dafür.“** | *„Das dachten unsere Kunden mit 3 Mitarbeitern anfangs auch.“* | *„Gerade bei kleinen Betrieben tut die Zettelwirtschaft am meisten weh, weil der Chef selbst am Sonntag am Schreibtisch sitzt, statt sich zu erholen.“* | *„Ich sende Ihnen eine 1-Seiter Kurzübersicht eines 3-Mann Betriebs aus Osterode zur Ansicht. Passt das?“* |
+| **5. „Schicken Sie mir einfach Infos per Mail.“** | *„Sehr gerne, ich möchte Ihnen aber keine unpassende Standard-Broschüre schicken.“* | *„Wo drückt bei Ihnen aktuell der größte Schuh: Bei den Tank-/Materialquittungen der Monteure oder beim Druck des Steuerberaters?“* | *„Basierend auf Ihrer Antwort sende ich Ihnen den passenden Link zum Stresstest. Ist [info@firma.de] die beste Adresse?“* |
+
+---
+
+## 5. Teil 4: 3-Sekunden Notfall-Pivot (Hektik auf der Baustelle / Gerüst)
+
+Wenn der Meister mitten im Baustellenlärm abnimmt (*„Ich stehe auf dem Gerüst / die Säge läuft, keine Zeit!“*):
+
+> **3-Sekunden Notfall-Formel:**  
+> *„Verstehe ich vollkommen, Herr Meister! Ich halte Sie keine Sekunde auf. Nur 1 Frage: Darf ich Ihnen den 2-Minuten Büro-Stresstest per Mail an [info@...] schicken? Ja oder Nein?“*  
+> ➔ Bei **„Ja“**: *„Vielen Dank, Mail geht sofort raus. Viel Erfolg auf der Baustelle!“*`
+  },
+  { 
+    id: 'd1', 
+    title: 'Businessplan 2026 - KMU Service Harz.md', 
+    content: 'Offizieller Businessplan 2026: 4-stufige Value Ladder (500 € Audit, 2.000 € Standard-Setup, ab 6.000 € Meisterbetrieb, 200 €/Monat Retainer) mit 100% Dienstleistungsmarge.', 
+    status: 'synced', 
+    url: '#',
+    tags: ['businessplan', 'strategie']
+  },
+  { 
+    id: 'd_contract2000', 
+    title: 'Vertrag_Standard_Setup_2000EUR.md', 
+    content: 'Dienstleistungsvertrag für das 2.000 € Standard-Setup (Lautlose Belegerfassung, DATEV Belegbilderservice, Lexoffice, GoBD & 14 Tage Einführungsbegleitung).', 
+    status: 'synced', 
+    url: '#',
+    tags: ['vertrag', 'legal', 'vorlage']
+  },
+  { 
+    id: 'd_avv', 
+    title: 'DSGVO_Auftragsverarbeitungsvertrag_AVV.md', 
+    content: 'Muster-Auftragsverarbeitungsvertrag (AVV nach Art. 28 DSGVO) für Make.com, OpenAI, Lexoffice und Cloud-Speicher.', 
+    status: 'synced', 
+    url: '#',
+    tags: ['legal', 'dsgvo', 'vorlage']
+  },
+  { 
+    id: 'd_gobd', 
+    title: 'GoBD_Verfahrensdokumentation_Ersetzendes_Scannen.md', 
+    content: 'GoBD-Verfahrensdokumentation für ersetzendes Scannen nach dem Standard der Bundessteuerberaterkammer.', 
+    status: 'synced', 
+    url: '#',
+    tags: ['gobd', 'legal', 'vorlage', 'steuerberater']
+  },
+  { 
+    id: 'd_aaas_contract', 
+    title: 'AaaS_Wartungsvertrag_200EUR.md', 
+    content: 'Wartungs- und SLA-Vertrag für den Digitalen Hausmeister (200 € / Monat Retainer) mit 24/7 Monitoring und Scope-Creep-Schutz.', 
+    status: 'synced', 
+    url: '#',
+    tags: ['vertrag', 'legal', 'vorlage', 'aaas']
+  },
+  { 
+    id: 'd_checklist', 
+    title: 'Systemzugangs_und_Sicherheits_Checkliste.md', 
+    content: 'Onboarding-Checkliste zur Erfassung aller Kunden-Zugänge (Lexoffice, DATEV Mandantennummer, Cloud-Speicher, WhatsApp Business).', 
+    status: 'synced', 
+    url: '#',
+    tags: ['onboarding', 'checkliste', 'vorlage']
+  },
+  { 
+    id: 'd_abnahme', 
+    title: 'Abnahmeprotokoll_und_Mitarbeiter_Cheatsheet.md', 
+    content: 'Förmliches Abnahmeprotokoll und ausdruckbares Mitarbeiter-Cheat-Sheet für die mobile Belegerfassung.', 
+    status: 'synced', 
+    url: '#',
+    tags: ['onboarding', 'abnahme', 'vorlage']
+  }
 ];
 
 export const INITIAL_SOP_TEMPLATES = [

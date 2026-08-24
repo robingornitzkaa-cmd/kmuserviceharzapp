@@ -3,6 +3,7 @@ import { registerPlugin, Capacitor } from '@capacitor/core';
 
 const WidgetBridge = registerPlugin('WidgetBridge');
 import { jsPDF } from 'jspdf';
+import { generateStressTestPDF } from './services/pdfReportGenerator';
 import { 
   LayoutDashboard, 
   Inbox, 
@@ -99,6 +100,7 @@ import {
 // COMPONENTS IMPORT (Eager)
 import { Sidebar } from './components/Sidebar';
 import { DashboardView } from './components/DashboardView';
+import { ClientPortalView } from './components/ClientPortalView';
 import { CrmDrawer } from './components/CrmDrawer';
 import { DocumentEditorModal } from './components/DocumentEditorModal';
 import { LightboxModal } from './components/LightboxModal';
@@ -119,6 +121,7 @@ const DocsHub = lazy(() => import('./components/DocsHub').then(m => ({ default: 
 const SopManager = lazy(() => import('./components/SopManager').then(m => ({ default: m.SopManager })));
 const WebsiteView = lazy(() => import('./components/WebsiteView').then(m => ({ default: m.WebsiteView })));
 const CoachingLivePortal = lazy(() => import('./components/CoachingLivePortal').then(m => ({ default: m.CoachingLivePortal })));
+const EInvoiceValidator = lazy(() => import('./components/EInvoiceValidator').then(m => ({ default: m.EInvoiceValidator })));
 
 function App() {
   // Navigation State
@@ -242,8 +245,16 @@ function App() {
         let parsed = JSON.parse(saved);
         // Merge missing INITIAL_DOCS
         INITIAL_DOCS.forEach(initDoc => {
-          if (!parsed.some(d => d.id === initDoc.id)) {
+          const existingIdx = parsed.findIndex(d => d.id === initDoc.id);
+          if (existingIdx === -1) {
             parsed.push(initDoc);
+          } else {
+            parsed[existingIdx] = {
+              ...initDoc,
+              ...parsed[existingIdx],
+              tags: parsed[existingIdx].tags || initDoc.tags,
+              category: parsed[existingIdx].category || initDoc.category
+            };
           }
         });
         return parsed.map(d => {
@@ -1508,36 +1519,61 @@ function App() {
   };
 
   // Kunden-Portal Handlers (Feature 2 - v4)
-  const handleCreateClientTicket = (e) => {
-    e.preventDefault();
-    if (!newTicketTitle.trim()) return;
-
+  const handleCreateClientTicket = (ticketOrEvent) => {
+    let newTicket;
     const today = new Date().toISOString().split('T')[0];
-    const newId = 'ct_' + Date.now();
 
-    const newTicket = {
-      id: newId,
-      client: selectedClientCompany,
-      title: newTicketTitle,
-      status: 'offen',
-      date: today,
-      priority: newTicketPriority,
-      desc: newTicketDesc || 'Keine detaillierte Beschreibung hinterlegt.'
-    };
+    if (ticketOrEvent && typeof ticketOrEvent === 'object' && ticketOrEvent.title) {
+      newTicket = {
+        id: ticketOrEvent.id || ('ct_' + Date.now()),
+        client: ticketOrEvent.client || selectedClientCompany,
+        title: ticketOrEvent.title,
+        category: ticketOrEvent.category || 'Schnittstellen-Fehler',
+        status: ticketOrEvent.status || 'offen',
+        date: ticketOrEvent.date || today,
+        priority: ticketOrEvent.priority || 'mittel',
+        desc: ticketOrEvent.desc || 'Keine detaillierte Beschreibung hinterlegt.',
+        minutesSpent: ticketOrEvent.minutesSpent || ticketOrEvent.estimatedMinutes || 15
+      };
+    } else {
+      if (ticketOrEvent && ticketOrEvent.preventDefault) {
+        ticketOrEvent.preventDefault();
+      }
+      if (!newTicketTitle.trim()) return;
+      newTicket = {
+        id: 'ct_' + Date.now(),
+        client: selectedClientCompany,
+        title: newTicketTitle,
+        category: 'Schnittstellen-Fehler',
+        status: 'offen',
+        date: today,
+        priority: newTicketPriority,
+        desc: newTicketDesc || 'Keine detaillierte Beschreibung hinterlegt.',
+        minutesSpent: 15
+      };
+      setNewTicketTitle('');
+      setNewTicketDesc('');
+      alert(`Vielen Dank! Dein Support-Ticket für ${selectedClientCompany} wurde eingereicht und an KMU Service Harz übermittelt.`);
+    }
 
-    setClientTickets([newTicket, ...clientTickets]);
+    setClientTickets(prev => [newTicket, ...(prev || [])]);
 
     // Automatically notify founder by inserting item into inbox!
     const newInboxNotification = {
       id: 'i_' + Date.now(),
-      text: `[Support-Ticket von ${selectedClientCompany}] ${newTicketTitle}: ${newTicketDesc}`,
+      text: `[Support-Ticket von ${newTicket.client}] ${newTicket.title}: ${newTicket.desc}`,
       date: today
     };
     setInbox(prev => [newInboxNotification, ...prev]);
+  };
 
-    setNewTicketTitle('');
-    setNewTicketDesc('');
-    alert(`Vielen Dank! Dein Support-Ticket für ${selectedClientCompany} wurde eingereicht und an KMU Service Harz übermittelt.`);
+  const handleUpdateClientTicketStatus = (ticketId, newStatus) => {
+    setClientTickets(prev => (prev || []).map(t => {
+      if (t.id === ticketId) {
+        return { ...t, status: newStatus };
+      }
+      return t;
+    }));
   };
 
   // KI-Telefonagent Handlers (Feature 3 - v4)
@@ -3708,113 +3744,17 @@ Hier ist die Frage des Nutzers:
 
   const savings = calculateSavings();
 
-  const generatePDFReport = () => {
-    const doc = new jsPDF();
-    
-    // Header Banner
-    doc.setFillColor(139, 92, 246);
-    doc.rect(0, 0, 210, 35, 'F');
-    
-    doc.setTextColor(255, 255, 255);
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(22);
-    doc.text("KMU SERVICE HARZ", 20, 23);
-    
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(10);
-    doc.text("Der pragmatische Prozess-Befreier fuer den lokalen Mittelstand", 20, 29);
-    
-    doc.setFontSize(9);
-    doc.text("Erstellt von: Robin Gornitzka", 140, 18);
-    doc.text("E-Mail: info@kmuserviceharz.de", 140, 23);
-    doc.text(`Datum: ${new Date().toLocaleDateString('de-DE')}`, 140, 28);
-    
-    doc.setTextColor(17, 24, 39);
-    doc.setFontSize(16);
-    doc.setFont("helvetica", "bold");
-    doc.text("WIRTSCHAFTLICHKEITSANALYSE & POTENZIAL-AUDIT", 20, 52);
-    
-    doc.setFontSize(11);
-    doc.setFont("helvetica", "normal");
-    doc.setTextColor(75, 85, 99);
-    doc.text(`Prozess-Automatisierung fuer: "${mask(calcInputs.taskName, 'inbox')}"`, 20, 59);
-    
-    doc.setDrawColor(229, 231, 235);
-    doc.line(20, 65, 190, 65);
-    
-    doc.setTextColor(17, 24, 39);
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(13);
-    doc.text("1. Status Quo (Manueller Aufwand)", 20, 77);
-    
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(10);
-    doc.setTextColor(55, 65, 81);
-    doc.text(`- Woechentlicher Zeitaufwand: ${calcInputs.durationHours} Stunden`, 25, 85);
-    doc.text(`- Kalkulatorischer Stundensatz: ${calcInputs.hourlyRate} EUR / Stunde`, 25, 91);
-    
-    doc.setFillColor(249, 250, 251);
-    doc.rect(20, 98, 170, 32, 'F');
-    doc.setDrawColor(229, 231, 235);
-    doc.rect(20, 98, 170, 32, 'D');
-    
-    doc.setTextColor(139, 92, 246);
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(11);
-    doc.text(`Kosten pro Jahr (Manuell): ${(calcInputs.durationHours * calcInputs.hourlyRate * 52).toLocaleString('de-DE')} EUR`, 25, 108);
-    doc.text(`Arbeitszeit pro Jahr (Manuell): ${savings.hours} Stunden`, 25, 118);
-    
-    doc.setTextColor(17, 24, 39);
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(13);
-    doc.text("2. Soll-Zustand (Automatisiert)", 20, 142);
-    
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(10);
-    doc.setTextColor(55, 65, 81);
-    doc.text("- Erwartete Prozess-Optimierung: ca. 90% Zeiteinsparung", 25, 150);
-    doc.text("- Automatisierte Workflows laufen im Hintergrund (24/7)", 25, 156);
-    
-    doc.setFillColor(240, 253, 250);
-    doc.rect(20, 163, 170, 32, 'F');
-    doc.setDrawColor(186, 230, 224);
-    doc.rect(20, 163, 170, 32, 'D');
-    
-    doc.setTextColor(13, 148, 136);
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(11);
-    doc.text(`Jaehrliche Zeit-Einsparung: ~ ${(calcInputs.durationHours * 52 * 0.9).toFixed(0)} Std.`, 25, 173);
-    doc.text(`Jaehrliche Geld-Einsparung: ~ ${(calcInputs.durationHours * calcInputs.hourlyRate * 52 * 0.9).toLocaleString('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 })}`, 25, 183);
-    
-    doc.setTextColor(17, 24, 39);
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(13);
-    doc.text("3. Investition & Foerdermittel-Hebel", 20, 207);
-    
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(10);
-    doc.setTextColor(55, 65, 81);
-    doc.text(`- Einmaliges Festpreis-Paket (Implementierung): ${calcInputs.setupFee.toLocaleString('de-DE')} EUR`, 25, 215);
-    
-    const subsidyNames = { NDS: 'Digitalbonus Niedersachsen (50% Zuschuss)', LSA: 'Digital Innovation Sachsen-Anhalt (50% Zuschuss)', BUND: 'go-digital Bundesfoerderung (30% Zuschuss)', NONE: 'Keine staatliche Foerderung gewaehlt' };
-    doc.text(`- Foerderprogramm: ${subsidyNames[calcInputs.subsidyRegion]}`, 25, 221);
-    doc.text(`- Staatliche Foerderung (nicht rueckzahlbar): - ${savings.subsidyAmount}`, 25, 227);
-    
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(13, 148, 136);
-    doc.text(`Effektive Netto-Investition: ${savings.netInvestment}`, 25, 237);
-    
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(17, 24, 39);
-    doc.text(`Amortisationszeit (Payback Period): ca. ${savings.paybackMonths} Monate`, 25, 245);
-    
-    doc.setFontSize(8);
-    doc.setTextColor(156, 163, 175);
-    doc.text("KMU Service Harz UG | Der pragmatische Prozess-Befreier", 20, 275);
-    doc.text("Hinweis: Diese ROI-Berechnung basiert auf den vom Kunden bereitgestellten Daten und stellt eine unverbindliche Schaetzung dar.", 20, 280);
-    doc.text("Antraege fuer Foerdermittel muessen zwingend vor Projektstart eingereicht werden.", 20, 284);
-    
-    doc.save(`ROI_Analyse_${mask(calcInputs.taskName, 'inbox').replace(/\s+/g, '_')}.pdf`);
+  const generatePDFReport = async () => {
+    await generateStressTestPDF({
+      companyName: 'Handwerksbetrieb Harz',
+      contactPerson: 'Meister / Inhaber',
+      currentBottleneck: calcInputs.taskName || 'Manuelle Rechnungsprüfung & Buchhaltungsvorbereitung',
+      weeklyWastedHours: calcInputs.durationHours || 8,
+      masterHourlyRate: calcInputs.hourlyRate || 65,
+      setupFee: calcInputs.setupFee || 2000,
+      region: calcInputs.subsidyRegion || 'NDS',
+      selectedPackage: 'standardSetup2000'
+    });
   };
 
   // Helper function to check if lead has not been contacted for > 14 days
@@ -4291,209 +4231,25 @@ Hier ist die Frage des Nutzers:
       <main className="main-content">
         
         {/* ==================== CLIENT PORTAL MODE VIEW ==================== */}
-        {clientPortalMode ? (() => {
-          const currentContact = contacts.find(c => c.company === selectedClientCompany) || contacts[0];
-          const currentProject = projects.find(p => p.client === selectedClientCompany) || { pricePackage: 2500, trackedHours: 42.5, ready: true };
-          const companyTickets = clientTickets.filter(t => t.client === selectedClientCompany);
-          
-          const hoursSaved = (currentProject.trackedHours || 35).toFixed(0);
-          const eurSaved = Math.round(hoursSaved * 85);
-
-          return (
-            <div className="client-portal-container" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-              
-              {/* Client Hero Banner */}
-              <div className="card" style={{ background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(6, 182, 212, 0.15))', border: '1px solid rgba(139, 92, 246, 0.3)', padding: '1.5rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
-                  <div>
-                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--accent-cyan)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                      Willkommen im Mandantenportal
-                    </span>
-                    <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'white', marginTop: '0.25rem' }}>
-                      {mask(selectedClientCompany, 'company')}
-                    </h2>
-                    <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>
-                      Ansprechpartner: <strong>{mask(currentContact?.name || 'Max Mustermann', 'name')}</strong> | System: <span className="tag tag-system">{mask(currentContact?.system || 'DATEV', 'system')}</span>
-                    </p>
-                  </div>
-                  <div style={{ textAlign: 'right' }}>
-                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block' }}>Betreut von:</span>
-                    <span style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--accent-purple)' }}>KMU Service Harz</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Client KPI Grid */}
-              <div className="financial-kpi-container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
-                <div className="kpi-card" style={{ borderLeft: '3px solid var(--accent-cyan)' }}>
-                  <span className="kpi-label">Projekt-Status</span>
-                  <span className="kpi-value text-cyan" style={{ fontSize: '1.25rem' }}>
-                    {currentProject.ready ? '✅ In Betrieb' : '⚙️ In Umsetzung'}
-                  </span>
-                  <span className="kpi-desc">Systeme laufen automatisiert</span>
-                </div>
-
-                <div className="kpi-card" style={{ borderLeft: '3px solid var(--accent-green)' }}>
-                  <span className="kpi-label">Zeitersparnis (Gesamt)</span>
-                  <span className="kpi-value text-green" style={{ fontSize: '1.25rem' }}>~ {hoursSaved} Std.</span>
-                  <span className="kpi-desc">Freigestellte Bürozeit</span>
-                </div>
-
-                <div className="kpi-card" style={{ borderLeft: '3px solid var(--accent-purple)' }}>
-                  <span className="kpi-label">Kalkulatorische Ersparnis</span>
-                  <span className="kpi-value text-purple" style={{ fontSize: '1.25rem' }}>~ {eurSaved.toLocaleString('de-DE')} €</span>
-                  <span className="kpi-desc">Basierend auf 85 €/h Stundensatz</span>
-                </div>
-
-                <div className="kpi-card" style={{ borderLeft: '3px solid var(--accent-yellow)' }}>
-                  <span className="kpi-label">Support-Tickets</span>
-                  <span className="kpi-value text-yellow" style={{ fontSize: '1.25rem' }}>{companyTickets.filter(t => t.status === 'offen').length} Offen</span>
-                  <span className="kpi-desc">{companyTickets.length} Tickets insgesamt</span>
-                </div>
-              </div>
-
-              {/* Client Portal 2-Spalten Hauptbereich */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '1.5rem' }} className="make-simulator-grid">
-                
-                {/* Linke Spalte: Dokumente & SOPs */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                  
-                  {/* Freigegebene SOPs / Anleitungen */}
-                  <div className="card">
-                    <div className="card-header">
-                      <h3 className="card-title" style={{ fontSize: '1rem', color: 'var(--accent-purple)' }}>
-                        <CheckCircle size={18} /> Freigegebene SOPs & Anleitungen
-                      </h3>
-                    </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                      {sopTemplates.map((template, idx) => (
-                        <div key={idx} style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: '0.5rem', padding: '0.85rem' }}>
-                          <div style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--text-primary)', marginBottom: '0.35rem' }}>
-                            {template.name}
-                          </div>
-                          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                            {template.steps.slice(0, 2).map((step, sIdx) => (
-                              <div key={sIdx} style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                                <ChevronRight size={12} className="text-cyan-500" /> {mask(step, 'inbox')}
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Projekt-Dokumente & Links */}
-                  <div className="card">
-                    <div className="card-header">
-                      <h3 className="card-title" style={{ fontSize: '1rem', color: 'var(--accent-cyan)' }}>
-                        <FileText size={18} /> Projekt-Dokumente & Ordner
-                      </h3>
-                    </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                      {currentContact?.links && currentContact.links.length > 0 ? (
-                        currentContact.links.map(link => (
-                          <a key={link.id} href={link.url} target="_blank" rel="noreferrer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.75rem', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: '0.5rem', textDecoration: 'none', color: 'var(--text-primary)', fontSize: '0.85rem' }}>
-                            <span>📁 {link.title}</span>
-                            <ExternalLink size={14} className="text-cyan-500" />
-                          </a>
-                        ))
-                      ) : (
-                        <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', italic: 'true' }}>
-                          Keine verknüpften Ordner vorhanden.
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                </div>
-
-                {/* Rechte Spalte: Support- & Änderungsticket System */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                  
-                  {/* Neuer Ticket Erstellen Formular */}
-                  <div className="card">
-                    <div className="card-header">
-                      <h3 className="card-title" style={{ fontSize: '1rem', color: 'var(--accent-green)' }}>
-                        <LifeBuoy size={18} /> Neues Support-Ticket einreichen
-                      </h3>
-                    </div>
-                    <form onSubmit={handleCreateClientTicket} style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-                      <div className="input-group">
-                        <label style={{ fontSize: '0.75rem' }}>Anliegen / Titel</label>
-                        <input 
-                          type="text" 
-                          className="input-field"
-                          placeholder="z.B. Neuentwickelten WhatsApp-Bot anpassen..."
-                          value={newTicketTitle}
-                          onChange={(e) => setNewTicketTitle(e.target.value)}
-                          required
-                        />
-                      </div>
-
-                      <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '0.75rem' }}>
-                        <div className="input-group">
-                          <label style={{ fontSize: '0.75rem' }}>Priorität</label>
-                          <select 
-                            className="input-field"
-                            value={newTicketPriority}
-                            onChange={(e) => setNewTicketPriority(e.target.value)}
-                          >
-                            <option value="hoch">Hoch (Dringend)</option>
-                            <option value="mittel">Mittel (Standard)</option>
-                            <option value="niedrig">Niedrig (Wunsch)</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      <div className="input-group">
-                        <label style={{ fontSize: '0.75rem' }}>Beschreibung</label>
-                        <textarea 
-                          className="input-field"
-                          rows={3}
-                          placeholder="Beschreibe deine Änderungswünsche oder Fragen..."
-                          value={newTicketDesc}
-                          onChange={(e) => setNewTicketDesc(e.target.value)}
-                        />
-                      </div>
-
-                      <button type="submit" className="btn btn-primary" style={{ background: 'linear-gradient(135deg, var(--accent-green), var(--accent-cyan))', border: 'none', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.35rem' }}>
-                        <Send size={14} /> Ticket absenden
-                      </button>
-                    </form>
-                  </div>
-
-                  {/* Bisherige Tickets Liste */}
-                  <div className="card">
-                    <div className="card-header">
-                      <h3 className="card-title" style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
-                        Bisherige Support-Tickets ({companyTickets.length})
-                      </h3>
-                    </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', maxHeight: '280px', overflowY: 'auto' }}>
-                      {companyTickets.map(t => (
-                        <div key={t.id} style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: '0.5rem', padding: '0.75rem' }}>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
-                            <span style={{ fontWeight: 700, fontSize: '0.8rem', color: 'var(--text-primary)' }}>{t.title}</span>
-                            <span className={`card-priority priority-${t.priority}`}>{t.priority}</span>
-                          </div>
-                          <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.35rem' }}>{t.desc}</p>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.7rem', color: 'var(--text-muted)' }}>
-                            <span>Erstellt: {t.date}</span>
-                            <span style={{ color: t.status === 'offen' ? 'var(--accent-yellow)' : 'var(--accent-green)', fontWeight: 600 }}>Status: {t.status}</span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                </div>
-
-              </div>
-
-            </div>
-          );
-        })() : (
+        {clientPortalMode ? (
+          <ClientPortalView
+            currentUser={currentUser}
+            clientData={contacts.find(c => c.company === selectedClientCompany) || contacts[0]}
+            selectedClientCompany={selectedClientCompany}
+            setSelectedClientCompany={setSelectedClientCompany}
+            contacts={contacts}
+            projects={projects}
+            sopTemplates={sopTemplates}
+            clientTickets={clientTickets}
+            setClientTickets={setClientTickets}
+            tickets={clientTickets.filter(t => t.client === selectedClientCompany || t.company === selectedClientCompany)}
+            onAddTicket={handleCreateClientTicket}
+            onUpdateTicketStatus={handleUpdateClientTicketStatus}
+            onClosePortal={() => setClientPortalMode(false)}
+            mask={mask}
+            showcaseMode={showcaseMode}
+          />
+        ) : (
           <ErrorBoundary onReset={() => setActiveTab('dashboard')}>
             <Suspense fallback={<SkeletonLoader tabName={activeTab} />}>
             <>
@@ -4612,6 +4368,7 @@ Hier ist die Frage des Nutzers:
             weeklyArchive={weeklyArchive}
             updateReflection={updateReflection}
             insertMarkdownIntoNotes={insertMarkdownIntoNotes}
+            onOpenEInvoiceStudio={() => setActiveTab('einvoice')}
           />
         )}
 
@@ -4864,6 +4621,12 @@ Hier ist die Frage des Nutzers:
             onOpenLightbox={handleOpenLightbox}
             showcaseMode={showcaseMode}
             mask={mask}
+          />
+        )}
+
+        {activeTab === 'einvoice' && (
+          <EInvoiceValidator
+            onBackToDashboard={() => setActiveTab('dashboard')}
           />
         )}
             </>

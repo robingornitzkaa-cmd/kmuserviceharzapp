@@ -8,6 +8,27 @@ Die Anwendung zeichnet sich durch ein futuristisches "Glassmorphic Dark Theme" a
 
 ## 🚀 Wichtigste Funktionen & Tab-Struktur
 
+### 0. 💼 B2B-Vertriebs- & Auslieferungs-Suite (KMU Service Harz) -- *NEU!*
+- **🤝 Steuerberater-Multiplikatoren-Kit & Direct-Mail (R1):**
+  - Kanzlei-Pitch-Deck & Leitfaden (`DOCS/Steuerberater_Kanzlei_Pitch_Deck_und_Leitfaden.md`) mit DATEV RDS 1.0 vs BDS Gegenüberstellung, GoBD-Verfahrensdokumentation und 0-Euro-Partnermodell.
+  - Ausdruckbare Mandanten-Flyer-Vorlage (`DOCS/Mandanten_Flyer_Vorlage_Handwerk.md`) mit 500 € Kanzlei-Gutschein (`KANZLEI-HARZ-500`).
+  - Haptisches Direct-Mail-Anschreiben (`DOCS/Direct_Mail_1_Seiter_518_Harzer_Handwerksmeister.md`) an die 518 regionalen Handwerksmeister im Harz („Schluss mit dem Büro-Sonntag“ & QR-Code).
+  - Telefon- & Kaltakquise-Leitfaden (`DOCS/Telefon_und_Kaltakquise_Leitfaden_Handwerk.md`) mit Vorzimmer- und Baustellen-Skripten sowie 5-Punkte Validation-Pivot Einwandbehandlung.
+  - Alle Vorlagen sind direkt im **DocsHub** mit Tag-Filterchips und 1-Klick Quick-Copy verfügbar.
+- **📊 500 € Büro-Stress-Test & ROI-Report PDF-Generator (R2):**
+  - Automatisierte Erstellung des 4-teiligen Prüfberichts (1. Prozess-Röntgenbild Status Quo, 2. Rote Schattenkosten-Berechnung in Euro, 3. Soll-Roadmap Make/Lexoffice/DATEV, 4. Fördermittel-Indikation & Amortisations-Kalkulation).
+  - Reines Client-seitiges Vektor-PDF (`src/services/pdfReportGenerator.js` via jsPDF) mit 100% 500€ Audit-Anrechnung auf Stufe 2 und Amortisation in < 2,5 Monaten.
+  - 1-Klick-Download direkt im Onboarding-Bereich (`OnboardingView.jsx`) und Showcase-ROI-Rechner (`SopManager.jsx`).
+- **🏢 Mandanten-Portal & AaaS-Wartungs-Dashboard (R3):**
+  - Dedizierte Mandanten-Ansicht (`ClientPortalView.jsx`) mit Live-Interface-Status (Make.com, Lexoffice, DATEV Belegbilderservice, GoBD Cloud-Archiv, OCR).
+  - 1-Klick Diagnose-Simulation nach Make.com Blueprint 4 mit Latenz- & Log-Anzeige.
+  - Produktivitäts-Zähler für Monatsbelege, gerettete Sonntage und kumulierte Zeit-/Geldersparnis.
+  - 1-Klick Support-Ticket-System mit 60-Minuten-Retainer-Kontingentverwaltung für den „Digitalen Hausmeister (200 € / Monat)“.
+- **📑 E-Rechnungs- & ZUGFeRD / XRechnung Prüf-Studio (R4):**
+  - Visueller Validator (`EInvoiceValidator.jsx`, `eInvoiceParser.js`) für EN 16931-konforme XML- und PDF-Dateien (ZUGFeRD 2.x / Factur-X & XRechnung 3.x CII/UBL).
+  - Client-seitige PDF/A-3-Extraktion, Ampel-Prüfprotokoll für Pflichtangaben (Leistungsdatum, USt-IdNr, Kreditor/Debitor, Leitweg-ID) und mathematische Konsistenzprüfung (BR-CO-10 bis BR-CO-18).
+  - Drag & Drop Upload, Beispielrechnungen und PDF/JSON Prüfbericht-Export.
+
 ### 1. Dashboard & Life OS Gamification -- *NEU UPGRADED!*
 - **🎙️ Voice Quick-Capture Studio:** 1-Tap Sprach- und Diktierstudio mit Web Audio API Synthesizer-Feedback, Live Wave-Puls, Tag-Pills (`#Wichtig`, `#Kunde`, `#Idee`...) und 1-Klick Multi-Routing direkt in *To-Do*, *Notiz*, *Tages-Fokus*, *CRM-Lead* oder *Termin*.
 - **📦 1-Klick Data Hub & Backup Manager:** Vollständiges Export- und Import-Center für alle 7 OS-Datenmodule (CRM, Prompts, Notizen, Gamification, Tasks, Roadmap, Settings) mit Drag & Drop, Schema-Inspektor und automatischem Notfall-Snapshot vor jedem Restore.

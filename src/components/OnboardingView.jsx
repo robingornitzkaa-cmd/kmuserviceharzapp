@@ -9,6 +9,7 @@ import {
   ClipboardCopy 
 } from 'lucide-react';
 import { ONBOARDING_PLAYBOOKS } from '../constants/initialData';
+import { generateStressTestPDF } from '../services/pdfReportGenerator';
 
 /**
  * OnboardingView Komponente.
@@ -225,6 +226,33 @@ export const OnboardingView = ({
     const msg = `🎉 Protokoll erfolgreich als Dokument "${newDoc.title}" im Wissens-Hub gespeichert!`;
     if (showToast) showToast(msg);
     else alert(msg);
+  };
+
+  const handleGenerateStressTestPDF = async () => {
+    const isCRMContact = String(onboardingLeadId).startsWith('c');
+    const lead = isCRMContact 
+      ? contacts.find(c => c.id === onboardingLeadId)
+      : leads.find(l => l.id === onboardingLeadId);
+    if (!lead) return;
+
+    await generateStressTestPDF({
+      companyName: lead.company || 'Musterbetrieb Harz',
+      contactPerson: lead.contactPerson || lead.company || 'Geschäftsleitung',
+      industry: lead.industry || 'Handwerk & Mittelstand',
+      currentBottleneck: lead.pain_point || 'Zettelwirtschaft, unleserliche Regieberichte & Büro-Sonntage',
+      weeklyWastedHours: onboardingManualHours || 8,
+      masterHourlyRate: onboardingHourlyRate || 65,
+      region: 'NDS',
+      selectedPackage: onboardingPlaybook || 'audit500',
+      painPoints: Object.entries(onboardingAnswers).map(([qid, ans]) => ({
+        question: qid,
+        answer: ans,
+        priority: onboardingPriorities[qid] || 'medium'
+      }))
+    });
+
+    const msg = '📄 500 € Büro-Stress-Test & ROI-Report erfolgreich als PDF exportiert!';
+    if (showToast) showToast(msg);
   };
 
   const handleGenerateOnboardingPDF = () => {
@@ -458,20 +486,21 @@ export const OnboardingView = ({
             </select>
 
             {/* Playbook Select */}
-            <select
-              className="input-field"
-              value={onboardingPlaybook}
-              onChange={(e) => setOnboardingPlaybook(e.target.value)}
-              disabled={!onboardingLeadId}
-              style={{ fontWeight: 600 }}
-            >
-              <option value="standardSetup2000">⭐ Stufe 2: 2.000 € Standard-Setup (Belegerfassung & DATEV)</option>
-              <option value="audit500">🔍 Stufe 1: 500 € Büro-Potenzial-Audit (90-Min Analyse)</option>
-              <option value="meisterbetrieb6000">🚀 Stufe 2+: ab 6.000 € Digitaler Meisterbetrieb (ERP & Förderung)</option>
-              <option value="retainer200">🛡️ Stufe 3: 200 €/Monat Digitaler Hausmeister (AaaS)</option>
-              <option value="master">📘 Allgemeines KMU Master-Playbook</option>
-              <option value="pilot">🛠️ VIP-Pilot Playbook (GoClean Harz)</option>
-            </select>
+            {onboardingLeadId && (
+              <select
+                className="input-field"
+                value={onboardingPlaybook}
+                onChange={(e) => setOnboardingPlaybook(e.target.value)}
+                style={{ fontWeight: 600 }}
+              >
+                <option value="standardSetup2000">⭐ Stufe 2: 2.000 € Standard-Setup (Belegerfassung & DATEV)</option>
+                <option value="audit500">🔍 Stufe 1: 500 € Büro-Potenzial-Audit (90-Min Analyse)</option>
+                <option value="meisterbetrieb6000">🚀 Stufe 2+: ab 6.000 € Digitaler Meisterbetrieb (ERP & Förderung)</option>
+                <option value="retainer200">🛡️ Stufe 3: 200 €/Monat Digitaler Hausmeister (AaaS)</option>
+                <option value="master">📘 Allgemeines KMU Master-Playbook</option>
+                <option value="pilot">🛠️ VIP-Pilot Playbook (GoClean Harz)</option>
+              </select>
+            )}
           </div>
         </div>
       </div>
@@ -824,10 +853,10 @@ export const OnboardingView = ({
                   <button 
                     className="btn btn-primary"
                     style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.35rem', fontSize: '0.8rem', background: 'linear-gradient(135deg, var(--accent-purple), var(--accent-indigo))', border: 'none', color: 'white' }}
-                    onClick={handleGenerateOnboardingPDF}
+                    onClick={handleGenerateStressTestPDF}
                   >
                     <Download size={14} />
-                    PDF-Angebot generieren
+                    500 € Prüfbericht (PDF) herunterladen
                   </button>
 
                   <button 

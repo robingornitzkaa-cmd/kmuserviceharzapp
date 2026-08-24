@@ -26,42 +26,43 @@ import {
   Sparkles
 } from 'lucide-react';
 import { MAKE_BLUEPRINTS_DATA } from '../constants/makeBlueprintsData';
+import { generateStressTestPDF } from '../services/pdfReportGenerator';
 
 export const SopManager = ({
-  calcInputs,
-  setCalcInputs,
-  savings,
+  calcInputs = {},
+  setCalcInputs = () => {},
+  savings = {},
   generatePDFReport,
-  sopTemplates,
-  startSopFromTemplate,
-  activeSops,
-  mask,
-  deleteActiveSop,
-  toggleActiveSopStep,
-  PROCESSES,
-  selectedUseCase,
-  setSelectedUseCase,
-  makeSimRunning,
-  startMakeSimulation,
-  makeActiveNode,
-  makeLogs,
-  startCanvasTestRun,
-  canvasTestRunning,
-  addCanvasNode,
-  canvasNodes,
-  setCanvasNodes,
-  selectedCanvasNodeId,
-  setSelectedCanvasNodeId,
-  canvasTestActiveNode,
-  deleteCanvasNode,
-  updateCanvasNodeConfig,
-  canvasTestLogs,
-  voiceScenario,
-  setVoiceScenario,
-  voiceCallActive,
-  startVoiceCallSimulation,
-  voiceTranscript,
-  voiceExtractedData
+  sopTemplates = [],
+  startSopFromTemplate = () => {},
+  activeSops = [],
+  mask = (t) => t,
+  deleteActiveSop = () => {},
+  toggleActiveSopStep = () => {},
+  PROCESSES = {},
+  selectedUseCase = 'rechnung',
+  setSelectedUseCase = () => {},
+  makeSimRunning = false,
+  startMakeSimulation = () => {},
+  makeActiveNode = null,
+  makeLogs = [],
+  startCanvasTestRun = () => {},
+  canvasTestRunning = false,
+  addCanvasNode = () => {},
+  canvasNodes = [],
+  setCanvasNodes = () => {},
+  selectedCanvasNodeId = null,
+  setSelectedCanvasNodeId = () => {},
+  canvasTestActiveNode = null,
+  deleteCanvasNode = () => {},
+  updateCanvasNodeConfig = () => {},
+  canvasTestLogs = [],
+  voiceScenario = 'lead_qual',
+  setVoiceScenario = () => {},
+  voiceCallActive = false,
+  startVoiceCallSimulation = () => {},
+  voiceTranscript = [],
+  voiceExtractedData = null
 }) => {
   const [selectedBlueprintId, setSelectedBlueprintId] = useState('bp1');
   const [copiedBlueprintId, setCopiedBlueprintId] = useState(null);
@@ -152,67 +153,93 @@ export const SopManager = ({
           </div>
 
           {/* Visuelle Gegenueberstellung / Balkendiagramm */}
-          <div style={{ marginTop: '0.5rem', marginBottom: '0.5rem' }}>
-            <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', display: 'block', marginBottom: '0.5rem' }}>
-              Jaehrlicher Zeitaufwand im Vergleich:
-            </label>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', marginBottom: '0.25rem' }}>
-                  <span>Manuell (Bisher)</span>
-                  <span style={{ color: 'var(--accent-red)', fontWeight: 700 }}>{savings.hours} Std. / Jahr</span>
-                </div>
-                <div style={{ width: '100%', height: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', overflow: 'hidden' }}>
-                  <div style={{ width: '100%', height: '100%', background: 'linear-gradient(to right, var(--accent-red), var(--accent-yellow))' }}></div>
-                </div>
-              </div>
-              <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', marginBottom: '0.25rem' }}>
-                  <span>Automatisiert (Neu)</span>
-                  <span style={{ color: 'var(--accent-cyan)', fontWeight: 700 }}>~ {(savings.rawYearlyHours * 0.1).toFixed(0)} Std. / Jahr</span>
-                </div>
-                <div style={{ width: '100%', height: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', overflow: 'hidden' }}>
-                  <div style={{ width: '10%', height: '100%', background: 'linear-gradient(to right, var(--accent-cyan), var(--accent-indigo))', boxShadow: 'var(--shadow-glow-cyan)' }}></div>
-                </div>
-              </div>
-            </div>
-          </div>
+          {(() => {
+            const displayYearlyHours = savings?.hours ?? savings?.yearlyHours ?? ((calcInputs?.durationHours ?? calcInputs?.weeklyHours ?? 8) * 52);
+            const displayRawYearlyHours = savings?.rawYearlyHours ?? (typeof displayYearlyHours === 'number' ? displayYearlyHours : parseFloat(String(displayYearlyHours).replace(/[^0-9.]/g, '')) || 416);
+            const displayHourlyRate = calcInputs?.hourlyRate ?? calcInputs?.hourlyWage ?? 65;
+            const displayRawYearlyEur = savings?.rawYearlyEur ?? (displayRawYearlyHours * displayHourlyRate);
 
-          <div className="calc-result-box">
-            <div className="calc-result-label">Erwartete Ersparnis durch Automatisierung:</div>
-            <div className="calc-result-value" style={{ color: 'var(--accent-cyan)' }}>
-              ~ {((savings.rawYearlyEur * 0.9)).toLocaleString('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 })} / Jahr
-            </div>
-            <div className="calc-result-sub" style={{ marginBottom: '1rem' }}>
-              und ca. <strong>{(savings.rawYearlyHours * 0.9).toFixed(0)} Stunden</strong> freigestellte Arbeitszeit pro Jahr.
-            </div>
-            
-            <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '0.75rem', marginTop: '0.75rem', textAlign: 'left', fontSize: '0.8rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span>Projekt-Investition (Festpreis):</span>
-                <span>{calcInputs.setupFee.toLocaleString('de-DE')} EUR</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--accent-cyan)' }}>
-                <span>Staatlicher Zuschuss (Foerderung):</span>
-                <span>- {savings.subsidyAmount}</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 700, color: 'var(--accent-green)', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '0.25rem' }}>
-                <span>Deine Netto-Investition:</span>
-                <span>{savings.netInvestment}</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 600, color: 'var(--text-primary)', marginTop: '0.25rem' }}>
-                <span>Amortisationszeit:</span>
-                <span>ca. {savings.paybackMonths} Monate</span>
-              </div>
-            </div>
-          </div>
+            return (
+              <>
+                <div style={{ marginTop: '0.5rem', marginBottom: '0.5rem' }}>
+                  <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', display: 'block', marginBottom: '0.5rem' }}>
+                    Jaehrlicher Zeitaufwand im Vergleich:
+                  </label>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', marginBottom: '0.25rem' }}>
+                        <span>Manuell (Bisher)</span>
+                        <span style={{ color: 'var(--accent-red)', fontWeight: 700 }}>{displayYearlyHours} Std. / Jahr</span>
+                      </div>
+                      <div style={{ width: '100%', height: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', overflow: 'hidden' }}>
+                        <div style={{ width: '100%', height: '100%', background: 'linear-gradient(to right, var(--accent-red), var(--accent-yellow))' }}></div>
+                      </div>
+                    </div>
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', marginBottom: '0.25rem' }}>
+                        <span>Automatisiert (Neu)</span>
+                        <span style={{ color: 'var(--accent-cyan)', fontWeight: 700 }}>~ {(displayRawYearlyHours * 0.1).toFixed(0)} Std. / Jahr</span>
+                      </div>
+                      <div style={{ width: '100%', height: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', overflow: 'hidden' }}>
+                        <div style={{ width: '10%', height: '100%', background: 'linear-gradient(to right, var(--accent-cyan), var(--accent-indigo))', boxShadow: 'var(--shadow-glow-cyan)' }}></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="calc-result-box">
+                  <div className="calc-result-label">Erwartete Ersparnis durch Automatisierung:</div>
+                  <div className="calc-result-value" style={{ color: 'var(--accent-cyan)' }}>
+                    ~ {((displayRawYearlyEur * 0.9)).toLocaleString('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 })} / Jahr
+                  </div>
+                  <div className="calc-result-sub" style={{ marginBottom: '1rem' }}>
+                    und ca. <strong>{(displayRawYearlyHours * 0.9).toFixed(0)} Stunden</strong> freigestellte Arbeitszeit pro Jahr.
+                  </div>
+                  
+                  <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '0.75rem', marginTop: '0.75rem', textAlign: 'left', fontSize: '0.8rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <span>Projekt-Investition (Festpreis):</span>
+                      <span>{(calcInputs?.setupFee ?? calcInputs?.projectFee ?? 2000).toLocaleString('de-DE')} EUR</span>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--accent-cyan)' }}>
+                      <span>Staatlicher Zuschuss (Foerderung):</span>
+                      <span>- {savings?.subsidyAmount || '0 EUR'}</span>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 700, color: 'var(--accent-green)', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '0.25rem' }}>
+                      <span>Deine Netto-Investition:</span>
+                      <span>{savings?.netInvestment || savings?.netCost || '0 EUR'}</span>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 600, color: 'var(--text-primary)', marginTop: '0.25rem' }}>
+                      <span>Amortisationszeit:</span>
+                      <span>ca. {savings?.paybackMonths || savings?.roiMonths || '0'} Monate</span>
+                    </div>
+                  </div>
+                </div>
+              </>
+            );
+          })()}
 
           <button 
-            onClick={generatePDFReport} 
+            onClick={() => {
+              if (typeof generatePDFReport === 'function') {
+                generatePDFReport();
+              } else {
+                generateStressTestPDF({
+                  companyName: 'Handwerksbetrieb Harz',
+                  contactPerson: 'Meister / Inhaber',
+                  currentBottleneck: calcInputs?.taskName || 'Manuelle Rechnungsprüfung & Buchhaltungsvorbereitung',
+                  weeklyWastedHours: calcInputs?.durationHours ?? calcInputs?.weeklyHours ?? 8,
+                  masterHourlyRate: calcInputs?.hourlyRate ?? calcInputs?.hourlyWage ?? 65,
+                  setupFee: calcInputs?.setupFee ?? calcInputs?.projectFee ?? 2000,
+                  region: calcInputs?.subsidyRegion || 'NDS',
+                  selectedPackage: 'standardSetup2000'
+                });
+              }
+            }} 
             className="btn btn-primary"
             style={{ width: '100%', marginTop: '0.5rem', background: 'linear-gradient(135deg, var(--accent-cyan), var(--accent-indigo))', boxShadow: 'var(--shadow-glow-cyan)' }}
           >
-            <FileText size={16} /> ROI-Analyse als PDF exportieren
+            <FileText size={16} /> 500 € Prüfbericht (PDF) exportieren
           </button>
         </div>
       </div>

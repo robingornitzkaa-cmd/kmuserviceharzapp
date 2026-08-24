@@ -108,6 +108,7 @@ export const DashboardView = ({
   bookInvoiceToLexoffice,
   invoiceXmlPreview,
   setInvoiceXmlPreview,
+  onOpenEInvoiceStudio,
   quickCapture,
   setQuickCapture,
   handleQuickCapture,
@@ -1027,6 +1028,17 @@ export const DashboardView = ({
               >
                 {invoiceXmlPreview ? '🙈 XML ausblenden' : '🔍 XML prüfen'}
               </button>
+
+              {onOpenEInvoiceStudio && (
+                <button 
+                  onClick={onOpenEInvoiceStudio}
+                  className="btn btn-secondary"
+                  style={{ padding: '0.5rem 0.75rem', fontSize: '0.75rem', background: 'rgba(2, 132, 199, 0.2)', borderColor: 'rgba(2, 132, 199, 0.4)', color: '#38bdf8' }}
+                  title="Vollständiges E-Rechnungs & ZUGFeRD Prüf-Studio öffnen"
+                >
+                  📑 Prüf-Studio öffnen
+                </button>
+              )}
             </div>
           </div>
 
