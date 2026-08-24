@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   TrendingUp, 
   FileText, 
@@ -15,8 +15,17 @@ import {
   Plus, 
   Sliders, 
   Phone, 
-  Volume2 
+  Volume2,
+  Download,
+  FileCode,
+  HardDrive,
+  Filter,
+  ExternalLink,
+  ShieldCheck,
+  Check,
+  Sparkles
 } from 'lucide-react';
+import { MAKE_BLUEPRINTS_DATA } from '../constants/makeBlueprintsData';
 
 export const SopManager = ({
   calcInputs,
@@ -54,6 +63,25 @@ export const SopManager = ({
   voiceTranscript,
   voiceExtractedData
 }) => {
+  const [selectedBlueprintId, setSelectedBlueprintId] = useState('bp1');
+  const [copiedBlueprintId, setCopiedBlueprintId] = useState(null);
+
+  const activeBlueprint = MAKE_BLUEPRINTS_DATA.find(b => b.id === selectedBlueprintId) || MAKE_BLUEPRINTS_DATA[0];
+
+  const handleDownloadBlueprint = (bp) => {
+    const link = document.createElement('a');
+    link.href = bp.downloadUrl;
+    link.download = bp.filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleCopyPayload = (bp) => {
+    navigator.clipboard.writeText(JSON.stringify(bp.samplePayload, null, 2));
+    setCopiedBlueprintId(bp.id);
+    setTimeout(() => setCopiedBlueprintId(null), 2000);
+  };
   return (
     <div className="sales-grid">
       
@@ -381,6 +409,190 @@ export const SopManager = ({
               </div>
             </div>
             
+          </div>
+        </div>
+      </div>
+
+      {/* Make.com Workflow-Tresor & Blueprint Hub (Volle Breite) */}
+      <div className="card" style={{ gridColumn: 'span 2', marginTop: '1.5rem', border: '1px solid rgba(139, 92, 246, 0.25)', boxShadow: '0 0 25px rgba(139, 92, 246, 0.05)' }}>
+        <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <h2 className="card-title" style={{ color: 'var(--accent-purple)', margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <Zap size={22} /> Make.com Workflow-Tresor & Blueprints (Businessplan 2026)
+              </h2>
+              <span className="badge" style={{ background: 'rgba(139, 92, 246, 0.15)', color: 'var(--accent-purple)', border: '1px solid rgba(139, 92, 246, 0.3)', fontSize: '0.7rem', padding: '0.2rem 0.5rem', borderRadius: '1rem', fontWeight: 700 }}>
+                4 Schlüsselfertige Szenarien
+              </span>
+            </div>
+            <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '0.35rem' }}>
+              Fertige, validierte Make.com JSON-Blueprints zum direkten Import in deinen Make.com Account für alle Stufen der Value Ladder.
+            </p>
+          </div>
+
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+            <button 
+              onClick={() => handleDownloadBlueprint(activeBlueprint)}
+              className="btn btn-primary"
+              style={{ 
+                background: 'linear-gradient(135deg, var(--accent-purple), var(--accent-cyan))', 
+                border: 'none',
+                padding: '0.5rem 1rem',
+                fontSize: '0.8rem',
+                fontWeight: 600,
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.4rem',
+                boxShadow: '0 0 15px rgba(139, 92, 246, 0.3)'
+              }}
+            >
+              <Download size={14} /> Blueprint herunterladen ({activeBlueprint.filename})
+            </button>
+            <button 
+              onClick={() => handleCopyPayload(activeBlueprint)}
+              className="btn btn-secondary"
+              style={{ fontSize: '0.8rem', padding: '0.5rem 0.85rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}
+            >
+              {copiedBlueprintId === activeBlueprint.id ? <Check size={14} className="text-green-500" /> : <ClipboardCopy size={14} />}
+              {copiedBlueprintId === activeBlueprint.id ? 'Payload kopiert!' : 'Test-Payload kopieren'}
+            </button>
+          </div>
+        </div>
+
+        {/* Blueprint Selector Tabs */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.75rem', marginTop: '1.25rem', marginBottom: '1.5rem' }}>
+          {MAKE_BLUEPRINTS_DATA.map(bp => {
+            const isSelected = selectedBlueprintId === bp.id;
+            return (
+              <div 
+                key={bp.id}
+                onClick={() => setSelectedBlueprintId(bp.id)}
+                style={{ 
+                  background: isSelected ? 'rgba(139, 92, 246, 0.12)' : 'rgba(31, 41, 55, 0.4)',
+                  border: isSelected ? '2px solid var(--accent-purple)' : '1px solid var(--border-color)',
+                  borderRadius: '0.65rem',
+                  padding: '0.85rem',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  position: 'relative'
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                  <span style={{ fontSize: '0.65rem', fontWeight: 700, color: 'var(--accent-purple)', textTransform: 'uppercase' }}>
+                    {bp.tier}
+                  </span>
+                  <span style={{ fontSize: '0.65rem', background: 'rgba(255,255,255,0.06)', padding: '0.1rem 0.35rem', borderRadius: '0.25rem', color: 'var(--text-muted)' }}>
+                    {bp.modulesCount} Module
+                  </span>
+                </div>
+                <h4 style={{ fontSize: '0.825rem', fontWeight: 700, color: isSelected ? 'white' : 'var(--text-primary)', margin: 0, lineHeight: 1.3 }}>
+                  {bp.title}
+                </h4>
+                <div style={{ fontSize: '0.7rem', color: 'var(--accent-cyan)', marginTop: '0.35rem', fontWeight: 600 }}>
+                  {bp.badge}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Aktiver Blueprint Detail-Bereich */}
+        <div style={{ background: 'rgba(17, 24, 39, 0.5)', border: '1px solid var(--border-color)', borderRadius: '0.75rem', padding: '1.25rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.25rem', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '1rem' }}>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <h3 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+                  {activeBlueprint.title}
+                </h3>
+                <span style={{ fontSize: '0.7rem', color: 'var(--accent-cyan)', background: 'rgba(6, 182, 212, 0.1)', padding: '0.15rem 0.45rem', borderRadius: '0.25rem', fontWeight: 600 }}>
+                  {activeBlueprint.tier}
+                </span>
+              </div>
+              <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '0.35rem', maxWidth: '750px', lineHeight: 1.4 }}>
+                {activeBlueprint.description}
+              </p>
+            </div>
+            <div style={{ textAlign: 'right', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+              <div>Trigger: <strong style={{ color: 'var(--text-primary)' }}>{activeBlueprint.triggerType}</strong></div>
+              <div style={{ marginTop: '0.2rem' }}>Verbrauch: <strong style={{ color: 'var(--accent-green)' }}>{activeBlueprint.estimatedMonthlyOps}</strong></div>
+            </div>
+          </div>
+
+          {/* Szenario-Module Graph Visualisierung */}
+          <div style={{ marginBottom: '1.5rem' }}>
+            <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', marginBottom: '0.75rem', display: 'block' }}>
+              Modul-Pipeline ({activeBlueprint.nodes.length} Knoten im Blueprint)
+            </label>
+            <div style={{ display: 'flex', gap: '0.75rem', overflowX: 'auto', paddingBottom: '0.5rem', alignItems: 'stretch' }}>
+              {activeBlueprint.nodes.map((node, nIdx) => (
+                <div key={node.id} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexShrink: 0 }}>
+                  <div style={{ 
+                    minWidth: '160px', 
+                    maxWidth: '180px',
+                    background: 'rgba(31, 41, 55, 0.7)', 
+                    border: '1px solid rgba(139, 92, 246, 0.2)', 
+                    borderRadius: '0.5rem', 
+                    padding: '0.75rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                  }}>
+                    <div>
+                      <span style={{ fontSize: '0.65rem', color: 'var(--accent-purple)', fontWeight: 700, textTransform: 'uppercase' }}>
+                        Knoten #{node.id}
+                      </span>
+                      <h5 style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-primary)', margin: '0.25rem 0' }}>
+                        {node.name}
+                      </h5>
+                    </div>
+                    <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', margin: 0, marginTop: '0.35rem', lineHeight: 1.3 }}>
+                      {node.desc}
+                    </p>
+                  </div>
+                  {nIdx < activeBlueprint.nodes.length - 1 && (
+                    <ChevronRight size={18} style={{ color: 'var(--text-muted)' }} />
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 2-Spalten Grid: Setup-Schritte & Test Payload */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '1.25rem' }} className="blueprint-details-grid">
+            
+            {/* Linke Spalte: Setup-Schritte */}
+            <div style={{ background: 'rgba(0,0,0,0.2)', padding: '1rem', borderRadius: '0.5rem', border: '1px solid rgba(255,255,255,0.05)' }}>
+              <h4 style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--accent-purple)', textTransform: 'uppercase', marginBottom: '0.65rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                <CheckCircle size={14} /> Schritt-für-Schritt Einrichtung in Make.com
+              </h4>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                {activeBlueprint.setupSteps.map((step, sIdx) => (
+                  <div key={sIdx} style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
+                    {step}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Rechte Spalte: Sample JSON Payload */}
+            <div style={{ background: 'rgba(0,0,0,0.3)', padding: '1rem', borderRadius: '0.5rem', border: '1px solid rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                <h4 style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--accent-cyan)', textTransform: 'uppercase', margin: 0, display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                  <FileCode size={14} /> Webhook Test-Payload
+                </h4>
+                <button 
+                  onClick={() => handleCopyPayload(activeBlueprint)}
+                  style={{ background: 'none', border: 'none', color: 'var(--accent-cyan)', cursor: 'pointer', fontSize: '0.7rem', display: 'flex', alignItems: 'center', gap: '0.2rem' }}
+                >
+                  <ClipboardCopy size={12} /> Kopieren
+                </button>
+              </div>
+              <pre style={{ margin: 0, fontFamily: 'monospace', fontSize: '0.7rem', color: '#38bdf8', overflowX: 'auto', background: '#090d16', padding: '0.6rem', borderRadius: '0.35rem', flexGrow: 1 }}>
+                {JSON.stringify(activeBlueprint.samplePayload, null, 2)}
+              </pre>
+            </div>
+
           </div>
         </div>
       </div>

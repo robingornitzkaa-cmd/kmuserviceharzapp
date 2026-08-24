@@ -203,82 +203,327 @@ export const INITIAL_CONTENT = [
 
 export const INITIAL_DOCS = [
   { id: 'master-logbuch', title: 'masterLogbuch.txt', content: MASTER_LOGBUCH_CONTENT, status: 'local', url: '#' },
-  { id: 'd1', title: 'Businessplan - KMU Service Harz.txt', content: 'Dies ist der offizielle Businessplan für KMU Service Harz. Wir bieten maßgeschneiderte Digitalisierungslösungen für KMUs im Harz an. Zielgruppe: Gärtnereien, Dachdecker, Pflegedienste.', status: 'synced', url: '#' },
-  { id: 'd2', title: 'Preispakete & ROI-Modelle 2026.txt', content: 'Übersicht der Tarife:\n- Basic CRM: 1.200€ Setup\n- Advanced Auto: 2.500€ Setup\nDer ROI-Hebel bei automatisierten Prozessen liegt im Schnitt bei 4.2x innerhalb des ersten Jahres.', status: 'synced', url: '#' },
-  { id: 'd3', title: 'Kooperationsvertrag - Steuerberater.txt', content: 'Kooperationsvereinbarung zwischen KMU Service Harz und der Steuerberatungskanzlei Harz. Regelmäßige Datenübergabe via DATEV-Schnittstellen.', status: 'synced', url: '#' }
+  { id: 'd1', title: 'Businessplan 2026 - KMU Service Harz.md', content: 'Offizieller Businessplan 2026: 4-stufige Value Ladder (500 € Audit, 2.000 € Standard-Setup, ab 6.000 € Meisterbetrieb, 200 €/Monat Retainer) mit 100% Dienstleistungsmarge.', status: 'synced', url: '#' },
+  { id: 'd_contract2000', title: 'Vertrag_Standard_Setup_2000EUR.md', content: 'Dienstleistungsvertrag für das 2.000 € Standard-Setup (Lautlose Belegerfassung, DATEV Belegbilderservice, Lexoffice, GoBD & 14 Tage Einführungsbegleitung).', status: 'synced', url: '#' },
+  { id: 'd_avv', title: 'DSGVO_Auftragsverarbeitungsvertrag_AVV.md', content: 'Muster-Auftragsverarbeitungsvertrag (AVV nach Art. 28 DSGVO) für Make.com, OpenAI, Lexoffice und Cloud-Speicher.', status: 'synced', url: '#' },
+  { id: 'd_gobd', title: 'GoBD_Verfahrensdokumentation_Ersetzendes_Scannen.md', content: 'GoBD-Verfahrensdokumentation für ersetzendes Scannen nach dem Standard der Bundessteuerberaterkammer.', status: 'synced', url: '#' },
+  { id: 'd_aaas_contract', title: 'AaaS_Wartungsvertrag_200EUR.md', content: 'Wartungs- und SLA-Vertrag für den Digitalen Hausmeister (200 € / Monat Retainer) mit 24/7 Monitoring und Scope-Creep-Schutz.', status: 'synced', url: '#' },
+  { id: 'd_checklist', title: 'Systemzugangs_und_Sicherheits_Checkliste.md', content: 'Onboarding-Checkliste zur Erfassung aller Kunden-Zugänge (Lexoffice, DATEV Mandantennummer, Cloud-Speicher, WhatsApp Business).', status: 'synced', url: '#' },
+  { id: 'd_abnahme', title: 'Abnahmeprotokoll_und_Mitarbeiter_Cheatsheet.md', content: 'Förmliches Abnahmeprotokoll und ausdruckbares Mitarbeiter-Cheat-Sheet für die mobile Belegerfassung.', status: 'synced', url: '#' }
 ];
 
 export const INITIAL_SOP_TEMPLATES = [
-  { id: 's1', name: 'Neukunden-Onboarding (Festpreis-Projekt)', steps: [
-    'Vertrag unterschreiben lassen & digital ablegen',
-    'DSGVO-Auftragsverarbeitungsvertrag (AVV) abschließen',
-    'Projektordner im Google Drive erstellen',
-    'Zugänge für die Kundensysteme anfordern (Lexoffice/DATEV)',
-    'Kick-off-Termin per Google Meet buchen'
+  { id: 's1', name: 'Stufe 1: 500 € Büro-Potenzial-Audit & ROI-Report', steps: [
+    '90-Minuten Vor-Ort-Termin oder Video-Audit durchführen',
+    'Ist-Prozess Röntgenbild aufnehmen (Zettelwirtschaft bis Kanzlei)',
+    'Schattenkosten berechnen (z.B. 16 Std. x 55 € = 880 €/Monat)',
+    '4-teiligen Büro-Stress-Test & ROI-Report generieren und übergeben',
+    'Angebot für 2.000 € Standard-Setup mit 100% Audit-Anrechnung vorlegen'
   ]},
-  { id: 's2', name: 'Steuerberater-Kooperations-Pitch', steps: [
-    'Partner-Präsentation anpassen',
-    'Vorteile für die Mandanten (Zeitersparnis) & Kanzlei (saubere DATEV-Daten) hervorheben',
-    'Erstgespräch führen',
-    'Informationsflyer für Kanzlei-Mandanten zusenden',
-    'Kooperationsvereinbarung abschließen'
+  { id: 's2', name: 'Stufe 2: 2.000 € Standard-Setup (Lautlose Belegerfassung)', steps: [
+    'Vertrag (2.000 € Festpreis) & DSGVO-AVV unterzeichnen lassen',
+    'Systemzugänge über Sicherheits-Checkliste abfragen',
+    'Make.com Blueprint 1 importieren & Lexoffice/DATEV anbinden',
+    'GoBD-Verfahrensdokumentation für ersetzendes Scannen aushändigen',
+    'Testläufe mit 3 realen Belegen durchführen & Abnahmeprotokoll signieren',
+    '14 Tage Einführungsbegleitung für das Mitarbeiter-Team starten'
+  ]},
+  { id: 's3', name: 'Stufe 2+: ab 6.000 € Digitaler Meisterbetrieb (ERP & Förderung)', steps: [
+    'Handwerker-ERP (Plancraft / pds / KWP) Schnittstellen analysieren',
+    'Fördermittel-Check (Digital Innovation Sachsen-Anhalt 50% / INQA 80%)',
+    'Förderantrag vor verbindlicher Beauftragung vorbereiten & einreichen',
+    'Make.com Blueprint 2 (24/7 Notdienst & Lead-Funnel) implementieren',
+    'Multi-User Rechte & Zeiterfassungsschulung für alle Gewerke ausrollen'
+  ]},
+  { id: 's4', name: 'Stufe 3: 200 €/Monat Digitaler Hausmeister (AaaS Retainer)', steps: [
+    'AaaS-Wartungsvertrag mit Mindestlaufzeit 6 Monate abschließen',
+    'Make.com Blueprint 4 (24/7 Health-Check Cron) aktivieren',
+    'Telegram/Slack Notfall-Alerting für KMU Service Harz Support koppeln',
+    '1 Stunde monatliches Kontingent für Minor Tweaks bereitstellen',
+    'Monatlichen Statusbericht & Schnittstellen-Gesundheits-Check zusenden'
+  ]},
+  { id: 's5', name: 'Steuerberater-Kooperations-Pitch (Die Huckepack-Strategie)', steps: [
+    'Kanzlei-Inhaber oder IT-Verantwortlichen kontaktieren',
+    'Vorteil pitchen: „Wir befreien Sie vom Pendelordner aus der Hölle und liefern fertige DATEV-Sätze“',
+    'Kooperationsflyer für Kanzlei-Mandanten bereitstellen',
+    'Gemeinsamen Mandanten-Onboarding-Ablauf etablieren'
   ]}
 ];
 
 export const PROCESSES = {
   rechnung: {
-    title: "Eingangsrechnungen verarbeiten",
-    desc: "Vom Beleg-Chaos zur vollautomatischen DATEV-Bereitstellung.",
+    title: "Stufe 2: Lautlose Belegerfassung",
+    desc: "Vom Beleg-Chaos zur vollautomatischen Lexoffice- & DATEV-Bereitstellung.",
     before: [
-      { step: "Post oeffnen & scannen", detail: "Manuelles Sortieren der Postbelege oder Herunterladen aus E-Mails." },
-      { step: "Daten abtippen", detail: "Rechnungsnummer, Datum und Betraege manuell erfassen." },
-      { step: "Ordner ablegen", detail: "Beleg manuell in Ordnerstruktur (lokal oder Cloud) speichern." },
-      { step: "DATEV-Uebertragung", detail: "Am Monatsende alle Belege haendisch an den Steuerberater uebermitteln." }
+      { step: "Post & Quittungen sammeln", detail: "Zerknitterte Tank- und Materialquittungen im Firmenwagen oder auf dem Schreibtisch." },
+      { step: "Sonntags-Abtippen", detail: "Inhaber tippt Belege, Netto/MwSt und Rechnungsnummern stundenlang manuell in Excel/Word ab." },
+      { step: "Schuhkarton-Ablage", detail: "Belege werden unvollständig gesammelt und am Monatsende zur Kanzlei gebracht." },
+      { step: "Teure Kanzlei-Rückfragen", detail: "Steuerberater muss fehlende Belege aufwendig nachfordern." }
     ],
     after: [
-      { step: "E-Mail-Eingang", detail: "Make-Webhook faengt jede E-Mail mit Rechnungs-Anhang automatisch ab." },
-      { step: "KI-Extraktion", detail: "GPT-4 extrahiert alle Rechnungsdaten (IBAN, Netto, MwSt) vollautomatisch in Sekunden." },
-      { step: "GoBD Cloud-Archiv", detail: "GoBD-konforme, unveraenderbare Speicherung im Google Drive." },
-      { step: "DATEV Schnittstelle", detail: "Direkte, lautlose Uebertragung in das DATEV-Portal deines Steuerberaters." }
+      { step: "WhatsApp / Mail Foto", detail: "Monteur fotografiert Beleg direkt an der Kasse und sendet ihn in Sekunden an die Firmennummer." },
+      { step: "GPT-4o Vision OCR", detail: "KI extrahiert Lieferant, Belegdatum, Netto, MwSt-Satz, Brutto und IBAN fehlerfrei." },
+      { step: "Lexware Office Vorkontierung", detail: "Automatischer Buchungssatz und Zuordnung zur passenden Kostenkategorie." },
+      { step: "DATEV Belegbilderservice", detail: "Revisionssichere, lautlose Bereitstellung im Portal des Steuerberaters." }
     ]
   },
   stundenzettel: {
-    title: "Stundenzettel & Zeiterfassung",
-    desc: "Mitarbeiterzeiten direkt von der Baustelle in die Buchhaltung.",
+    title: "Stufe 2: Baustellen-Zeiterfassung",
+    desc: "Mitarbeiterzeiten & Fotos per Spracheingabe direkt in die Lohnbuchhaltung.",
     before: [
-      { step: "Handschriftliche Zettel", detail: "Mitarbeiter fuellen Zettel auf der Baustelle aus." },
-      { step: "Sammeln & Suchen", detail: "Zettel verknumpeln im Auto oder gehen verloren." },
-      { step: "Excel-Abtippen", detail: "Chef tippt am Sonntagabend alle Zettel haendisch ab." },
-      { step: "Lohnbuchhaltung", detail: "Daten haendisch an Steuerberater senden." }
+      { step: "Handschriftliche Zettel", detail: "Mitarbeiter füllen Stundenzettel unleserlich oder verspätet aus." },
+      { step: "Verlorene Nachweise", detail: "Zettel gehen auf der Baustelle verloren; Zusatzarbeiten werden vergessen." },
+      { step: "Manuelles Übertragen", detail: "Bürokraft muss am Monatsende hunderte Stundenzeilen mühsam abtippen." },
+      { step: "Verzögerte Lohnabrechnung", detail: "Lohnabrechnung verzögert sich durch unvollständige Stundenangaben." }
     ],
     after: [
-      { step: "WhatsApp-Sprachnachricht", detail: "Mitarbeiter spricht Zeiten ein: 'Mueller, 8 Stunden auf Baustelle X'." },
-      { step: "Whisper-Transkription", detail: "Sprachnachricht wird per KI in Text umgewandelt." },
-      { step: "GPT-4 Strukturierung", detail: "KI analysiert Name, Projekt, Dauer und schreibt Daten strukturiert." },
-      { step: "Lexoffice Eintrag", detail: "Eintrag erfolgt per Klick direkt im Buchhaltungssystem." }
+      { step: "WhatsApp Sprachnachricht", detail: "Monteur spricht ins Handy: 'Müller, 8 Stunden Baustelle Goslar, Sanitär-Rohbau'." },
+      { step: "Whisper Transkription", detail: "OpenAI Whisper transkribiert Dialekte und Spracheingaben präzise in Text." },
+      { step: "KI-Strukturierung", detail: "GPT-4 ordnet Mitarbeiter, Projekt, Stunden und Tätigkeitsbeschreibung strukturiert zu." },
+      { step: "Direktbuchung & Bestätigung", detail: "Buchung in Zeiterfassung & automatische Quittierung an Monteur per WhatsApp." }
     ]
   },
   anfragen: {
-    title: "Kundenanfragen & Termine",
-    desc: "24/7-Assistent fuer Neukunden-Qualifizierung und Terminbuchung.",
+    title: "Stufe 2+: 24/7 Notdienst-Funnel",
+    desc: "Rund-um-die-Uhr Qualifizierung und Kalenderbuchung für lukrative Aufträge.",
     before: [
-      { step: "Telefon klingelt", detail: "Chef muss Arbeit unterbrechen oder verpasst den Anruf." },
-      { step: "Zettelwirtschaft", detail: "Anfragedaten werden auf Notizzettel geschrieben." },
-      { step: "Kalender-Chaos", detail: "Kalender abgleichen, um freien Termin zu finden." },
-      { step: "Rueckruf-Versuche", detail: "Ewiges Hin und Her, bis der Termin steht." }
+      { step: "Telefon schellt beim Kunden", detail: "Chef muss Arbeit auf der Baustelle unterbrechen oder verpasst Anrufe." },
+      { step: "Zettelwirtschaft & Vergessen", detail: "Anfragedaten auf Schmierblättern notiert; Rückrufe verzögern sich um Tage." },
+      { step: "Termin-Ping-Pong", detail: "Fünf Telefonate nötig, bis ein passender Besichtigungstermin gefunden wird." },
+      { step: "Auftragsverlust", detail: "Kunde ruft in der Zwischenzeit den nächsten regionalen Mitbewerber an." }
     ],
     after: [
-      { step: "AI-Chatbot", detail: "Website- oder WhatsApp-Bot nimmt Anfrage rund um die Uhr entgegen." },
-      { step: "Qualifizierung", detail: "Bot erfragt Gewerk, Ort und Budget und sortiert Spam aus." },
-      { step: "Google Calendar Sync", detail: "Bot zeigt freie Zeiten und bucht direkt im Kalender." },
-      { step: "SMS / WhatsApp Bestaetigung", detail: "Kunde und Chef erhalten automatische Bestaetigungen." }
+      { step: "24/7 KI-Assistent", detail: "WhatsApp- & Web-Bot nimmt Anfragen auch abends und am Wochenende entgegen." },
+      { step: "Notfall-Qualifizierung", detail: "KI prüft Gewerk, Schadensbild, Ort und erkennt akute Notfälle (Wasserschaden)." },
+      { step: "Google Calendar Sync", detail: "Kunde wählt freien Besichtigungsslot; Notfälle alarmieren Meister sofort per SMS." },
+      { step: "CRM-Akte angelegt", detail: "Lead landet sofort mit allen Fotos und Daten in der zentralen Kundenakte." }
+    ]
+  },
+  monitoring: {
+    title: "Stufe 3: AaaS 24/7 Monitoring",
+    desc: "Lautloser Betrieb und proaktive Wartung aller Schnittstellen durch den Digitalen Hausmeister.",
+    before: [
+      { step: "API-Änderung bei DATEV", detail: "Drittanbieter ändert Schnittstelle; Workflows brechen unbemerkt ab." },
+      { step: "Belegstau im Hintergrund", detail: "Über Wochen laufen keine Belege mehr in die Buchhaltung; Chaos beim Quartalsabschluss." },
+      { step: "Panik & Stillstand", detail: "Handwerker muss teuren IT-Techniker mit offenem Stundensatz rufen." },
+      { step: "Hohe Reparaturkosten", detail: "Unerwartete Notfall-IT-Kosten von 1.000 €+ ohne Vorwarnung." }
+    ],
+    after: [
+      { step: "15-Minuten Cron Ping", detail: "Make.com prüft alle API-Endpunkte und Token-Gültigkeiten im Hintergrund." },
+      { step: "Proaktive Fehlererkennung", detail: "System erkennt Abweichungen und sendet sofortigen Alert an KMU Service Harz Support." },
+      { step: "Lautlose Behebung", detail: "KMU Service Harz aktualisiert Schnittstelle, bevor der Kunde den Fehler bemerkt." },
+      { step: "Garantierte Stabilität", detail: "Planbare 200 €/Monat Pauschale inkl. 1h monatlichem Anpassungskontingent." }
     ]
   }
 };
 
 export const ONBOARDING_PLAYBOOKS = {
+  standardSetup2000: {
+    title: "⭐ STUFE 2: 2.000 € Standard-Setup (Lautlose Belegerfassung)",
+    badge: "Core Offer / Bestseller",
+    phases: [
+      {
+        name: "Phase 1: Status Quo Belege & Kanzlei",
+        description: "Den aktuellen Weg der Quittungen und die Zusammenarbeit mit dem Steuerberater erfassen.",
+        questions: [
+          {
+            id: "s2_1",
+            question: "1. \"Wie kommen Tankquittungen, Materialbelege und Eingangsrechnungen aktuell in deine Buchhaltung?\"",
+            why: "Identifiziert den 'Bürosonntag' und den Hauptzeitfresser.",
+            followup: "\"Wer sortiert die Belege: Du selbst, deine Partnerin oder eine Bürokraft? Wie viele Stunden kostet das wöchentlich?\"",
+            warning: "\"Ich mache das sonntags mit Schuhkarton und Excel.\" -> Perfekter Hebel für 2.000 € Festpreis-Setup.",
+            quickwin: "Schlüsselfertige Einrichtung des WhatsApp-Belegeingangs.",
+            placeholder: "z.B. Mitarbeiter sammeln Quittungen im Firmenwagen, Chef sortiert sonntags 4-5 Stunden..."
+          },
+          {
+            id: "s2_2",
+            question: "2. \"Welche Buchhaltungs-Software und welche Kanzlei-Schnittstelle nutzt ihr aktuell?\"",
+            why: "Klärt das technische Zielsystem (Lexoffice, SevDesk, DATEV Unternehmen online).",
+            followup: "\"Hat dein Steuerberater schon nach DATEV Belegbilderservice oder digitaler Vorkontierung gefragt?\"",
+            warning: "Rechnungen noch in Word geschrieben, kein zentrales System.",
+            quickwin: "Lexoffice Einrichtung + DATEV Belegbilderservice Anbindung.",
+            placeholder: "z.B. Lexware Office im Einsatz, Steuerberater nutzt DATEV Kanzlei-Rechnungswesen..."
+          }
+        ]
+      },
+      {
+        name: "Phase 2: Mobile Erfassung & Team-Struktur",
+        description: "Wie erfassen Monteure und Mitarbeiter Belege vor Ort?",
+        questions: [
+          {
+            id: "s2_3",
+            question: "3. \"Wie viele Mitarbeiter kaufen Material vor Ort ein oder reichen Belege ein?\"",
+            why: "Bestimmt die Anzahl der WhatsApp-Gateway-Nutzer und den Schulungsaufwand.",
+            followup: "\"Haben alle Mitarbeiter Firmenhandys oder nutzen sie WhatsApp privat?\"",
+            warning: "Angst vor komplizierter Software bei älteren Monteuren.",
+            quickwin: "Null Schulungsaufwand: Monteur sendet einfach nur ein Foto per WhatsApp.",
+            placeholder: "z.B. 6 Monteure, kaufen täglich beim Großhändler ein..."
+          },
+          {
+            id: "s2_4",
+            question: "4. \"Wo werden digitale Rechnungen per E-Mail empfangen?\"",
+            why: "Konfiguration der automatischen E-Mail-Weiterleitung zur Make.com Middleware.",
+            followup: "\"Gibt es eine zentrale Mailadresse wie rechnung@firma.de?\"",
+            warning: "Rechnungen landen verstreut in persönlichen Postfächern.",
+            quickwin: "Automatischer Mail-Parser für PDF-Rechnungsanhänge.",
+            placeholder: "z.B. rechnung@handwerk-harz.de auf Microsoft 365..."
+          }
+        ]
+      },
+      {
+        name: "Phase 3: GoBD, Verträge & Setup-Start",
+        description: "Rechtssicherheit, AVV und Vereinbarung der 14-Tage-Begleitung.",
+        questions: [
+          {
+            id: "s2_5",
+            question: "5. \"Besitzt du bereits eine GoBD-Verfahrensdokumentation für das ersetzende Scannen?\"",
+            why: "Rechtssicherheit bei Betriebsprüfungen & Schutz des Vorsteuerabzugs.",
+            followup: "\"Ist dir bekannt, dass Papierbelege nach unserem Setup rechtssicher vernichtet werden dürfen?\"",
+            warning: "Keine Verfahrensdokumentation vorhanden -> Risiko bei Steuerprüfung.",
+            quickwin: "Übergabe der fertigen Verfahrensdokumentation nach BStBK-Standard.",
+            placeholder: "Bisher keine Verfahrensdokumentation vorhanden..."
+          },
+          {
+            id: "s2_6",
+            question: "6. \"Vereinbarung zum Standard-Setup: Start in 14-Tage-Begleitung?\"",
+            why: "Abschluss des 2.000 € Festpreisvertrags mit 100% Amortisation in ~8 Wochen.",
+            followup: "Anzahlung 50% vereinbart, Zugangs-Checkliste übergeben?",
+            warning: "",
+            quickwin: "Unterschrift Dienstleistungsvertrag & AVV.",
+            placeholder: "Vertrag über 2.000 € netto unterzeichnet, Start am Montag..."
+          }
+        ]
+      }
+    ]
+  },
+  audit500: {
+    title: "🔍 STUFE 1: 500 € Büro-Potenzial-Audit (Der Türöffner)",
+    badge: "90-Min Vor-Ort-Analyse",
+    phases: [
+      {
+        name: "Phase 1: Das Prozess-Röntgenbild (Status Quo)",
+        description: "Schonungslose Aufnahme aller manuellen Medienbrüche im Handwerksbüro.",
+        questions: [
+          {
+            id: "a1_1",
+            question: "1. \"Welche einzige administrative Büroaufgabe raubt dir aktuell die meiste Lebenszeit?\"",
+            why: "Emotionaler Schmerzpunkt (Rechnungen, Angebote, Zettel nachrennen).",
+            followup: "\"Wie viele Stunden pro Woche verbringst du damit am Abend oder Wochenende?\"",
+            warning: "Inhaber ist operativ überlastet und hat keine Zeit für Firmenentwicklung.",
+            quickwin: "Identifikation des 1. Quick-Wins.",
+            placeholder: "z.B. Samstagvormittag 4 Stunden Angebote schreiben und Rechnungen suchen..."
+          },
+          {
+            id: "a1_2",
+            question: "2. \"Welche Medienbrüche existieren zwischen Baustelle, Büro und Steuerberater?\"",
+            why: "Zeigt Datenverluste auf (Papierzettel -> WhatsApp -> Word -> Drucken -> Kanzlei).",
+            followup: "\"Wie oft gehen handschriftliche Notizen oder Belege verloren?\"",
+            warning: "Mehrfaches manuelles Abtippen derselben Kundendaten.",
+            quickwin: "Prozess-Röntgenbild im ROI-Report visualisieren.",
+            placeholder: "z.B. Monteur schreibt Zettel -> Chef tippt in Excel -> Büro druckt aus..."
+          }
+        ]
+      },
+      {
+        name: "Phase 2: Die Schattenkosten-Kalkulation",
+        description: "Übersetzung der verlorenen Bürozeit in harte Euro-Beträge.",
+        questions: [
+          {
+            id: "a1_3",
+            question: "3. \"Wie hoch ist dein kalkulatorischer Meister-Stundensatz und wie viele Stunden verlierst du monatlich?\"",
+            why: "Berechnet die jährlichen Schattenkosten (z.B. 16 Std. x 55 € = 880 €/M = 10.560 €/Jahr).",
+            followup: "\"Was könntest du in dieser Zeit erwirtschaften, wenn du auf der Baustelle wärst?\"",
+            warning: "Inhaber unterschätzt die Kosten unbezahlter Bürosonntage massiv.",
+            quickwin: "ROI-Berechnung im Büro-Stress-Test Report schwarz auf weiß darlegen.",
+            placeholder: "Stundensatz 55-65 €, ca. 20 Stunden Zeitverlust pro Monat..."
+          }
+        ]
+      },
+      {
+        name: "Phase 3: Soll-Roadmap & 100% Anrechnungs-Pitch",
+        description: "Übergabe des ROI-Reports und Wandlung in das 2.000 € Standard-Setup.",
+        questions: [
+          {
+            id: "a1_4",
+            question: "4. \"Präsentation des 4-teiligen ROI-Reports & Wandlung in Stufe 2:\"",
+            why: "Wandelt 60-70% der Audit-Kunden durch 100% Gebührenanrechnung in Hauptaufträge.",
+            followup: "\"Die 500 € Audit-Gebühr wird bei Beauftragung des Standard-Setups zu 100% angerechnet!\"",
+            warning: "",
+            quickwin: "Direkte Beauftragung des 2.000 € Setups.",
+            placeholder: "Kunde begeistert vom ROI-Report; Standard-Setup direkt beauftragt..."
+          }
+        ]
+      }
+    ]
+  },
+  meisterbetrieb6000: {
+    title: "🚀 STUFE 2+: ab 6.000 € Digitaler Meisterbetrieb (ERP & Förderung)",
+    badge: "High-Ticket (50-80% Förderhebel)",
+    phases: [
+      {
+        name: "Phase 1: ERP-Landschaft & Skalierungsengpässe",
+        description: "Analyse bestehender Handwerker-Software (Plancraft, pds, KWP, WinWorker, HERO).",
+        questions: [
+          {
+            id: "m6_1",
+            question: "1. \"Welches Handwerker-ERP oder CRM-System nutzt ihr und wo brechen die Workflows ab?\"",
+            why: "Prüft API-Schnittstellen und ERP-Automationspotenziale.",
+            followup: "\"Können Angebote automatisch aus Aufmaßen generiert werden?\"",
+            warning: "ERP vorhanden, aber Insellösung ohne Schnittstelle zur Buchhaltung.",
+            quickwin: "End-to-End Pipeline von Anfrage bis Nachkalkulation.",
+            placeholder: "z.B. Plancraft / pds im Einsatz, aber Angebote dauern 4 Tage..."
+          }
+        ]
+      },
+      {
+        name: "Phase 2: Fördermittel-Check (Digital Innovation / INQA)",
+        description: "Staatliche Zuschüsse von bis zu 50 % bis 80 % aktivieren.",
+        questions: [
+          {
+            id: "m6_2",
+            question: "2. \"Standort & Förderfähigkeit: Erfüllt der Betrieb die Kriterien für Landes- oder Bundesförderung?\"",
+            why: "Sachsen-Anhalt DIGITAL INNOVATION (50%) oder INQA-Coaching (80%).",
+            followup: "\"Ist das ELSTER-Unternehmenskonto vorhanden? Wichtig: Vorzeitigen Maßnahmenbeginn beachten!\"",
+            warning: "Vertrag darf erst NACH offiziellem Förderantrag unterzeichnet werden.",
+            quickwin: "Übernahme der technischen Förderkonzeption durch KMU Service Harz.",
+            placeholder: "Betrieb im Ostharz (Sachsen-Anhalt), 12 Mitarbeiter, 50% Zuschuss möglich..."
+          }
+        ]
+      }
+    ]
+  },
+  retainer200: {
+    title: "🛡️ STUFE 3: 200 €/Monat Digitaler Hausmeister (AaaS Retainer)",
+    badge: "Wartung & Ausfallsicherheit",
+    phases: [
+      {
+        name: "Phase 1: Schnittstellen-Monitoring & SLA",
+        description: "Dauerhafte Absicherung aller aktiven Make.com Workflows und APIs.",
+        questions: [
+          {
+            id: "r2_1",
+            question: "1. \"Welche Schnittstellen und Webhooks müssen im 24/7-Monitoring überwacht werden?\"",
+            why: "Einrichtung von Blueprint 4 (15-Minuten Cron Health-Check).",
+            followup: "\"Wer soll im Notfall bei Kanzlei-Störungen benachrichtigt werden?\"",
+            warning: "APIs von Cloud-Anbietern ändern sich regelmäßig -> ohne Wartung Ausfall vorprogrammiert.",
+            quickwin: "Proaktives Alerting an KMU Service Harz Support-Kanal.",
+            placeholder: "Lexoffice API, DATEV Belegbilderservice, Supabase DB, Drive..."
+          },
+          {
+            id: "r2_2",
+            question: "2. \"SLA-Grenzen & 1h Monatskontingent:\"",
+            why: "Schutz vor Scope Creep: 1h für Minor Tweaks inklusive, Neuentwicklungen separat.",
+            followup: "Wartungsvertrag für 200 € netto/Monat mit 6 Monaten Mindestlaufzeit signiert?",
+            warning: "",
+            quickwin: "Dauerhafter MRR für KMU Service Harz & Sorgenfreiheit für den Handwerker.",
+            placeholder: "AaaS Vertrag über 200 €/Monat aktiv..."
+          }
+        ]
+      }
+    ]
+  },
   master: {
-    title: "📘 MASTER-PLAYBOOK: Onboarding KMU-Service Harz",
+    title: "📘 ALLGEMEINES MASTER-PLAYBOOK: KMU Service Harz",
     phases: [
       {
         name: "Phase 1: Eisbrecher & Big Picture",
@@ -303,104 +548,14 @@ export const ONBOARDING_PLAYBOOKS = {
             placeholder: "z.B. Umsatz verdoppeln, 2 neue Mitarbeiter, weniger Stress im Alltag..."
           }
         ]
-      },
-      {
-        name: "Phase 2: Kundengewinnung & Kommunikation",
-        description: "Den Weg des Kunden vom Erstkontakt bis zum fertigen Angebot nachverfolgen.",
-        questions: [
-          {
-            id: "m3",
-            question: "3. \"Wie genau kommen neue Anfragen bei dir rein und wie organisierst du sie?\"",
-            why: "Deckt Kommunikations-Chaos und Medienbrüche auf.",
-            followup: "\"Nutzt du WhatsApp geschäftlich auf deinem privaten Handy? Wie überführst du eine WhatsApp-Anfrage in ein Angebot?\"",
-            warning: "\"Kunden schreiben per WhatsApp, ich schreibe es auf einen Zettel und tippe es abends in Word ab.\"",
-            quickwin: "WhatsApp Business API / Automatisierte Lead-Erfassung ins CRM.",
-            placeholder: "z.B. E-Mail, WhatsApp, Anrufe gemischt auf privatem Handy..."
-          },
-          {
-            id: "m4",
-            question: "4. \"Wie lange dauert es im Schnitt von der Anfrage bis der Kunde das Angebot hat?\"",
-            why: "Lange Dauer bedeutet oft verlorene Aufträge. Prüft Effizienz.",
-            followup: "\"Schreibst du Angebote in Word/Excel oder in einer Branchensoftware? Hast du Standardpakete?\"",
-            warning: "Angebote in Word/Excel. Keine Textbausteine.",
-            quickwin: "Dringender Bedarf an einer Handwerkersoftware (z.B. Lexoffice, Plancraft).",
-            placeholder: "z.B. 3 bis 5 Tage, da Angebote abends händisch in Word geschrieben werden..."
-          },
-          {
-            id: "m5",
-            question: "5. \"Wie organisierst du deine Termine (Besichtigungen, Ausführung)?\"",
-            why: "Termin-Ping-Pong am Telefon ist ein massiver, unsichtbarer Zeitfresser.",
-            followup: "\"Nutzt du einen digitalen Kalender (Google/Apple)? Können Kunden online buchen?\"",
-            warning: "Papierkalender im Auto oder im Büro an der Wand.",
-            quickwin: "Einführung von Calendly/TidyCal Anbindungen.",
-            placeholder: "z.B. Papierkalender im Auto, Terminvereinbarung nur telefonisch..."
-          }
-        ]
-      },
-      {
-        name: "Phase 3: Auftragsabwicklung & Betrieb",
-        description: "Verstehen, wie die eigentliche Arbeit dokumentiert und abgerechnet wird.",
-        questions: [
-          {
-            id: "m6",
-            question: "6. \"Wie erfassen du und deine Mitarbeiter Arbeitszeiten und Material?\"",
-            why: "Größtes Leck für entgangenen Umsatz. Ungenaue Erfassung = unbezahlte Arbeit.",
-            followup: "\"Gibt es Stundenzettel aus Papier? Werden die oft unleserlich oder zu spät abgegeben?\"",
-            warning: "Papier-Stundenzettel, die am Monatsende händisch abgetippt werden.",
-            quickwin: "Digitale Zeiterfassungs-App mit direkter Schnittstelle zur Lohnbuchhaltung.",
-            placeholder: "z.B. Mitarbeiter geben wöchentlich Stundenzettel aus Papier ab..."
-          },
-          {
-            id: "m7",
-            question: "7. \"Wie dokumentierst du Baustellen / Objekte (Fotos, Checklisten)?\"",
-            why: "Wichtig für Haftung, Reklamationen und spätere Abrechnung.",
-            followup: "\"Wo landen die Fotos vom Handy? Musst du die abends manuell in Kundenordner auf dem PC sortieren?\"",
-            warning: "\"Fotos bleiben in der privaten Handy-Galerie oder im WhatsApp-Chat.\"",
-            quickwin: "Automatischer Foto-Upload via Make.com in Google Drive/OneDrive.",
-            placeholder: "z.B. Fotos werden mit privatem Handy gemacht und bleiben in WhatsApp..."
-          }
-        ]
-      },
-      {
-        name: "Phase 4: Back-Office, Finanzen & IT",
-        description: "Die kritische Infrastruktur und Datenflüsse analysieren.",
-        questions: [
-          {
-            id: "m8",
-            question: "8. \"Wie schreibst du Rechnungen und wie kommen Eingangsbelege zum Steuerberater?\"",
-            why: "Hier liegt das meiste Geld und die größte Fehlerquelle (GoBD, E-Rechnung).",
-            followup: "\"Tippst du das Angebot nochmal ab, um eine Rechnung zu erstellen? Nutzt du DATEV Unternehmen online?\"",
-            warning: "Schuhkarton für den Steuerberater. Jede Rechnung einzeln aus Mails herunterladen.",
-            quickwin: "E-Mail-Parser, direkte DATEV/Lexoffice-Schnittstelle.",
-            placeholder: "z.B. Schuhkarton für Belege, Rechnungen werden in Word geschrieben..."
-          },
-          {
-            id: "m9",
-            question: "9. \"Welche Software-Tools und Cloud-Dienste nutzt du aktuell?\"",
-            why: "Bestandsaufnahme für mögliche Schnittstellen (APIs).",
-            followup: "",
-            warning: "Keine zentrale Cloud, Daten nur lokal gespeichert.",
-            quickwin: "Zentrale Datenablage in Google Workspace / Microsoft 365.",
-            placeholder: "z.B. Outlook, Excel, WhatsApp, eventuell ein kleines Branchenprogramm..."
-          },
-          {
-            id: "m10",
-            question: "10. \"Wie sicher bist du beim Thema DSGVO (z.B. bei WhatsApp) und Datensicherung?\"",
-            why: "Zeigt rechtliche Risiken auf.",
-            followup: "",
-            warning: "Kundendaten auf privatem Handy ohne Auftragsverarbeitungsvertrag.",
-            quickwin: "Sichere Cloud-Umgebungen und DSGVO-konforme Messenger.",
-            placeholder: "z.B. Keine Backups, WhatsApp privat für Kundenkommunikation..."
-          }
-        ]
       }
     ]
   },
   pilot: {
-    title: "🛠️ PILOT-PLAYBOOK: Das Bruder-Onboarding (GoClean Harz)",
+    title: "🛠️ PILOT-PLAYBOOK: Das VIP-Bruder-Onboarding (GoClean Harz)",
     phases: [
       {
-        name: "Phase 1: Der ehrliche Status Quo (Das \"Bruder-Gespräch\")",
+        name: "Phase 1: Der ehrliche Status Quo (Das Bruder-Gespräch)",
         description: "Hier geht es darum, die Maske fallen zu lassen.",
         questions: [
           {
@@ -411,81 +566,10 @@ export const ONBOARDING_PLAYBOOKS = {
             warning: "",
             quickwin: "",
             placeholder: "z.B. Umsatz ok, aber Stress ist viel zu hoch, freie Wochenenden fehlen..."
-          },
-          {
-            id: "p2",
-            question: "2. \"Was ist aktuell dein größter Engpass: Willst du eigentlich wachsen (mehr Kunden) oder willst du einfach nur weniger Stress mit den aktuellen Kunden?\"",
-            why: "Definiert die Strategie (Lead-Generierung/Sales vs. Automatisierung/Organisation).",
-            followup: "",
-            warning: "",
-            quickwin: "",
-            placeholder: "z.B. Möchte weniger Stress und geregelte Abläufe bei den bestehenden Kunden..."
-          }
-        ]
-      },
-      {
-        name: "Phase 2: Die \"Zeig-mir-dein-Handy\"-Analyse (Der Deep Dive)",
-        description: "Direkter, knallharter Einblick in die Praxis.",
-        questions: [
-          {
-            id: "p3",
-            question: "3. \"Hol mal bitte dein Handy raus. Zeig mir mal, wie eine typische Kundenanfrage bei dir auf WhatsApp aussieht und was du dann machst.\"",
-            why: "Du siehst live den Medienbruch (Zettel schreiben, Vergessen zu antworten).",
-            followup: "",
-            warning: "",
-            quickwin: "",
-            placeholder: "z.B. Schreibt Kundendaten auf einen Zettel im Auto, vergisst manchmal Rückrufe..."
-          },
-          {
-            id: "p4",
-            question: "4. \"Wann hast du das letzte Mal Rechnungen geschrieben und wie lange saßt du da dran?\"",
-            why: "Finde den \"Bürosonntag\" und wie er Belege an den Steuerberater übergibt.",
-            followup: "",
-            warning: "",
-            quickwin: "",
-            placeholder: "z.B. Rechnungen alle 2 Wochen sonntags für ca. 4 Stunden..."
-          },
-          {
-            id: "p5",
-            question: "5. \"Gibt es irgendwas in deinem Alltag, wo du dir denkst: 'Das ist so dumm, dass ich das jeden Tag dreimal von Hand tippen muss'?\"",
-            why: "Identifiziert den offensichtlichsten manuellen Zeitfresser für ein schnelles Make.com-Projekt.",
-            followup: "",
-            warning: "",
-            quickwin: "",
-            placeholder: "z.B. Baustellenbilder vom Handy mühsam in Drive-Ordner verschieben..."
-          }
-        ]
-      },
-      {
-        name: "Phase 3: Der \"Pilot-Deal\"",
-        description: "Dein kostenloses Angebot gegen Testimonial pitch.",
-        questions: [
-          {
-            id: "p6",
-            question: "Pitch & Vereinbarung: Erkläre ihm den Deal: Kostenloses System in 4 Wochen, dafür ehrliches Nutzenfeedback und ein Video/Zitat Testimonial.",
-            why: "Legt die Basis für deine allererste Case Study (\"Proof Asset\").",
-            followup: "",
-            warning: "",
-            quickwin: "",
-            placeholder: "Deal vereinbart? (Ja / Nein + Details)..."
-          }
-        ]
-      },
-      {
-        name: "Phase 4: Abschluss & Direkter Start",
-        description: "Fokus auf EIN Problem zum Start.",
-        questions: [
-          {
-            id: "p7",
-            question: "Entscheidung: Welche der 3 Optionen wollen wir als Erstes angehen? (Option A: Beleg-Upload / Option B: WhatsApp Lead-Tabelle / Option C: Baustellenfoto-Upload)",
-            why: "Nicht 10 Dinge auf einmal ändern.",
-            followup: "Welche Notizen gibt es für das gewählte erste Projekt auf Make.com?",
-            warning: "",
-            quickwin: "",
-            placeholder: "Gewählte Option (z.B. Option C) und konkrete Make.com-Notizen..."
           }
         ]
       }
     ]
   }
 };
+

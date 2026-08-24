@@ -28,7 +28,7 @@ export const OnboardingView = ({
   showToast
 }) => {
   const [onboardingLeadId, setOnboardingLeadId] = useState(null);
-  const [onboardingPlaybook, setOnboardingPlaybook] = useState('master');
+  const [onboardingPlaybook, setOnboardingPlaybook] = useState('standardSetup2000');
   const [onboardingActivePhase, setOnboardingActivePhase] = useState(0);
   const [onboardingAnswers, setOnboardingAnswers] = useState({});
   const [onboardingPriorities, setOnboardingPriorities] = useState({});
@@ -463,9 +463,14 @@ export const OnboardingView = ({
               value={onboardingPlaybook}
               onChange={(e) => setOnboardingPlaybook(e.target.value)}
               disabled={!onboardingLeadId}
+              style={{ fontWeight: 600 }}
             >
-              <option value="master">📘 Master-Playbook</option>
-              <option value="pilot">🛠️ Pilot-Playbook (Bruder)</option>
+              <option value="standardSetup2000">⭐ Stufe 2: 2.000 € Standard-Setup (Belegerfassung & DATEV)</option>
+              <option value="audit500">🔍 Stufe 1: 500 € Büro-Potenzial-Audit (90-Min Analyse)</option>
+              <option value="meisterbetrieb6000">🚀 Stufe 2+: ab 6.000 € Digitaler Meisterbetrieb (ERP & Förderung)</option>
+              <option value="retainer200">🛡️ Stufe 3: 200 €/Monat Digitaler Hausmeister (AaaS)</option>
+              <option value="master">📘 Allgemeines KMU Master-Playbook</option>
+              <option value="pilot">🛠️ VIP-Pilot Playbook (GoClean Harz)</option>
             </select>
           </div>
         </div>

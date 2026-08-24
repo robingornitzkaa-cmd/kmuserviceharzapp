@@ -1,0 +1,178 @@
+{
+  "name": "KMU Service Harz - Stufe 3: AaaS 24/7 Schnittstellen-Monitoring & Health-Check",
+  "version": 1,
+  "flow": [
+    {
+      "id": 1,
+      "module": "builtin:BasicTrigger",
+      "version": 1,
+      "parameters": {
+        "interval": 15
+      },
+      "mapper": {},
+      "metadata": {
+        "designer": {
+          "x": 0,
+          "y": 0,
+          "name": "1. 15-Minuten Cron Trigger (Monitoring)"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "module": "http:makeRequest",
+      "version": 1,
+      "parameters": {
+        "method": "GET",
+        "url": "https://api.lexoffice.io/v1/profile",
+        "headers": [
+          {
+            "name": "Authorization",
+            "value": "Bearer {{lexoffice_api_token}}"
+          }
+        ]
+      },
+      "mapper": {},
+      "metadata": {
+        "designer": {
+          "x": 250,
+          "y": 0,
+          "name": "2. Lexware Office API Ping & Token Check"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "module": "http:makeRequest",
+      "version": 1,
+      "parameters": {
+        "method": "GET",
+        "url": "{{supabase_url}}/rest/v1/leads?select=id&limit=1",
+        "headers": [
+          {
+            "name": "apikey",
+            "value": "{{supabase_anon_key}}"
+          }
+        ]
+      },
+      "mapper": {},
+      "metadata": {
+        "designer": {
+          "x": 500,
+          "y": 0,
+          "name": "3. Supabase Cloud DB Heartbeat"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "module": "util:SetVariable",
+      "version": 1,
+      "parameters": {},
+      "mapper": {
+        "name": "is_system_healthy",
+        "value": "{{if(2.statusCode = 200 & 3.statusCode = 200; true; false)}}"
+      },
+      "metadata": {
+        "designer": {
+          "x": 750,
+          "y": 0,
+          "name": "4. Status Aggregator"
+        }
+      }
+    },
+    {
+      "id": 5,
+      "module": "router:Router",
+      "version": 1,
+      "parameters": {},
+      "mapper": {},
+      "metadata": {
+        "designer": {
+          "x": 1000,
+          "y": 0,
+          "name": "5. Router: Alles Grün vs. API-Störung"
+        }
+      },
+      "routes": [
+        {
+          "flow": [
+            {
+              "id": 6,
+              "module": "http:makeRequest",
+              "version": 1,
+              "parameters": {
+                "method": "POST",
+                "url": "https://api.telegram.org/bot{{telegram_bot_token}}/sendMessage"
+              },
+              "mapper": {
+                "body": "{\n  \"chat_id\": \"{{support_channel_id}}\",\n  \"text\": \"🚨 [AaaS ALERT] Kunde: {{client_name}}\n⚠️ Schnittstellen-Warnung erkannt!\nLexoffice Status: {{2.statusCode}}\nSupabase Status: {{3.statusCode}}\nZeit: {{now}}\nProaktive Wartung wird eingeleitet.\"\n}"
+              },
+              "metadata": {
+                "designer": {
+                  "x": 1250,
+                  "y": -100,
+                  "name": "6A. Telegram Notfall-Alert an KMU Service Harz"
+                }
+              },
+              "filter": {
+                "name": "Nur bei Fehler / Timeout",
+                "conditions": [
+                  [
+                    {
+                      "a": "{{4.is_system_healthy}}",
+                      "o": "equal",
+                      "b": false
+                    }
+                  ]
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "flow": [
+            {
+              "id": 7,
+              "module": "util:SetVariable",
+              "version": 1,
+              "parameters": {},
+              "mapper": {
+                "name": "log_ok",
+                "value": "Alle Schnittstellen laufen lautlos im Hintergrund. (Status 200 OK)"
+              },
+              "metadata": {
+                "designer": {
+                  "x": 1250,
+                  "y": 100,
+                  "name": "6B. Lautloser Erfolg (Keine Benachrichtigung nötig)"
+                }
+              },
+              "filter": {
+                "name": "Systeme OK",
+                "conditions": [
+                  [
+                    {
+                      "a": "{{4.is_system_healthy}}",
+                      "o": "equal",
+                      "b": true
+                    }
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "instant": false,
+    "version": 1,
+    "scenario": {
+      "roundtrips": 1,
+      "maxErrors": 3,
+      "autoCommit": true
+    }
+  }
+}

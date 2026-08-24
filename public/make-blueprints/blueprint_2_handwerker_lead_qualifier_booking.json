@@ -1,0 +1,157 @@
+{
+  "name": "KMU Service Harz - Stufe 2+: Handwerker-Anfrage-Funnel & 24/7 Notfall-Qualifizierung",
+  "version": 1,
+  "flow": [
+    {
+      "id": 1,
+      "module": "gateway:CustomWebHook",
+      "version": 1,
+      "parameters": {
+        "hook": "kmu-service-harz-lead-funnel",
+        "maxResults": 1
+      },
+      "mapper": {},
+      "metadata": {
+        "designer": {
+          "x": 0,
+          "y": 0,
+          "name": "1. Webhook Inbound Anfrage (WhatsApp / Web-Formular)"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "module": "openai:createChatCompletion",
+      "version": 1,
+      "parameters": {
+        "model": "gpt-4o",
+        "temperature": 0.2
+      },
+      "mapper": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "Du bist der intelligente Anfrage-Qualifizierer für regionale Handwerksbetriebe im Harz. Analysiere die Nachricht und extrahiere: { \"customer_name\": \"Name\", \"phone\": \"Telefon\", \"city\": \"Ort (z.B. Goslar, Wernigerode)\", \"trade\": \"Gewerk (SHK / Dach / Elektro / Reinigung)\", \"issue_summary\": \"Prägnante Problembeschreibung\", \"urgency\": \"1 (Standard) bis 5 (Akuter Notfall/Wasserschaden/Stromausfall)\", \"is_emergency\": true/false } als striktes JSON."
+          },
+          {
+            "role": "user",
+            "content": "Kundenanfrage: {{1.messageText}}\nAbsender: {{1.senderPhone}}"
+          }
+        ],
+        "response_format": {
+          "type": "json_object"
+        }
+      },
+      "metadata": {
+        "designer": {
+          "x": 250,
+          "y": 0,
+          "name": "2. KI-Intent & Notfall-Analyse (GPT-4o)"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "module": "json:ParseJSON",
+      "version": 1,
+      "parameters": {
+        "type": "json"
+      },
+      "mapper": {
+        "json": "{{2.choices[1].message.content}}"
+      },
+      "metadata": {
+        "designer": {
+          "x": 500,
+          "y": 0,
+          "name": "3. JSON Anfrage parsen"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "module": "http:makeRequest",
+      "version": 1,
+      "parameters": {
+        "method": "POST",
+        "url": "{{supabase_url}}/rest/v1/leads",
+        "headers": [
+          {
+            "name": "apikey",
+            "value": "{{supabase_anon_key}}"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{supabase_anon_key}}"
+          },
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Prefer",
+            "value": "return=representation"
+          }
+        ]
+      },
+      "mapper": {
+        "body": "{\n  \"company\": \"{{3.customer_name}}\",\n  \"name\": \"{{3.customer_name}}\",\n  \"phone\": \"{{ifempty(3.phone; 1.senderPhone)}}\",\n  \"industry\": \"{{3.trade}}\",\n  \"pain_point\": \"{{3.issue_summary}}\",\n  \"urgency\": {{3.urgency}},\n  \"status\": \"{{if(3.is_emergency; 'dringend'; 'neu')}}\",\n  \"notes\": \"Automatisch erfasst via KMU Harz Lead-Funnel am {{now}}\"\n}"
+      },
+      "metadata": {
+        "designer": {
+          "x": 750,
+          "y": 0,
+          "name": "4. Lead in Supabase CRM anlegen"
+        }
+      }
+    },
+    {
+      "id": 5,
+      "module": "google-calendar:createAnEvent",
+      "version": 1,
+      "parameters": {
+        "calendarId": "primary"
+      },
+      "mapper": {
+        "summary": "{{if(3.is_emergency; '🚨 NOTFALL: '; '📅 Termin: ')}}{{3.trade}} bei {{3.customer_name}} ({{3.city}})",
+        "description": "Problem: {{3.issue_summary}}\nTelefon: {{ifempty(3.phone; 1.senderPhone)}}\nErfasst via KMU Service Harz",
+        "start": "{{addHours(now; 2)}}",
+        "end": "{{addHours(now; 3)}}"
+      },
+      "metadata": {
+        "designer": {
+          "x": 1000,
+          "y": 0,
+          "name": "5. Kalendertermin / Notfall-Slot blocken"
+        }
+      }
+    },
+    {
+      "id": 6,
+      "module": "gateway:respondToWebhook",
+      "version": 1,
+      "parameters": {
+        "status": 200
+      },
+      "mapper": {
+        "body": "{\n  \"status\": \"success\",\n  \"customer\": \"{{3.customer_name}}\",\n  \"is_emergency\": {{3.is_emergency}},\n  \"reply_message\": \"Hallo {{3.customer_name}}, vielen Dank für Ihre Anfrage! Unser Meisterbetrieb hat Ihr Anliegen ({{3.issue_summary}}) erfasst. {{if(3.is_emergency; 'Wir rufen Sie innerhalb von 15 Minuten zurück!'; 'Wir haben einen vorläufigen Besichtigungstermin vorgemerkt.')}}\"\n}"
+      },
+      "metadata": {
+        "designer": {
+          "x": 1250,
+          "y": 0,
+          "name": "6. WhatsApp Bestätigung an Kunden"
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "instant": true,
+    "version": 1,
+    "scenario": {
+      "roundtrips": 1,
+      "maxErrors": 3,
+      "autoCommit": true
+    }
+  }
+}

@@ -1,0 +1,243 @@
+{
+  "name": "KMU Service Harz - Stufe 2: Lautlose Belegerfassung (Lexoffice & DATEV Belegbilderservice)",
+  "version": 1,
+  "flow": [
+    {
+      "id": 1,
+      "module": "gateway:CustomWebHook",
+      "version": 1,
+      "parameters": {
+        "hook": "kmu-service-harz-inbound-belege",
+        "maxResults": 1
+      },
+      "mapper": {},
+      "metadata": {
+        "designer": {
+          "x": 0,
+          "y": 0,
+          "name": "1. Webhook Belegeingang (WhatsApp / E-Mail / Scan)"
+        },
+        "restore": {
+          "parameters": {
+            "hook": {
+              "label": "Inbound Belege Webhook (KMU Harz)"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "hook",
+            "type": "hook:gateway-webhook",
+            "label": "Webhook",
+            "required": true
+          }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "module": "util:SetVariable",
+      "version": 1,
+      "parameters": {},
+      "mapper": {
+        "name": "file_mime_type",
+        "value": "{{1.mimeType}}"
+      },
+      "metadata": {
+        "designer": {
+          "x": 200,
+          "y": 0,
+          "name": "2. Dateityp prüfen & filtern"
+        }
+      },
+      "filter": {
+        "name": "Nur PDF oder Bilder erlauben",
+        "conditions": [
+          [
+            {
+              "a": "{{1.mimeType}}",
+              "o": "containsi",
+              "b": "image"
+            },
+            {
+              "a": "{{1.mimeType}}",
+              "o": "containsi",
+              "b": "pdf"
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "module": "openai:createChatCompletion",
+      "version": 1,
+      "parameters": {
+        "model": "gpt-4o",
+        "temperature": 0.1,
+        "max_tokens": 1000
+      },
+      "mapper": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "Du bist der Beleg-Extraktor von KMU Service Harz. Extrahiere aus dem Beleg folgende Felder als striktes JSON: { \"vendor\": \"Lieferantenname\", \"invoice_number\": \"Rechnungsnummer\", \"invoice_date\": \"YYYY-MM-DD\", \"net_amount\": 0.00, \"tax_rate\": 19, \"tax_amount\": 0.00, \"gross_amount\": 0.00, \"iban\": \"DE...\", \"category\": \"Wareneingang / Fremdleistung / Betriebsbedarf\", \"payment_status\": \"open / paid\" }."
+          },
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "Analysiere diesen Eingangsbeleg für die Vorkontierung in Lexoffice und DATEV:"
+              },
+              {
+                "type": "image_url",
+                "image_url": {
+                  "url": "data:{{1.mimeType}};base64,{{1.fileBase64}}"
+                }
+              }
+            ]
+          }
+        ],
+        "response_format": {
+          "type": "json_object"
+        }
+      },
+      "metadata": {
+        "designer": {
+          "x": 400,
+          "y": 0,
+          "name": "3. KI-OCR Extraktion (GPT-4o Vision)"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "module": "json:ParseJSON",
+      "version": 1,
+      "parameters": {
+        "type": "json"
+      },
+      "mapper": {
+        "json": "{{3.choices[1].message.content}}"
+      },
+      "metadata": {
+        "designer": {
+          "x": 600,
+          "y": 0,
+          "name": "4. JSON Struktur parsen"
+        }
+      }
+    },
+    {
+      "id": 5,
+      "module": "google-drive:uploadAFile",
+      "version": 1,
+      "parameters": {
+        "folderId": "root/KMU_Service_Harz/Belegarchiv/{{formatDate(now; 'YYYY')}}/{{formatDate(now; 'MM')}}"
+      },
+      "mapper": {
+        "name": "{{4.invoice_date}}_{{4.vendor}}_{{4.invoice_number}}.pdf",
+        "data": "{{1.fileBuffer}}"
+      },
+      "metadata": {
+        "designer": {
+          "x": 800,
+          "y": 0,
+          "name": "5. GoBD Cloud-Archivierung (Google Drive)"
+        }
+      }
+    },
+    {
+      "id": 6,
+      "module": "lexoffice:createVoucher",
+      "version": 1,
+      "parameters": {
+        "type": "purchaseinvoice"
+      },
+      "mapper": {
+        "voucherNumber": "{{4.invoice_number}}",
+        "voucherDate": "{{4.invoice_date}}",
+        "totalGrossAmount": "{{4.gross_amount}}",
+        "totalTaxAmount": "{{4.tax_amount}}",
+        "taxType": "net",
+        "useStatus": "{{if(4.payment_status = 'paid'; 'paid'; 'open')}}",
+        "lineItems": [
+          {
+            "amount": "{{4.net_amount}}",
+            "taxRatePercent": "{{4.tax_rate}}",
+            "category": "{{4.category}}",
+            "description": "Auto-Import via KMU Service Harz (Beleg: {{4.vendor}})"
+          }
+        ],
+        "fileId": "{{5.id}}"
+      },
+      "metadata": {
+        "designer": {
+          "x": 1000,
+          "y": 0,
+          "name": "6. Lexware Office Vorkontierung anlegen"
+        }
+      }
+    },
+    {
+      "id": 7,
+      "module": "http:makeRequest",
+      "version": 1,
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.datev.de/platform/v1/belegbilderservice/v1/documents",
+        "headers": [
+          {
+            "name": "Authorization",
+            "value": "Bearer {{datev_access_token}}"
+          },
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          }
+        ]
+      },
+      "mapper": {
+        "body": "{\n  \"clientNumber\": \"{{client_id}}\",\n  \"documentDate\": \"{{4.invoice_date}}\",\n  \"vendor\": \"{{4.vendor}}\",\n  \"grossAmount\": {{4.gross_amount}},\n  \"currency\": \"EUR\",\n  \"archiveUrl\": \"{{5.webViewLink}}\"\n}"
+      },
+      "metadata": {
+        "designer": {
+          "x": 1200,
+          "y": 0,
+          "name": "7. DATEV Belegbilderservice Übergabe"
+        }
+      }
+    },
+    {
+      "id": 8,
+      "module": "gateway:respondToWebhook",
+      "version": 1,
+      "parameters": {
+        "status": 200
+      },
+      "mapper": {
+        "body": "{\n  \"status\": \"success\",\n  \"message\": \"Beleg erfolgreich GoBD-konform archiviert und an Lexoffice & DATEV übergeben.\",\n  \"vendor\": \"{{4.vendor}}\",\n  \"gross\": {{4.gross_amount}},\n  \"driveLink\": \"{{5.webViewLink}}\"\n}"
+      },
+      "metadata": {
+        "designer": {
+          "x": 1400,
+          "y": 0,
+          "name": "8. Erfolgs-Rückmeldung an Absender"
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "instant": true,
+    "version": 1,
+    "scenario": {
+      "roundtrips": 1,
+      "maxErrors": 3,
+      "autoCommit": true,
+      "sequential": false,
+      "confidential": false,
+      "freshVariables": false
+    }
+  }
+}

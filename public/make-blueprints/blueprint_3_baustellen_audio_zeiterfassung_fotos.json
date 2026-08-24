@@ -1,0 +1,248 @@
+{
+  "name": "KMU Service Harz - Stufe 2: Baustellen-Audio-Zeiterfassung & Foto-Ablage",
+  "version": 1,
+  "flow": [
+    {
+      "id": 1,
+      "module": "gateway:CustomWebHook",
+      "version": 1,
+      "parameters": {
+        "hook": "kmu-service-harz-baustelle-inbound",
+        "maxResults": 1
+      },
+      "mapper": {},
+      "metadata": {
+        "designer": {
+          "x": 0,
+          "y": 150,
+          "name": "1. Webhook Monteur-Eingang (WhatsApp Voice / Foto)"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "module": "router:Router",
+      "version": 1,
+      "parameters": {},
+      "mapper": {},
+      "metadata": {
+        "designer": {
+          "x": 250,
+          "y": 150,
+          "name": "2. Router: Sprachnachricht vs. Baustellenfoto"
+        }
+      },
+      "routes": [
+        {
+          "flow": [
+            {
+              "id": 3,
+              "module": "openai:createTranscription",
+              "version": 1,
+              "parameters": {
+                "model": "whisper-1",
+                "language": "de"
+              },
+              "mapper": {
+                "file": "{{1.fileBuffer}}",
+                "fileName": "voice_note.ogg"
+              },
+              "metadata": {
+                "designer": {
+                  "x": 500,
+                  "y": 0,
+                  "name": "3A. Whisper Audio-Transkription"
+                }
+              },
+              "filter": {
+                "name": "Nur Audio / Sprachnachrichten",
+                "conditions": [
+                  [
+                    {
+                      "a": "{{1.mimeType}}",
+                      "o": "containsi",
+                      "b": "audio"
+                    }
+                  ]
+                ]
+              }
+            },
+            {
+              "id": 4,
+              "module": "openai:createChatCompletion",
+              "version": 1,
+              "parameters": {
+                "model": "gpt-4o",
+                "temperature": 0.1
+              },
+              "mapper": {
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "Du bist der Stundenzettel-Strukturierer von KMU Service Harz. Wandle gesprochene Arbeitsberichte in JSON um: { \"worker\": \"Vorname Nachname\", \"project\": \"Kunde oder Baustelle\", \"hours\": 8.0, \"date\": \"YYYY-MM-DD\", \"description\": \"Ausgeführte Arbeiten\" }."
+                  },
+                  {
+                    "role": "user",
+                    "content": "Transkribierte Sprachnachricht: {{3.text}}"
+                  }
+                ],
+                "response_format": {
+                  "type": "json_object"
+                }
+              },
+              "metadata": {
+                "designer": {
+                  "x": 750,
+                  "y": 0,
+                  "name": "4A. GPT-4o Zeiterfassung parsen"
+                }
+              }
+            },
+            {
+              "id": 5,
+              "module": "json:ParseJSON",
+              "version": 1,
+              "parameters": {
+                "type": "json"
+              },
+              "mapper": {
+                "json": "{{4.choices[1].message.content}}"
+              },
+              "metadata": {
+                "designer": {
+                  "x": 1000,
+                  "y": 0,
+                  "name": "5A. JSON Arbeitszeiten parsen"
+                }
+              }
+            },
+            {
+              "id": 6,
+              "module": "gateway:respondToWebhook",
+              "version": 1,
+              "parameters": {
+                "status": 200
+              },
+              "mapper": {
+                "body": "{\n  \"status\": \"success\",\n  \"type\": \"timetracking\",\n  \"message\": \"✅ Erfasst: {{5.worker}} - {{5.hours}} Std. auf Baustelle '{{5.project}}' ({{5.description}})\"\n}"
+              },
+              "metadata": {
+                "designer": {
+                  "x": 1250,
+                  "y": 0,
+                  "name": "6A. WhatsApp Bestätigung an Monteur"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "flow": [
+            {
+              "id": 7,
+              "module": "openai:createChatCompletion",
+              "version": 1,
+              "parameters": {
+                "model": "gpt-4o",
+                "temperature": 0.2
+              },
+              "mapper": {
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "Analysiere das Baustellenfoto. Extrahiere: { \"project_guess\": \"Kundenname / Baustellenbezug falls erkennbar\", \"work_stage\": \"Vorher / Zwischenstand / Abnahme / Mangel\", \"description\": \"Präzise 1-Satz Bildbeschreibung\" } als JSON."
+                  },
+                  {
+                    "role": "user",
+                    "content": [
+                      { "type": "text", "text": "Dokumentiere dieses Baustellenfoto:" },
+                      { "type": "image_url", "image_url": { "url": "data:{{1.mimeType}};base64,{{1.fileBase64}}" } }
+                    ]
+                  }
+                ],
+                "response_format": { "type": "json_object" }
+              },
+              "metadata": {
+                "designer": {
+                  "x": 500,
+                  "y": 300,
+                  "name": "3B. GPT-4o Vision Foto-Tagging"
+                }
+              },
+              "filter": {
+                "name": "Nur Fotos / Bilder",
+                "conditions": [
+                  [
+                    {
+                      "a": "{{1.mimeType}}",
+                      "o": "containsi",
+                      "b": "image"
+                    }
+                  ]
+                ]
+              }
+            },
+            {
+              "id": 8,
+              "module": "json:ParseJSON",
+              "version": 1,
+              "parameters": { "type": "json" },
+              "mapper": { "json": "{{7.choices[1].message.content}}" },
+              "metadata": {
+                "designer": {
+                  "x": 750,
+                  "y": 300,
+                  "name": "4B. Foto-Meta-JSON parsen"
+                }
+              }
+            },
+            {
+              "id": 9,
+              "module": "google-drive:uploadAFile",
+              "version": 1,
+              "parameters": {
+                "folderId": "root/KMU_Service_Harz/Baustellendokumentation/{{formatDate(now; 'YYYY-MM')}}"
+              },
+              "mapper": {
+                "name": "{{formatDate(now; 'YYYY-MM-DD_HHmm')}}_{{8.work_stage}}.jpg",
+                "data": "{{1.fileBuffer}}"
+              },
+              "metadata": {
+                "designer": {
+                  "x": 1000,
+                  "y": 300,
+                  "name": "5B. Foto in Google Drive Projektordner ablegen"
+                }
+              }
+            },
+            {
+              "id": 10,
+              "module": "gateway:respondToWebhook",
+              "version": 1,
+              "parameters": { "status": 200 },
+              "mapper": {
+                "body": "{\n  \"status\": \"success\",\n  \"type\": \"photo_archived\",\n  \"driveLink\": \"{{9.webViewLink}}\",\n  \"message\": \"📸 Baustellenfoto erfolgreich in Cloud-Kundenakte abgelegt (Status: {{8.work_stage}})\"\n}"
+              },
+              "metadata": {
+                "designer": {
+                  "x": 1250,
+                  "y": 300,
+                  "name": "6B. Bestätigung an Monteur"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "instant": true,
+    "version": 1,
+    "scenario": {
+      "roundtrips": 1,
+      "maxErrors": 3,
+      "autoCommit": true
+    }
+  }
+}

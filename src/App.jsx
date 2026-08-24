@@ -239,28 +239,41 @@ function App() {
     try {
       const saved = localStorage.getItem('f_docs');
       if (saved) {
-        const parsed = JSON.parse(saved);
-        const hasLogbuch = parsed.some(d => d.id === 'master-logbuch');
-        if (!hasLogbuch) {
-          return [
-            { id: 'master-logbuch', title: 'masterLogbuch.txt', content: MASTER_LOGBUCH_CONTENT, status: 'local', url: '#' },
-            ...parsed
-          ];
-        } else {
-          return parsed.map(d => {
-            if (d.id === 'master-logbuch' && (d.content.startsWith('=== MASTER-LOGBUCH ===') || d.content.trim() === '')) {
-              return { ...d, content: MASTER_LOGBUCH_CONTENT };
-            }
-            return d;
-          });
-        }
+        let parsed = JSON.parse(saved);
+        // Merge missing INITIAL_DOCS
+        INITIAL_DOCS.forEach(initDoc => {
+          if (!parsed.some(d => d.id === initDoc.id)) {
+            parsed.push(initDoc);
+          }
+        });
+        return parsed.map(d => {
+          if (d.id === 'master-logbuch' && (d.content.startsWith('=== MASTER-LOGBUCH ===') || d.content.trim() === '')) {
+            return { ...d, content: MASTER_LOGBUCH_CONTENT };
+          }
+          return d;
+        });
       }
     } catch (e) {
       console.error(e);
     }
     return INITIAL_DOCS;
   });
-  const [sopTemplates, setSopTemplates] = useState(() => JSON.parse(localStorage.getItem('f_sop_templates')) || INITIAL_SOP_TEMPLATES);
+  const [sopTemplates, setSopTemplates] = useState(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem('f_sop_templates'));
+      if (saved && Array.isArray(saved)) {
+        INITIAL_SOP_TEMPLATES.forEach(initSop => {
+          if (!saved.some(s => s.id === initSop.id)) {
+            saved.push(initSop);
+          }
+        });
+        return saved;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    return INITIAL_SOP_TEMPLATES;
+  });
   const [activeSops, setActiveSops] = useState(() => JSON.parse(localStorage.getItem('f_active_sops')) || []);
 
   // Google Kalender & NLP Terminschnellerfassung States (Feature 3 - v5)

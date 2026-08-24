@@ -5,6 +5,16 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **⚡ Schlüsselfertiges Onboarding-System & Make.com Workflow-Tresor (Businessplan 2026):**
+  - **4 Make.com Blueprints (Direkt-Import für Make.com):**
+    - `blueprint_1_belegerfassung_lexoffice_datev.json`: WhatsApp & E-Mail Belegeingang -> KI-OCR (GPT-4o Vision) -> GoBD Cloud-Archiv -> Lexware Office Vorkontierung -> DATEV Belegbilderservice (Stufe 2 Core Bestseller: 2.000 € Festpreis).
+    - `blueprint_2_handwerker_lead_qualifier_booking.json`: 24/7 Notdienst- & Kundenanfragen-Assistent mit GPT-4o Intent-Analyse, Supabase CRM Lead-Erstellung und Google Calendar Terminbuchung (Stufe 2+: ab 6.000 €).
+    - `blueprint_3_baustellen_audio_zeiterfassung_fotos.json`: WhatsApp-Audio Sprach-Zeiterfassung mit OpenAI Whisper & Lexoffice Buchung sowie automatischer Baustellenfoto-Upload in Drive-Projektordner.
+    - `blueprint_4_aaas_system_monitoring_healthcheck.json`: 24/7 Schnittstellen-Monitoring für Lexoffice, DATEV und Supabase mit proaktivem Telegram/Slack-Alerting für den AaaS Retainer (200 € / Monat).
+  - **Make.com Blueprint-Hub im Sales & SOPs Tab (`SopManager.jsx`, `makeBlueprintsData.js`):** Interaktive Szenario-Karten, 1-Klick JSON-Download, Test-Payload-Kopierer, Modul-Knoten-Pipeline und Schritt-für-Schritt Einrichtungsleitfaden (`public/make-blueprints/README_MAKE_SETUP_GUIDE.md`).
+  - **4-Stufen Onboarding-Playbooks (`OnboardingView.jsx`, `initialData.js`):** Dedizierte interaktive Playbooks für Stufe 1 (500 € Potenzial-Audit), Stufe 2 (2.000 € Standard-Setup Belegerfassung), Stufe 2+ (ab 6.000 € Meisterbetrieb ERP & Förderung) und Stufe 3 (200 €/Monat Digitaler Hausmeister AaaS) mit dynamischer Zusammenfassung und PDF-Export.
+  - **Rechtssichere Vertrags- & Dokumentenvorlagen (`DOCS/` & `DocsHub.jsx`):** Dienstleistungsvertrag (2.000 € Festpreis), DSGVO-Auftragsverarbeitungsvertrag (AVV nach Art. 28 DSGVO), GoBD-Verfahrensdokumentation für ersetzendes Scannen nach BStBK-Standard, AaaS-Wartungsvertrag (200 €/Monat SLA), Systemzugangs- & Sicherheits-Checkliste und förmliches Abnahmeprotokoll inkl. ausdruckbarem Mitarbeiter-Cheat-Sheet.
+
 - **📑 Vollständiger, 100 % rechtssicherer Businessplan 2026 (`DOCS/Businessplan_KMU_Service_Harz_2026_Final.md`):**
   - **Neues 4-Stufen-Modell:** 500 € Audit (Vorkasse/Türöffner), 2.000 € Standard-Setup (Core Bestseller mit 100 % Dienstleistungsmarge, förderunabhängig & amortisiert in 8 Wochen), ab 6.000 € Digitaler Meisterbetrieb (Prozess- & ERP-Integration für Großprojekte mit Förderhebel) und 200 € / Monat Digitaler Hausmeister (MRR).
   - **Juristische Hardware-Klarstellung:** Ausschluss von Standard-iPads/Handys als IKT-Grundausstattung eingearbeitet; Fokus auf echte förderfähige Prozess-Software und Schnittstellen-Pipelines (Make/n8n/DATEV).
