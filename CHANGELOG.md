@@ -5,6 +5,13 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **🚀 KMU Service Harz Website Preview, MVP-Fokus (Belegerfassung) & 1-Klick-Export:**
+  - **MVP-Positionierung Belegerfassung:** Schärfung der Website auf das Kernproblem *Büro-Sonntag* und lautlose Belegerfassung für Handwerker & KMU im Harz mit DATEV- und Lexoffice-Schnittstellen.
+  - **3-Schritte-Workflow:** GoClean Harz Referenz vorerst ausgeblendet und durch den neutralen, allgemein gültigen 3-Stufen-Workflow (1. Foto vor Ort ➔ 2. Lautlose Erfassung & Lexoffice-Ablage ➔ 3. Revisionssichere DATEV-Kanzleiübergabe) ersetzt.
+  - **Website-Export-Funktion (`WebsiteView.jsx`):** Neuer Button **„Website Exportieren“** in der Header-Aktionsleiste öffnet ein modales Export-Center mit Ziel-E-Mail-Konfigurator, 1-Klick-Download für `index.html` und Code-Kopierfunktion.
+  - **Autarke Standalone-Website (`public/website-export/index.html`):** Vollständig autark lauffähige Single-Page-Website inklusive 3-Theme-Presets (Harz, Tech, Industrie), Dark/Light-Mode, interaktivem Büro-Sonntag-ROI-Rechner und DSGVO-konformem FormSubmit-Kontaktformular.
+  - **WhatsApp-Direktkontakt:** Direkter WhatsApp-Button in allen Kontaktformularen für niedrigschwellige Kontaktaufnahme per Smartphone.
+
 - **📊 Interaktive 4-Folien VIP-Pitch-Präsentation (`pitch_goclean.html` & `public/pitch_goclean.html`):**
   - Minimalistische, psychologisch optimierte Pitch-Präsentation für den ersten Testkunden *GoClean Harz*.
   - Enthält Tastatur-Navigation ([◀ / ▶], [Leertaste], [F] für Vollbild), Touch-Swipe-Support für Mobilgeräte und ein Druck-Stylesheet für perfekten 4-Seiten-PDF-Export.

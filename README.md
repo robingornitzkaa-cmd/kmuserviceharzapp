@@ -59,19 +59,20 @@ Die Anwendung zeichnet sich durch ein futuristisches "Glassmorphic Dark Theme" a
 - **Zettel-zu-Code Visualisierer:** Interaktiver Vergleich von manuellen Papier-Abläufen vs. modernen IT-Schnittstellen.
 - **Kunden-Portal (White-Label):** Umschaltbarer Mandanten-Modus für deine Kunden (Projektstatus, ROI-Ersparnis, Support-Ticket-System).
 
-### 8. KMU Webseiten-Preview & Relaunch (Positionierung & 3-Design-Welten) -- *NEU RELAUNCHED!*
-- **Positionierung & Botschaft:** „Der Handwerker für digitale Infrastruktur“ – *„Schluss mit dem Büro-Sonntag. Lautlose digitale Workflows für Handwerk & Mittelstand im Harz.“*
+### 8. KMU Webseiten-Preview, Belegerfassungs-Fokus & Export -- *NEU RELAUNCHED!*
+- **Positionierung & Botschaft:** „Der Handwerker für digitale Infrastruktur“ – *„Schluss mit dem Büro-Sonntag. Lautlose Belegerfassung & DATEV/Lexoffice-Schnittstellen für Handwerk & Mittelstand im Harz.“*
 - **Dreistufige Preistreppe (Productized Services):**
   - *Stufe 1: Büro-Potenzial-Audit (500 € Festpreis)* – 90 Min Analyse vor Ort/Video, schriftlicher ROI-Fahrplan.
   - *Stufe 2: Das Standard-Setup (2.000 € Festpreis, Bestseller)* – Automatisierter Belegeingang (Drive, Mail, WhatsApp ➔ Lexoffice), DATEV-Übergabe, 100% E-Rechnung (EN 16931 / ZUGFeRD) & GoBD, bis zu 50% Fördermittel-Hebel (Digitalbonus).
   - *Stufe 3: Digitaler Hausmeister (200 € / Monat)* – 24/7 Monitoring, Schnittstellen-Updates, 1h Kontingent.
-- **Praxis-Showcase „GoClean Harz“:** Interaktiver Vorher/Nachher-Vergleich (Zettelchaos vs. 6h/Woche Feierabend-Gewinn) mit visuellem 3-Schritte-Workflow (Smartphone ➔ Lexoffice ➔ DATEV).
+- **3-Schritte-Workflow der Belegerfassung:** Neutraler, universeller Ablauf für alle Handwerksgewerke (1. Smartphone-Foto vor Ort ➔ 2. Lautlose Erfassung & Lexoffice-Ablage ➔ 3. DATEV-Kanzleiübergabe ohne Rückfragen).
 - **Interaktiver Handwerker-ROI-Rechner:** Ermittelt gerettete Büro-Sonntage pro Jahr, monatlich gewonnene Arbeitsstunden und den monetären Jahreswert.
-- **🎨 3-Design-Theme-Switcher:** Umschalten in der Header-Leiste zwischen:
-  1. 🌲 **Harz & Handwerk** (Waldgrün & Bernstein/Gold)
-  2. ⚡ **Modernes Tech-Handwerk** (Schieferblau & Smaragd)
-  3. 🛠️ **Industrie & Klarheit** (Anthrazit & Warm-Orange)
-- **Hybrid-Seitenstruktur:** High-Converting One-Pager plus dedizierte Subpages für Preise & Angebote, Fallstudie, Rechner, Über uns, Impressum und Datenschutz.
+- **🚀 1-Klick Website-Export & Live-Schaltung:** 
+  - Integriertes modales Export-Center zum Herunterladen der autarken `index.html` mit konfigurierbarer Ziel-E-Mail.
+  - Standalone-Datei liegt unter `public/website-export/index.html` vor.
+  - Schritt-für-Schritt Hosting-Guides (Netlify Drag & Drop, FTP Strato/IONOS) und serverloses Kontaktformular via FormSubmit.co sowie direkter WhatsApp-Kontaktlink.
+- **🎨 3-Design-Theme-Switcher:** Umschalten in der Header-Leiste zwischen 🌲 *Harz & Handwerk*, ⚡ *Modernes Tech-Handwerk* und 🛠️ *Industrie & Klarheit*, plus Hell/Dunkel-Modus.
+- **Hybrid-Seitenstruktur:** High-Converting One-Pager plus dedizierte Subpages für Preise & Angebote, Ablauf, Rechner, Über uns, Impressum und Datenschutz.
 
 ### 9. 🎯 Coaching Live-Portal & Grafik-Anhänge (Zoom/Teams-Präsentation) -- *NEU!*
 - **🖼️ Datei- & Grafik-Anhänge:** Lade Grafiken (Zielgruppen-Personas, Schulungsgrafiken, Screenshots, PDFs) direkt in Coaching-Terminen (Command Center), an Kanban-Aufgaben oder im Wissens-Hub (DocsHub) hoch.

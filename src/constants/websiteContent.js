@@ -2,20 +2,21 @@ export const WEBSITE_CONTENT = {
   brand: {
     name: "KMU Service Harz UG (haftungsbeschränkt) i.G.",
     shortName: "KMU Service Harz",
-    claim: "Schluss mit dem Büro-Sonntag. Lautlose digitale Workflows für Handwerk & Mittelstand im Harz.",
+    claim: "Schluss mit dem Büro-Sonntag. Lautlose Belegerfassung & DATEV-Übergabe für Handwerk & Mittelstand im Harz.",
     positioning: "Der Handwerker für digitale Infrastruktur",
-    subtitle: "Wir befreien kleine Betriebe von Zettelwirtschaft, Beleg-Chaos und bürokratischen Zeitfressern.",
+    subtitle: "Wir befreien kleine Betriebe von Zettelwirtschaft, Beleg-Chaos und doppelter Buchhaltungsarbeit.",
     owner: "Robin Gornitzka",
     location: "38685 Langelsheim (Wirtschaftsregion Harz)",
     regionDetail: "Landkreis Goslar + 20 km Umkreis (Langelsheim, Goslar, Seesen, Bad Harzburg, Liebenburg, Lutter, Clausthal-Zellerfeld sowie Wernigerode & Halberstadt)",
     email: "kontakt@kmu-service-harz.de",
     phone: "+49 (0) 151 / 123 456 78",
+    whatsapp: "+4915112345678",
     badge: "📍 Regionaler Partner für Handwerk & Mittelstand im Harz"
   },
   nav: [
     { id: "home", label: "Startseite" },
     { id: "services", label: "Preise & Angebote" },
-    { id: "showcase", label: "GoClean Fallstudie" },
+    { id: "workflow", label: "So funktioniert's" },
     { id: "roi", label: "Büro-Sonntag-Rechner" },
     { id: "about", label: "Über uns" },
     { id: "contact", label: "Erstgespräch buchen" },
@@ -24,8 +25,8 @@ export const WEBSITE_CONTENT = {
   ],
   hero: {
     badge: "🛠️ Der Handwerker für digitale Infrastruktur",
-    headline: "Schluss mit dem Büro-Sonntag: Lautlose Workflows für Handwerk & Mittelstand im Harz.",
-    subheadline: "Wir befreien Betriebe von manueller Zettelwirtschaft, Beleg-Chaos und doppelter Datenerfassung. Ihre bestehenden Programme bleiben – wir verbinden sie unsichtbar im Hintergrund.",
+    headline: "Schluss mit dem Büro-Sonntag: Lautlose Belegerfassung für Handwerk & Mittelstand im Harz.",
+    subheadline: "Wir befreien Betriebe von manueller Zettelwirtschaft, Beleg-Chaos und doppelter Datenerfassung. Ihre bestehenden Programme bleiben – wir verbinden WhatsApp, E-Mail, Lexoffice und DATEV nahtlos.",
     ctaPrimary: "Kostenloses 15-Min. Erstgespräch sichern",
     ctaSecondary: "Einsparpotenzial & Sonntage berechnen",
     trustBadges: [
@@ -105,12 +106,12 @@ export const WEBSITE_CONTENT = {
         desc: "Revisionssichere Übergabe an Kanzleien ohne Belegsucherei."
       },
       {
-        name: "WhatsApp Business",
+        name: "WhatsApp Business & Mail",
         role: "Baustellen-Erfassung",
         desc: "Belege und Zettel einfach per Smartphone-Foto direkt ins Büro senden."
       },
       {
-        name: "Google Workspace & Mail",
+        name: "Google Workspace & Drive",
         role: "Cloud & Dokumente",
         desc: "Strukturierte, automatische Ablage und Kundenkommunikation."
       },
@@ -148,7 +149,7 @@ export const WEBSITE_CONTENT = {
       level: "Stufe 2",
       badge: "⭐ MEISTGEWÄHLT / BESTSELLER",
       title: "Das Standard-Setup",
-      tagline: "Schlüsselfertige Workflow-Einrichtung",
+      tagline: "Schlüsselfertige Belegerfassungs-Einrichtung",
       price: "2.000 €",
       priceSuffix: "Festpreis (1.500 € – 2.800 € netto)",
       fundingNote: "🏛️ Bis zu 35–50 % staatlich förderbar (effektiv ab ca. 1.000 €)",
@@ -188,16 +189,15 @@ export const WEBSITE_CONTENT = {
       targetTopic: "Stufe 3: Digitaler Hausmeister (200 €/Mo)"
     }
   ],
-  showcase: {
-    badge: "REFERENZPROJEKT AUS DER REGION",
-    title: "Praxis-Fallstudie: GoClean Harz",
-    subtitle: "Wie ein regionaler Gebäudedienstleister über 6 Stunden Büroarbeit pro Woche einspart.",
-    clientName: "GoClean Harz",
-    industry: "Gebäudereinigung, Gartenpflege & Winterdienst (Langelsheim / Goslar)",
-    challenge: "Zettelwirtschaft bei der Einsatzdokumentation, verspätete Rechnungen an Hausverwaltungen, mühsame Belegsuche und Belegstapel am Monatsende.",
-    solution: "Vollautomatisierter Belegfluss direkt von den Einsatzfahrzeugen per Smartphone nach Lexoffice und revisionssichere Bereitstellung für die DATEV-Kanzlei.",
-    quote: "„Früher haben wir sonntags Belege sortiert und Rechnungen abgetippt. Heute machen die Mitarbeiter ein Foto vor Ort – fertig. Wir haben pro Woche über 6 Stunden gewonnen und den Kopf am Wochenende komplett frei.“",
-    quoteAuthor: "Inhaber GoClean Harz",
+  workflow: {
+    badge: "SO EINFACH FUNKTIONIERT'S",
+    title: "Der 3-Schritte-Workflow: Vom Beleg zur Kanzlei",
+    subtitle: "Wie Handwerker im Harz Quittungen und Rechnungen direkt von der Baustelle ohne Abtippen übertragen.",
+    targetAudience: "Handwerksbetriebe & KMU im Harz (1–20 Mitarbeiter)",
+    challenge: "Knitterige Quittungen im Handschuhfach, verlorene Belege, mühsames Vorkontieren am Sonntagabend und zeitraubende Rückfragen der Steuerkanzlei.",
+    solution: "Ein durchgängiger, automatischer Belegfluss: Foto vor Ort ➔ automatische Texterkennung & Zuordnung in Lexoffice ➔ revisionssichere DATEV-Bereitstellung.",
+    quote: "„Früher haben wir sonntags Quittungen sortiert und Belege abgetippt. Heute macht jeder Mitarbeiter direkt ein Foto vor Ort – fertig. Wir haben pro Woche über 6 Stunden gewonnen und den Kopf am Wochenende komplett frei.“",
+    quoteAuthor: "Erfolgreicher Handwerksbetrieb aus der Region Harz",
     metrics: [
       { value: "6+ Std.", label: "Zeitersparnis pro Woche", sub: "Gewonnene Feierabende" },
       { value: "0", label: "Zettelstapel am Monatsende", sub: "100 % digitalisiert" },
@@ -211,14 +211,14 @@ export const WEBSITE_CONTENT = {
           "Knitterige Tankquittungen und Materialbelege im Handschuhfach",
           "Stundenzettel am Sonntagabend mühsam in Excel übertragen",
           "Steuerberater moniert fehlende Belege zur Monatsmitte",
-          "Verzögerte Rechnungsstellung an Hausverwaltungen"
+          "Verzögerte Rechnungsstellung an Auftraggeber"
         ]
       },
       after: {
-        title: "NACHHER (Lautlose Automatisierung)",
+        title: "NACHHER (Lautlose Belegerfassung)",
         items: [
           "Belegfoto per Smartphone landet in Sekundenschnelle in Lexoffice",
-          "Zeiten und Einsätze werden mobil ohne Zettel erfasst",
+          "Automatische Belegerkennung extrahiert Betrag, Datum & MwSt.",
           "DATEV-Übergabe auf Knopfdruck – null Rückfragen der Kanzlei",
           "Rechnungen gehen taggleich raus – schnellerer Geldeingang"
         ]
@@ -228,19 +228,23 @@ export const WEBSITE_CONTENT = {
       {
         num: "01",
         title: "1. Foto vor Ort",
-        desc: "Mitarbeiter fotografiert Beleg auf der Baustelle oder im Fahrzeug."
+        desc: "Mitarbeiter fotografiert Beleg auf der Baustelle oder leitet PDF/E-Mail weiter."
       },
       {
         num: "02",
         title: "2. Lautlose Erfassung",
-        desc: "Automatische Textextraktion und Zuordnung in Lexoffice."
+        desc: "Automatische Textextraktion, Vorkontierung und GoBD-Ablage in Lexoffice."
       },
       {
         num: "03",
         title: "3. DATEV-Kanzlei",
-        desc: "Revisionssichere Bereitstellung für den Steuerberater."
+        desc: "Revisionssichere Übergabe an den Steuerberater – ohne Nachfragen."
       }
     ]
+  },
+  // Alias for backward compatibility
+  get showcase() {
+    return this.workflow;
   },
   roiCalculator: {
     badge: "INTERAKTIVER WIRTSCHAFTLICHKEITS-CHECK",
