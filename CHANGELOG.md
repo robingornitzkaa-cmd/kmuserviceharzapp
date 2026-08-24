@@ -5,6 +5,12 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **🏛️ 100 % Rechtssicherer Fördermittel-Leitfaden 2026 & Website-Aktualisierung (`foerdermittel_leitfaden_kmu_service_harz.md`):**
+  - **Umfassender Fördermittel-Leitfaden:** Detaillierte Ausarbeitung zu aktiven Förderprogrammen (Digital Innovation Sachsen-Anhalt bis 50 %, INQA-Coaching bis 80 %, BAFA-Beratungsförderung und Mittelstand-Digital Zentren) sowie Klarstellung ausgelaufener Programme (Digitalbonus Niedersachsen, Digitalbonus Thüringen, go-digital).
+  - **Rechtssicherheits-Leitplanken:** Schutz vor UWG-Abmahnungen, Einhaltung der Nebenleistungsbefugnis nach § 5 RDG und Beachtung des Verbots des vorzeitigen Maßnahmenbeginns.
+  - **Muster-Gesprächsleitfaden & Disclaimer:** Wort-für-Wort Einwandbehandlung für Kundengespräche und rechtssichere Textbausteine für Angebote.
+  - **Website & Standalone-Export synchronisiert:** Alle Fördermittel-Texte in `websiteContent.js`, `WebsiteView.jsx` und `public/website-export/index.html` auf den 100 % rechtssicheren Stand 2026 gehoben.
+
 - **🚀 KMU Service Harz Website Preview, MVP-Fokus (Belegerfassung) & 1-Klick-Export:**
   - **MVP-Positionierung Belegerfassung:** Schärfung der Website auf das Kernproblem *Büro-Sonntag* und lautlose Belegerfassung für Handwerker & KMU im Harz mit DATEV- und Lexoffice-Schnittstellen.
   - **3-Schritte-Workflow:** GoClean Harz Referenz vorerst ausgeblendet und durch den neutralen, allgemein gültigen 3-Stufen-Workflow (1. Foto vor Ort ➔ 2. Lautlose Erfassung & Lexoffice-Ablage ➔ 3. Revisionssichere DATEV-Kanzleiübergabe) ersetzt.

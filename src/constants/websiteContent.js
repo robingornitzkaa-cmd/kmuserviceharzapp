@@ -81,8 +81,8 @@ export const WEBSITE_CONTENT = {
         desc: "Feste Pakete mit transparenten Festpreisen statt unberechenbarer IT-Beratungshonorare und unendlicher Stundenzettel."
       },
       {
-        title: "Bis zu 50 % Fördermittel-Hebel",
-        desc: "Bis zu 35–50 % der Investitionskosten können über regionale Förderprogramme (z. B. Digitalbonus Niedersachsen) bezuschusst werden."
+        title: "Fördermittel-Unterstützung",
+        desc: "Bei umfassenderen Digitalisierungspaketen (ab 6.000 € Investition) können bis zu 50 % staatliche Zuschüsse (z. B. Digital Innovation Sachsen-Anhalt oder INQA-Coaching mit bis zu 80 %) beantragt werden."
       },
       {
         title: "100 % DSGVO & vor Ort im Harz",
@@ -152,7 +152,7 @@ export const WEBSITE_CONTENT = {
       tagline: "Schlüsselfertige Belegerfassungs-Einrichtung",
       price: "2.000 €",
       priceSuffix: "Festpreis (1.500 € – 2.800 € netto)",
-      fundingNote: "🏛️ Bis zu 35–50 % staatlich förderbar (effektiv ab ca. 1.000 €)",
+      fundingNote: "🏛️ Förderfähig bei Digitalpaketen (z. B. Digital Innovation bis 50 %)",
       description: "Vollständige Implementierung automatisierter Workflows für Belege, DATEV und E-Rechnung.",
       highlight: true,
       features: [
@@ -160,7 +160,7 @@ export const WEBSITE_CONTENT = {
         "Revisionssichere Übergabe an DATEV für den Steuerberater",
         "100 % E-Rechnungs- und GoBD-Konformität (EN 16931 / ZUGFeRD)",
         "14 Tage intensive Einführungsbegleitung für Ihr Team",
-        "Fördermittel-Unterstützung (Digitalbonus Niedersachsen)",
+        "Unterstützung bei angebotskonformen Förderunterlagen (z. B. Digital Innovation / INQA)",
         "Garantierter Festpreis ohne versteckte Zusatzkosten"
       ],
       ctaText: "Standard-Setup sichern",
@@ -257,22 +257,27 @@ export const WEBSITE_CONTENT = {
     }
   },
   funding: {
-    badge: "STAATLICHE ZUSCHÜSSE",
-    title: "35 % bis 50 % Förderung für Ihre Digitalisierung",
-    desc: "Kleine und mittelständische Unternehmen in Niedersachsen und Sachsen-Anhalt können für Digitalisierungs- und Automatisierungsprojekte attraktive Fördergelder nutzen.",
+    badge: "STAATLICHE ZUSCHÜSSE & FÖRDERUNG",
+    title: "Bis zu 50 % bis 80 % staatliche Förderung für Digitalprojekte",
+    desc: "Investitionen in moderne Prozess- und Belegerfassungs-Infrastruktur können bei förderfähigen Gesamtinvestitionen über Landes- und Bundesprogramme bezuschusst werden.",
     programs: [
-      {
-        name: "Digitalbonus Niedersachsen",
-        quota: "Bis zu 50 % Zuschuss",
-        desc: "Für Handwerk & KMU im Landkreis Goslar und ganz Niedersachsen."
-      },
       {
         name: "Digital Innovation Sachsen-Anhalt",
         quota: "Bis zu 50 % Zuschuss",
-        desc: "Für Betriebe in Wernigerode, Halberstadt und angrenzenden Regionen."
+        desc: "Für Betriebe im Landkreis Harz (Wernigerode, Halberstadt, Quedlinburg etc.) ab 6.000 € Investition."
+      },
+      {
+        name: "INQA-Coaching (Bundesweit / BMAS)",
+        quota: "Bis zu 80 % Zuschuss",
+        desc: "Für Betriebe ab 1 Vollzeit-Mitarbeiter zur Prozessdigitalisierung (bis zu 11.520 € staatlicher Zuschuss)."
+      },
+      {
+        name: "Mittelstand-Digital Zentren",
+        quota: "100 % kostenfrei",
+        desc: "Staatlich geförderte Potenzialanalysen & Digital-Checks durch BMWK-Zentren (z. B. Hannover & Magdeburg)."
       }
     ],
-    note: "Wir unterstützen Sie bei der angebotsseitigen Vorbereitung für Ihren Förderantrag."
+    note: "Hinweis: Förderanträge müssen zwingend vor Projektbeginn gestellt werden. Wir unterstützen Sie bei der Erstellung angebots- und fördermittelkonformer Unterlagen."
   },
   about: {
     badge: "REGIONAL & BODENSTÄNDIG",
@@ -315,8 +320,8 @@ export const WEBSITE_CONTENT = {
       a: "Wir analysieren in 90 Minuten 1:1 Ihre aktuellen Arbeitsabläufe (vor Ort bei Ihnen im Betrieb oder per Video). Sie erhalten einen schriftlichen ROI-Fahrplan, der Ihre 3 größten Zeitfresser schwarz auf weiß beziffert und zeigt, wie viele Stunden Sie monatlich sparen können."
     },
     {
-      q: "Wie läuft die staatliche Förderung (bis zu 50 %) ab?",
-      a: "Programme wie der Digitalbonus Niedersachsen fördern die Digitalisierung von Prozessen in Handwerk und KMU mit 35 % bis 50 % Zuschuss. Wir stellen sicher, dass unser Projekt-Setup den Förderrichtlinien entspricht."
+      q: "Wie läuft die staatliche Förderung (bis zu 50 % bis 80 %) ab?",
+      a: "Bei Investitionspaketen ab 6.000 € (z. B. Standard-Setup kombiniert mit mobilen Monteur-Tablets) greifen Programme wie 'Digital Innovation Sachsen-Anhalt' mit bis zu 50 % Zuschuss oder das bundesweite 'INQA-Coaching' mit bis zu 80 % Zuschuss für Prozessoptimierung. Wichtig: Der Förderantrag muss vor Beginn gestellt werden. Wir liefern Ihnen alle angebotskonformen Unterlagen für die Förderbank."
     },
     {
       q: "Wie schnell sind die automatisierten Workflows eingerichtet?",
@@ -345,7 +350,7 @@ export const WEBSITE_CONTENT = {
       "Stufe 1: Büro-Potenzial-Audit (500 € Festpreis)",
       "Stufe 2: Das Standard-Setup (2.000 € Bestseller)",
       "Stufe 3: Digitaler Hausmeister (200 € / Monat)",
-      "Fragen zu Fördermitteln (Digitalbonus)",
+      "Fragen zu Fördermitteln (Digital Innovation / INQA)",
       "Sonstige Anfrage"
     ]
   },
