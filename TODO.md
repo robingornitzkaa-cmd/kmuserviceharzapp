@@ -1,6 +1,7 @@
 # TODO - Founder OS
 
 ### Wichtig
+- [x] **📑 [Businessplan & Strategie] Finaler, rechtssicherer Businessplan 2026 (`DOCS/Businessplan_KMU_Service_Harz_2026_Final.md`):** Vollständige Überarbeitung der Unternehmenskonzeption mit der 4-stufigen Value Ladder (500 € Audit, 2.000 € Core Standard-Setup mit 100 % Dienstleistungsmarge, ab 6.000 € Prozess-Upgrade für Förderungen, 200 € / Monat AaaS-Retainer). Integration der juristischen Hardware-Ausschlusskriterien (IKT-Grundausstattung) und bankenfester Finanzplan (Bootstrapping via § 16c/b SGB II, Break-Even bei 0,77 Aufträgen/Monat).
 - [x] **🏛️ [Fördermittel & Recht] 100 % Rechtssicherer Fördermittel-Leitfaden 2026 (`foerdermittel_leitfaden_kmu_service_harz.md`):** Umfassende Analyse der aktuellen Förderlandschaft im Harz und bundesweit. Klarstellung ausgelaufener Programme (Digitalbonus Niedersachsen/Thüringen, go-digital) und detaillierte Leitfäden für aktive Programme (Digital Innovation Sachsen-Anhalt bis 50 %, INQA-Coaching bis 80 %, BAFA, Mittelstand-Digital Zentren). Inklusive UWG/RDG/StBerG-Abmahnschutz, Muster-Gesprächsleitfaden für Kundeneinwände und rechtssicherer Synchronisation aller Website-Texte.
 - [x] **📊 [Sales & Pitch] Interaktive 4-Folien VIP-Präsentation für GoClean Harz:** Minimalistische, druckbare und interaktive HTML-Präsentation (`pitch_goclean.html` & `public/pitch_goclean.html`) zur Gewinnung des ersten VIP-Testkunden mit Tastatursteuerung, Touch-Swipe und PDF-Export.
 

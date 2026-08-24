@@ -5,7 +5,12 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
-- **🏛️ 100 % Rechtssicherer Fördermittel-Leitfaden 2026 & Website-Aktualisierung (`foerdermittel_leitfaden_kmu_service_harz.md`):**
+- **📑 Vollständiger, 100 % rechtssicherer Businessplan 2026 (`DOCS/Businessplan_KMU_Service_Harz_2026_Final.md`):**
+  - **Neues 4-Stufen-Modell:** 500 € Audit (Vorkasse/Türöffner), 2.000 € Standard-Setup (Core Bestseller mit 100 % Dienstleistungsmarge, förderunabhängig & amortisiert in 8 Wochen), ab 6.000 € Digitaler Meisterbetrieb (Prozess- & ERP-Integration für Großprojekte mit Förderhebel) und 200 € / Monat Digitaler Hausmeister (MRR).
+  - **Juristische Hardware-Klarstellung:** Ausschluss von Standard-iPads/Handys als IKT-Grundausstattung eingearbeitet; Fokus auf echte förderfähige Prozess-Software und Schnittstellen-Pipelines (Make/n8n/DATEV).
+  - **Finanzplan & Rentabilität:** 100 % schuldenfreies Bootstrapping-Konzept via § 16c & § 16b SGB II mit GuV-Vorschau (Jahr 1: 41.400 € Erlös, Break-Even bei 0,77 Aufträgen/Monat).
+
+- **🏛️ Fördermittel-Leitfaden 2026 & Website-Aktualisierung (`foerdermittel_leitfaden_kmu_service_harz.md`):**
   - **Umfassender Fördermittel-Leitfaden:** Detaillierte Ausarbeitung zu aktiven Förderprogrammen (Digital Innovation Sachsen-Anhalt bis 50 %, INQA-Coaching bis 80 %, BAFA-Beratungsförderung und Mittelstand-Digital Zentren) sowie Klarstellung ausgelaufener Programme (Digitalbonus Niedersachsen, Digitalbonus Thüringen, go-digital).
   - **Rechtssicherheits-Leitplanken:** Schutz vor UWG-Abmahnungen, Einhaltung der Nebenleistungsbefugnis nach § 5 RDG und Beachtung des Verbots des vorzeitigen Maßnahmenbeginns.
   - **Muster-Gesprächsleitfaden & Disclaimer:** Wort-für-Wort Einwandbehandlung für Kundengespräche und rechtssichere Textbausteine für Angebote.

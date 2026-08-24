@@ -82,7 +82,7 @@ export const WEBSITE_CONTENT = {
       },
       {
         title: "Fördermittel-Unterstützung",
-        desc: "Bei umfassenderen Digitalisierungspaketen (ab 6.000 € Investition) können bis zu 50 % staatliche Zuschüsse (z. B. Digital Innovation Sachsen-Anhalt oder INQA-Coaching mit bis zu 80 %) beantragt werden."
+        desc: "Bei umfassenden Prozess-Digitalisierungen (ab 6.000 € Projektvolumen) unterstützen wir bei staatlichen Zuschüssen von bis zu 50 % (Sachsen-Anhalt) bis 80 % (INQA-Coaching)."
       },
       {
         title: "100 % DSGVO & vor Ort im Harz",
@@ -152,7 +152,7 @@ export const WEBSITE_CONTENT = {
       tagline: "Schlüsselfertige Belegerfassungs-Einrichtung",
       price: "2.000 €",
       priceSuffix: "Festpreis (1.500 € – 2.800 € netto)",
-      fundingNote: "🏛️ Förderfähig bei Digitalpaketen (z. B. Digital Innovation bis 50 %)",
+      fundingNote: "⚡ Amortisiert sich in ca. 8 Wochen (spart ~16 Std./Monat)",
       description: "Vollständige Implementierung automatisierter Workflows für Belege, DATEV und E-Rechnung.",
       highlight: true,
       features: [
@@ -160,8 +160,8 @@ export const WEBSITE_CONTENT = {
         "Revisionssichere Übergabe an DATEV für den Steuerberater",
         "100 % E-Rechnungs- und GoBD-Konformität (EN 16931 / ZUGFeRD)",
         "14 Tage intensive Einführungsbegleitung für Ihr Team",
-        "Unterstützung bei angebotskonformen Förderunterlagen (z. B. Digital Innovation / INQA)",
-        "Garantierter Festpreis ohne versteckte Zusatzkosten"
+        "Garantierter Festpreis – keine offenen IT-Stundenzettel",
+        "Sofort einsatzbereit – keine behördlichen Förderwartezeiten"
       ],
       ctaText: "Standard-Setup sichern",
       targetTopic: "Stufe 2: Standard-Setup (2.000 €)"
@@ -258,13 +258,13 @@ export const WEBSITE_CONTENT = {
   },
   funding: {
     badge: "STAATLICHE ZUSCHÜSSE & FÖRDERUNG",
-    title: "Bis zu 50 % bis 80 % staatliche Förderung für Digitalprojekte",
-    desc: "Investitionen in moderne Prozess- und Belegerfassungs-Infrastruktur können bei förderfähigen Gesamtinvestitionen über Landes- und Bundesprogramme bezuschusst werden.",
+    title: "Bis zu 50 % bis 80 % staatliche Förderung für größere Digitalisierungsprojekte",
+    desc: "Umfassende Prozess- und System-Integrationen (z. B. ERP-Anbindung, Handwerkersoftware, Multi-User-Workflows ab 6.000 € Investitionsvolumen) können über Landes- und Bundesprogramme bezuschusst werden.",
     programs: [
       {
         name: "Digital Innovation Sachsen-Anhalt",
         quota: "Bis zu 50 % Zuschuss",
-        desc: "Für Betriebe im Landkreis Harz (Wernigerode, Halberstadt, Quedlinburg etc.) ab 6.000 € Investition."
+        desc: "Für Betriebe im Landkreis Harz ab 6.000 € Projektvolumen (Prozess-Software & externe Einführung)."
       },
       {
         name: "INQA-Coaching (Bundesweit / BMAS)",
@@ -277,7 +277,7 @@ export const WEBSITE_CONTENT = {
         desc: "Staatlich geförderte Potenzialanalysen & Digital-Checks durch BMWK-Zentren (z. B. Hannover & Magdeburg)."
       }
     ],
-    note: "Hinweis: Förderanträge müssen zwingend vor Projektbeginn gestellt werden. Wir unterstützen Sie bei der Erstellung angebots- und fördermittelkonformer Unterlagen."
+    note: "Hinweis: Förderanträge müssen zwingend vor Projektbeginn gestellt werden. Unser 2.000 € Standard-Setup ist ganz bewusst so kalkuliert, dass es sich ohne behördliche Wartezeiten in 8 Wochen von selbst bezahlt macht."
   },
   about: {
     badge: "REGIONAL & BODENSTÄNDIG",
@@ -321,7 +321,7 @@ export const WEBSITE_CONTENT = {
     },
     {
       q: "Wie läuft die staatliche Förderung (bis zu 50 % bis 80 %) ab?",
-      a: "Bei Investitionspaketen ab 6.000 € (z. B. Standard-Setup kombiniert mit mobilen Monteur-Tablets) greifen Programme wie 'Digital Innovation Sachsen-Anhalt' mit bis zu 50 % Zuschuss oder das bundesweite 'INQA-Coaching' mit bis zu 80 % Zuschuss für Prozessoptimierung. Wichtig: Der Förderantrag muss vor Beginn gestellt werden. Wir liefern Ihnen alle angebotskonformen Unterlagen für die Förderbank."
+      a: "Bei größeren Prozess- und Digitalisierungsprojekten ab 6.000 € (z. B. tiefe ERP- und Schnittstellen-Integration für den gesamten Betrieb) greifen Programme wie 'Digital Innovation Sachsen-Anhalt' mit bis zu 50 % Zuschuss oder das bundesweite 'INQA-Coaching' mit bis zu 80 % Zuschuss. Unser 2.000 € Standard-Setup ist hingegen bewusst so kalkuliert, dass es sich ohne behördliche Wartezeiten in unter 8 Wochen von selbst bezahlt macht."
     },
     {
       q: "Wie schnell sind die automatisierten Workflows eingerichtet?",
