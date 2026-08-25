@@ -109,6 +109,7 @@ export const DashboardView = ({
   invoiceXmlPreview,
   setInvoiceXmlPreview,
   onOpenEInvoiceStudio,
+  onOpenGoCleanSuite,
   quickCapture,
   setQuickCapture,
   handleQuickCapture,
@@ -172,6 +173,96 @@ export const DashboardView = ({
         dashboardWidgets={dashboardWidgets}
         setDashboardWidgets={setDashboardWidgets}
       />
+
+      {/* ==================== GOCLEAN HARZ VIP BANNER (BRUDER-TREFFEN) ==================== */}
+      <div style={{
+        background: 'linear-gradient(135deg, rgba(6, 78, 59, 0.9) 0%, rgba(2, 44, 34, 0.95) 50%, rgba(15, 23, 42, 0.95) 100%)',
+        border: '1px solid rgba(52, 211, 153, 0.4)',
+        borderRadius: '16px',
+        padding: '16px 20px',
+        display: 'flex',
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: '14px',
+        boxShadow: '0 10px 30px rgba(6, 78, 59, 0.3)',
+        marginBottom: '0.75rem'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flex: '1 1 300px' }}>
+          <div style={{
+            background: 'linear-gradient(135deg, #34d399, #059669)',
+            color: '#022c22',
+            fontSize: '1.4rem',
+            width: '44px',
+            height: '44px',
+            borderRadius: '12px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 0 15px rgba(52, 211, 153, 0.4)',
+            flexShrink: 0
+          }}>
+            🧼
+          </div>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px', color: '#34d399', background: 'rgba(52, 211, 153, 0.15)', padding: '2px 8px', borderRadius: '8px', border: '1px solid rgba(52, 211, 153, 0.3)' }}>
+                VIP-Bruder-Offensive 2026
+              </span>
+            </div>
+            <h3 style={{ margin: '4px 0 0 0', fontSize: '1.1rem', fontWeight: 800, color: '#ffffff' }}>
+              GoClean Harz – Wachstums- & Produktivitäts-Toolkit
+            </h3>
+            <p style={{ margin: '2px 0 0 0', fontSize: '0.8rem', color: '#a7f3d0' }}>
+              Blitz-Kalkulator (m² & Std.), 3x B2B-Akquise Mappen, Foto-SOP & 5-Sterne-Bewertungsbooster.
+            </p>
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+          <button
+            onClick={onOpenGoCleanSuite}
+            style={{
+              background: 'linear-gradient(135deg, #34d399, #10b981)',
+              color: '#022c22',
+              fontWeight: 700,
+              fontSize: '0.85rem',
+              padding: '10px 18px',
+              borderRadius: '12px',
+              border: 'none',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              boxShadow: '0 4px 15px rgba(52, 211, 153, 0.3)',
+              transition: 'all 0.2s ease'
+            }}
+          >
+            ⚡ Live-Toolkit öffnen
+          </button>
+          <a
+            href="/goclean_wachstumsmappe.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              background: 'rgba(255, 255, 255, 0.08)',
+              color: '#e2e8f0',
+              fontWeight: 600,
+              fontSize: '0.85rem',
+              padding: '10px 16px',
+              borderRadius: '12px',
+              border: '1px solid rgba(255, 255, 255, 0.15)',
+              textDecoration: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              transition: 'all 0.2s ease'
+            }}
+          >
+            🖨️ PDF-Präsentationsmappe
+          </a>
+        </div>
+      </div>
 
       {/* ==================== LIFE OS TOP HUD & GAMIFICATION BANNER ==================== */}
       {(() => {

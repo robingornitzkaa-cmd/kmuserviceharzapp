@@ -4370,6 +4370,7 @@ Hier ist die Frage des Nutzers:
             updateReflection={updateReflection}
             insertMarkdownIntoNotes={insertMarkdownIntoNotes}
             onOpenEInvoiceStudio={() => setActiveTab('einvoice')}
+            onOpenGoCleanSuite={() => setActiveTab('goclean')}
           />
         )}
 

@@ -53,6 +53,20 @@ export const Sidebar = ({
               <span className="sidebar-nav-label">Dashboard</span>
             </button>
             <button 
+              className={`sidebar-nav-item ${activeTab === 'goclean' ? 'active' : ''}`}
+              onClick={() => setActiveTab('goclean')}
+              title="🧼 GoClean Harz Suite (VIP)"
+              style={{ 
+                background: activeTab === 'goclean' ? 'linear-gradient(135deg, #059669, #10b981)' : 'rgba(16, 185, 129, 0.18)', 
+                color: '#ffffff',
+                border: '1px solid rgba(52, 211, 153, 0.4)',
+                boxShadow: '0 0 12px rgba(16, 185, 129, 0.2)'
+              }}
+            >
+              <Sparkles size={18} color="#34d399" />
+              <span className="sidebar-nav-label" style={{ fontWeight: 700, color: '#34d399' }}>🧼 GoClean Harz</span>
+            </button>
+            <button 
               className={`sidebar-nav-item ${activeTab === 'status' ? 'active' : ''}`}
               onClick={() => setActiveTab('status')}
               title="Command Center"
@@ -107,15 +121,6 @@ export const Sidebar = ({
             >
               <FileText size={18} />
               <span className="sidebar-nav-label">Dokumente & Sync</span>
-            </button>
-            <button 
-              className={`sidebar-nav-item ${activeTab === 'goclean' ? 'active' : ''}`}
-              onClick={() => setActiveTab('goclean')}
-              title="🧼 GoClean Harz Suite"
-              style={{ background: activeTab === 'goclean' ? '#059669' : 'rgba(16, 185, 129, 0.15)', color: '#ffffff' }}
-            >
-              <Sparkles size={18} />
-              <span className="sidebar-nav-label">🧼 GoClean Harz Suite</span>
             </button>
             <button 
               className={`sidebar-nav-item ${activeTab === 'sales' ? 'active' : ''}`}
@@ -193,6 +198,14 @@ export const Sidebar = ({
               >
                 <LayoutDashboard size={18} />
                 <span>Dashboard</span>
+              </button>
+              <button 
+                className={`sidebar-nav-item ${activeTab === 'goclean' ? 'active' : ''}`} 
+                onClick={() => { setActiveTab('goclean'); setMobileMenuOpen(false); }}
+                style={{ background: 'linear-gradient(135deg, rgba(5, 150, 105, 0.4), rgba(16, 185, 129, 0.3))', color: '#ffffff', border: '1px solid rgba(52, 211, 153, 0.5)' }}
+              >
+                <Sparkles size={18} color="#34d399" />
+                <span style={{ fontWeight: 700, color: '#34d399' }}>🧼 GoClean Harz Suite</span>
               </button>
               <button 
                 className={`sidebar-nav-item ${activeTab === 'status' ? 'active' : ''}`} 
