@@ -5,6 +5,20 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **🧼 GoClean Harz VIP-Wachstums- & Produktivitäts-Suite (Bruder-Offensive 2026):**
+  - **Interaktives In-App Toolkit (`src/components/GoCleanToolkit.jsx`):**
+    - *⚡ Blitz-Angebotsrechner:* Live-Kalkulation nach Branchenrichtwerten (m²/h) für Büro/Unterhalt (200 m²/h), Treppenhäuser (140 m²/h), Glas (90 m²/h), Bau-Endreinigung (55 m²/h) und Grün/Winterdienst (350 m²/h) mit Material- & Anfahrtszuschlag.
+    - *📝 Automatischer B2B-Angebotstext-Generator:* 1-Klick Erstellung formeller B2B-Angebote mit Preisen, Reinigungsintervallen, Qualitätsgarantien und Copy-to-Clipboard.
+    - *🏢 B2B-Akquise-Mappen:* 3 vorgefertigte Anschreiben für Hausverwaltungen & WEGs (feste Dauerpflegeverträge), Bauträger (lukrative Bau-Endreinigungen) und Arztpraxen/Kanzleien (4-Farben-Hygienesystem).
+    - *📱 Mobile Baustellen-SOP & Digitales Abnahmeprotokoll:* Smartphone-Checkliste mit Vorher-/Nachher-Beweisschutz gegen Reklamationen und digitaler Kundenunterschrift.
+    - *⭐ 5-Sterne Google-Bewertungs-Booster:* Personalisierbare 1-Klick WhatsApp-Vorlage zur schnellen Kundengewinnung nach Auftragsabschluss.
+  - **Druckfertige VIP-Präsentationsmappe (`public/goclean_wachstumsmappe.html` & `DOCS/GOCLEAN_HARZ_WACHSTUMS_STRATEGIE.md`):**
+    - Interaktive 6-Folien-Präsentation im GoClean-Branding mit Tastatursteuerung, Vollbildmodus und sauber formatiertem `@media print` PDF-Export.
+    - Vollständiges Strategiehandbuch mit Gesprächsleitfaden, Preis-Tabellen und psychologischen Hebeln für das Bruder-Treffen.
+  - **DocsHub- & Navigations-Integration:**
+    - Neuer Sidebar-Menüpunkt `🧼 GoClean Harz Suite` in Desktop- und Mobile-Navigation.
+    - Registrierung von `GoClean_Harz_Wachstums_und_Produktivitaets_Mappe.md` in `INITIAL_DOCS`.
+  - **Testabdeckung:** 4 neue Unit- und Integrationstests in `src/test/GoCleanToolkit.test.jsx` (237 Tests über 22 Testdateien zu 100% bestanden).
 - **💼 B2B-Vertriebs- und Auslieferungs-Suite für KMU Service Harz (R1–R4):**
   - **R1: Steuerberater-Multiplikatoren-Kit & Handwerker-Direct-Mail-Kampagne:**
     - *Kanzlei-Pitch & Partnerdeck (`DOCS/Steuerberater_Kanzlei_Pitch_Deck_und_Leitfaden.md`):* DATEV Rechnungsdatenservice 1.0 vs. Buchungsdatenservice, Pendelordner-Befreiung, GoBD-Verfahrensdokumentation und 0-Euro-Kanzlei-Partnermodell.

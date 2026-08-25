@@ -8,7 +8,14 @@ Die Anwendung zeichnet sich durch ein futuristisches "Glassmorphic Dark Theme" a
 
 ## 🚀 Wichtigste Funktionen & Tab-Struktur
 
-### 0. 💼 B2B-Vertriebs- & Auslieferungs-Suite (KMU Service Harz) -- *NEU!*
+### 0. 🧼 GoClean Harz VIP-Wachstums- & Produktivitäts-Suite -- *NEU!*
+- **⚡ In-App Blitz-Kalkulator (`src/components/GoCleanToolkit.jsx`):** Live-Berechnung von Quadratmetern, Stundenansatz, Materialzuschlag und Netto/Brutto-Monatspauschalen für Büro/Unterhalt, Treppenhaus, Glasreinigung, Bau-Endreinigung und Winterdienst. Inklusive 1-Klick B2B-Angebotstext-Generator.
+- **🏢 B2B-Akquise-Maschine:** Vorgefertigte Akquise-Mappen für Hausverwaltungen/WEGs (feste Monatsverträge), Bauträger (lukrative Bau-Endreinigungen) und Arztpraxen/Kanzleien (4-Farben-Hygienesystem).
+- **📱 Mobile Qualitäts-SOP & Digitales Abnahmeprotokoll:** Smartphone-Checkliste für Reinigungskräfte (Vorher/Nachher-Foto-Nachweis) und rechtssicheres Kunden-Abnahmeprotokoll mit digitaler Signatur.
+- **⭐ 5-Sterne Bewertungs-Booster & Reaktivierung:** 1-Klick WhatsApp-Vorlage für Google-Bewertungen direkt nach Auftragsabschluss sowie saisonale Frühjahrs-/Herbst-Kampagnen.
+- **🖨️ Druckfertige VIP-Präsentationsmappe:** Standalone HTML-Mappe (`public/goclean_wachstumsmappe.html`) mit Tastatursteuerung, Vollbildmodus und `@media print` PDF-Export.
+
+### 0b. 💼 B2B-Vertriebs- & Auslieferungs-Suite (KMU Service Harz)
 - **🤝 Steuerberater-Multiplikatoren-Kit & Direct-Mail (R1):**
   - Kanzlei-Pitch-Deck & Leitfaden (`DOCS/Steuerberater_Kanzlei_Pitch_Deck_und_Leitfaden.md`) mit DATEV RDS 1.0 vs BDS Gegenüberstellung, GoBD-Verfahrensdokumentation und 0-Euro-Partnermodell.
   - Ausdruckbare Mandanten-Flyer-Vorlage (`DOCS/Mandanten_Flyer_Vorlage_Handwerk.md`) mit 500 € Kanzlei-Gutschein (`KANZLEI-HARZ-500`).

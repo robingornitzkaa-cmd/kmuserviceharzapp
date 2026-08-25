@@ -603,6 +603,34 @@ Wenn der Meister mitten im Baustellenlärm abnimmt (*„Ich stehe auf dem Gerüs
     status: 'synced', 
     url: '#',
     tags: ['onboarding', 'abnahme', 'vorlage']
+  },
+  {
+    id: 'd_goclean_growth_kit',
+    title: 'GoClean_Harz_Wachstums_und_Produktivitaets_Mappe.md',
+    tags: ['vertrieb', 'goclean', 'reinigung', 'kalkulation', 'vorlage'],
+    category: 'vertrieb',
+    status: 'synced',
+    url: '/goclean_wachstumsmappe.html',
+    content: `# 🧼 GoClean Harz – Wachstums- & Produktivitäts-Mappe
+> **Das Rundum-Power-Paket für Christian Gornitzka | Erstellt von KMU Service Harz**
+
+## 1. Übersicht der 4 Kernsäulen
+1. **Blitz-Angebotsrechner**: Kalkulation von m², Stundenverrechnungssatz und Materialaufschlag in 30 Sekunden.
+2. **B2B-Akquise-Maschine**: Vorgefertigte Akquise-Mappen für Hausverwaltungen, Bauträger & Praxen im Harzkreis.
+3. **Mobile Qualitäts-SOP & Abnahme**: Smartphone-Checkliste für Mitarbeiter + digitales Kunden-Abnahmeprotokoll.
+4. **5-Sterne Google-Bewertungs-Booster**: 1-Klick WhatsApp-Nachrichten für mehr Rezensionen & Stammkunden-Reaktivierung.
+
+## 2. Kalkulations-Richtwerte (Gebäudereinigung Harz)
+- **Büro / Unterhaltsreinigung:** 180–250 m²/h | Stundensatz: 36,00–42,00 €/h
+- **Treppenhausreinigung:** 120–160 m²/h | Stundensatz: 38,00–44,00 €/h
+- **Glasreinigung:** 80–120 m²/h | Stundensatz: 40,00–48,00 €/h
+- **Baufein- & Endreinigung:** 40–70 m²/h | Stundensatz: 42,00–52,00 €/h
+- **Winterdienst / Grünpflege:** 300–500 m²/h | Stundensatz: 45,00–65,00 €/h
+
+## 3. Direkter Zugriff auf interaktive Tools
+- 🖨️ **Druckbare VIP-Präsentationsmappe:** \`/goclean_wachstumsmappe.html\`
+- 📊 **VIP-Pitch Deck:** \`/pitch_goclean.html\`
+- ⚡ **In-App Live Toolkit:** Über den Sidebar-Reiter „🧼 GoClean Harz Suite“`
   }
 ];
 

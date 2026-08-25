@@ -122,6 +122,7 @@ const SopManager = lazy(() => import('./components/SopManager').then(m => ({ def
 const WebsiteView = lazy(() => import('./components/WebsiteView').then(m => ({ default: m.WebsiteView })));
 const CoachingLivePortal = lazy(() => import('./components/CoachingLivePortal').then(m => ({ default: m.CoachingLivePortal })));
 const EInvoiceValidator = lazy(() => import('./components/EInvoiceValidator').then(m => ({ default: m.EInvoiceValidator })));
+const GoCleanToolkit = lazy(() => import('./components/GoCleanToolkit').then(m => ({ default: m.GoCleanToolkit })));
 
 function App() {
   // Navigation State
@@ -4621,6 +4622,12 @@ Hier ist die Frage des Nutzers:
             onOpenLightbox={handleOpenLightbox}
             showcaseMode={showcaseMode}
             mask={mask}
+          />
+        )}
+
+        {activeTab === 'goclean' && (
+          <GoCleanToolkit
+            onClose={() => setActiveTab('dashboard')}
           />
         )}
 

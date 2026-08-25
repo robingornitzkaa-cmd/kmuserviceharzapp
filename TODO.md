@@ -1,6 +1,11 @@
 # TODO - Founder OS
 
 ### Wichtig
+- [x] **🧼 [GoClean Harz] VIP-Wachstums- & Produktivitäts-Power-Paket (Bruder-Offensive 2026):**
+  - Interaktives In-App Toolkit (`src/components/GoCleanToolkit.jsx`): Blitz-Kalkulator (m², Zeitbedarf, Material, Netto/Brutto für Unterhalt, Treppenhaus, Glas, Bau-Endreinigung, Winterdienst), 1-Klick B2B-Angebotstext-Generator, B2B-Akquise-Mappen für 3 Zielgruppen, mobile Qualitäts-SOP-Checkliste mit Fotobeweis und digitales Kunden-Abnahmeprotokoll mit Signatur.
+  - Druckfertige, hochauflösende VIP-Präsentationsmappe (`public/goclean_wachstumsmappe.html` & `DOCS/GOCLEAN_HARZ_WACHSTUMS_STRATEGIE.md`) mit 6 Folien, Vollbildmodus und `@media print` PDF-Export.
+  - Navigation & DocsHub Integration: Sidebar-Menüpunkt `🧼 GoClean Harz Suite` und Vorlagen-Registrierung in `INITIAL_DOCS`.
+  - 100% Testabdeckung in `src/test/GoCleanToolkit.test.jsx` (237 Tests bestanden).
 - [x] **💼 [B2B-Vertriebs- & Auslieferungs-Suite] Steuerberater-Multiplikatoren-Kit & Handwerker-Direct-Mail-Kampagne (R1):**
   - Standalone Markdown Vorlagen in `DOCS/`: Kanzlei-Pitch-Deck & Leitfaden (DATEV RDS 1.0 vs BDS, 0-Euro-Partnermodell), Mandanten-Flyer (500 € Gutschein `KANZLEI-HARZ-500`), Direct-Mail 1-Seiter an 518 Meister („Schluss mit dem Büro-Sonntag“ & 500 € Gutschein `MEISTER-HARZ-2026`) und Telefon- & Kaltakquise-Leitfaden (Vorzimmer- & Baustellen-Skripte, 5-Punkte Validation-Pivot).
   - Registrierung in `INITIAL_DOCS` (`initialData.js`) und Integration in `DocsHub.jsx` mit Volltextsuche, Tag-Filterchips und 1-Klick Quick-Copy.

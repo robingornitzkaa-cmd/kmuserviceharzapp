@@ -14,7 +14,8 @@ import {
   Menu,
   Zap,
   Globe,
-  ShieldCheck
+  ShieldCheck,
+  Sparkles
 } from 'lucide-react';
 
 export const Sidebar = ({
@@ -106,6 +107,15 @@ export const Sidebar = ({
             >
               <FileText size={18} />
               <span className="sidebar-nav-label">Dokumente & Sync</span>
+            </button>
+            <button 
+              className={`sidebar-nav-item ${activeTab === 'goclean' ? 'active' : ''}`}
+              onClick={() => setActiveTab('goclean')}
+              title="🧼 GoClean Harz Suite"
+              style={{ background: activeTab === 'goclean' ? '#059669' : 'rgba(16, 185, 129, 0.15)', color: '#ffffff' }}
+            >
+              <Sparkles size={18} />
+              <span className="sidebar-nav-label">🧼 GoClean Harz Suite</span>
             </button>
             <button 
               className={`sidebar-nav-item ${activeTab === 'sales' ? 'active' : ''}`}
@@ -232,6 +242,14 @@ export const Sidebar = ({
               >
                 <FileText size={18} />
                 <span>Dokumente & Sync</span>
+              </button>
+              <button 
+                className={`sidebar-nav-item ${activeTab === 'goclean' ? 'active' : ''}`} 
+                onClick={() => { setActiveTab('goclean'); setMobileMenuOpen(false); }}
+                style={{ background: 'rgba(16, 185, 129, 0.25)', color: '#ffffff' }}
+              >
+                <Sparkles size={18} />
+                <span>🧼 GoClean Harz Suite</span>
               </button>
               <button 
                 className={`sidebar-nav-item ${activeTab === 'sales' ? 'active' : ''}`} 
