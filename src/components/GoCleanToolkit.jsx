@@ -38,17 +38,16 @@ export const GoCleanToolkit = ({ onClose }) => {
 
   // Leistungswerte (m² pro Stunde Richtwert)
   const speedStandards = {
-    unterhalt: 200, // 200 m² / h
-    treppenhaus: 140, // 140 m² / h
-    glas: 90, // 90 m² / h
-    bau: 55, // 55 m² / h
-    winter: 350 // 350 m² / h
+    unterhalt: 200,
+    treppenhaus: 140,
+    glas: 90,
+    bau: 55,
+    winter: 350
   };
 
   const currentSpeed = speedStandards[serviceType] || 150;
   const hoursPerTurnus = Math.max(0.5, Number((areaSqm / currentSpeed).toFixed(2)));
 
-  // Turnus-Faktor für Monatskalkulation (4.33 Wochen pro Monat)
   const turnusMultipliers = {
     once: 1,
     '1x_week': 4.33,
@@ -144,143 +143,214 @@ Wir freuen uns auf die Zusammenarbeit!
 GoClean Harz | Mobil: 0170-XXXXXXX | info@gocleanharz.de`;
 
   return (
-    <div className="bg-slate-900 border border-emerald-500/30 rounded-2xl p-6 shadow-2xl text-slate-100 mb-8 relative overflow-hidden">
-      {/* Background Glow */}
-      <div className="absolute top-0 right-0 -mt-12 -mr-12 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 -mb-12 -ml-12 w-80 h-80 bg-teal-500/10 rounded-full blur-3xl pointer-events-none" />
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '1.5rem',
+      width: '100%',
+      color: '#f8fafc',
+      fontFamily: 'var(--font-family, sans-serif)'
+    }}>
+      {/* 1. Header Card */}
+      <div style={{
+        background: 'linear-gradient(135deg, rgba(6, 78, 59, 0.4) 0%, rgba(15, 23, 42, 0.85) 100%)',
+        border: '1px solid rgba(52, 211, 153, 0.35)',
+        borderRadius: '16px',
+        padding: '1.5rem',
+        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.4)'
+      }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+              <span style={{
+                background: 'linear-gradient(135deg, #10b981, #059669)',
+                color: '#022c22',
+                fontWeight: 800,
+                fontSize: '0.75rem',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px',
+                padding: '3px 10px',
+                borderRadius: '8px'
+              }}>
+                VIP-Bruder-Offensive
+              </span>
+              <span style={{ fontSize: '0.8rem', color: '#34d399', fontWeight: 600 }}>
+                ● GoClean Harz Exklusiv-Suite
+              </span>
+            </div>
 
-      {/* Top Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-5 mb-6 relative z-10">
-        <div>
-          <div className="flex items-center gap-2 text-emerald-400 font-semibold text-xs uppercase tracking-wider mb-1">
-            <Sparkles className="w-4 h-4" />
-            <span>VIP-Modul für Christian Gornitzka</span>
+            <h2 style={{ fontSize: '1.65rem', fontWeight: 800, color: '#ffffff', margin: '4px 0' }}>
+              🧼 GoClean Harz – Wachstums- & Produktivitäts-Toolkit
+            </h2>
+            <p style={{ fontSize: '0.9rem', color: '#94a3b8', margin: '4px 0 0 0' }}>
+              Blitz-Angebote in 3 Minuten, erprobte B2B-Akquise-Mappen & lückenlose Baustellen-Qualität.
+            </p>
           </div>
-          <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-            🧼 GoClean Harz – Wachstums- & Produktivitäts-Toolkit
-          </h2>
-          <p className="text-slate-400 text-sm mt-1">
-            Blitz-Angebote in 3 Minuten, schusssichere B2B-Akquise & fehlerfreie Baustellen-Dokumentation.
-          </p>
-        </div>
 
-        <div className="flex items-center gap-2 flex-wrap">
-          <a
-            href="/goclean_wachstumsmappe.html"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-4 py-2 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 rounded-xl text-sm font-medium transition flex items-center gap-2"
-          >
-            <Printer className="w-4 h-4" />
-            <span>Präsentations-Mappe öffnen</span>
-            <ExternalLink className="w-3.5 h-3.5 opacity-60" />
-          </a>
-          <a
-            href="/pitch_goclean.html"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-xl text-sm font-medium transition flex items-center gap-2"
-          >
-            <span>VIP-Pitch Deck</span>
-            <ExternalLink className="w-3.5 h-3.5 opacity-60" />
-          </a>
-          {onClose && (
-            <button
-              onClick={onClose}
-              className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white rounded-xl text-sm transition"
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+            <a
+              href="/goclean_wachstumsmappe.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                background: 'rgba(52, 211, 153, 0.15)',
+                color: '#34d399',
+                border: '1px solid rgba(52, 211, 153, 0.4)',
+                padding: '8px 14px',
+                borderRadius: '10px',
+                fontSize: '0.85rem',
+                fontWeight: 600,
+                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px'
+              }}
             >
-              ✕ Schließen
-            </button>
-          )}
+              <Printer size={15} />
+              <span>Präsentations-Mappe öffnen</span>
+              <ExternalLink size={13} style={{ opacity: 0.7 }} />
+            </a>
+
+            <a
+              href="/pitch_goclean.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                background: 'rgba(255, 255, 255, 0.06)',
+                color: '#cbd5e1',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
+                padding: '8px 14px',
+                borderRadius: '10px',
+                fontSize: '0.85rem',
+                fontWeight: 600,
+                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px'
+              }}
+            >
+              <span>VIP-Pitch Deck</span>
+              <ExternalLink size={13} style={{ opacity: 0.7 }} />
+            </a>
+
+            {onClose && (
+              <button
+                onClick={onClose}
+                style={{
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  color: '#94a3b8',
+                  border: '1px solid rgba(255, 255, 255, 0.12)',
+                  padding: '8px 14px',
+                  borderRadius: '10px',
+                  fontSize: '0.85rem',
+                  cursor: 'pointer'
+                }}
+              >
+                ✕ Schließen
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* Tabs Navigation */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-6 bg-slate-950/60 p-1.5 rounded-xl border border-slate-800 relative z-10">
-        <button
-          onClick={() => setActiveTab('calculator')}
-          className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg text-sm font-semibold transition ${
-            activeTab === 'calculator'
-              ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
-              : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
-          }`}
-        >
-          <Calculator className="w-4 h-4" />
-          <span>1. Blitz-Kalkulator</span>
-        </button>
-
-        <button
-          onClick={() => setActiveTab('leads')}
-          className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg text-sm font-semibold transition ${
-            activeTab === 'leads'
-              ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
-              : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
-          }`}
-        >
-          <Building2 className="w-4 h-4" />
-          <span>2. B2B-Akquise Mappen</span>
-        </button>
-
-        <button
-          onClick={() => setActiveTab('sop')}
-          className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg text-sm font-semibold transition ${
-            activeTab === 'sop'
-              ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
-              : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
-          }`}
-        >
-          <ShieldCheck className="w-4 h-4" />
-          <span>3. Baustellen-SOP & Abnahme</span>
-        </button>
-
-        <button
-          onClick={() => setActiveTab('reviews')}
-          className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg text-sm font-semibold transition ${
-            activeTab === 'reviews'
-              ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
-              : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
-          }`}
-        >
-          <Star className="w-4 h-4" />
-          <span>4. 5★ Bewertungs-Booster</span>
-        </button>
+      {/* 2. Tab Navigation Bar */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+        gap: '8px',
+        background: 'rgba(15, 23, 42, 0.8)',
+        border: '1px solid rgba(255, 255, 255, 0.08)',
+        borderRadius: '14px',
+        padding: '6px'
+      }}>
+        {[
+          { id: 'calculator', icon: Calculator, label: '1. Blitz-Kalkulator' },
+          { id: 'leads', icon: Building2, label: '2. B2B-Akquise Mappen' },
+          { id: 'sop', icon: ShieldCheck, label: '3. Baustellen-SOP & Abnahme' },
+          { id: 'reviews', icon: Star, label: '4. 5★ Bewertungs-Booster' }
+        ].map((tab) => {
+          const Icon = tab.icon;
+          const isActive = activeTab === tab.id;
+          return (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                padding: '10px 14px',
+                borderRadius: '10px',
+                fontSize: '0.85rem',
+                fontWeight: 700,
+                border: 'none',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                background: isActive ? 'linear-gradient(135deg, #10b981, #059669)' : 'transparent',
+                color: isActive ? '#022c22' : '#94a3b8',
+                boxShadow: isActive ? '0 4px 12px rgba(16, 185, 129, 0.3)' : 'none'
+              }}
+            >
+              <Icon size={16} />
+              <span>{tab.label}</span>
+            </button>
+          );
+        })}
       </div>
 
       {/* --- TAB 1: BLITZ-KALKULATOR --- */}
       {activeTab === 'calculator' && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 relative z-10">
-          {/* Eingabe-Panel */}
-          <div className="lg:col-span-6 bg-slate-950/70 border border-slate-800 rounded-xl p-5 space-y-4">
-            <h3 className="font-bold text-white text-base flex items-center gap-2 border-b border-slate-800/80 pb-3">
-              <Layers className="w-4 h-4 text-emerald-400" />
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))',
+          gap: '1.5rem',
+          alignItems: 'start'
+        }}>
+          {/* Linke Spalte: Eingaben */}
+          <div style={{
+            background: 'rgba(15, 23, 42, 0.75)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            borderRadius: '16px',
+            padding: '1.25rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1rem'
+          }}>
+            <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '8px', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '10px' }}>
+              <Layers size={16} color="#34d399" />
               <span>Objekt- & Leistungsparameter</span>
             </h3>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
+              <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', color: '#94a3b8', marginBottom: '6px' }}>
                 Leistungsart auswählen
               </label>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '6px' }}>
                 {[
-                  { id: 'unterhalt', label: '🏢 Unterhalt/Büro', speed: 200 },
-                  { id: 'treppenhaus', label: '🚪 Treppenhaus', speed: 140 },
-                  { id: 'glas', label: '🪟 Glasreinigung', speed: 90 },
-                  { id: 'bau', label: '🏗️ Bau-Endreinigung', speed: 55 },
-                  { id: 'winter', label: '❄️ Winter / Grün', speed: 350 }
+                  { id: 'unterhalt', label: '🏢 Unterhalt/Büro', rate: 38 },
+                  { id: 'treppenhaus', label: '🚪 Treppenhaus', rate: 40 },
+                  { id: 'glas', label: '🪟 Glasreinigung', rate: 44 },
+                  { id: 'bau', label: '🏗️ Bau-Endreinigung', rate: 48 },
+                  { id: 'winter', label: '❄️ Winter / Grün', rate: 50 }
                 ].map((s) => (
                   <button
                     key={s.id}
                     onClick={() => {
                       setServiceType(s.id);
-                      if (s.id === 'bau') setHourlyRate(48);
-                      else if (s.id === 'glas') setHourlyRate(44);
-                      else if (s.id === 'unterhalt') setHourlyRate(38);
+                      setHourlyRate(s.rate);
                     }}
-                    className={`py-2 px-3 text-xs font-medium rounded-lg border text-left transition ${
-                      serviceType === s.id
-                        ? 'bg-emerald-500/20 border-emerald-500 text-emerald-300 font-semibold'
-                        : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700'
-                    }`}
+                    style={{
+                      padding: '8px 10px',
+                      borderRadius: '8px',
+                      fontSize: '0.75rem',
+                      fontWeight: 600,
+                      textAlign: 'left',
+                      cursor: 'pointer',
+                      border: serviceType === s.id ? '1px solid #34d399' : '1px solid rgba(255,255,255,0.08)',
+                      background: serviceType === s.id ? 'rgba(52, 211, 153, 0.18)' : 'rgba(30, 41, 59, 0.5)',
+                      color: serviceType === s.id ? '#34d399' : '#cbd5e1'
+                    }}
                   >
                     {s.label}
                   </button>
@@ -288,31 +358,48 @@ GoClean Harz | Mobil: 0170-XXXXXXX | info@gocleanharz.de`;
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">
+                <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#94a3b8', marginBottom: '4px' }}>
                   Fläche in m²
                 </label>
-                <div className="relative">
+                <div style={{ position: 'relative' }}>
                   <input
                     type="number"
                     value={areaSqm}
                     onChange={(e) => setAreaSqm(Number(e.target.value))}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500"
+                    style={{
+                      width: '100%',
+                      background: '#090d16',
+                      border: '1px solid #334155',
+                      borderRadius: '8px',
+                      padding: '8px 30px 8px 10px',
+                      color: '#ffffff',
+                      fontSize: '0.9rem',
+                      fontWeight: 600
+                    }}
                     placeholder="350"
                   />
-                  <span className="absolute right-3 top-2 text-xs text-slate-500">m²</span>
+                  <span style={{ position: 'absolute', right: '10px', top: '8px', fontSize: '0.75rem', color: '#64748b' }}>m²</span>
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">
+                <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#94a3b8', marginBottom: '4px' }}>
                   Reinigungs-Turnus
                 </label>
                 <select
                   value={frequency}
                   onChange={(e) => setFrequency(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500"
+                  style={{
+                    width: '100%',
+                    background: '#090d16',
+                    border: '1px solid #334155',
+                    borderRadius: '8px',
+                    padding: '8px 10px',
+                    color: '#ffffff',
+                    fontSize: '0.85rem'
+                  }}
                 >
                   <option value="once">Einmaliger Auftrag</option>
                   <option value="1x_week">1x pro Woche</option>
@@ -324,120 +411,219 @@ GoClean Harz | Mobil: 0170-XXXXXXX | info@gocleanharz.de`;
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-3">
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">
+                <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#94a3b8', marginBottom: '4px' }}>
                   Stundensatz (€)
                 </label>
                 <input
                   type="number"
                   value={hourlyRate}
                   onChange={(e) => setHourlyRate(Number(e.target.value))}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500"
+                  style={{
+                    width: '100%',
+                    background: '#090d16',
+                    border: '1px solid #334155',
+                    borderRadius: '8px',
+                    padding: '8px 10px',
+                    color: '#ffffff',
+                    fontSize: '0.85rem'
+                  }}
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">
+                <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#94a3b8', marginBottom: '4px' }}>
                   Material (%)
                 </label>
                 <input
                   type="number"
                   value={materialPercent}
                   onChange={(e) => setMaterialPercent(Number(e.target.value))}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500"
+                  style={{
+                    width: '100%',
+                    background: '#090d16',
+                    border: '1px solid #334155',
+                    borderRadius: '8px',
+                    padding: '8px 10px',
+                    color: '#ffffff',
+                    fontSize: '0.85rem'
+                  }}
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">
-                  Anfahrt/Rüst (€)
+                <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#94a3b8', marginBottom: '4px' }}>
+                  Anfahrt (€)
                 </label>
                 <input
                   type="number"
                   value={travelFee}
                   onChange={(e) => setTravelFee(Number(e.target.value))}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500"
+                  style={{
+                    width: '100%',
+                    background: '#090d16',
+                    border: '1px solid #334155',
+                    borderRadius: '8px',
+                    padding: '8px 10px',
+                    color: '#ffffff',
+                    fontSize: '0.85rem'
+                  }}
                 />
               </div>
             </div>
 
-            <div className="space-y-2 pt-2 border-t border-slate-800/80">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', paddingTop: '6px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
               <input
                 type="text"
                 value={clientName}
                 onChange={(e) => setClientName(e.target.value)}
                 placeholder="Kundenname / Firma"
-                className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-emerald-500"
+                style={{
+                  width: '100%',
+                  background: '#090d16',
+                  border: '1px solid #334155',
+                  borderRadius: '6px',
+                  padding: '6px 10px',
+                  color: '#ffffff',
+                  fontSize: '0.8rem'
+                }}
               />
               <input
                 type="text"
                 value={clientAddress}
                 onChange={(e) => setClientAddress(e.target.value)}
-                placeholder="Adresse des Objekts"
-                className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-emerald-500"
+                placeholder="Objektadresse (z.B. Goslar)"
+                style={{
+                  width: '100%',
+                  background: '#090d16',
+                  border: '1px solid #334155',
+                  borderRadius: '6px',
+                  padding: '6px 10px',
+                  color: '#ffffff',
+                  fontSize: '0.8rem'
+                }}
               />
               <input
                 type="text"
                 value={cleaningDetails}
                 onChange={(e) => setCleaningDetails(e.target.value)}
-                placeholder="Besondere Details (z.B. 4 Büros, Sanitär, Flur)"
-                className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-emerald-500"
+                placeholder="Leistungsdetails (z.B. Büros, Sanitär, Flure)"
+                style={{
+                  width: '100%',
+                  background: '#090d16',
+                  border: '1px solid #334155',
+                  borderRadius: '6px',
+                  padding: '6px 10px',
+                  color: '#ffffff',
+                  fontSize: '0.8rem'
+                }}
               />
             </div>
           </div>
 
-          {/* Live-Kalkulationsergebnis & Angebotstext */}
-          <div className="lg:col-span-6 flex flex-col justify-between space-y-4">
+          {/* Rechte Spalte: KPI Kacheln & Angebotstext */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {/* KPI Kacheln */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <div className="bg-slate-950/80 border border-slate-800 rounded-xl p-3 text-center">
-                <span className="text-[11px] text-slate-400 font-medium block">Zeit / Einsatz</span>
-                <span className="text-lg font-bold text-white mt-0.5 block flex items-center justify-center gap-1">
-                  <Clock className="w-3.5 h-3.5 text-emerald-400" />
-                  {hoursPerTurnus} h
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '10px' }}>
+              <div style={{
+                background: 'rgba(15, 23, 42, 0.8)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                borderRadius: '12px',
+                padding: '12px',
+                textAlign: 'center'
+              }}>
+                <span style={{ fontSize: '0.75rem', color: '#94a3b8', display: 'block' }}>Zeit pro Einsatz</span>
+                <span style={{ fontSize: '1.25rem', fontWeight: 800, color: '#ffffff', display: 'block', margin: '2px 0' }}>
+                  {hoursPerTurnus} Std.
                 </span>
-                <span className="text-[10px] text-slate-500">~{Math.round(hoursPerTurnus * 60)} Min.</span>
+                <span style={{ fontSize: '0.7rem', color: '#64748b' }}>~{Math.round(hoursPerTurnus * 60)} Min.</span>
               </div>
 
-              <div className="bg-slate-950/80 border border-slate-800 rounded-xl p-3 text-center">
-                <span className="text-[11px] text-slate-400 font-medium block">Preis / Turnus</span>
-                <span className="text-lg font-bold text-emerald-400 mt-0.5 block">
+              <div style={{
+                background: 'rgba(15, 23, 42, 0.8)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                borderRadius: '12px',
+                padding: '12px',
+                textAlign: 'center'
+              }}>
+                <span style={{ fontSize: '0.75rem', color: '#94a3b8', display: 'block' }}>Einzelpreis Turnus</span>
+                <span style={{ fontSize: '1.25rem', fontWeight: 800, color: '#34d399', display: 'block', margin: '2px 0' }}>
                   {turnusNettoTotal.toFixed(2)} €
                 </span>
-                <span className="text-[10px] text-slate-500">{sqmPriceNetto} € / m²</span>
+                <span style={{ fontSize: '0.7rem', color: '#64748b' }}>{sqmPriceNetto} € / m²</span>
               </div>
 
-              <div className="bg-slate-950/80 border border-emerald-500/40 rounded-xl p-3 text-center col-span-2 sm:col-span-2 bg-gradient-to-br from-emerald-950/40 to-slate-950">
-                <span className="text-[11px] text-emerald-300 font-semibold block">
+              <div style={{
+                background: 'linear-gradient(135deg, rgba(6, 78, 59, 0.6) 0%, rgba(15, 23, 42, 0.9) 100%)',
+                border: '1px solid rgba(52, 211, 153, 0.4)',
+                borderRadius: '12px',
+                padding: '12px',
+                textAlign: 'center',
+                gridColumn: 'span 2'
+              }}>
+                <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#34d399', display: 'block' }}>
                   {isRecurring ? 'Monatspauschale Netto' : 'Gesamtbetrag Netto'}
                 </span>
-                <span className="text-2xl font-extrabold text-white mt-0.5 block">
+                <span style={{ fontSize: '1.65rem', fontWeight: 900, color: '#ffffff', display: 'block', margin: '2px 0' }}>
                   {monthlyNettoTotal.toFixed(2)} €
                 </span>
-                <span className="text-[11px] text-emerald-400 font-medium">
+                <span style={{ fontSize: '0.8rem', color: '#a7f3d0' }}>
                   {monthlyBruttoTotal.toFixed(2)} € brutto (inkl. 19% MwSt.)
                 </span>
               </div>
             </div>
 
-            {/* Live-Angebotstext Box */}
-            <div className="bg-slate-950/80 border border-slate-800 rounded-xl p-4 flex-1 flex flex-col justify-between">
-              <div className="flex items-center justify-between border-b border-slate-800 pb-2 mb-2">
-                <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-300">
-                  <FileText className="w-3.5 h-3.5 text-emerald-400" />
+            {/* Generierter Angebotstext */}
+            <div style={{
+              background: 'rgba(15, 23, 42, 0.8)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              borderRadius: '14px',
+              padding: '1rem',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '8px'
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '8px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem', fontWeight: 700, color: '#ffffff' }}>
+                  <FileText size={15} color="#34d399" />
                   <span>Fertiger B2B-Angebotstext</span>
                 </div>
                 <button
                   onClick={() => copyToClipboard(generatedOfferText, 'offer')}
-                  className="text-xs bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 px-2.5 py-1 rounded-lg transition flex items-center gap-1 font-medium"
+                  style={{
+                    background: 'rgba(52, 211, 153, 0.2)',
+                    color: '#34d399',
+                    border: '1px solid rgba(52, 211, 153, 0.4)',
+                    padding: '4px 10px',
+                    borderRadius: '8px',
+                    fontSize: '0.75rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px'
+                  }}
                 >
-                  {copiedId === 'offer' ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                  {copiedId === 'offer' ? <Check size={12} /> : <Copy size={12} />}
                   <span>{copiedId === 'offer' ? 'Kopiert!' : 'Text kopieren'}</span>
                 </button>
               </div>
 
-              <pre className="text-[11px] leading-relaxed text-slate-300 font-mono bg-slate-900/90 p-3 rounded-lg border border-slate-800/80 overflow-y-auto max-h-56 whitespace-pre-wrap">
+              <pre style={{
+                margin: 0,
+                fontSize: '0.75rem',
+                lineHeight: 1.45,
+                color: '#e2e8f0',
+                fontFamily: 'monospace',
+                background: '#090d16',
+                padding: '12px',
+                borderRadius: '8px',
+                border: '1px solid #1e293b',
+                maxHeight: '220px',
+                overflowY: 'auto',
+                whiteSpace: 'pre-wrap'
+              }}>
                 {generatedOfferText}
               </pre>
             </div>
@@ -447,87 +633,114 @@ GoClean Harz | Mobil: 0170-XXXXXXX | info@gocleanharz.de`;
 
       {/* --- TAB 2: B2B-AKQUISE MAPPEN --- */}
       {activeTab === 'leads' && (
-        <div className="space-y-5 relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '10px' }}>
             {[
               {
                 id: 'hausverwaltung',
                 icon: Building2,
                 title: 'Hausverwaltungen & WEGs',
-                desc: 'Treppenhäuser & Dauerpflege (5–30 Objekte pro Kunde)'
+                desc: 'Treppenhäuser & Dauerpflege (5–30 Liegenschaften)'
               },
               {
                 id: 'bau',
                 icon: HardHat,
                 title: 'Bauträger & Sanierer',
-                desc: 'Bau-Endreinigung & Feinreinigung (Hohe Margen)'
+                desc: 'Bau-Endreinigung & Grobreinigung (Hohe Margen)'
               },
               {
                 id: 'praxis',
                 icon: Stethoscope,
                 title: 'Praxen & Kanzleien',
-                desc: 'Hygienische Unterhaltsreinigung (Feste Monatspauschalen)'
+                desc: 'Hygienische Unterhaltsreinigung (Monatspauschalen)'
               }
             ].map((t) => {
               const Icon = t.icon;
+              const isSel = selectedAkquiseType === t.id;
               return (
                 <button
                   key={t.id}
                   onClick={() => setSelectedAkquiseType(t.id)}
-                  className={`p-4 rounded-xl border text-left transition flex items-start gap-3 ${
-                    selectedAkquiseType === t.id
-                      ? 'bg-emerald-500/15 border-emerald-500 text-white'
-                      : 'bg-slate-950/60 border-slate-800 text-slate-400 hover:border-slate-700'
-                  }`}
+                  style={{
+                    padding: '14px',
+                    borderRadius: '12px',
+                    border: isSel ? '1px solid #34d399' : '1px solid rgba(255,255,255,0.08)',
+                    background: isSel ? 'rgba(52, 211, 153, 0.15)' : 'rgba(15, 23, 42, 0.6)',
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: '12px'
+                  }}
                 >
-                  <div className={`p-2.5 rounded-lg ${selectedAkquiseType === t.id ? 'bg-emerald-500 text-slate-950' : 'bg-slate-800 text-slate-300'}`}>
-                    <Icon className="w-5 h-5" />
+                  <div style={{
+                    padding: '8px',
+                    borderRadius: '8px',
+                    background: isSel ? '#34d399' : 'rgba(255,255,255,0.06)',
+                    color: isSel ? '#022c22' : '#ffffff',
+                    flexShrink: 0
+                  }}>
+                    <Icon size={20} />
                   </div>
                   <div>
-                    <h4 className="font-bold text-sm text-white">{t.title}</h4>
-                    <p className="text-xs text-slate-400 mt-0.5">{t.desc}</p>
+                    <h4 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 700, color: '#ffffff' }}>{t.title}</h4>
+                    <p style={{ margin: '4px 0 0 0', fontSize: '0.75rem', color: '#94a3b8' }}>{t.desc}</p>
                   </div>
                 </button>
               );
             })}
           </div>
 
-          {/* Vorlagen-Anpassung & Vorschau */}
-          <div className="bg-slate-950/80 border border-slate-800 rounded-xl p-5 space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div style={{
+            background: 'rgba(15, 23, 42, 0.75)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            borderRadius: '16px',
+            padding: '1.25rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1rem'
+          }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '10px' }}>
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">Empfänger Firma</label>
+                <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#94a3b8', marginBottom: '4px' }}>Empfänger Firma</label>
                 <input
                   type="text"
                   value={akquiseTargetCompany}
                   onChange={(e) => setAkquiseTargetCompany(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white"
+                  style={{ width: '100%', background: '#090d16', border: '1px solid #334155', borderRadius: '6px', padding: '6px 10px', color: '#ffffff', fontSize: '0.8rem' }}
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">Ansprechpartner</label>
+                <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#94a3b8', marginBottom: '4px' }}>Ansprechpartner</label>
                 <input
                   type="text"
                   value={akquiseContactPerson}
                   onChange={(e) => setAkquiseContactPerson(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white"
+                  style={{ width: '100%', background: '#090d16', border: '1px solid #334155', borderRadius: '6px', padding: '6px 10px', color: '#ffffff', fontSize: '0.8rem' }}
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">Stadt / Region</label>
+                <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#94a3b8', marginBottom: '4px' }}>Stadt / Region</label>
                 <input
                   type="text"
                   value={akquiseCity}
                   onChange={(e) => setAkquiseCity(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white"
+                  style={{ width: '100%', background: '#090d16', border: '1px solid #334155', borderRadius: '6px', padding: '6px 10px', color: '#ffffff', fontSize: '0.8rem' }}
                 />
               </div>
             </div>
 
-            {/* Das jeweilige Anschreiben */}
-            <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
-              <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-3">
-                <span className="text-xs font-semibold text-emerald-400 uppercase tracking-wider">
+            <div style={{
+              background: '#090d16',
+              border: '1px solid #1e293b',
+              borderRadius: '12px',
+              padding: '1rem',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '10px'
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '8px' }}>
+                <span style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', color: '#34d399' }}>
                   ✉️ Anschreiben-Vorlage zum Sofort-Versand
                 </span>
                 <button
@@ -539,63 +752,75 @@ GoClean Harz | Mobil: 0170-XXXXXXX | info@gocleanharz.de`;
                       : `Sehr geehrte/r ${akquiseContactPerson} (${akquiseTargetCompany}),\n\nin medizinischen und juristischen Räumen sind absolute Diskretion, Hygiene und verlässliche Sauberkeit die Visitenkarte gegenüber Patienten und Mandanten.\n\nGoClean Harz bietet Ihnen im Raum ${akquiseCity} ein maßgeschneidertes Unterhaltsreinigungskonzept:\n• RKI-konformes 4-Farben-Hygienesystem\n• Feste, geprüfte Reinigungskräfte mit Verschwiegenheitserklärung\n• Lautlose Ausführung außerhalb Ihrer Öffnungszeiten\n\nLassen Sie uns bei einer kurzen 10-Minuten-Besichtigung Ihren exakten Hygieneplan abstimmen.\n\nBeste Grüße,\nChristian Gornitzka | GoClean Harz`;
                     copyToClipboard(text, 'akquise');
                   }}
-                  className="text-xs bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 px-3 py-1 rounded-lg transition flex items-center gap-1.5 font-medium"
+                  style={{
+                    background: 'rgba(52, 211, 153, 0.2)',
+                    color: '#34d399',
+                    border: '1px solid rgba(52, 211, 153, 0.4)',
+                    padding: '4px 10px',
+                    borderRadius: '8px',
+                    fontSize: '0.75rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px'
+                  }}
                 >
-                  {copiedId === 'akquise' ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                  {copiedId === 'akquise' ? <Check size={12} /> : <Copy size={12} />}
                   <span>{copiedId === 'akquise' ? 'Kopiert!' : 'Anschreiben kopieren'}</span>
                 </button>
               </div>
 
-              <p className="text-xs text-slate-300 leading-relaxed font-sans whitespace-pre-line">
+              <div style={{ fontSize: '0.85rem', color: '#e2e8f0', lineHeight: 1.55 }}>
                 {selectedAkquiseType === 'hausverwaltung' && (
-                  <>
-                    <strong>Betreff: Zuverlässige Treppenhaus- & Objektpflege für Ihre Liegenschaften in {akquiseCity} – GoClean Harz</strong>
-                    {'\n\n'}
-                    Sehr geehrte/r {akquiseContactPerson} der {akquiseTargetCompany},{'\n\n'}
-                    als Verwalter kennen Sie das Problem: Wenn der Treppenhaus- oder Hausmeisterservice unzuverlässig ist, stehen Mieter und Eigentümer bei Ihnen am Telefon.{'\n\n'}
-                    Wir von <strong>GoClean Harz</strong> haben uns darauf spezialisiert, Hausverwaltungen im Raum {akquiseCity} und Umgebung genau diesen Frust abzunehmen:{'\n'}
-                    • <strong>Feste Reinigungsintervalle</strong> (garantierte Termintreue){'\n'}
-                    • <strong>Lückenlose Fotodokumentation</strong> bei jeder Begehung{'\n'}
-                    • <strong>Treppenhausreinigung, Grünpflege und Winterdienst</strong> aus einer Hand{'\n\n'}
-                    Gerne erstellen wir Ihnen für ein Test-Objekt Ihrer Wahl innerhalb von 24 Stunden ein unverbindliches Festpreis-Angebot.{'\n\n'}
-                    Dürfen wir Ihnen nächste Woche bei einer 10-minütigen Objektbegehung zeigen, wie reibungslos Objektpflege funktionieren kann?{'\n\n'}
-                    Mit freundlichen Grüßen,{'\n'}
+                  <div>
+                    <strong style={{ color: '#34d399' }}>Betreff: Zuverlässige Treppenhaus- & Objektpflege für Ihre Liegenschaften in {akquiseCity} – GoClean Harz</strong>
+                    <br /><br />
+                    Sehr geehrte/r {akquiseContactPerson} der {akquiseTargetCompany},<br /><br />
+                    als Verwalter kennen Sie das Problem: Wenn der Treppenhaus- oder Hausmeisterservice unzuverlässig ist, stehen Mieter und Eigentümer bei Ihnen am Telefon.<br /><br />
+                    Wir von <strong>GoClean Harz</strong> haben uns darauf spezialisiert, Hausverwaltungen im Raum {akquiseCity} und Umgebung genau diesen Frust abzunehmen:<br />
+                    • <strong>Feste Reinigungsintervalle</strong> (garantierte Termintreue)<br />
+                    • <strong>Lückenlose Fotodokumentation</strong> bei jeder Begehung<br />
+                    • <strong>Treppenhausreinigung, Grünpflege und Winterdienst</strong> aus einer Hand<br /><br />
+                    Gerne erstellen wir Ihnen für ein Test-Objekt Ihrer Wahl innerhalb von 24 Stunden ein unverbindliches Festpreis-Angebot.<br /><br />
+                    Dürfen wir Ihnen nächste Woche bei einer 10-minütigen Objektbegehung zeigen, wie reibungslos Objektpflege funktionieren kann?<br /><br />
+                    Mit freundlichen Grüßen,<br />
                     <strong>Christian Gornitzka</strong> – Inhaber GoClean Harz
-                  </>
+                  </div>
                 )}
 
                 {selectedAkquiseType === 'bau' && (
-                  <>
-                    <strong>Betreff: Terminsichere Bau-Endreinigung für Ihre Bauprojekte in {akquiseCity} – GoClean Harz</strong>
-                    {'\n\n'}
-                    Sehr geehrte/r {akquiseContactPerson} ({akquiseTargetCompany}),{'\n\n'}
-                    eine verzögerte Bau-Endreinigung gefährdet die fristgerechte Schlüsselübergabe und kostet Nerven.{'\n\n'}
-                    <strong>GoClean Harz</strong> sorgt dafür, dass Ihre Neubauten und Sanierungsobjekte in {akquiseCity} und im gesamten Harzkreis pünktlich zur Bauabnahme makellos glänzen:{'\n'}
-                    • <strong>Baugrobreinigung:</strong> Schnelle Beseitigung von Schutt & Folien während der Bauphase{'\n'}
-                    • <strong>Baufein- & Endreinigung:</strong> Rückstandsfreie Zementschleier-, Farb- und Feinstaubentfernung{'\n'}
-                    • <strong>Express-Einsatzbereitschaft:</strong> Auch an Wochenenden vor Übergabeterminen{'\n\n'}
-                    Senden Sie uns einfach kurz die m²-Angaben Ihres aktuellen Objekts – Sie erhalten innerhalb von 24 Stunden ein Festpreis-Angebot.{'\n\n'}
-                    Beste Grüße,{'\n'}
+                  <div>
+                    <strong style={{ color: '#34d399' }}>Betreff: Terminsichere Bau-Endreinigung für Ihre Bauprojekte in {akquiseCity} – GoClean Harz</strong>
+                    <br /><br />
+                    Sehr geehrte/r {akquiseContactPerson} ({akquiseTargetCompany}),<br /><br />
+                    eine verzögerte Bau-Endreinigung gefährdet die fristgerechte Schlüsselübergabe und kostet Nerven.<br /><br />
+                    <strong>GoClean Harz</strong> sorgt dafür, dass Ihre Neubauten und Sanierungsobjekte in {akquiseCity} und im gesamten Harzkreis pünktlich zur Bauabnahme makellos glänzen:<br />
+                    • <strong>Baugrobreinigung:</strong> Schnelle Beseitigung von Schutt & Folien während der Bauphase<br />
+                    • <strong>Baufein- & Endreinigung:</strong> Rückstandsfreie Zementschleier-, Farb- und Feinstaubentfernung<br />
+                    • <strong>Express-Einsatzbereitschaft:</strong> Auch an Wochenenden vor Übergabeterminen<br /><br />
+                    Senden Sie uns einfach kurz die m²-Angaben Ihres aktuellen Objekts – Sie erhalten innerhalb von 24 Stunden ein Festpreis-Angebot.<br /><br />
+                    Beste Grüße,<br />
                     <strong>Christian Gornitzka</strong> – GoClean Harz
-                  </>
+                  </div>
                 )}
 
                 {selectedAkquiseType === 'praxis' && (
-                  <>
-                    <strong>Betreff: Höchste Hygienestandards & Diskretion für Ihre Räumlichkeiten in {akquiseCity} – GoClean Harz</strong>
-                    {'\n\n'}
-                    Sehr geehrte/r {akquiseContactPerson} ({akquiseTargetCompany}),{'\n\n'}
-                    in medizinischen und juristischen Räumen sind absolute Diskretion, Hygiene und verlässliche Sauberkeit die Visitenkarte gegenüber Patienten und Mandanten.{'\n\n'}
-                    <strong>GoClean Harz</strong> bietet Ihnen ein maßgeschneidertes Unterhaltsreinigungskonzept:{'\n'}
-                    • <strong>RKI-konformes 4-Farben-Hygienesystem:</strong> Strikte Trennung der Reinigungstücher{'\n'}
-                    • <strong>Geschultes, festes Personal:</strong> Einwandfreies Führungszeugnis & Verschwiegenheit{'\n'}
-                    • <strong>Lautlose Ausführung:</strong> Flexibel vor oder nach Ihren Öffnungszeiten{'\n\n'}
-                    Lassen Sie uns bei einer kurzen 10-Minuten-Besichtigung Ihren individuellen Hygieneplan abstimmen.{'\n\n'}
-                    Herzliche Grüße,{'\n'}
+                  <div>
+                    <strong style={{ color: '#34d399' }}>Betreff: Höchste Hygienestandards & Diskretion für Ihre Räumlichkeiten in {akquiseCity} – GoClean Harz</strong>
+                    <br /><br />
+                    Sehr geehrte/r {akquiseContactPerson} ({akquiseTargetCompany}),<br /><br />
+                    in medizinischen und juristischen Räumen sind absolute Diskretion, Hygiene und verlässliche Sauberkeit die Visitenkarte gegenüber Patienten und Mandanten.<br /><br />
+                    <strong>GoClean Harz</strong> bietet Ihnen ein maßgeschneidertes Unterhaltsreinigungskonzept:<br />
+                    • <strong>RKI-konformes 4-Farben-Hygienesystem:</strong> Strikte Trennung der Reinigungstücher<br />
+                    • <strong>Geschultes, festes Personal:</strong> Einwandfreies Führungszeugnis & Verschwiegenheit<br />
+                    • <strong>Lautlose Ausführung:</strong> Flexibel vor oder nach Ihren Öffnungszeiten<br /><br />
+                    Lassen Sie uns bei einer kurzen 10-Minuten-Besichtigung Ihren individuellen Hygieneplan abstimmen.<br /><br />
+                    Herzliche Grüße,<br />
                     <strong>Christian Gornitzka</strong> – GoClean Harz
-                  </>
+                  </div>
                 )}
-              </p>
+              </div>
             </div>
           </div>
         </div>
@@ -603,22 +828,35 @@ GoClean Harz | Mobil: 0170-XXXXXXX | info@gocleanharz.de`;
 
       {/* --- TAB 3: SOP & ABNAHMEPROTOKOLL --- */}
       {activeTab === 'sop' && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 relative z-10">
-          {/* Checkliste */}
-          <div className="lg:col-span-6 bg-slate-950/70 border border-slate-800 rounded-xl p-5 space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <h3 className="font-bold text-white text-sm flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))',
+          gap: '1.5rem',
+          alignItems: 'start'
+        }}>
+          {/* Linke Spalte: Checkliste */}
+          <div style={{
+            background: 'rgba(15, 23, 42, 0.75)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            borderRadius: '16px',
+            padding: '1.25rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '10px'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '8px' }}>
+              <h3 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 700, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <CheckCircle2 size={16} color="#34d399" />
                 <span>Mobile Reinigungs-Checkliste (SOP)</span>
               </h3>
-              <span className="text-[11px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30">
+              <span style={{ fontSize: '0.7rem', color: '#34d399', background: 'rgba(52, 211, 153, 0.15)', padding: '2px 8px', borderRadius: '6px' }}>
                 Smartphone-Ready
               </span>
             </div>
 
-            <div className="space-y-2.5">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {[
-                { key: 'arrivalPhoto', label: '1. Vorher-Foto aufgenommen (Beweisschutz)' },
+                { key: 'arrivalPhoto', label: '1. Vorher-Foto aufgenommen (Beweisschutz vor Altschäden)' },
                 { key: 'trashEmptied', label: '2. Papierkörbe & Mülleimer geleert + neue Beutel' },
                 { key: 'surfacesDusted', label: '3. Schreibtische & Oberflächen nebelfeucht entstaubt' },
                 { key: 'sanitaryDisinfected', label: '4. Sanitäranlagen nach 4-Farben-System desinfiziert' },
@@ -629,15 +867,29 @@ GoClean Harz | Mobil: 0170-XXXXXXX | info@gocleanharz.de`;
               ].map((item) => (
                 <label
                   key={item.key}
-                  className="flex items-center gap-3 p-2.5 bg-slate-900/80 hover:bg-slate-900 border border-slate-800/80 rounded-lg cursor-pointer transition text-xs text-slate-300"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    padding: '8px 10px',
+                    borderRadius: '8px',
+                    background: '#090d16',
+                    border: '1px solid #1e293b',
+                    cursor: 'pointer'
+                  }}
                 >
                   <input
                     type="checkbox"
                     checked={sopChecks[item.key]}
                     onChange={(e) => setSopChecks({ ...sopChecks, [item.key]: e.target.checked })}
-                    className="w-4 h-4 rounded text-emerald-500 focus:ring-0 bg-slate-800 border-slate-700"
+                    style={{ accentColor: '#10b981', width: '16px', height: '16px', cursor: 'pointer' }}
                   />
-                  <span className={sopChecks[item.key] ? 'line-through text-slate-500' : 'text-slate-200 font-medium'}>
+                  <span style={{
+                    fontSize: '0.8rem',
+                    color: sopChecks[item.key] ? '#64748b' : '#e2e8f0',
+                    textDecoration: sopChecks[item.key] ? 'line-through' : 'none',
+                    fontWeight: sopChecks[item.key] ? 400 : 600
+                  }}>
                     {item.label}
                   </span>
                 </label>
@@ -645,71 +897,113 @@ GoClean Harz | Mobil: 0170-XXXXXXX | info@gocleanharz.de`;
             </div>
           </div>
 
-          {/* Digitales Abnahmeprotokoll */}
-          <div className="lg:col-span-6 bg-slate-950/70 border border-slate-800 rounded-xl p-5 space-y-4 flex flex-col justify-between">
-            <div>
-              <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-3">
-                <h3 className="font-bold text-white text-sm flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                  <span>Digitales Abnahmeprotokoll</span>
-                </h3>
-                <span className="text-[11px] text-slate-400">Rechtssicher vor Ort</span>
+          {/* Rechte Spalte: Abnahmeprotokoll */}
+          <div style={{
+            background: 'rgba(15, 23, 42, 0.75)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            borderRadius: '16px',
+            padding: '1.25rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '12px'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '8px' }}>
+              <h3 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 700, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <ShieldCheck size={16} color="#34d399" />
+                <span>Digitales Abnahmeprotokoll</span>
+              </h3>
+              <span style={{ fontSize: '0.7rem', color: '#94a3b8' }}>Rechtssicher vor Ort</span>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+              <div>
+                <label style={{ display: 'block', fontSize: '0.75rem', color: '#94a3b8', marginBottom: '4px' }}>Ausführender / Objektleiter</label>
+                <input
+                  type="text"
+                  value={inspectorName}
+                  onChange={(e) => setInspectorName(e.target.value)}
+                  style={{ width: '100%', background: '#090d16', border: '1px solid #334155', borderRadius: '6px', padding: '6px 10px', color: '#ffffff', fontSize: '0.8rem' }}
+                />
               </div>
-
-              <div className="space-y-3">
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-[11px] text-slate-400 mb-1">Objektleiter / Ausführender</label>
-                    <input
-                      type="text"
-                      value={inspectorName}
-                      onChange={(e) => setInspectorName(e.target.value)}
-                      className="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1 text-xs text-white"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[11px] text-slate-400 mb-1">Kunden-Vertreter</label>
-                    <input
-                      type="text"
-                      value={customerSignName}
-                      onChange={(e) => setCustomerSignName(e.target.value)}
-                      className="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1 text-xs text-white"
-                    />
-                  </div>
-                </div>
-
-                <div className="bg-slate-900 border border-slate-800 rounded-lg p-3 text-xs text-slate-300 space-y-2">
-                  <p className="font-semibold text-emerald-300">Abnahme-Erklärung:</p>
-                  <p className="text-[11px] text-slate-400 leading-relaxed">
-                    „Die vereinbarten Reinigungs- und Pflegearbeiten wurden am {new Date().toLocaleDateString('de-DE')} ordnungsgemäß und mangelfrei abgenommen. Die Räumlichkeiten wurden in einwandfreiem Zustand übergeben.“
-                  </p>
-                </div>
-
-                {/* Digitale Signatur-Fläche */}
-                <div className="bg-slate-900/90 border border-dashed border-emerald-500/40 rounded-lg p-4 text-center">
-                  <span className="text-[11px] text-slate-400 block mb-2">Unterschrift des Auftraggebers auf Smartphone/Tablet:</span>
-                  {signatureSigned ? (
-                    <div className="py-3 px-4 bg-emerald-500/10 border border-emerald-500/30 rounded text-emerald-300 font-serif italic text-lg flex items-center justify-center gap-2">
-                      <CheckCircle2 className="w-5 h-5 text-emerald-400" />
-                      <span>{customerSignName} (Digital quittiert)</span>
-                    </div>
-                  ) : (
-                    <button
-                      onClick={() => setSignatureSigned(true)}
-                      className="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold text-xs rounded-lg transition"
-                    >
-                      ✍️ Jetzt digital unterzeichnen
-                    </button>
-                  )}
-                </div>
+              <div>
+                <label style={{ display: 'block', fontSize: '0.75rem', color: '#94a3b8', marginBottom: '4px' }}>Kunden-Vertreter</label>
+                <input
+                  type="text"
+                  value={customerSignName}
+                  onChange={(e) => setCustomerSignName(e.target.value)}
+                  style={{ width: '100%', background: '#090d16', border: '1px solid #334155', borderRadius: '6px', padding: '6px 10px', color: '#ffffff', fontSize: '0.8rem' }}
+                />
               </div>
             </div>
 
-            <div className="pt-3 border-t border-slate-800 flex justify-between items-center">
-              <span className="text-[11px] text-slate-500">GoBD- und DATEV-konform</span>
+            <div style={{ background: '#090d16', border: '1px solid #1e293b', borderRadius: '8px', padding: '10px' }}>
+              <p style={{ margin: '0 0 4px 0', fontSize: '0.75rem', fontWeight: 700, color: '#34d399' }}>Abnahme-Erklärung:</p>
+              <p style={{ margin: 0, fontSize: '0.75rem', color: '#94a3b8', lineHeight: 1.45 }}>
+                „Die vereinbarten Reinigungsarbeiten wurden am {new Date().toLocaleDateString('de-DE')} mangelfrei abgenommen und das Objekt in einwandfreiem Zustand übergeben.“
+              </p>
+            </div>
+
+            {/* Unterschrift-Box */}
+            <div style={{
+              background: '#090d16',
+              border: '1px dashed rgba(52, 211, 153, 0.4)',
+              borderRadius: '10px',
+              padding: '16px',
+              textAlign: 'center'
+            }}>
+              <span style={{ fontSize: '0.75rem', color: '#94a3b8', display: 'block', marginBottom: '8px' }}>
+                Unterschrift des Auftraggebers (Smartphone / Tablet):
+              </span>
+              {signatureSigned ? (
+                <div style={{
+                  padding: '10px',
+                  background: 'rgba(52, 211, 153, 0.15)',
+                  border: '1px solid #34d399',
+                  borderRadius: '8px',
+                  color: '#34d399',
+                  fontFamily: 'serif',
+                  fontStyle: 'italic',
+                  fontSize: '1.1rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px'
+                }}>
+                  <CheckCircle2 size={18} color="#34d399" />
+                  <span>{customerSignName} (Digital quittiert)</span>
+                </div>
+              ) : (
+                <button
+                  onClick={() => setSignatureSigned(true)}
+                  style={{
+                    background: 'linear-gradient(135deg, #10b981, #059669)',
+                    color: '#022c22',
+                    fontWeight: 800,
+                    fontSize: '0.8rem',
+                    padding: '8px 16px',
+                    borderRadius: '8px',
+                    border: 'none',
+                    cursor: 'pointer'
+                  }}
+                >
+                  ✍️ Jetzt digital unterzeichnen
+                </button>
+              )}
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '8px', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+              <span style={{ fontSize: '0.7rem', color: '#64748b' }}>DATEV & GoBD konform</span>
               <button
-                onClick={() => alert(`Abnahmeprotokoll für ${customerSignName} wurde digital archiviert und als Beleg freigegeben.`)}
-                className="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg border border-slate-700 transition"
+                onClick={() => alert(`Abnahmeprotokoll für ${customerSignName} archiviert!`)}
+                style={{
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  color: '#e2e8f0',
+                  border: '1px solid rgba(255, 255, 255, 0.15)',
+                  padding: '6px 12px',
+                  borderRadius: '6px',
+                  fontSize: '0.75rem',
+                  cursor: 'pointer'
+                }}
               >
                 💾 Protokoll archivieren
               </button>
@@ -720,89 +1014,128 @@ GoClean Harz | Mobil: 0170-XXXXXXX | info@gocleanharz.de`;
 
       {/* --- TAB 4: 5-STERNE-BEWERTUNGSBOOSTER --- */}
       {activeTab === 'reviews' && (
-        <div className="space-y-5 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <div className="lg:col-span-5 bg-slate-950/70 border border-slate-800 rounded-xl p-5 space-y-4">
-              <h3 className="font-bold text-white text-sm border-b border-slate-800 pb-3 flex items-center gap-2">
-                <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
-                <span>Bewertungs-Nachricht konfigurieren</span>
-              </h3>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))',
+          gap: '1.5rem',
+          alignItems: 'start'
+        }}>
+          {/* Konfiguration */}
+          <div style={{
+            background: 'rgba(15, 23, 42, 0.75)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            borderRadius: '16px',
+            padding: '1.25rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '12px'
+          }}>
+            <h3 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 700, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '8px', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '8px' }}>
+              <Star size={16} color="#fbbf24" fill="#fbbf24" />
+              <span>Bewertungs-Nachricht konfigurieren</span>
+            </h3>
 
-              <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">Kundenname</label>
-                <input
-                  type="text"
-                  value={reviewClientName}
-                  onChange={(e) => setReviewClientName(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
-                  placeholder="Herr Müller"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">Durchgeführte Leistung</label>
-                <input
-                  type="text"
-                  value={reviewServiceGiven}
-                  onChange={(e) => setReviewServiceGiven(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
-                  placeholder="Glas- und Fassadenreinigung"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">Google-Bewertungslink</label>
-                <input
-                  type="text"
-                  value={googleReviewLink}
-                  onChange={(e) => setGoogleReviewLink(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono text-xs"
-                />
-              </div>
+            <div>
+              <label style={{ display: 'block', fontSize: '0.75rem', color: '#94a3b8', marginBottom: '4px' }}>Kundenname</label>
+              <input
+                type="text"
+                value={reviewClientName}
+                onChange={(e) => setReviewClientName(e.target.value)}
+                style={{ width: '100%', background: '#090d16', border: '1px solid #334155', borderRadius: '6px', padding: '8px 10px', color: '#ffffff', fontSize: '0.85rem' }}
+                placeholder="Herr Müller"
+              />
             </div>
 
-            <div className="lg:col-span-7 bg-slate-950/70 border border-slate-800 rounded-xl p-5 flex flex-col justify-between space-y-4">
-              <div>
-                <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-3">
-                  <span className="text-xs font-semibold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
-                    <Send className="w-3.5 h-3.5" />
-                    <span>WhatsApp Nachricht (1-Klick Versand)</span>
-                  </span>
-                  <button
-                    onClick={() => {
-                      const text = `Hallo ${reviewClientName}, hier ist Christian von GoClean Harz! 😊 Wir haben die Arbeiten (${reviewServiceGiven}) heute bei Ihnen abgeschlossen. Ist alles zu Ihrer vollsten Zufriedenheit geworden?\n\nFalls ja: Würden Sie uns einen riesigen Gefallen tun und uns eine kurze 5-Sterne-Bewertung auf Google dalassen? Als regionaler Familienbetrieb hilft uns das enorm: ${googleReviewLink}\n\nVielen Dank für Ihr Vertrauen!`;
-                      copyToClipboard(text, 'review_wa');
-                    }}
-                    className="text-xs bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 px-3 py-1 rounded-lg transition flex items-center gap-1.5 font-medium"
-                  >
-                    {copiedId === 'review_wa' ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                    <span>{copiedId === 'review_wa' ? 'Kopiert!' : 'WhatsApp Text kopieren'}</span>
-                  </button>
-                </div>
+            <div>
+              <label style={{ display: 'block', fontSize: '0.75rem', color: '#94a3b8', marginBottom: '4px' }}>Durchgeführte Leistung</label>
+              <input
+                type="text"
+                value={reviewServiceGiven}
+                onChange={(e) => setReviewServiceGiven(e.target.value)}
+                style={{ width: '100%', background: '#090d16', border: '1px solid #334155', borderRadius: '6px', padding: '8px 10px', color: '#ffffff', fontSize: '0.85rem' }}
+                placeholder="Glas- und Fassadenreinigung"
+              />
+            </div>
 
-                <div className="bg-emerald-950/20 border border-emerald-500/30 rounded-xl p-4 text-xs text-slate-200 leading-relaxed font-sans space-y-2">
-                  <p>
-                    Hallo {reviewClientName}, hier ist Christian von <strong>GoClean Harz</strong>! 😊
-                  </p>
-                  <p>
-                    Wir haben die Arbeiten ({reviewServiceGiven}) heute bei Ihnen abgeschlossen. Ist alles zu Ihrer vollsten Zufriedenheit geworden?
-                  </p>
-                  <p>
-                    Falls ja: Würden Sie uns einen riesigen Gefallen tun und uns eine kurze 5-Sterne-Bewertung auf Google dalassen? Als regionaler Familienbetrieb hilft uns das enorm:
-                  </p>
-                  <p className="text-emerald-400 font-mono text-[11px] underline">
-                    {googleReviewLink}
-                  </p>
-                  <p>Vielen Dank für Ihr Vertrauen!</p>
-                </div>
-              </div>
+            <div>
+              <label style={{ display: 'block', fontSize: '0.75rem', color: '#94a3b8', marginBottom: '4px' }}>Google-Bewertungslink</label>
+              <input
+                type="text"
+                value={googleReviewLink}
+                onChange={(e) => setGoogleReviewLink(e.target.value)}
+                style={{ width: '100%', background: '#090d16', border: '1px solid #334155', borderRadius: '6px', padding: '8px 10px', color: '#34d399', fontSize: '0.75rem', fontFamily: 'monospace' }}
+              />
+            </div>
+          </div>
 
-              <div className="bg-slate-900 border border-slate-800 rounded-lg p-3 text-[11px] text-slate-400 flex items-center gap-2">
-                <span className="text-amber-400 font-bold">💡 Psychologie-Tipp:</span>
-                <span>
-                  Sende diese Nachricht maximal 30 Minuten nach Abschluss. Die Begeisterung über den frischen Glanz ist dann am höchsten!
-                </span>
-              </div>
+          {/* WhatsApp Vorschau */}
+          <div style={{
+            background: 'rgba(15, 23, 42, 0.75)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            borderRadius: '16px',
+            padding: '1.25rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '12px'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '8px' }}>
+              <span style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', color: '#34d399', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Send size={14} />
+                <span>WhatsApp Nachricht (1-Klick Versand)</span>
+              </span>
+              <button
+                onClick={() => {
+                  const text = `Hallo ${reviewClientName}, hier ist Christian von GoClean Harz! 😊 Wir haben die Arbeiten (${reviewServiceGiven}) heute bei Ihnen abgeschlossen. Ist alles zu Ihrer vollsten Zufriedenheit geworden?\n\nFalls ja: Würden Sie uns einen riesigen Gefallen tun und uns eine kurze 5-Sterne-Bewertung auf Google dalassen? Als regionaler Familienbetrieb hilft uns das enorm: ${googleReviewLink}\n\nVielen Dank für Ihr Vertrauen!`;
+                  copyToClipboard(text, 'review_wa');
+                }}
+                style={{
+                  background: 'rgba(52, 211, 153, 0.2)',
+                  color: '#34d399',
+                  border: '1px solid rgba(52, 211, 153, 0.4)',
+                  padding: '4px 10px',
+                  borderRadius: '8px',
+                  fontSize: '0.75rem',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px'
+                }}
+              >
+                {copiedId === 'review_wa' ? <Check size={12} /> : <Copy size={12} />}
+                <span>{copiedId === 'review_wa' ? 'Kopiert!' : 'WhatsApp Text kopieren'}</span>
+              </button>
+            </div>
+
+            <div style={{
+              background: 'linear-gradient(135deg, rgba(6, 78, 59, 0.25) 0%, rgba(15, 23, 42, 0.9) 100%)',
+              border: '1px solid rgba(52, 211, 153, 0.3)',
+              borderRadius: '12px',
+              padding: '14px',
+              fontSize: '0.85rem',
+              color: '#e2e8f0',
+              lineHeight: 1.55
+            }}>
+              <p style={{ margin: '0 0 8px 0' }}>
+                Hallo {reviewClientName}, hier ist Christian von <strong style={{ color: '#34d399' }}>GoClean Harz</strong>! 😊
+              </p>
+              <p style={{ margin: '0 0 8px 0' }}>
+                Wir haben die Arbeiten ({reviewServiceGiven}) heute bei Ihnen abgeschlossen. Ist alles zu Ihrer vollsten Zufriedenheit geworden?
+              </p>
+              <p style={{ margin: '0 0 8px 0' }}>
+                Falls ja: Würden Sie uns einen riesigen Gefallen tun und uns eine kurze 5-Sterne-Bewertung auf Google dalassen? Als regionaler Betrieb hilft uns das enorm:
+              </p>
+              <p style={{ margin: '0 0 8px 0', color: '#34d399', fontFamily: 'monospace', fontSize: '0.8rem', textDecoration: 'underline' }}>
+                {googleReviewLink}
+              </p>
+              <p style={{ margin: 0 }}>Vielen Dank für Ihr Vertrauen!</p>
+            </div>
+
+            <div style={{ background: '#090d16', border: '1px solid #1e293b', borderRadius: '8px', padding: '10px', fontSize: '0.75rem', color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ color: '#fbbf24', fontWeight: 800 }}>💡 Psychologie-Tipp:</span>
+              <span>
+                Sende diese Nachricht maximal 30 Minuten nach Abschluss. Die Begeisterung über den frischen Glanz ist dann am höchsten!
+              </span>
             </div>
           </div>
         </div>
