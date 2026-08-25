@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GoClean Harz – KI & Zukunfts-Vision</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at 50% 0%, #312e81 0%, #1e1b4b 40%, #090d16 100%);
+      --card-bg: rgba(49, 46, 129, 0.25);
+      --card-border: rgba(167, 139, 250, 0.2);
+      --accent: #a78bfa;
+      --accent-glow: rgba(167, 139, 250, 0.25);
+      --accent-cyan: #38bdf8;
+      --accent-emerald: #34d399;
+      --accent-rose: #fb7185;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-body); background: #0a0a1a; color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow-x: hidden; user-select: none; }
+    .deck-container { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; background: var(--bg-gradient); }
+    .slide { position: absolute; width: min(94vw, 1150px); height: min(88vh, 720px); background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 28px; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: 0 25px 60px -15px rgba(0,0,0,0.7), 0 0 50px -10px var(--accent-glow); padding: 40px 48px; display: flex; flex-direction: column; justify-content: space-between; opacity: 0; visibility: hidden; transform: scale(0.96) translateY(12px); transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1), visibility 0.4s; overflow: hidden; }
+    .slide.active { opacity: 1; visibility: visible; transform: scale(1) translateY(0); z-index: 10; }
+    .slide-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 16px; }
+    .brand-tag { font-size: 0.9rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); display: flex; align-items: center; gap: 10px; }
+    .brand-tag .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent); }
+    .slide-number-badge { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); background: rgba(255,255,255,0.05); padding: 4px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.08); }
+    .slide-body { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 20px 0; overflow-y: auto; }
+    .headline-category { font-size: 0.95rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin-bottom: 6px; }
+    .headline { font-family: var(--font-heading); font-size: clamp(1.8rem, 3.2vw, 2.7rem); font-weight: 800; line-height: 1.18; letter-spacing: -0.02em; color: #fff; margin-bottom: 24px; }
+    .gradient-violet { background: linear-gradient(135deg, #a78bfa 0%, #c084fc 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .gradient-cyan { background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .gradient-emerald { background: linear-gradient(135deg, #34d399 0%, #10b981 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .gradient-rose { background: linear-gradient(135deg, #fb7185 0%, #e11d48 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .feature-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 18px; padding: 20px; transition: all 0.2s ease; display: flex; flex-direction: column; gap: 10px; }
+    .feature-card:hover { background: rgba(255,255,255,0.06); border-color: rgba(167,139,250,0.35); transform: translateY(-2px); }
+    .feature-card .card-icon { font-size: 1.8rem; }
+    .feature-card h3 { font-size: 1.15rem; font-weight: 700; color: #fff; }
+    .feature-card p { font-size: 0.95rem; color: #cbd5e1; line-height: 1.45; }
+    .feature-card .badge { align-self: flex-start; font-size: 0.75rem; font-weight: 600; padding: 3px 10px; border-radius: 12px; background: rgba(167,139,250,0.15); color: #a78bfa; border: 1px solid rgba(167,139,250,0.3); }
+    .quote-box { background: linear-gradient(135deg, rgba(167,139,250,0.12) 0%, rgba(139,92,246,0.05) 100%); border: 1px solid rgba(167,139,250,0.3); border-left: 4px solid var(--accent); padding: 16px 20px; border-radius: 14px; font-size: 1.05rem; color: #ede9fe; display: flex; align-items: center; gap: 14px; margin-top: 12px; }
+    .slide-footer { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 14px; display: flex; justify-content: space-between; align-items: center; font-size: 0.88rem; color: var(--text-muted); }
+    .speaker-tip { display: flex; align-items: center; gap: 8px; color: var(--accent); background: rgba(167,139,250,0.08); padding: 6px 14px; border-radius: 12px; font-size: 0.85rem; }
+    .controls { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 12px; background: rgba(15,15,30,0.9); border: 1px solid rgba(255,255,255,0.15); padding: 8px 18px; border-radius: 40px; backdrop-filter: blur(14px); z-index: 100; box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
+    .btn-ctrl { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); color: var(--text-main); padding: 8px 16px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s ease; }
+    .btn-ctrl:hover { background: var(--accent); color: #1e1b4b; border-color: var(--accent); }
+    .dot-indicators { display: flex; gap: 8px; padding: 0 8px; }
+    .dot-nav { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.2); cursor: pointer; transition: all 0.2s ease; }
+    .dot-nav.active { background: var(--accent); width: 24px; border-radius: 10px; box-shadow: 0 0 10px var(--accent); }
+    .shortcut-hints { position: fixed; bottom: 24px; right: 24px; color: var(--text-muted); font-size: 0.8rem; background: rgba(15,15,30,0.8); padding: 6px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); }
+
+    @media print {
+      body { background: #fff !important; color: #111827 !important; }
+      .controls, .shortcut-hints { display: none !important; }
+      .deck-container { height: auto !important; display: block !important; background: none !important; }
+      .slide { position: relative !important; width: 100% !important; height: 100vh !important; page-break-after: always !important; opacity: 1 !important; visibility: visible !important; transform: none !important; background: #fff !important; color: #111827 !important; border: 2px solid #e2e8f0 !important; box-shadow: none !important; border-radius: 0 !important; padding: 40px !important; }
+      .headline { color: #0f172a !important; }
+      .headline span { color: #7c3aed !important; -webkit-text-fill-color: #7c3aed !important; }
+      .feature-card { background: #f8fafc !important; border: 1px solid #cbd5e1 !important; }
+      .feature-card h3 { color: #0f172a !important; }
+      .feature-card p { color: #334155 !important; }
+      .quote-box { background: #f5f3ff !important; color: #4c1d95 !important; border: 1px solid #c4b5fd !important; }
+      .speaker-tip { color: #6d28d9 !important; background: #ede9fe !important; }
+    }
+    @media (max-width: 768px) {
+      .slide { padding: 20px 16px; height: 92vh; }
+      .headline { font-size: 1.5rem; margin-bottom: 16px; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .controls { bottom: 12px; }
+      .shortcut-hints { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="deck-container">
+
+    <!-- FOLIE 1: COVER -->
+    <div class="slide active" id="slide-1">
+      <div class="slide-header">
+        <div class="brand-tag"><span class="dot"></span> GoClean Harz × KI-Vision</div>
+        <div class="slide-number-badge">Folie 01 / 05</div>
+      </div>
+      <div class="slide-body">
+        <div class="headline-category">Die Zukunft von GoClean Harz</div>
+        <h1 class="headline">Dein Betrieb.<br /><span class="gradient-violet">Powered by KI.</span></h1>
+        <div class="grid-3">
+          <div class="feature-card">
+            <div class="card-icon">🧠</div>
+            <span class="badge">KI-Texter</span>
+            <h3>Texte die verkaufen</h3>
+            <p>KI schreibt Angebote, Social-Media-Posts und Kunden-Nachrichten – in deinem Stil, mit deiner Stimme.</p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">📊</div>
+            <span class="badge">Smart-Planung</span>
+            <h3>Intelligent planen</h3>
+            <p>KI optimiert Routen, schlägt beste Zeitfenster vor und erkennt Muster in deinen Aufträgen.</p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">🤖</div>
+            <span class="badge">Assistent</span>
+            <h3>24/7 Erreichbar</h3>
+            <p>Digitaler Assistent beantwortet Kundenanfragen, erstellt FAQs und bucht Termine automatisch.</p>
+          </div>
+        </div>
+        <div class="quote-box">
+          <span>🚀</span>
+          <div><strong>Das Ziel:</strong> Marcel, du sollst dich auf das konzentrieren, was du am besten kannst – erstklassige Reinigung. Die KI erledigt den Rest.</div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div class="speaker-tip">💬 <em>Für dich: „Marcel, das ist keine Science-Fiction – das funktioniert alles schon heute."</em></div>
+        <div>KMU Service Harz</div>
+      </div>
+    </div>
+
+    <!-- FOLIE 2: KI-TEXTER -->
+    <div class="slide" id="slide-2">
+      <div class="slide-header">
+        <div class="brand-tag"><span class="dot"></span> KI-Modul 1</div>
+        <div class="slide-number-badge">Folie 02 / 05</div>
+      </div>
+      <div class="slide-body">
+        <div class="headline-category">Content ohne Aufwand</div>
+        <h1 class="headline">Der KI-Texter:<br /><span class="gradient-cyan">Texte auf Knopfdruck.</span></h1>
+        <div class="grid-2">
+          <div class="feature-card">
+            <div class="card-icon">📱</div>
+            <span class="badge" style="background:rgba(56,189,248,0.15);color:#38bdf8;border-color:rgba(56,189,248,0.3)">Social Media</span>
+            <h3>Instagram & Facebook automatisch</h3>
+            <p>• KI erstellt <strong>professionelle Posts</strong> aus deinen Vorher/Nachher-Fotos</p>
+            <p>• <strong>Hashtags und Texte</strong> für maximale lokale Reichweite</p>
+            <p>• <strong>Regelmäßige Beiträge</strong> ohne dass du einen Finger rühren musst</p>
+            <p>• <strong>Content-Kalender</strong> mit saisonalen Themen (Frühjahrsputz, Winterdienst)</p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">✉️</div>
+            <span class="badge" style="background:rgba(56,189,248,0.15);color:#38bdf8;border-color:rgba(56,189,248,0.3)">Business-Texte</span>
+            <h3>Professionelle Geschäftskommunikation</h3>
+            <p>• <strong>Angebotstexte</strong> die überzeugen – individuell für jeden Kunden</p>
+            <p>• <strong>Akquise-Anschreiben</strong> für Hausverwaltungen und Bauträger</p>
+            <p>• <strong>Nachfass-Mails</strong> für offene Angebote</p>
+            <p>• <strong>Dankesnachrichten</strong> nach Auftragsabschluss</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div class="speaker-tip">💬 <em>Für dich: „Marcel, du machst ein Foto vom fertigen Büro – die KI macht daraus einen Instagram-Post, der Kunden bringt."</em></div>
+        <div>KMU Service Harz</div>
+      </div>
+    </div>
+
+    <!-- FOLIE 3: SMARTE PLANUNG -->
+    <div class="slide" id="slide-3">
+      <div class="slide-header">
+        <div class="brand-tag"><span class="dot"></span> KI-Modul 2</div>
+        <div class="slide-number-badge">Folie 03 / 05</div>
+      </div>
+      <div class="slide-body">
+        <div class="headline-category">Intelligent planen & optimieren</div>
+        <h1 class="headline">Smarte Planung:<br /><span class="gradient-emerald">KI denkt voraus.</span></h1>
+        <div class="grid-2">
+          <div class="feature-card">
+            <div class="card-icon">🗺️</div>
+            <span class="badge" style="background:rgba(52,211,153,0.15);color:#34d399;border-color:rgba(52,211,153,0.3)">Routenoptimierung</span>
+            <h3>Weniger Fahren, mehr Putzen</h3>
+            <p>• KI plant die <strong>optimale Reihenfolge</strong> deiner Objekte</p>
+            <p>• <strong>Weniger Kilometer</strong> = weniger Spritkosten</p>
+            <p>• <strong>Mehr Aufträge pro Tag</strong> durch effiziente Tourenplanung</p>
+            <p>• Berücksichtigt <strong>Zeitfenster</strong> und Kundenwünsche automatisch</p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">📈</div>
+            <span class="badge" style="background:rgba(52,211,153,0.15);color:#34d399;border-color:rgba(52,211,153,0.3)">Muster-Erkennung</span>
+            <h3>Trends erkennen & nutzen</h3>
+            <p>• KI erkennt <strong>saisonale Nachfrage-Spitzen</strong> (Frühjahr, Herbst)</p>
+            <p>• <strong>Preisvorschläge</strong> basierend auf Auslastung und Markt</p>
+            <p>• Warnung bei <strong>Kapazitätsengpässen</strong> bevor sie entstehen</p>
+            <p>• <strong>Umsatzprognosen</strong> für die nächsten Monate</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div class="speaker-tip">💬 <em>Für dich: „Marcel, die KI weiß schon im Februar, dass du im April voll ausgebucht sein wirst."</em></div>
+        <div>KMU Service Harz</div>
+      </div>
+    </div>
+
+    <!-- FOLIE 4: DIGITALER ASSISTENT -->
+    <div class="slide" id="slide-4">
+      <div class="slide-header">
+        <div class="brand-tag"><span class="dot"></span> KI-Modul 3</div>
+        <div class="slide-number-badge">Folie 04 / 05</div>
+      </div>
+      <div class="slide-body">
+        <div class="headline-category">Immer erreichbar – ohne Stress</div>
+        <h1 class="headline">Dein digitaler<br /><span class="gradient-rose">Assistent.</span></h1>
+        <div class="grid-2">
+          <div class="feature-card">
+            <div class="card-icon">💬</div>
+            <span class="badge" style="background:rgba(251,113,133,0.15);color:#fb7185;border-color:rgba(251,113,133,0.3)">Chatbot</span>
+            <h3>24/7 Kundenservice</h3>
+            <p>• Beantwortet <strong>häufige Fragen</strong> automatisch (Preise, Leistungen, Termine)</p>
+            <p>• Nimmt <strong>Anfragen entgegen</strong> auch außerhalb der Geschäftszeiten</p>
+            <p>• Leitet nur <strong>qualifizierte Leads</strong> an Marcel weiter</p>
+            <p>• Spricht <strong>freundlich und professionell</strong> – wie ein echter Mitarbeiter</p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">📞</div>
+            <span class="badge" style="background:rgba(251,113,133,0.15);color:#fb7185;border-color:rgba(251,113,133,0.3)">Termine</span>
+            <h3>Automatische Terminbuchung</h3>
+            <p>• Kunden können <strong>online Termine buchen</strong></p>
+            <p>• KI prüft automatisch <strong>freie Kapazitäten</strong></p>
+            <p>• <strong>Bestätigungs-Nachricht</strong> geht sofort raus</p>
+            <p>• <strong>Erinnerungen</strong> am Tag vorher für Marcel und Kunden</p>
+          </div>
+        </div>
+        <div class="quote-box">
+          <span>💡</span>
+          <div><strong>Stell dir vor:</strong> Ein Kunde schreibt um 22 Uhr eine Anfrage. Der Chatbot antwortet sofort, stellt die richtigen Fragen und Marcel hat morgens um 6 Uhr einen fertigen Auftrag im Dashboard.</div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div class="speaker-tip">💬 <em>Für dich: „Marcel, du schläfst – und dein Assistent sammelt Aufträge."</em></div>
+        <div>KMU Service Harz</div>
+      </div>
+    </div>
+
+    <!-- FOLIE 5: MARKTANALYSE & VISION -->
+    <div class="slide" id="slide-5">
+      <div class="slide-header">
+        <div class="brand-tag"><span class="dot"></span> KI-Modul 4</div>
+        <div class="slide-number-badge">Folie 05 / 05</div>
+      </div>
+      <div class="slide-body">
+        <div class="headline-category">Wissen was der Markt will</div>
+        <h1 class="headline">KI-Marktanalyse &<br /><span class="gradient-violet">Wachstums-Radar.</span></h1>
+        <div class="grid-3">
+          <div class="feature-card">
+            <div class="card-icon">🎯</div>
+            <span class="badge">Zielkunden finden</span>
+            <h3>Wer braucht GoClean?</h3>
+            <p>KI identifiziert Hausverwaltungen, Praxen und Firmen im Harzkreis, die noch keinen Reinigungsdienst haben oder unzufrieden sind.</p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">🔍</div>
+            <span class="badge">Konkurrenz-Check</span>
+            <h3>Was macht der Wettbewerb?</h3>
+            <p>Automatische Analyse der Konkurrenz: Preise, Bewertungen, Angebote – damit GoClean Harz immer einen Schritt voraus ist.</p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">💎</div>
+            <span class="badge">Preisoptimierung</span>
+            <h3>Den richtigen Preis finden</h3>
+            <p>KI schlägt optimale Preise vor – nicht zu billig, nicht zu teuer. Basierend auf Marktdaten, Auslastung und Kundensegment.</p>
+          </div>
+        </div>
+        <div class="quote-box">
+          <span>🚀</span>
+          <div><strong>Die Vision:</strong> GoClean Harz wird nicht nur der sauberste, sondern auch der smarteste Reinigungsbetrieb im gesamten Harzkreis. Mit KI als unsichtbarem Mitarbeiter.</div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div class="speaker-tip">💬 <em>Für dich: „Marcel, mit diesen Tools bist du der Konkurrenz im Harz meilenweit voraus."</em></div>
+        <div>KMU Service Harz</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="controls">
+    <button class="btn-ctrl" id="prevBtn">◀ Zurück</button>
+    <div class="dot-indicators">
+      <div class="dot-nav active" onclick="goToSlide(0)"></div>
+      <div class="dot-nav" onclick="goToSlide(1)"></div>
+      <div class="dot-nav" onclick="goToSlide(2)"></div>
+      <div class="dot-nav" onclick="goToSlide(3)"></div>
+      <div class="dot-nav" onclick="goToSlide(4)"></div>
+    </div>
+    <button class="btn-ctrl" id="nextBtn">Weiter ▶</button>
+    <button class="btn-ctrl" id="pdfBtn" style="background:rgba(167,139,250,0.2);border-color:rgba(167,139,250,0.5);color:#a78bfa;">🖨️ PDF</button>
+  </div>
+  <div class="shortcut-hints">⌨️ <strong>Tasten:</strong> [◀ / ▶] oder [Leertaste] | [F] Vollbild | [P] Drucken</div>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.dot-nav');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    document.getElementById('pdfBtn').addEventListener('click', () => window.print());
+
+    function updateSlide() {
+      slides.forEach((s,i) => s.classList.toggle('active', i === currentSlide));
+      dots.forEach((d,i) => d.classList.toggle('active', i === currentSlide));
+      prevBtn.style.opacity = currentSlide === 0 ? '0.4' : '1';
+      nextBtn.textContent = currentSlide === slides.length - 1 ? 'Fertig 🎉' : 'Weiter ▶';
+    }
+    function nextSlide() { if (currentSlide < slides.length - 1) { currentSlide++; updateSlide(); } }
+    function prevSlide() { if (currentSlide > 0) { currentSlide--; updateSlide(); } }
+    function goToSlide(i) { currentSlide = i; updateSlide(); }
+    prevBtn.addEventListener('click', prevSlide);
+    nextBtn.addEventListener('click', () => { if (currentSlide === slides.length - 1) { currentSlide = 0; updateSlide(); } else nextSlide(); });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); nextSlide(); }
+      else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prevSlide(); }
+      else if (e.key === 'f' || e.key === 'F') { if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(()=>{}); else document.exitFullscreen().catch(()=>{}); }
+      else if (e.key === 'p' || e.key === 'P') window.print();
+    });
+    let tsx = 0;
+    document.addEventListener('touchstart', e => tsx = e.changedTouches[0].screenX);
+    document.addEventListener('touchend', e => { const tex = e.changedTouches[0].screenX; if (tex < tsx - 50) nextSlide(); if (tex > tsx + 50) prevSlide(); });
+    updateSlide();
+  </script>
+</body>
+</html>

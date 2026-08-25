@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GoClean Harz – Solo-Wachstumsplan für Marcel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at 50% 0%, #064e3b 0%, #022c22 40%, #090d16 100%);
+      --card-bg: rgba(6, 78, 59, 0.25);
+      --card-border: rgba(52, 211, 153, 0.2);
+      --accent: #34d399;
+      --accent-glow: rgba(52, 211, 153, 0.25);
+      --accent-amber: #fbbf24;
+      --accent-cyan: #38bdf8;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-body); background: #06110f; color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow-x: hidden; user-select: none; }
+    .deck-container { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; background: var(--bg-gradient); }
+    .slide { position: absolute; width: min(94vw, 1150px); height: min(88vh, 720px); background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 28px; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: 0 25px 60px -15px rgba(0,0,0,0.7), 0 0 45px -10px var(--accent-glow); padding: 40px 48px; display: flex; flex-direction: column; justify-content: space-between; opacity: 0; visibility: hidden; transform: scale(0.96) translateY(12px); transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1), visibility 0.4s; overflow: hidden; }
+    .slide.active { opacity: 1; visibility: visible; transform: scale(1) translateY(0); z-index: 10; }
+    .slide-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 16px; }
+    .brand-tag { font-size: 0.9rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); display: flex; align-items: center; gap: 10px; }
+    .brand-tag .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent); }
+    .slide-number-badge { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); background: rgba(255,255,255,0.05); padding: 4px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.08); }
+    .slide-body { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 20px 0; overflow-y: auto; }
+    .headline-category { font-size: 0.95rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-cyan); margin-bottom: 6px; }
+    .headline { font-family: var(--font-heading); font-size: clamp(1.8rem, 3.2vw, 2.7rem); font-weight: 800; line-height: 1.18; letter-spacing: -0.02em; color: #fff; margin-bottom: 24px; }
+    .gradient-emerald { background: linear-gradient(135deg, #34d399 0%, #10b981 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .gradient-cyan { background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .gradient-amber { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .feature-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 18px; padding: 20px; transition: all 0.2s ease; display: flex; flex-direction: column; gap: 10px; }
+    .feature-card:hover { background: rgba(255,255,255,0.06); border-color: rgba(52,211,153,0.35); transform: translateY(-2px); }
+    .feature-card .card-icon { font-size: 1.8rem; }
+    .feature-card h3 { font-size: 1.15rem; font-weight: 700; color: #fff; }
+    .feature-card p { font-size: 0.95rem; color: #cbd5e1; line-height: 1.45; }
+    .feature-card .badge { align-self: flex-start; font-size: 0.75rem; font-weight: 600; padding: 3px 10px; border-radius: 12px; background: rgba(52,211,153,0.15); color: #34d399; border: 1px solid rgba(52,211,153,0.3); }
+    .points-list { display: flex; flex-direction: column; gap: 14px; max-width: 900px; }
+    .point-item { display: flex; align-items: flex-start; gap: 16px; font-size: clamp(1rem, 1.4vw, 1.2rem); line-height: 1.45; color: #e2e8f0; background: rgba(255,255,255,0.03); padding: 14px 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); transition: all 0.2s ease; }
+    .point-item:hover { background: rgba(255,255,255,0.06); border-color: rgba(52,211,153,0.3); transform: translateX(4px); }
+    .point-item .icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
+    .point-item strong { color: #fff; font-weight: 700; }
+    .quote-box { background: linear-gradient(135deg, rgba(52,211,153,0.12) 0%, rgba(16,185,129,0.05) 100%); border: 1px solid rgba(52,211,153,0.3); border-left: 4px solid var(--accent); padding: 16px 20px; border-radius: 14px; font-size: 1.05rem; color: #ecfdf5; display: flex; align-items: center; gap: 14px; margin-top: 12px; }
+    .slide-footer { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 14px; display: flex; justify-content: space-between; align-items: center; font-size: 0.88rem; color: var(--text-muted); }
+    .speaker-tip { display: flex; align-items: center; gap: 8px; color: #34d399; background: rgba(52,211,153,0.08); padding: 6px 14px; border-radius: 12px; font-size: 0.85rem; }
+    .controls { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 12px; background: rgba(15,23,42,0.9); border: 1px solid rgba(255,255,255,0.15); padding: 8px 18px; border-radius: 40px; backdrop-filter: blur(14px); z-index: 100; box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
+    .btn-ctrl { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); color: var(--text-main); padding: 8px 16px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s ease; }
+    .btn-ctrl:hover { background: var(--accent); color: #022c22; border-color: var(--accent); }
+    .dot-indicators { display: flex; gap: 8px; padding: 0 8px; }
+    .dot-nav { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.2); cursor: pointer; transition: all 0.2s ease; }
+    .dot-nav.active { background: var(--accent); width: 24px; border-radius: 10px; box-shadow: 0 0 10px var(--accent); }
+    .shortcut-hints { position: fixed; bottom: 24px; right: 24px; color: var(--text-muted); font-size: 0.8rem; background: rgba(15,23,42,0.8); padding: 6px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); }
+
+    @media print {
+      body { background: #fff !important; color: #111827 !important; }
+      .controls, .shortcut-hints { display: none !important; }
+      .deck-container { height: auto !important; display: block !important; background: none !important; }
+      .slide { position: relative !important; width: 100% !important; height: 100vh !important; page-break-after: always !important; opacity: 1 !important; visibility: visible !important; transform: none !important; background: #fff !important; color: #111827 !important; border: 2px solid #e2e8f0 !important; box-shadow: none !important; border-radius: 0 !important; padding: 40px !important; }
+      .headline { color: #0f172a !important; } .headline span { color: #059669 !important; -webkit-text-fill-color: #059669 !important; }
+      .feature-card { background: #f8fafc !important; border: 1px solid #cbd5e1 !important; } .feature-card h3 { color: #0f172a !important; } .feature-card p { color: #334155 !important; }
+      .point-item { background: #f8fafc !important; color: #1e293b !important; border: 1px solid #e2e8f0 !important; } .point-item strong { color: #0f172a !important; }
+      .quote-box { background: #ecfdf5 !important; color: #065f46 !important; border: 1px solid #a7f3d0 !important; }
+      .speaker-tip { color: #047857 !important; background: #d1fae5 !important; }
+    }
+    @media (max-width: 768px) {
+      .slide { padding: 20px 16px; height: 92vh; } .headline { font-size: 1.5rem; margin-bottom: 16px; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; } .controls { bottom: 12px; } .shortcut-hints { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="deck-container">
+
+    <!-- FOLIE 1: COVER -->
+    <div class="slide active" id="slide-1">
+      <div class="slide-header">
+        <div class="brand-tag"><span class="dot"></span> GoClean Harz Solo-Offensive</div>
+        <div class="slide-number-badge">Folie 01 / 06</div>
+      </div>
+      <div class="slide-body">
+        <div class="headline-category">Der Wachstumsplan für Einzelkämpfer</div>
+        <h1 class="headline">Einer. Aber mit der<br /><span class="gradient-emerald">Power von dreien.</span></h1>
+        <div class="points-list">
+          <div class="point-item"><span class="icon">💪</span><div><strong>Marcel, du bist ein Einzelkämpfer.</strong> Und das ist okay. Aber du musst nicht alles alleine machen.</div></div>
+          <div class="point-item"><span class="icon">🤖</span><div><strong>Dein digitaler Mitarbeiter:</strong> Die App übernimmt Büro, Kommunikation und Verwaltung – wie ein unsichtbares 2-Mann-Team im Hintergrund.</div></div>
+          <div class="point-item"><span class="icon">📈</span><div><strong>Das Ergebnis:</strong> Du schaffst als Einzelperson so viel wie ein 3-Mann-Betrieb – ohne Personalkosten, ohne Stress.</div></div>
+        </div>
+        <div class="quote-box"><span>🎯</span><div><strong>Dein Ziel:</strong> Mehr Umsatz, mehr Kunden, mehr Freizeit – und wenn du bereit bist, die Grundlage für deinen ersten Mitarbeiter.</div></div>
+      </div>
+      <div class="slide-footer">
+        <div class="speaker-tip">💬 <em>Für dich: „Marcel, du musst nicht größer werden, um mehr zu schaffen. Du musst nur smarter arbeiten."</em></div>
+        <div>KMU Service Harz</div>
+      </div>
+    </div>
+
+    <!-- FOLIE 2: SUPERKRAFT AUTOMATISIERUNG -->
+    <div class="slide" id="slide-2">
+      <div class="slide-header">
+        <div class="brand-tag"><span class="dot"></span> Hebel #1</div>
+        <div class="slide-number-badge">Folie 02 / 06</div>
+      </div>
+      <div class="slide-body">
+        <div class="headline-category">Dein Turbo als Einzelkämpfer</div>
+        <h1 class="headline">Deine Superkraft:<br /><span class="gradient-cyan">Automatisierung.</span></h1>
+        <div class="grid-2">
+          <div class="feature-card">
+            <div class="card-icon">❌</div>
+            <span class="badge" style="background:rgba(251,113,133,0.15);color:#fb7185;border-color:rgba(251,113,133,0.3)">Was du nicht mehr machst</span>
+            <h3>Schluss mit Zeitfressern</h3>
+            <p>• <strong>Angebote per Hand schreiben</strong> – macht die App</p>
+            <p>• <strong>Rechnungen tippen</strong> – 1-Klick-Automation</p>
+            <p>• <strong>Kunden hinterhertelefonieren</strong> – WhatsApp-Autopilot</p>
+            <p>• <strong>Zettel sortieren</strong> – alles digital in einer App</p>
+            <p>• <strong>Social Media Posts überlegen</strong> – KI schreibt sie</p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">✅</div>
+            <span class="badge">Was du stattdessen machst</span>
+            <h3>Fokus auf das Wesentliche</h3>
+            <p>• <strong>Erstklassige Reinigung</strong> beim Kunden vor Ort</p>
+            <p>• <strong>Beziehungen pflegen</strong> – persönlich, menschlich</p>
+            <p>• <strong>Neue Objekte besichtigen</strong> – mehr Aufträge annehmen</p>
+            <p>• <strong>Qualität abliefern</strong> – dein Markenzeichen</p>
+            <p>• <strong>Pünktlich Feierabend machen</strong> – du hast es verdient</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div class="speaker-tip">💬 <em>Für dich: „Marcel, statt 4 Stunden Büro am Abend – null Stunden. Automatisch."</em></div>
+        <div>KMU Service Harz</div>
+      </div>
+    </div>
+
+    <!-- FOLIE 3: MEHR AUFTRÄGE -->
+    <div class="slide" id="slide-3">
+      <div class="slide-header">
+        <div class="brand-tag"><span class="dot"></span> Hebel #2</div>
+        <div class="slide-number-badge">Folie 03 / 06</div>
+      </div>
+      <div class="slide-body">
+        <div class="headline-category">Wachsen ohne mehr Stress</div>
+        <h1 class="headline">Mehr Aufträge.<br /><span class="gradient-emerald">Ohne mehr Arbeit.</span></h1>
+        <div class="grid-3">
+          <div class="feature-card">
+            <div class="card-icon">🏢</div>
+            <span class="badge">Hausverwaltungen</span>
+            <h3>5-30 Objekte auf einen Schlag</h3>
+            <p>Fertige Akquise-Mappe für Hausverwaltungen im Harz. Ein Kontakt = viele Treppenhäuser mit Monatsverträgen.</p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">🏗️</div>
+            <span class="badge">Bauträger</span>
+            <h3>Hochmarge-Aufträge</h3>
+            <p>Bau-Endreinigungen bringen 42-52€/Std. Fertige Vorlage für Express-Angebote an lokale Baufirmen.</p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">🩺</div>
+            <span class="badge">Praxen & Kanzleien</span>
+            <h3>Langzeit-Stammkunden</h3>
+            <p>Arztpraxen zahlen premium und wechseln bei guter Qualität nie. Perfekt für planbares Einkommen.</p>
+          </div>
+        </div>
+        <div class="quote-box"><span>💡</span><div><strong>Der Trick:</strong> Du musst nicht kalt akquirieren. Ich bereite alles vor – du musst nur noch unterschreiben lassen.</div></div>
+      </div>
+      <div class="slide-footer">
+        <div class="speaker-tip">💬 <em>Für dich: „Marcel, eine einzige Hausverwaltung kann deinen Monatsumsatz verdoppeln."</em></div>
+        <div>KMU Service Harz</div>
+      </div>
+    </div>
+
+    <!-- FOLIE 4: SOCIAL MEDIA OHNE AUFWAND -->
+    <div class="slide" id="slide-4">
+      <div class="slide-header">
+        <div class="brand-tag"><span class="dot"></span> Hebel #3</div>
+        <div class="slide-number-badge">Folie 04 / 06</div>
+      </div>
+      <div class="slide-body">
+        <div class="headline-category">Sichtbar werden im Harz</div>
+        <h1 class="headline">Social Media &<br /><span class="gradient-amber">Google – ohne Aufwand.</span></h1>
+        <div class="grid-2">
+          <div class="feature-card">
+            <div class="card-icon">📱</div>
+            <span class="badge" style="background:rgba(251,191,36,0.15);color:#fbbf24;border-color:rgba(251,191,36,0.3)">KI-Autopilot</span>
+            <h3>Social Media auf Autopilot</h3>
+            <p>• Du machst ein <strong>Vorher/Nachher-Foto</strong> – das war's</p>
+            <p>• KI schreibt den <strong>perfekten Instagram/Facebook-Post</strong></p>
+            <p>• <strong>Hashtags, Emojis, Call-to-Action</strong> – alles automatisch</p>
+            <p>• <strong>3-4 Posts pro Woche</strong> ohne dass du etwas tun musst</p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">⭐</div>
+            <span class="badge" style="background:rgba(251,191,36,0.15);color:#fbbf24;border-color:rgba(251,191,36,0.3)">Bewertungen</span>
+            <h3>50+ Sterne in 6 Monaten</h3>
+            <p>• <strong>Automatische WhatsApp-Nachricht</strong> nach jedem Auftrag</p>
+            <p>• <strong>Direktlink zur Google-Bewertung</strong></p>
+            <p>• <strong>„Gebäudereinigung Harz"</strong> – Platz 1 bei Google</p>
+            <p>• Mehr Bewertungen = <strong>mehr Kunden von alleine</strong></p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div class="speaker-tip">💬 <em>Für dich: „Marcel, du machst ein Foto, und die KI macht daraus Marketing. So einfach ist das."</em></div>
+        <div>KMU Service Harz</div>
+      </div>
+    </div>
+
+    <!-- FOLIE 5: VORBEREITUNG ERSTER MITARBEITER -->
+    <div class="slide" id="slide-5">
+      <div class="slide-header">
+        <div class="brand-tag"><span class="dot"></span> Zukunfts-Option</div>
+        <div class="slide-number-badge">Folie 05 / 06</div>
+      </div>
+      <div class="slide-body">
+        <div class="headline-category">Wenn du bereit bist</div>
+        <h1 class="headline">Wachsen, wenn<br /><span class="gradient-cyan">du es willst.</span></h1>
+        <div class="grid-2">
+          <div class="feature-card">
+            <div class="card-icon">👤</div>
+            <span class="badge">Heute: Solo-Power</span>
+            <h3>Alleine, aber nie allein</h3>
+            <p>• App übernimmt <strong>alles Organisatorische</strong></p>
+            <p>• Du konzentrierst dich auf <strong>Kunden und Qualität</strong></p>
+            <p>• <strong>Standardisierte Abläufe</strong> sind bereits digital dokumentiert</p>
+            <p>• Dein Wissen ist <strong>im System gespeichert</strong>, nicht nur in deinem Kopf</p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">👥</div>
+            <span class="badge">Morgen: Team-Ready</span>
+            <h3>Bereit für den ersten Mitarbeiter</h3>
+            <p>• <strong>Einarbeitung per Checkliste</strong> – neuer MA weiß sofort, was zu tun ist</p>
+            <p>• <strong>Foto-Protokolle</strong> kontrollieren die Qualität aus der Ferne</p>
+            <p>• <strong>Einsatzplanung</strong> über die App – wer macht was, wo, wann</p>
+            <p>• Du kannst <strong>delegieren ohne Kontrollverlust</strong></p>
+          </div>
+        </div>
+        <div class="quote-box"><span>🎯</span><div><strong>Kein Druck:</strong> Du musst nicht wachsen. Aber wenn du es willst, ist alles vorbereitet. Die Systeme sind schon da.</div></div>
+      </div>
+      <div class="slide-footer">
+        <div class="speaker-tip">💬 <em>Für dich: „Marcel, du entscheidest, ob du wachsen willst. Aber die Möglichkeit ist jederzeit da."</em></div>
+        <div>KMU Service Harz</div>
+      </div>
+    </div>
+
+    <!-- FOLIE 6: 90-TAGE-FAHRPLAN -->
+    <div class="slide" id="slide-6">
+      <div class="slide-header">
+        <div class="brand-tag"><span class="dot"></span> Dein Fahrplan</div>
+        <div class="slide-number-badge">Folie 06 / 06</div>
+      </div>
+      <div class="slide-body">
+        <div class="headline-category">Konkrete nächste Schritte</div>
+        <h1 class="headline">Dein 90-Tage<br /><span class="gradient-emerald">Wachstumsplan.</span></h1>
+        <div class="grid-3">
+          <div class="feature-card">
+            <div class="card-icon">🗓️</div>
+            <span class="badge">Tag 1 – 7</span>
+            <h3>Woche 1: Setup</h3>
+            <p>• Kaffee-Meeting: Du erzählst deinen Alltag</p>
+            <p>• Kalkulator mit deinen echten Preisen einrichten</p>
+            <p>• Erste Kunden in die App übertragen</p>
+            <p>• WhatsApp-Vorlagen aktivieren</p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">📬</div>
+            <span class="badge">Tag 8 – 30</span>
+            <h3>Monat 1: Akquise-Start</h3>
+            <p>• 10 Hausverwaltungen im Harz kontaktieren</p>
+            <p>• Google-Bewertungen von bestehenden Kunden sammeln</p>
+            <p>• Erste Social-Media-Posts automatisch veröffentlichen</p>
+            <p>• Foto-Checklisten im Alltag nutzen</p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">🚀</div>
+            <span class="badge">Tag 31 – 90</span>
+            <h3>Monat 2-3: Vollgas</h3>
+            <p>• Erste B2B-Verträge abschließen</p>
+            <p>• 30+ Google-Bewertungen erreichen</p>
+            <p>• Alle Rechnungen automatisiert</p>
+            <p>• DATEV-Export für den Steuerberater</p>
+          </div>
+        </div>
+        <div class="quote-box"><span>🏆</span><div><strong>Nach 90 Tagen:</strong> Mehr Aufträge, weniger Büro-Stress, planbare Einnahmen durch Monatsverträge – und echten Feierabend nach der Arbeit!</div></div>
+      </div>
+      <div class="slide-footer">
+        <div class="speaker-tip">💬 <em>Für dich: „Marcel, lass uns mit dem Kaffee-Meeting starten – alles andere ergibt sich dann Schritt für Schritt."</em></div>
+        <div>KMU Service Harz</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="controls">
+    <button class="btn-ctrl" id="prevBtn">◀ Zurück</button>
+    <div class="dot-indicators">
+      <div class="dot-nav active" onclick="goToSlide(0)"></div>
+      <div class="dot-nav" onclick="goToSlide(1)"></div>
+      <div class="dot-nav" onclick="goToSlide(2)"></div>
+      <div class="dot-nav" onclick="goToSlide(3)"></div>
+      <div class="dot-nav" onclick="goToSlide(4)"></div>
+      <div class="dot-nav" onclick="goToSlide(5)"></div>
+    </div>
+    <button class="btn-ctrl" id="nextBtn">Weiter ▶</button>
+    <button class="btn-ctrl" id="pdfBtn" style="background:rgba(52,211,153,0.2);border-color:rgba(52,211,153,0.5);color:#34d399;">🖨️ PDF</button>
+  </div>
+  <div class="shortcut-hints">⌨️ <strong>Tasten:</strong> [◀ / ▶] oder [Leertaste] | [F] Vollbild | [P] Drucken</div>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.dot-nav');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    document.getElementById('pdfBtn').addEventListener('click', () => window.print());
+    function updateSlide() {
+      slides.forEach((s,i) => s.classList.toggle('active', i === currentSlide));
+      dots.forEach((d,i) => d.classList.toggle('active', i === currentSlide));
+      prevBtn.style.opacity = currentSlide === 0 ? '0.4' : '1';
+      nextBtn.textContent = currentSlide === slides.length - 1 ? 'Fertig 🎉' : 'Weiter ▶';
+    }
+    function nextSlide() { if (currentSlide < slides.length - 1) { currentSlide++; updateSlide(); } }
+    function prevSlide() { if (currentSlide > 0) { currentSlide--; updateSlide(); } }
+    function goToSlide(i) { currentSlide = i; updateSlide(); }
+    prevBtn.addEventListener('click', prevSlide);
+    nextBtn.addEventListener('click', () => { if (currentSlide === slides.length - 1) { currentSlide = 0; updateSlide(); } else nextSlide(); });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); nextSlide(); }
+      else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prevSlide(); }
+      else if (e.key === 'f' || e.key === 'F') { if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(()=>{}); else document.exitFullscreen().catch(()=>{}); }
+      else if (e.key === 'p' || e.key === 'P') window.print();
+    });
+    let tsx = 0;
+    document.addEventListener('touchstart', e => tsx = e.changedTouches[0].screenX);
+    document.addEventListener('touchend', e => { const tex = e.changedTouches[0].screenX; if (tex < tsx - 50) nextSlide(); if (tex > tsx + 50) prevSlide(); });
+    updateSlide();
+  </script>
+</body>
+</html>

@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GoClean Harz – App Feature-Walkthrough</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 100%);
+      --card-bg: rgba(30, 41, 59, 0.7);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --accent: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.2);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-body); background: #090d16; color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow-x: hidden; user-select: none; }
+    .deck-container { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; background: var(--bg-gradient); }
+    .slide { position: absolute; width: min(94vw, 1150px); height: min(88vh, 720px); background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 28px; backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: 0 25px 60px -15px rgba(0,0,0,0.65), 0 0 40px -10px var(--accent-glow); padding: 36px 44px; display: flex; flex-direction: column; justify-content: space-between; opacity: 0; visibility: hidden; transform: scale(0.96) translateY(12px); transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1), visibility 0.4s; overflow: hidden; }
+    .slide.active { opacity: 1; visibility: visible; transform: scale(1) translateY(0); z-index: 10; }
+    .slide-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 14px; }
+    .brand-tag { font-size: 0.85rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); display: flex; align-items: center; gap: 8px; }
+    .brand-tag .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+    .slide-number-badge { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); background: rgba(255,255,255,0.05); padding: 4px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.08); }
+    .slide-body { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 16px 0; overflow-y: auto; }
+    .headline-category { font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 6px; }
+    .headline { font-family: var(--font-heading); font-size: clamp(1.7rem, 3vw, 2.5rem); font-weight: 800; line-height: 1.18; letter-spacing: -0.02em; color: #fff; margin-bottom: 20px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .feature-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 18px; transition: all 0.2s ease; display: flex; flex-direction: column; gap: 8px; }
+    .feature-card:hover { background: rgba(255,255,255,0.06); border-color: rgba(56,189,248,0.3); transform: translateY(-2px); }
+    .feature-card .card-icon { font-size: 1.6rem; }
+    .feature-card h3 { font-size: 1.05rem; font-weight: 700; color: #fff; }
+    .feature-card p { font-size: 0.9rem; color: #cbd5e1; line-height: 1.4; }
+    .feature-card .badge { align-self: flex-start; font-size: 0.72rem; font-weight: 600; padding: 3px 10px; border-radius: 12px; background: rgba(56,189,248,0.15); color: #38bdf8; border: 1px solid rgba(56,189,248,0.3); }
+    .table-container { background: rgba(15,23,42,0.6); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; text-align: left; }
+    th { background: rgba(255,255,255,0.05); padding: 10px 14px; color: #34d399; font-weight: 700; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    td { padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #e2e8f0; }
+    tr:last-child td { border-bottom: none; }
+    .slide-footer { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 12px; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--text-muted); }
+    .speaker-tip { display: flex; align-items: center; gap: 8px; color: #38bdf8; background: rgba(56,189,248,0.08); padding: 5px 12px; border-radius: 12px; font-size: 0.82rem; }
+    .controls { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 10px; background: rgba(15,23,42,0.9); border: 1px solid rgba(255,255,255,0.15); padding: 8px 16px; border-radius: 40px; backdrop-filter: blur(14px); z-index: 100; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    .btn-ctrl { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); color: var(--text-main); padding: 8px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: all 0.2s ease; }
+    .btn-ctrl:hover { background: var(--accent); color: #090d16; border-color: var(--accent); }
+    .dot-indicators { display: flex; gap: 6px; padding: 0 6px; }
+    .dot-nav { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,0.2); cursor: pointer; transition: all 0.2s ease; }
+    .dot-nav.active { background: var(--accent); width: 22px; border-radius: 10px; box-shadow: 0 0 8px var(--accent); }
+    .shortcut-hints { position: fixed; bottom: 24px; right: 24px; color: var(--text-muted); font-size: 0.78rem; background: rgba(15,23,42,0.7); padding: 5px 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.06); }
+
+    @media print {
+      body { background: #fff !important; color: #111827 !important; }
+      .controls, .shortcut-hints { display: none !important; }
+      .deck-container { height: auto !important; display: block !important; background: none !important; }
+      .slide { position: relative !important; width: 100% !important; height: 100vh !important; page-break-after: always !important; page-break-inside: avoid !important; opacity: 1 !important; visibility: visible !important; transform: none !important; background: #fff !important; color: #111827 !important; border: 2px solid #e2e8f0 !important; box-shadow: none !important; border-radius: 0 !important; padding: 36px !important; }
+      .headline { color: #0f172a !important; }
+      .headline span { color: #0284c7 !important; -webkit-text-fill-color: #0284c7 !important; }
+      .feature-card { background: #f8fafc !important; border: 1px solid #cbd5e1 !important; }
+      .feature-card h3 { color: #0f172a !important; }
+      .feature-card p { color: #334155 !important; }
+      .table-container { background: #fff !important; border: 1px solid #cbd5e1 !important; }
+      th { background: #f1f5f9 !important; color: #047857 !important; }
+      td { color: #1e293b !important; }
+      .speaker-tip { color: #0369a1 !important; background: #f0f9ff !important; }
+    }
+    @media (max-width: 768px) {
+      .slide { padding: 18px 14px; height: 92vh; }
+      .headline { font-size: 1.4rem; margin-bottom: 14px; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; gap: 10px; }
+      .feature-card { padding: 12px; }
+      .controls { bottom: 10px; }
+      .shortcut-hints { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="deck-container">
+
+    <!-- FOLIE 1: COVER -->
+    <div class="slide active" id="slide-1">
+      <div class="slide-header">
+        <div class="brand-tag"><span class="dot"></span> GoClean Harz Digital Suite</div>
+        <div class="slide-number-badge">Folie 01 / 07</div>
+      </div>
+      <div class="slide-body">
+        <div class="headline-category">Die komplette App-Übersicht</div>
+        <h1 class="headline">Alles was du brauchst.<br /><span style="background: linear-gradient(135deg, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">In einer App.</span></h1>
+        <div class="grid-3">
+          <div class="feature-card">
+            <div class="card-icon">📱</div>
+            <span class="badge">7 Module</span>
+            <h3>Dein digitales Büro</h3>
+            <p>Kalkulation, Kunden, Checklisten, WhatsApp, Rechnungen, Bewertungen & Social Media – alles in einer App.</p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">🎯</div>
+            <span class="badge">Maßgeschneidert</span>
+            <h3>Gebaut für Gebäudereiniger</h3>
+            <p>Keine überflüssigen Features. Alles ist auf die Reinigungsbranche im Harz zugeschnitten.</p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">🔄</div>
+            <span class="badge">Skalierbar</span>
+            <h3>Wächst mit GoClean Harz</h3>
+            <p>Heute als Einzelkämpfer, morgen mit Team. Die App passt sich deinem Wachstum an.</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div class="speaker-tip">💬 <em>Marcel, ich zeig dir jetzt jedes Feature einzeln – sag mir einfach, was dich am meisten interessiert.</em></div>
+        <div>KMU Service Harz × GoClean Harz</div>
+      </div>
+    </div>
+
+    <!-- FOLIE 2: BLITZ-KALKULATOR -->
+    <div class="slide" id="slide-2">
+      <div class="slide-header">
+        <div class="brand-tag"><span class="dot" style="background:#34d399;box-shadow:0 0 10px #34d399"></span> <span style="color:#34d399">Modul 1: Kalkulation</span></div>
+        <div class="slide-number-badge">Folie 02 / 07</div>
+      </div>
+      <div class="slide-body">
+        <div class="headline-category">Nie wieder unter Wert verkaufen</div>
+        <h1 class="headline">Der Blitz-<br /><span style="background: linear-gradient(135deg, #34d399, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Kalkulator.</span></h1>
+        <div class="grid-2">
+          <div class="table-container">
+            <table>
+              <thead><tr><th>Leistungsart</th><th>m²/Std.</th><th>€/Std.</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Büro / Unterhalt</strong></td><td>180 – 250</td><td>36 – 42</td></tr>
+                <tr><td><strong>Treppenhaus</strong></td><td>120 – 160</td><td>38 – 44</td></tr>
+                <tr><td><strong>Glasreinigung</strong></td><td>80 – 120</td><td>40 – 48</td></tr>
+                <tr><td><strong>Bau-Endreinigung</strong></td><td>40 – 70</td><td>42 – 52</td></tr>
+                <tr><td><strong>Winterdienst</strong></td><td>Pauschale</td><td>45 – 65</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">🖩</div>
+            <span class="badge" style="background:rgba(52,211,153,0.15);color:#34d399;border-color:rgba(52,211,153,0.3)">In 3 Schritten zum Angebot</span>
+            <h3>So funktioniert es:</h3>
+            <p><strong>1.</strong> Fläche & Leistungsart eingeben – z. B. 400 m² Büro, 2× wöchentlich.</p>
+            <p><strong>2.</strong> Automatische Berechnung – Personalstunden + 8 % Materialpauschale.</p>
+            <p><strong>3.</strong> Fertiger Angebotstext – direkt per WhatsApp oder E-Mail versenden.</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div class="speaker-tip">💬 <em>Marcel, gib mal eine echte Fläche von einem aktuellen Auftrag ein!</em></div>
+        <div>KMU Service Harz × GoClean Harz</div>
+      </div>
+    </div>
+
+    <!-- FOLIE 3: KUNDEN-DASHBOARD -->
+    <div class="slide" id="slide-3">
+      <div class="slide-header">
+        <div class="brand-tag"><span class="dot" style="background:#fbbf24;box-shadow:0 0 10px #fbbf24"></span> <span style="color:#fbbf24">Modul 2: Kunden</span></div>
+        <div class="slide-number-badge">Folie 03 / 07</div>
+      </div>
+      <div class="slide-body">
+        <div class="headline-category">Alle Kunden an einem Ort</div>
+        <h1 class="headline">Dein Kunden-<br /><span style="background: linear-gradient(135deg, #fbbf24, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Dashboard.</span></h1>
+        <div class="grid-2">
+          <div class="feature-card">
+            <div class="card-icon">📊</div>
+            <span class="badge" style="background:rgba(251,191,36,0.15);color:#fbbf24;border-color:rgba(251,191,36,0.3)">Überblick</span>
+            <h3>Alles auf einen Blick</h3>
+            <p>• Offene Angebote mit Status (gesendet, angenommen, abgelehnt)</p>
+            <p>• Aktive Aufträge mit Termin-Übersicht</p>
+            <p>• Kundenkontakte mit Adresse und Ansprechpartner</p>
+            <p>• Umsatz-Übersicht pro Monat auf einen Blick</p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">🔔</div>
+            <span class="badge" style="background:rgba(251,191,36,0.15);color:#fbbf24;border-color:rgba(251,191,36,0.3)">Automatisch</span>
+            <h3>Nie wieder vergessen</h3>
+            <p>• Erinnerung bei unbeantworteten Angeboten</p>
+            <p>• Fälligkeits-Warnungen für offene Rechnungen</p>
+            <p>• Wiederkehrende Aufträge automatisch im Blick</p>
+            <p>• Push-Benachrichtigungen direkt auf dem Handy</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div class="speaker-tip">💬 <em>Marcel, stell dir vor: Kein einziger Zettel mehr. Alles auf dem Handy, immer dabei.</em></div>
+        <div>KMU Service Harz × GoClean Harz</div>
+      </div>
+    </div>
+
+    <!-- FOLIE 4: CHECKLISTEN -->
+    <div class="slide" id="slide-4">
+      <div class="slide-header">
+        <div class="brand-tag"><span class="dot" style="background:#a78bfa;box-shadow:0 0 10px #a78bfa"></span> <span style="color:#a78bfa">Modul 3: Qualität</span></div>
+        <div class="slide-number-badge">Folie 04 / 07</div>
+      </div>
+      <div class="slide-body">
+        <div class="headline-category">Keine Reklamationen mehr</div>
+        <h1 class="headline">Digitale Checklisten &<br /><span style="background: linear-gradient(135deg, #a78bfa, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Foto-Protokolle.</span></h1>
+        <div class="grid-2">
+          <div class="feature-card">
+            <div class="card-icon">📱</div>
+            <span class="badge" style="background:rgba(167,139,250,0.15);color:#a78bfa;border-color:rgba(167,139,250,0.3)">3-Minuten-Check</span>
+            <h3>Für dich auf der Baustelle</h3>
+            <p>• <strong>Vorher-Foto:</strong> Zustand bei Ankunft dokumentieren</p>
+            <p>• <strong>Prüfpunkte:</strong> Sanitär ✓ Böden ✓ Müll ✓ Türklinken ✓</p>
+            <p>• <strong>Nachher-Foto:</strong> Sauberer Glanz als Arbeitsnachweis</p>
+            <p>• <strong>Zeitstempel:</strong> Automatische lückenlose Dokumentation</p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">✍️</div>
+            <span class="badge" style="background:rgba(167,139,250,0.15);color:#a78bfa;border-color:rgba(167,139,250,0.3)">Für Großkunden</span>
+            <h3>Digitales Abnahmeprotokoll</h3>
+            <p>• <strong>Vor-Ort-Unterschrift</strong> auf dem Smartphone</p>
+            <p>• <strong>Sofortiger Rechnungsanstoß</strong> nach Abnahme</p>
+            <p>• <strong>Automatische PDF-Archivierung</strong></p>
+            <p>• Kein Kunde kann mehr <strong>nachträglich reklamieren</strong></p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div class="speaker-tip">💬 <em>Marcel, das schützt dich vor jedem Kunden, der nachträglich behauptet, etwas wäre nicht sauber gewesen.</em></div>
+        <div>KMU Service Harz × GoClean Harz</div>
+      </div>
+    </div>
+
+    <!-- FOLIE 5: WHATSAPP -->
+    <div class="slide" id="slide-5">
+      <div class="slide-header">
+        <div class="brand-tag"><span class="dot" style="background:#fb7185;box-shadow:0 0 10px #fb7185"></span> <span style="color:#fb7185">Modul 4: Kommunikation</span></div>
+        <div class="slide-number-badge">Folie 05 / 07</div>
+      </div>
+      <div class="slide-body">
+        <div class="headline-category">Automatische Kundenkommunikation</div>
+        <h1 class="headline">WhatsApp<br /><span style="background: linear-gradient(135deg, #fb7185, #e11d48); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">auf Autopilot.</span></h1>
+        <div class="grid-2">
+          <div class="feature-card">
+            <div class="card-icon">💬</div>
+            <span class="badge" style="background:rgba(251,113,133,0.15);color:#fb7185;border-color:rgba(251,113,133,0.3)">Vorlagen</span>
+            <h3>Automatische Nachrichten</h3>
+            <p>• <strong>Terminbestätigung</strong> an Kunden am Vortag</p>
+            <p>• <strong>Auftrags-Update</strong> nach Fertigstellung</p>
+            <p>• <strong>Bewertungs-Bitte</strong> mit Google-Direktlink</p>
+            <p>• <strong>Saisonale Aktionen</strong> (Frühjahrsputz, Winterdienst)</p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">📅</div>
+            <span class="badge" style="background:rgba(251,113,133,0.15);color:#fb7185;border-color:rgba(251,113,133,0.3)">Smart</span>
+            <h3>Smarte Steuerung</h3>
+            <p>• Nachrichten zum <strong>optimalen Zeitpunkt</strong></p>
+            <p>• <strong>Kein Spam</strong> – nur relevante Kunden-Infos</p>
+            <p>• Du behältst <strong>volle Kontrolle</strong> über jeden Text</p>
+            <p>• <strong>Einmal freigeben</strong>, der Rest läuft automatisch</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div class="speaker-tip">💬 <em>Marcel, du musst keinem Kunden mehr hinterhertexten – das macht die App für dich.</em></div>
+        <div>KMU Service Harz × GoClean Harz</div>
+      </div>
+    </div>
+
+    <!-- FOLIE 6: RECHNUNGEN -->
+    <div class="slide" id="slide-6">
+      <div class="slide-header">
+        <div class="brand-tag"><span class="dot"></span> Modul 5: Finanzen</div>
+        <div class="slide-number-badge">Folie 06 / 07</div>
+      </div>
+      <div class="slide-body">
+        <div class="headline-category">Schluss mit Rechnungen tippen</div>
+        <h1 class="headline">Rechnungen per<br /><span style="background: linear-gradient(135deg, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Knopfdruck.</span></h1>
+        <div class="grid-2">
+          <div class="feature-card">
+            <div class="card-icon">🧾</div>
+            <span class="badge">1-Klick</span>
+            <h3>Automatische Rechnungen</h3>
+            <p>• <strong>Automatisch</strong> aus Angebot/Auftrag generiert</p>
+            <p>• <strong>Professionelles Layout</strong> mit GoClean Harz Logo</p>
+            <p>• <strong>Fortlaufende Rechnungsnummern</strong></p>
+            <p>• <strong>PDF per Mail oder WhatsApp</strong> an Kunden</p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">📊</div>
+            <span class="badge">Buchhaltung</span>
+            <h3>DATEV-Export</h3>
+            <p>• Alle Buchungen <strong>DATEV-kompatibel</strong></p>
+            <p>• Steuerberater bekommt <strong>saubere Daten</strong></p>
+            <p>• <strong>Keine doppelte Eingabe</strong> mehr nötig</p>
+            <p>• USt-Voranmeldung wird zum <strong>Kinderspiel</strong></p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div class="speaker-tip">💬 <em>Marcel, Auftrag erledigt → ein Klick → Rechnung beim Kunden. Fertig.</em></div>
+        <div>KMU Service Harz × GoClean Harz</div>
+      </div>
+    </div>
+
+    <!-- FOLIE 7: BEWERTUNGEN & SOCIAL MEDIA -->
+    <div class="slide" id="slide-7">
+      <div class="slide-header">
+        <div class="brand-tag"><span class="dot" style="background:#34d399;box-shadow:0 0 10px #34d399"></span> <span style="color:#34d399">Module 6 & 7: Marketing</span></div>
+        <div class="slide-number-badge">Folie 07 / 07</div>
+      </div>
+      <div class="slide-body">
+        <div class="headline-category">Mehr Sichtbarkeit, mehr Kunden</div>
+        <h1 class="headline">5-Sterne-Bewertungen &<br /><span style="background: linear-gradient(135deg, #34d399, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Social Media.</span></h1>
+        <div class="grid-2">
+          <div class="feature-card">
+            <div class="card-icon">⭐</div>
+            <span class="badge" style="background:rgba(52,211,153,0.15);color:#34d399;border-color:rgba(52,211,153,0.3)">Google</span>
+            <h3>Der Bewertungs-Booster</h3>
+            <p>• <strong>Automatische WhatsApp-Nachricht</strong> nach jedem Auftrag</p>
+            <p>• <strong>Direktlink</strong> zur Google-Bewertungsseite</p>
+            <p>• Ziel: <strong>50+ echte 5-Sterne-Bewertungen</strong> in 6 Monaten</p>
+            <p>• Lokale Dominanz für <strong>„Gebäudereinigung Harz"</strong></p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">📱</div>
+            <span class="badge" style="background:rgba(52,211,153,0.15);color:#34d399;border-color:rgba(52,211,153,0.3)">KI-Powered</span>
+            <h3>Social Media mit KI</h3>
+            <p>• KI schreibt <strong>Instagram/Facebook-Posts</strong> automatisch</p>
+            <p>• <strong>Vorher/Nachher-Bilder</strong> als Content-Material</p>
+            <p>• Regelmäßige Posts <strong>ohne Aufwand</strong> für Marcel</p>
+            <p>• <strong>Lokale Reichweite</strong> im Harzkreis aufbauen</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div class="speaker-tip">💬 <em>Marcel, mehr Google-Bewertungen = mehr Kunden. Und Social Media läuft komplett von alleine.</em></div>
+        <div>KMU Service Harz × GoClean Harz</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="controls">
+    <button class="btn-ctrl" id="prevBtn">◀ Zurück</button>
+    <div class="dot-indicators">
+      <div class="dot-nav active" onclick="goToSlide(0)"></div>
+      <div class="dot-nav" onclick="goToSlide(1)"></div>
+      <div class="dot-nav" onclick="goToSlide(2)"></div>
+      <div class="dot-nav" onclick="goToSlide(3)"></div>
+      <div class="dot-nav" onclick="goToSlide(4)"></div>
+      <div class="dot-nav" onclick="goToSlide(5)"></div>
+      <div class="dot-nav" onclick="goToSlide(6)"></div>
+    </div>
+    <button class="btn-ctrl" id="nextBtn">Weiter ▶</button>
+    <button class="btn-ctrl" id="pdfBtn" style="background:rgba(56,189,248,0.15);border-color:rgba(56,189,248,0.4);color:#38bdf8;">🖨️ PDF</button>
+  </div>
+  <div class="shortcut-hints">⌨️ <strong>Tasten:</strong> [◀ / ▶] oder [Leertaste] | [F] Vollbild | [P] Drucken</div>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.dot-nav');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    document.getElementById('pdfBtn').addEventListener('click', () => window.print());
+
+    function updateSlide() {
+      slides.forEach((s,i) => s.classList.toggle('active', i === currentSlide));
+      dots.forEach((d,i) => d.classList.toggle('active', i === currentSlide));
+      prevBtn.style.opacity = currentSlide === 0 ? '0.4' : '1';
+      nextBtn.textContent = currentSlide === slides.length - 1 ? 'Fertig 🎉' : 'Weiter ▶';
+    }
+    function nextSlide() { if (currentSlide < slides.length - 1) { currentSlide++; updateSlide(); } }
+    function prevSlide() { if (currentSlide > 0) { currentSlide--; updateSlide(); } }
+    function goToSlide(i) { currentSlide = i; updateSlide(); }
+
+    prevBtn.addEventListener('click', prevSlide);
+    nextBtn.addEventListener('click', () => { if (currentSlide === slides.length - 1) { currentSlide = 0; updateSlide(); } else nextSlide(); });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); nextSlide(); }
+      else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prevSlide(); }
+      else if (e.key === 'f' || e.key === 'F') { if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(()=>{}); else document.exitFullscreen().catch(()=>{}); }
+      else if (e.key === 'p' || e.key === 'P') window.print();
+    });
+
+    let tsx = 0;
+    document.addEventListener('touchstart', e => tsx = e.changedTouches[0].screenX);
+    document.addEventListener('touchend', e => { const tex = e.changedTouches[0].screenX; if (tex < tsx - 50) nextSlide(); if (tex > tsx + 50) prevSlide(); });
+    updateSlide();
+  </script>
+</body>
+</html>

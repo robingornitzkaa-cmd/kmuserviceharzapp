@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GoClean Harz – Präsentations-Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 100%);
+      --card-bg: rgba(30, 41, 59, 0.7);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --accent: #38bdf8;
+      --accent-emerald: #34d399;
+      --accent-amber: #fbbf24;
+      --accent-violet: #a78bfa;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-body);
+      background: #090d16;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 48px 24px;
+      background: var(--bg-gradient);
+    }
+
+    .container {
+      max-width: 1200px;
+      width: 100%;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .brand-tag {
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      background: rgba(56, 189, 248, 0.1);
+      padding: 6px 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(56, 189, 248, 0.2);
+    }
+
+    .brand-tag .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+
+    h1 span {
+      background: linear-gradient(135deg, #38bdf8, #34d399);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 24px;
+    }
+
+    .deck-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 28px;
+      backdrop-filter: blur(16px);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .deck-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(56, 189, 248, 0.4);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5), 0 0 30px -10px rgba(56, 189, 248, 0.2);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .card-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 4px 12px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .card-badge.cyan { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border-color: rgba(56, 189, 248, 0.3); }
+    .card-badge.emerald { background: rgba(52, 211, 153, 0.15); color: #34d399; border-color: rgba(52, 211, 153, 0.3); }
+    .card-badge.amber { background: rgba(251, 191, 36, 0.15); color: #fbbf24; border-color: rgba(251, 191, 36, 0.3); }
+    .card-badge.violet { background: rgba(167, 139, 250, 0.15); color: #a78bfa; border-color: rgba(167, 139, 250, 0.3); }
+
+    .slide-count {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.04);
+      padding: 4px 10px;
+      border-radius: 10px;
+    }
+
+    .card-icon {
+      font-size: 2.2rem;
+      margin-bottom: 12px;
+    }
+
+    .deck-card h2 {
+      font-family: var(--font-heading);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .deck-card p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+      margin-bottom: 20px;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 16px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .card-footer span.arrow {
+      transition: transform 0.2s ease;
+    }
+
+    .deck-card:hover .card-footer span.arrow {
+      transform: translateX(4px);
+    }
+
+    @media (max-width: 768px) {
+      body { padding: 24px 16px; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <div class="brand-tag">
+        <span class="dot"></span>
+        GoClean Harz × KMU Service Harz
+      </div>
+      <h1>Präsentations-<span>Auswahl</span></h1>
+      <p class="subtitle">Wähle die passende Variante für das Gespräch mit Marcel – je nach Situation, Laune und Zeit.</p>
+    </div>
+
+    <div class="grid">
+
+      <!-- VARIANTE 1 -->
+      <a href="pitch_bruder_emotional.html" class="deck-card">
+        <div>
+          <div class="card-top">
+            <span class="card-badge cyan">Persönlich</span>
+            <span class="slide-count">4 Folien</span>
+          </div>
+          <div class="card-icon">🤝</div>
+          <h2>Bruder-Pitch (Emotional)</h2>
+          <p>Lockerer Du-Tonfall: „Marcel, ich hab dir was gebaut." Fokus auf Feierabend, Entlastung und unseren Brüder-Deal.</p>
+        </div>
+        <div class="card-footer">
+          <span>Präsentation starten</span>
+          <span class="arrow">➔</span>
+        </div>
+      </a>
+
+      <!-- VARIANTE 6 -->
+      <a href="pitch_kompakt_ueberblick.html" class="deck-card">
+        <div>
+          <div class="card-top">
+            <span class="card-badge amber">Kompakt</span>
+            <span class="slide-count">3 Folien</span>
+          </div>
+          <div class="card-icon">⚡</div>
+          <h2>Power-Überblick (3 Min.)</h2>
+          <p>Ultra-kurzer Teaser: 8h Arbeit vs. Feierabend, die 6 Module auf einen Blick und sofortiger Call-to-Action.</p>
+        </div>
+        <div class="card-footer">
+          <span>Präsentation starten</span>
+          <span class="arrow">➔</span>
+        </div>
+      </a>
+
+      <!-- VARIANTE 3 -->
+      <a href="demo_app_features.html" class="deck-card">
+        <div>
+          <div class="card-top">
+            <span class="card-badge cyan">App-Demo</span>
+            <span class="slide-count">7 Folien</span>
+          </div>
+          <div class="card-icon">📱</div>
+          <h2>Feature-Walkthrough</h2>
+          <p>Jedes Modul im Detail: Blitz-Kalkulator, Dashboard, Foto-Checklisten, WhatsApp-Autopilot, Rechnungen & Bewertungen.</p>
+        </div>
+        <div class="card-footer">
+          <span>Präsentation starten</span>
+          <span class="arrow">➔</span>
+        </div>
+      </a>
+
+      <!-- VARIANTE 4 -->
+      <a href="pitch_ki_zukunft.html" class="deck-card">
+        <div>
+          <div class="card-top">
+            <span class="card-badge violet">Zukunft & KI</span>
+            <span class="slide-count">5 Folien</span>
+          </div>
+          <div class="card-icon">🧠</div>
+          <h2>KI & Zukunfts-Vision</h2>
+          <p>Wie KI GoClean Harz unterstützt: Automatischer Texter für Social Media, smarte Routenplanung & 24/7 Assistent.</p>
+        </div>
+        <div class="card-footer">
+          <span>Präsentation starten</span>
+          <span class="arrow">➔</span>
+        </div>
+      </a>
+
+      <!-- VARIANTE 5 -->
+      <a href="pitch_wachstum_solo.html" class="deck-card">
+        <div>
+          <div class="card-top">
+            <span class="card-badge emerald">Strategie</span>
+            <span class="slide-count">6 Folien</span>
+          </div>
+          <div class="card-icon">🚀</div>
+          <h2>Solo-Wachstumsplan</h2>
+          <p>Speziell für Einzelkämpfer: Als 1-Mann-Betrieb die Power von dreien nutzen. Inklusive konkretem 90-Tage-Fahrplan.</p>
+        </div>
+        <div class="card-footer">
+          <span>Präsentation starten</span>
+          <span class="arrow">➔</span>
+        </div>
+      </a>
+
+      <!-- VARIANTE 2 -->
+      <a href="pitch_professionell.html" class="deck-card">
+        <div>
+          <div class="card-top">
+            <span class="card-badge emerald">B2B / Business</span>
+            <span class="slide-count">5 Folien</span>
+          </div>
+          <div class="card-icon">📊</div>
+          <h2>Business-Pitch</h2>
+          <p>Sachlicher Tonfall: Branchenzahlen, ROI-Kalkulation (11h Zeitersparnis/Woche) und professioneller 3-Stufen-Plan.</p>
+        </div>
+        <div class="card-footer">
+          <span>Präsentation starten</span>
+          <span class="arrow">➔</span>
+        </div>
+      </a>
+
+      <!-- BESTEHENDE WACHSTUMSMAPPE -->
+      <a href="goclean_wachstumsmappe.html" class="deck-card">
+        <div>
+          <div class="card-top">
+            <span class="card-badge emerald">Akquise-Mappe</span>
+            <span class="slide-count">6 Folien</span>
+          </div>
+          <div class="card-icon">🏢</div>
+          <h2>Wachstums- & Akquise-Mappe</h2>
+          <p>Die bewährte Wachstums-Suite: Kalkulations-Tabellen, B2B-Zielgruppen (Hausverwaltungen, Praxen) und SOPs.</p>
+        </div>
+        <div class="card-footer">
+          <span>Präsentation starten</span>
+          <span class="arrow">➔</span>
+        </div>
+      </a>
+
+      <!-- BESTEHENDER VIP PITCH -->
+      <a href="pitch_goclean.html" class="deck-card">
+        <div>
+          <div class="card-top">
+            <span class="card-badge cyan">Original</span>
+            <span class="slide-count">4 Folien</span>
+          </div>
+          <div class="card-icon">⭐</div>
+          <h2>Original VIP-Pitch</h2>
+          <p>Der ursprüngliche 4-Folien VIP Pitch: Idee, Problem, Deal und nächster Schritt (Kaffee-Treffen).</p>
+        </div>
+        <div class="card-footer">
+          <span>Präsentation starten</span>
+          <span class="arrow">➔</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+</body>
+</html>

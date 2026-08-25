@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GoClean Harz – Professioneller Business-Pitch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at 50% 0%, #064e3b 0%, #022c22 40%, #090d16 100%);
+      --card-bg: rgba(6, 78, 59, 0.25);
+      --card-border: rgba(52, 211, 153, 0.2);
+      --accent: #34d399;
+      --accent-glow: rgba(52, 211, 153, 0.25);
+      --accent-cyan: #38bdf8;
+      --accent-amber: #fbbf24;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-body);
+      background: #06110f;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      user-select: none;
+    }
+
+    .deck-container {
+      width: 100vw; height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; background: var(--bg-gradient);
+    }
+
+    .slide {
+      position: absolute;
+      width: min(94vw, 1150px); height: min(88vh, 720px);
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 28px;
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7), 0 0 45px -10px var(--accent-glow);
+      padding: 40px 48px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      opacity: 0; visibility: hidden;
+      transform: scale(0.96) translateY(12px);
+      transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s;
+      overflow: hidden;
+    }
+
+    .slide.active { opacity: 1; visibility: visible; transform: scale(1) translateY(0); z-index: 10; }
+
+    .slide-header {
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 16px;
+    }
+
+    .brand-tag {
+      font-size: 0.9rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--accent);
+      display: flex; align-items: center; gap: 10px;
+    }
+
+    .brand-tag .dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--accent); box-shadow: 0 0 12px var(--accent);
+    }
+
+    .slide-number-badge {
+      font-size: 0.85rem; font-weight: 600; color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.05); padding: 4px 14px;
+      border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .slide-body {
+      flex: 1; display: flex; flex-direction: column;
+      justify-content: center; padding: 20px 0; overflow-y: auto;
+    }
+
+    .headline-category {
+      font-size: 0.95rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--accent-cyan); margin-bottom: 6px;
+    }
+
+    .headline {
+      font-family: var(--font-heading);
+      font-size: clamp(1.8rem, 3.2vw, 2.7rem);
+      font-weight: 800; line-height: 1.18; letter-spacing: -0.02em;
+      color: #ffffff; margin-bottom: 24px;
+    }
+
+    .gradient-emerald { background: linear-gradient(135deg, #34d399 0%, #10b981 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .gradient-cyan { background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .gradient-amber { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 18px; padding: 20px;
+      transition: all 0.2s ease;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+
+    .feature-card:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(52, 211, 153, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .feature-card .card-icon { font-size: 1.8rem; }
+    .feature-card h3 { font-size: 1.15rem; font-weight: 700; color: #ffffff; }
+    .feature-card p { font-size: 0.95rem; color: #cbd5e1; line-height: 1.45; }
+
+    .feature-card .badge {
+      align-self: flex-start; font-size: 0.75rem; font-weight: 600;
+      padding: 3px 10px; border-radius: 12px;
+      background: rgba(52, 211, 153, 0.15); color: #34d399;
+      border: 1px solid rgba(52, 211, 153, 0.3);
+    }
+
+    .table-container {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px; overflow: hidden;
+    }
+
+    table { width: 100%; border-collapse: collapse; font-size: 0.92rem; text-align: left; }
+    th { background: rgba(255, 255, 255, 0.05); padding: 12px 16px; color: var(--accent); font-weight: 700; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+    td { padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); color: #e2e8f0; }
+    tr:last-child td { border-bottom: none; }
+
+    .quote-box {
+      background: linear-gradient(135deg, rgba(52, 211, 153, 0.12) 0%, rgba(16, 185, 129, 0.05) 100%);
+      border: 1px solid rgba(52, 211, 153, 0.3);
+      border-left: 4px solid var(--accent);
+      padding: 16px 20px; border-radius: 14px;
+      font-size: 1.05rem; color: #ecfdf5;
+      display: flex; align-items: center; gap: 14px; margin-top: 12px;
+    }
+
+    .slide-footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 14px;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.88rem; color: var(--text-muted);
+    }
+
+    .speaker-tip {
+      display: flex; align-items: center; gap: 8px;
+      color: #34d399; background: rgba(52, 211, 153, 0.08);
+      padding: 6px 14px; border-radius: 12px; font-size: 0.85rem;
+    }
+
+    .controls {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      display: flex; align-items: center; gap: 12px;
+      background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 8px 18px; border-radius: 40px;
+      backdrop-filter: blur(14px); z-index: 100;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    }
+
+    .btn-ctrl {
+      background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-main); padding: 8px 16px; border-radius: 20px;
+      font-size: 0.9rem; font-weight: 600; cursor: pointer;
+      display: flex; align-items: center; gap: 6px; transition: all 0.2s ease;
+    }
+
+    .btn-ctrl:hover { background: var(--accent); color: #022c22; border-color: var(--accent); }
+
+    .dot-indicators { display: flex; gap: 8px; padding: 0 8px; }
+    .dot-nav { width: 10px; height: 10px; border-radius: 50%; background: rgba(255, 255, 255, 0.2); cursor: pointer; transition: all 0.2s ease; }
+    .dot-nav.active { background: var(--accent); width: 24px; border-radius: 10px; box-shadow: 0 0 10px var(--accent); }
+
+    .shortcut-hints {
+      position: fixed; bottom: 24px; right: 24px; color: var(--text-muted);
+      font-size: 0.8rem; background: rgba(15, 23, 42, 0.8);
+      padding: 6px 14px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    @media print {
+      body { background: #ffffff !important; color: #111827 !important; }
+      .controls, .shortcut-hints { display: none !important; }
+      .deck-container { height: auto !important; display: block !important; background: none !important; }
+      .slide { position: relative !important; width: 100% !important; height: 100vh !important; page-break-after: always !important; page-break-inside: avoid !important; opacity: 1 !important; visibility: visible !important; transform: none !important; background: #ffffff !important; color: #111827 !important; border: 2px solid #e2e8f0 !important; box-shadow: none !important; border-radius: 0 !important; padding: 40px !important; }
+      .headline { color: #0f172a !important; }
+      .headline span { color: #059669 !important; -webkit-text-fill-color: #059669 !important; }
+      .feature-card { background: #f8fafc !important; color: #1e293b !important; border: 1px solid #cbd5e1 !important; }
+      .feature-card h3 { color: #0f172a !important; }
+      .feature-card p { color: #334155 !important; }
+      .table-container { background: #ffffff !important; border: 1px solid #cbd5e1 !important; }
+      th { background: #f1f5f9 !important; color: #047857 !important; }
+      td { color: #1e293b !important; border-bottom: 1px solid #e2e8f0 !important; }
+      .quote-box { background: #ecfdf5 !important; color: #065f46 !important; border: 1px solid #a7f3d0 !important; }
+      .speaker-tip { color: #047857 !important; background: #d1fae5 !important; }
+    }
+
+    @media (max-width: 768px) {
+      .slide { padding: 20px 16px; height: 92vh; }
+      .headline { font-size: 1.5rem; margin-bottom: 16px; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; gap: 12px; }
+      .feature-card { padding: 14px; }
+      .feature-card h3 { font-size: 1rem; }
+      .feature-card p { font-size: 0.85rem; }
+      .controls { bottom: 12px; }
+      .shortcut-hints { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="deck-container">
+
+    <!-- FOLIE 1: COVER -->
+    <div class="slide active" id="slide-1">
+      <div class="slide-header">
+        <div class="brand-tag"><span class="dot"></span> GoClean Harz × KMU Service Harz</div>
+        <div class="slide-number-badge">Folie 01 / 05</div>
+      </div>
+      <div class="slide-body">
+        <div class="headline-category">Strategische Partnerschaft 2026</div>
+        <h1 class="headline">GoClean Harz.<br /><span class="gradient-emerald">Digital. Effizient. Profitabel.</span></h1>
+
+        <div class="grid-3">
+          <div class="feature-card">
+            <div class="card-icon">📊</div>
+            <span class="badge">Effizienz</span>
+            <h3>Bis zu 4 Stunden/Woche sparen</h3>
+            <p>Automatisierte Angebots- und Rechnungserstellung eliminiert manuelle Büroarbeit vollständig.</p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">💰</div>
+            <span class="badge">Marge</span>
+            <h3>Exakte Kalkulation</h3>
+            <p>Branchenspezifische m²-Leistungswerte stellen sicher, dass kein Auftrag unter Wert verkauft wird.</p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">🏆</div>
+            <span class="badge">Wachstum</span>
+            <h3>B2B-Akquise auf Knopfdruck</h3>
+            <p>Fertige Akquise-Vorlagen für Hausverwaltungen, Praxen und Bauträger im Harzkreis.</p>
+          </div>
+        </div>
+
+        <div class="quote-box">
+          <span>🤝</span>
+          <div><strong>Partnerschafts-Versprechen:</strong> GoClean Harz erhält als VIP-Partner den vollständigen Service – kostenfrei, unbefristet und mit persönlichem Support.</div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div class="speaker-tip">💬 <em>Für dich: „Marcel, ich möchte dir heute zeigen, wie wir GoClean Harz gemeinsam auf das nächste Level bringen."</em></div>
+        <div>GoClean Harz Digital Suite</div>
+      </div>
+    </div>
+
+    <!-- FOLIE 2: MARKTANALYSE -->
+    <div class="slide" id="slide-2">
+      <div class="slide-header">
+        <div class="brand-tag"><span class="dot"></span> GoClean Harz × KMU Service Harz</div>
+        <div class="slide-number-badge">Folie 02 / 05</div>
+      </div>
+      <div class="slide-body">
+        <div class="headline-category">Marktanalyse Gebäudereinigung</div>
+        <h1 class="headline">Warum 70% der Solo-Betriebe<br /><span class="gradient-amber">an Verwaltung scheitern.</span></h1>
+
+        <div class="grid-2">
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr><th>Kennzahl</th><th>Branchendurchschnitt</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>Verwaltungsaufwand</strong></td><td>15 – 20 Std. / Woche</td></tr>
+                <tr><td><strong>Fehlerquote manuell</strong></td><td>12 – 18 %</td></tr>
+                <tr><td><strong>Angebots-Reaktionszeit</strong></td><td>24 – 48 Stunden</td></tr>
+                <tr><td><strong>Kundenverlust / Verzögerung</strong></td><td>~ 15 % p.a.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">🔍</div>
+            <span class="badge">Kernproblem</span>
+            <h3>Die unsichtbare Wachstumsbremse</h3>
+            <p>Solo-Unternehmer investieren bis zu 25% ihrer Arbeitszeit in Verwaltung statt in wertschöpfende Tätigkeiten.</p>
+            <p>Jede Stunde Büroarbeit ist eine Stunde weniger Umsatz am Kunden.</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div class="speaker-tip">💬 <em>Für dich: „Diese Zahlen gelten für die gesamte Branche – aber wir können GoClean Harz davon befreien."</em></div>
+        <div>GoClean Harz Digital Suite</div>
+      </div>
+    </div>
+
+    <!-- FOLIE 3: DAS KOMPLETTPAKET -->
+    <div class="slide" id="slide-3">
+      <div class="slide-header">
+        <div class="brand-tag"><span class="dot"></span> GoClean Harz × KMU Service Harz</div>
+        <div class="slide-number-badge">Folie 03 / 05</div>
+      </div>
+      <div class="slide-body">
+        <div class="headline-category">Unsere Lösung</div>
+        <h1 class="headline">Das GoClean Harz<br /><span class="gradient-cyan">Komplettpaket.</span></h1>
+
+        <div class="grid-3">
+          <div class="feature-card">
+            <div class="card-icon">⚡</div>
+            <h3>Blitz-Kalkulator</h3>
+            <p>Professionelle Angebote in unter 3 Minuten mit branchenspezifischen m²-Leistungswerten.</p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">📋</div>
+            <h3>Qualitätssicherung</h3>
+            <p>Mobile Foto-Checklisten und digitale Abnahmeprotokolle für mangelfreie Übergabe.</p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">💬</div>
+            <h3>WhatsApp-Automation</h3>
+            <p>Automatisierte Kundenkommunikation: Terminbestätigung, Follow-Up, Bewertungsanfrage.</p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">📊</div>
+            <h3>Kunden-Dashboard</h3>
+            <p>Zentrale Übersicht aller Aufträge, Kunden und offenen Angebote auf dem Smartphone.</p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">🧾</div>
+            <h3>Rechnungs-Automation</h3>
+            <p>1-Klick-Rechnungserstellung mit DATEV-kompatibler Exportfunktion.</p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">⭐</div>
+            <h3>Bewertungs-Booster</h3>
+            <p>Systematischer Aufbau von Google-Bewertungen nach jedem abgeschlossenen Auftrag.</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div class="speaker-tip">💬 <em>Für dich: „Jedes einzelne dieser Module spart dir konkret messbare Zeit."</em></div>
+        <div>GoClean Harz Digital Suite</div>
+      </div>
+    </div>
+
+    <!-- FOLIE 4: ROI -->
+    <div class="slide" id="slide-4">
+      <div class="slide-header">
+        <div class="brand-tag"><span class="dot"></span> GoClean Harz × KMU Service Harz</div>
+        <div class="slide-number-badge">Folie 04 / 05</div>
+      </div>
+      <div class="slide-body">
+        <div class="headline-category">Wirtschaftlichkeit</div>
+        <h1 class="headline">Der messbare<br /><span class="gradient-emerald">Mehrwert.</span></h1>
+
+        <div class="grid-2">
+          <div class="feature-card">
+            <div class="card-icon">⏱️</div>
+            <span class="badge">Zeitersparnis</span>
+            <h3>Eingesparte Stunden pro Woche</h3>
+            <p>• <strong>Angebotserstellung:</strong> 3 – 4 Std. gespart</p>
+            <p>• <strong>Rechnungsstellung:</strong> 2 – 3 Std. gespart</p>
+            <p>• <strong>Kundenkommunikation:</strong> 1 – 2 Std. gespart</p>
+            <p>• <strong>Dokumentation:</strong> 1 – 2 Std. gespart</p>
+            <p style="margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.1);"><strong style="color: #34d399; font-size: 1.1rem;">GESAMT: Bis zu 11 Stunden/Woche</strong></p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">💰</div>
+            <span class="badge">Umsatzpotenzial</span>
+            <h3>Mehr Umsatz durch mehr Zeit</h3>
+            <p>• 11 Stunden mehr = <strong>2 – 3 zusätzliche Aufträge/Woche</strong></p>
+            <p>• Ø Auftragswert Gebäudereinigung: <strong>180 – 350 €</strong></p>
+            <p>• Potenzial: <strong>+1.500 – 4.000 € Mehrumsatz/Monat</strong></p>
+            <p>• Professionellere Außenwirkung = <strong>höhere Kundenbindung</strong></p>
+          </div>
+        </div>
+
+        <div class="quote-box">
+          <span>📈</span>
+          <div><strong>Fazit:</strong> Die eingesparte Verwaltungszeit ermöglicht GoClean Harz signifikantes Umsatzwachstum – bei gleichzeitig besserer Work-Life-Balance.</div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div class="speaker-tip">💬 <em>Für dich: „Marcel, 11 Stunden pro Woche – das ist mehr als ein ganzer Arbeitstag für Aufträge."</em></div>
+        <div>GoClean Harz Digital Suite</div>
+      </div>
+    </div>
+
+    <!-- FOLIE 5: FAHRPLAN -->
+    <div class="slide" id="slide-5">
+      <div class="slide-header">
+        <div class="brand-tag"><span class="dot"></span> GoClean Harz × KMU Service Harz</div>
+        <div class="slide-number-badge">Folie 05 / 05</div>
+      </div>
+      <div class="slide-body">
+        <div class="headline-category">Implementierung</div>
+        <h1 class="headline">Der 3-Stufen<br /><span class="gradient-cyan">Fahrplan.</span></h1>
+
+        <div class="grid-3">
+          <div class="feature-card">
+            <div class="card-icon">1️⃣</div>
+            <span class="badge">Phase 1: Analyse (30 Min.)</span>
+            <h3>Workflow-Mapping</h3>
+            <p>Gemeinsame Erfassung aller aktuellen Arbeitsabläufe: Von der Anfrage über die Ausführung bis zur Rechnungsstellung.</p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">2️⃣</div>
+            <span class="badge">Phase 2: Setup (1 Woche)</span>
+            <h3>System-Konfiguration</h3>
+            <p>Einrichtung aller Module mit den individuellen Stundensätzen, Leistungswerten und Kundendaten von GoClean Harz.</p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">3️⃣</div>
+            <span class="badge">Phase 3: Laufend</span>
+            <h3>Betreuung & Optimierung</h3>
+            <p>Kontinuierlicher VIP-Support, regelmäßige Optimierung und Anpassung an neue Anforderungen.</p>
+          </div>
+        </div>
+
+        <div class="quote-box">
+          <span>🚀</span>
+          <div><strong>Nächster Schritt:</strong> Ein gemeinsames Meeting – 30 Minuten, keine Vorbereitung nötig. Einfach den normalen Arbeitsalltag schildern.</div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div class="speaker-tip">💬 <em>Für dich: „Marcel, wann passt es dir diese Woche für 30 Minuten?"</em></div>
+        <div>GoClean Harz Digital Suite</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <button class="btn-ctrl" id="prevBtn">◀ Zurück</button>
+    <div class="dot-indicators">
+      <div class="dot-nav active" onclick="goToSlide(0)"></div>
+      <div class="dot-nav" onclick="goToSlide(1)"></div>
+      <div class="dot-nav" onclick="goToSlide(2)"></div>
+      <div class="dot-nav" onclick="goToSlide(3)"></div>
+      <div class="dot-nav" onclick="goToSlide(4)"></div>
+    </div>
+    <button class="btn-ctrl" id="nextBtn">Weiter ▶</button>
+    <button class="btn-ctrl" id="pdfBtn" style="background: rgba(52, 211, 153, 0.2); border-color: rgba(52, 211, 153, 0.5); color: #34d399;">🖨️ PDF</button>
+  </div>
+
+  <div class="shortcut-hints">⌨️ <strong>Tasten:</strong> [◀ / ▶] oder [Leertaste] | [F] Vollbild | [P] Drucken</div>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.dot-nav');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const pdfBtn = document.getElementById('pdfBtn');
+
+    function updateSlide() {
+      slides.forEach((s, i) => s.classList.toggle('active', i === currentSlide));
+      dots.forEach((d, i) => d.classList.toggle('active', i === currentSlide));
+      prevBtn.style.opacity = currentSlide === 0 ? '0.4' : '1';
+      nextBtn.textContent = currentSlide === slides.length - 1 ? 'Fertig 🎉' : 'Weiter ▶';
+    }
+
+    function nextSlide() { if (currentSlide < slides.length - 1) { currentSlide++; updateSlide(); } }
+    function prevSlide() { if (currentSlide > 0) { currentSlide--; updateSlide(); } }
+    function goToSlide(i) { currentSlide = i; updateSlide(); }
+
+    prevBtn.addEventListener('click', prevSlide);
+    nextBtn.addEventListener('click', () => { if (currentSlide === slides.length - 1) { currentSlide = 0; updateSlide(); } else { nextSlide(); } });
+    pdfBtn.addEventListener('click', () => window.print());
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); nextSlide(); }
+      else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prevSlide(); }
+      else if (e.key === 'f' || e.key === 'F') { if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(()=>{}); else document.exitFullscreen().catch(()=>{}); }
+      else if (e.key === 'p' || e.key === 'P') window.print();
+    });
+
+    let tsx = 0, tex = 0;
+    document.addEventListener('touchstart', e => tsx = e.changedTouches[0].screenX);
+    document.addEventListener('touchend', e => { tex = e.changedTouches[0].screenX; if (tex < tsx - 50) nextSlide(); if (tex > tsx + 50) prevSlide(); });
+
+    updateSlide();
+  </script>
+</body>
+</html>

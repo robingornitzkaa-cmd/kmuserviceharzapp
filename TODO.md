@@ -1,6 +1,16 @@
 # TODO - Founder OS
 
-### Wichtig
+- [x] **🎤 [GoClean Harz] Multi-Varianten Präsentations-Suite & Hub für Marcel:**
+  - 6 neue spezialisierte HTML-Präsentationen mit individuellem Fokus:
+    1. `pitch_bruder_emotional.html` (4 Folien, emotional/persönlich)
+    2. `pitch_professionell.html` (5 Folien, sachlich/Business ROI)
+    3. `demo_app_features.html` (7 Folien, Feature-Walkthrough aller Module)
+    4. `pitch_ki_zukunft.html` (5 Folien, KI-Vision & Social Media)
+    5. `pitch_wachstum_solo.html` (6 Folien, Solo-Wachstum & 90-Tage-Fahrplan)
+    6. `pitch_kompakt_ueberblick.html` (3 Folien, 60-Sekunden Power-Teaser)
+  - Präsentations-Center Hub-Seite (`public/goclean_praesentationen_hub.html`) mit Übersicht aller 8 Decks.
+  - Alle Folien mit Tastatursteuerung ([◀/▶], [F] Vollbild, [P] PDF-Druck), Touch-Swipe und Dark Glassmorphism Design.
+  - Personalisierung & Richtigstellung des Namens auf **Marcel** in allen Vorlagen.
 - [x] **🧼 [GoClean Harz] VIP-Wachstums- & Produktivitäts-Power-Paket (Bruder-Offensive 2026):**
   - Interaktives In-App Toolkit (`src/components/GoCleanToolkit.jsx`): Blitz-Kalkulator (m², Zeitbedarf, Material, Netto/Brutto für Unterhalt, Treppenhaus, Glas, Bau-Endreinigung, Winterdienst), 1-Klick B2B-Angebotstext-Generator, B2B-Akquise-Mappen für 3 Zielgruppen, mobile Qualitäts-SOP-Checkliste mit Fotobeweis und digitales Kunden-Abnahmeprotokoll mit Signatur.
   - Druckfertige, hochauflösende VIP-Präsentationsmappe (`public/goclean_wachstumsmappe.html` & `DOCS/GOCLEAN_HARZ_WACHSTUMS_STRATEGIE.md`) mit 6 Folien, Vollbildmodus und `@media print` PDF-Export.

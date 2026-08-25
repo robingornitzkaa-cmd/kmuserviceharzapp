@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GoClean Harz – Power-Überblick für Marcel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 100%);
+      --card-bg: rgba(30, 41, 59, 0.75);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --accent: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.3);
+      --accent-emerald: #34d399;
+      --accent-amber: #fbbf24;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-body);
+      background: #090d16;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      user-select: none;
+    }
+
+    .deck-container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      background: var(--bg-gradient);
+    }
+
+    .slide {
+      position: absolute;
+      width: min(92vw, 1100px);
+      height: min(84vh, 680px);
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 28px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7), 0 0 45px -10px var(--accent-glow);
+      padding: 44px 52px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(0.96) translateY(12px);
+      transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s;
+      overflow: hidden;
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1) translateY(0);
+      z-index: 10;
+    }
+
+    .slide-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 18px;
+    }
+
+    .brand-tag {
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-tag .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    .slide-number-badge {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 4px 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .slide-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 20px 0;
+      overflow-y: auto;
+    }
+
+    .headline-category {
+      font-size: 1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .headline {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 3.8vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      margin-bottom: 24px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .emerald-text {
+      background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .amber-text {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 20px;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .feature-card:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(56, 189, 248, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .feature-card .card-icon {
+      font-size: 1.8rem;
+    }
+
+    .feature-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .feature-card p {
+      font-size: 0.92rem;
+      color: #cbd5e1;
+      line-height: 1.4;
+    }
+
+    .feature-card .badge {
+      align-self: flex-start;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 12px;
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    .points-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-width: 900px;
+    }
+
+    .point-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+      line-height: 1.45;
+      color: #e2e8f0;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 14px 20px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.2s ease;
+    }
+
+    .point-item:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(56, 189, 248, 0.3);
+      transform: translateX(4px);
+    }
+
+    .point-item .icon {
+      font-size: 1.35rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .point-item strong {
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .quote-box {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.12) 0%, rgba(129, 140, 248, 0.05) 100%);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-left: 4px solid var(--accent);
+      padding: 16px 20px;
+      border-radius: 14px;
+      font-size: 1.05rem;
+      color: #f0f9ff;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .slide-footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .speaker-tip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.08);
+      padding: 6px 14px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+    }
+
+    .controls {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 8px 18px;
+      border-radius: 40px;
+      backdrop-filter: blur(14px);
+      z-index: 100;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    }
+
+    .btn-ctrl {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-main);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-ctrl:hover {
+      background: var(--accent);
+      color: #090d16;
+      border-color: var(--accent);
+    }
+
+    .dot-indicators { display: flex; gap: 8px; padding: 0 8px; }
+
+    .dot-nav {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .dot-nav.active {
+      background: var(--accent);
+      width: 24px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    .shortcut-hints {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      background: rgba(15, 23, 42, 0.8);
+      padding: 6px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    @media print {
+      body { background: #ffffff !important; color: #111827 !important; }
+      .controls, .shortcut-hints { display: none !important; }
+      .deck-container { height: auto !important; display: block !important; background: none !important; }
+      .slide {
+        position: relative !important; width: 100% !important; height: 100vh !important;
+        page-break-after: always !important; page-break-inside: avoid !important;
+        opacity: 1 !important; visibility: visible !important; transform: none !important;
+        background: #ffffff !important; color: #111827 !important;
+        border: 2px solid #e2e8f0 !important; box-shadow: none !important;
+        border-radius: 0 !important; padding: 40px !important;
+      }
+      .headline { color: #0f172a !important; }
+      .headline span { color: #0284c7 !important; -webkit-text-fill-color: #0284c7 !important; }
+      .feature-card { background: #f8fafc !important; color: #1e293b !important; border: 1px solid #cbd5e1 !important; }
+      .feature-card h3 { color: #0f172a !important; }
+      .feature-card p { color: #334155 !important; }
+      .point-item { background: #f8fafc !important; color: #1e293b !important; border: 1px solid #e2e8f0 !important; }
+      .point-item strong { color: #0f172a !important; }
+      .quote-box { background: #f0f9ff !important; color: #0369a1 !important; border: 1px solid #bae6fd !important; }
+      .speaker-tip { color: #0369a1 !important; background: #f0f9ff !important; }
+    }
+
+    @media (max-width: 768px) {
+      .slide { padding: 20px 16px; height: 92vh; }
+      .headline { font-size: 1.5rem; margin-bottom: 16px; }
+      .grid-3, .grid-2 { grid-template-columns: 1fr; gap: 10px; }
+      .feature-card { padding: 12px; }
+      .controls { bottom: 12px; }
+      .shortcut-hints { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="deck-container">
+
+    <!-- FOLIE 1: DAS PROBLEM -->
+    <div class="slide active" id="slide-1">
+      <div class="slide-header">
+        <div class="brand-tag">
+          <span class="dot"></span>
+          KMU Service Harz × GoClean Harz
+        </div>
+        <div class="slide-number-badge">Folie 01 / 03</div>
+      </div>
+
+      <div class="slide-body">
+        <div class="headline-category">Der Status Quo</div>
+        <h1 class="headline">
+          8h Arbeiten. 3h Büro.<br />
+          <span class="amber-text">0h Feierabend?</span>
+        </h1>
+
+        <div class="points-list">
+          <div class="point-item">
+            <span class="icon">⌛</span>
+            <div><strong>Das Dilemma:</strong> Du gibst tagsüber alles auf der Baustelle – und abends warten noch Angebote, Zettel und Rechnungen auf dem Küchentisch.</div>
+          </div>
+          <div class="point-item">
+            <span class="icon">🛑</span>
+            <div><strong>Verlorene Lebenszeit:</strong> Stunden, die dir für Familie, Sport und echten Feierabend fehlen – und die dir niemand bezahlt.</div>
+          </div>
+          <div class="point-item">
+            <span class="icon">⚡</span>
+            <div><strong>Die Lösung:</strong> Du musst kein IT-Profi werden. Ich habe die Systeme gebaut, die dir das Büro komplett abnehmen.</div>
+          </div>
+        </div>
+
+        <div class="quote-box">
+          <span>💡</span>
+          <div><strong>Marcel, die Frage ist:</strong> Willst du abends weiter Zettel tippen – oder ab jetzt mit einem Klick Feierabend haben?</div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <div class="speaker-tip">
+          💬 <em>Für dich: „Marcel, schau dir die nächsten 2 Folien an – genau 60 Sekunden."</em>
+        </div>
+        <div>GoClean Harz Power-Pitch</div>
+      </div>
+    </div>
+
+    <!-- FOLIE 2: DIE LÖSUNG AUF EINEN BLICK -->
+    <div class="slide" id="slide-2">
+      <div class="slide-header">
+        <div class="brand-tag">
+          <span class="dot"></span>
+          Die 6 Power-Module
+        </div>
+        <div class="slide-number-badge">Folie 02 / 03</div>
+      </div>
+
+      <div class="slide-body">
+        <div class="headline-category">Alles in einer App</div>
+        <h1 class="headline">
+          Dein Büro auf<br />
+          <span class="gradient-text">Autopilot.</span>
+        </h1>
+
+        <div class="grid-3">
+          <div class="feature-card">
+            <div class="card-icon">⚡</div>
+            <span class="badge">In 3 Min.</span>
+            <h3>Blitz-Kalkulator</h3>
+            <p>Fläche eingeben ➔ fertiges Angebot per WhatsApp versenden.</p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">📱</div>
+            <span class="badge">Kein Zettelchaos</span>
+            <h3>Kunden & Termine</h3>
+            <p>Alle Aufträge, Kontakte und Termine live auf dem Handy.</p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">📸</div>
+            <span class="badge">Sicherheit</span>
+            <h3>Foto-Checklisten</h3>
+            <p>Vorher/Nachher-Bilder stoppen jede Kunden-Reklamation.</p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">🧾</div>
+            <span class="badge">1-Klick</span>
+            <h3>Rechnungen & DATEV</h3>
+            <p>Auftrag fertig ➔ Rechnung raus ➔ DATEV-Export bereit.</p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">💬</div>
+            <span class="badge">Automatisch</span>
+            <h3>WhatsApp-Autopilot</h3>
+            <p>Termin-Erinnerungen & Updates ganz ohne Tipparbeit.</p>
+          </div>
+          <div class="feature-card">
+            <div class="card-icon">⭐</div>
+            <span class="badge">Wachstum</span>
+            <h3>5-Sterne-Booster</h3>
+            <p>Automatische Google-Bewertungen für Top-Rankings im Harz.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <div class="speaker-tip">
+          💬 <em>Für dich: „Das läuft alles auf deinem Smartphone – einfach, schnell, ohne Schulung."</em>
+        </div>
+        <div>GoClean Harz Power-Pitch</div>
+      </div>
+    </div>
+
+    <!-- FOLIE 3: DER DEAL & NÄCHSTE SCHRITTE -->
+    <div class="slide" id="slide-3">
+      <div class="slide-header">
+        <div class="brand-tag">
+          <span class="dot"></span>
+          Unser Brüder-Deal
+        </div>
+        <div class="slide-number-badge">Folie 03 / 03</div>
+      </div>
+
+      <div class="slide-body">
+        <div class="headline-category">So legen wir los</div>
+        <h1 class="headline">
+          Ein Kaffee. 15 Minuten.<br />
+          <span class="emerald-text">Dein neues Büro.</span>
+        </h1>
+
+        <div class="points-list">
+          <div class="point-item">
+            <span class="icon">🎁</span>
+            <div><strong>100% kostenlos für dich:</strong> Du bist mein Bruder und VIP-Kunde #1. Du bezahlst keinen einzigen Cent.</div>
+          </div>
+          <div class="point-item">
+            <span class="icon">☕</span>
+            <div><strong>Null Vorbereitung:</strong> Wir trinken einen Kaffee, du zeigst mir deinen typischen Tag – ich richte dir alles ein.</div>
+          </div>
+          <div class="point-item">
+            <span class="icon">🚀</span>
+            <div><strong>Sofortige Entlastung:</strong> Schon ab nächster Woche sparst du jeden Tag wertvolle Stunden im Büro.</div>
+          </div>
+        </div>
+
+        <div class="quote-box">
+          <span>🤝</span>
+          <div><strong>Brüder-Versprechen:</strong> Du machst erstklassige Arbeit beim Kunden – ich halte dir den Rücken frei. Wann trinken wir einen Kaffee?</div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <div class="speaker-tip">
+          💬 <em>Für dich: „Marcel, sag mir einfach welchen Tag diese Woche du Zeit für einen Kaffee hast!"</em>
+        </div>
+        <div>GoClean Harz Power-Pitch</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Interactive Controls -->
+  <div class="controls">
+    <button class="btn-ctrl" id="prevBtn" title="Vorherige Folie">◀ Zurück</button>
+    <div class="dot-indicators" id="dotsContainer">
+      <div class="dot-nav active" onclick="goToSlide(0)"></div>
+      <div class="dot-nav" onclick="goToSlide(1)"></div>
+      <div class="dot-nav" onclick="goToSlide(2)"></div>
+    </div>
+    <button class="btn-ctrl" id="nextBtn" title="Nächste Folie">Weiter ▶</button>
+    <button class="btn-ctrl" id="pdfBtn" title="Als PDF drucken" style="background: rgba(56, 189, 248, 0.15); border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;">🖨️ PDF</button>
+  </div>
+
+  <div class="shortcut-hints">
+    ⌨️ <strong>Tasten:</strong> [◀ / ▶] oder [Leertaste] | [F] Vollbild | [P] Drucken
+  </div>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.dot-nav');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const pdfBtn = document.getElementById('pdfBtn');
+
+    function updateSlide() {
+      slides.forEach((slide, index) => {
+        slide.classList.toggle('active', index === currentSlide);
+      });
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentSlide);
+      });
+      prevBtn.style.opacity = currentSlide === 0 ? '0.4' : '1';
+      nextBtn.textContent = currentSlide === slides.length - 1 ? 'Fertig 🎉' : 'Weiter ▶';
+    }
+
+    function nextSlide() {
+      if (currentSlide < slides.length - 1) {
+        currentSlide++;
+        updateSlide();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateSlide();
+      }
+    }
+
+    function goToSlide(index) {
+      currentSlide = index;
+      updateSlide();
+    }
+
+    prevBtn.addEventListener('click', prevSlide);
+    nextBtn.addEventListener('click', () => {
+      if (currentSlide === slides.length - 1) {
+        currentSlide = 0;
+        updateSlide();
+      } else {
+        nextSlide();
+      }
+    });
+
+    pdfBtn.addEventListener('click', () => {
+      window.print();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        prevSlide();
+      } else if (e.key === 'f' || e.key === 'F') {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(() => {});
+        } else {
+          document.exitFullscreen().catch(() => {});
+        }
+      } else if (e.key === 'p' || e.key === 'P') {
+        window.print();
+      }
+    });
+
+    let touchStartX = 0, touchEndX = 0;
+    document.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; });
+    document.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      if (touchEndX < touchStartX - 50) nextSlide();
+      if (touchEndX > touchStartX + 50) prevSlide();
+    });
+
+    updateSlide();
+  </script>
+</body>
+</html>
