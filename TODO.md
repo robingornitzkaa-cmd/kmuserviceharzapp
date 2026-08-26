@@ -1,5 +1,14 @@
 # TODO - Founder OS
 
+- [x] **🧼 [GoClean Harz × Manus AI] Deep-Research Master-Prompt Suite (`DOCS/MANUS_GOCLEAN_DEEP_RESEARCH_PROMPTS.md` & `manus_power_cockpit.html`):**
+  - Standalone Master-Dokument mit 4 hochkarätigen Deep-Research Prompts im XML-Tag-Format für Manus AI:
+    1. *Modul 1: Regionaler Marktatlas & Wettbewerbs-Audit (30–40 km Harz: Goslar, Langelsheim, Bad Harzburg, Wernigerode, Clausthal-Zellerfeld, Osterode, Salzgitter-Süd).*
+    2. *Modul 2: B2B-Liegenschaften & Kombi-Auftraggeber (50+ Leads: Hausverwaltungen, Bauträger, WEGs, Gewerbeparks für Reinigung & Garten).*
+    3. *Modul 3: Kommunale Vergaben & Ausschreibungs-Radar (Schulen, Kitas, Liegenschaftsämter, Wohnungsbaugesellschaften Harz).*
+    4. *Modul 4: Hochmargige Spezial-Dienste & 12-Monats-Saison-Kalkulation (PV-Reinigung, Winterdienst, Heckenschnitt, Bauendreinigung).*
+  - Vollständige Integration aller 5 Modi in das interaktive Cockpit (`manus_power_cockpit.html`) mit 1-Klick Copy-to-Clipboard.
+  - Schritt-für-Schritt Auswertungs- & Umsetzungs-Leitfaden für den schnellen B2B-Verkaufsabschluss vor Ort.
+
 - [x] **🤖 [Manus AI] Interaktives Power-Cockpit & Automatisierungs-Playbook (`manus_power_cockpit.html`):**
   - Standalone HTML-Cockpit mit dynamischem Prompt-Generator für alle 4 Kern-Workflows (B2B Lead-Scout, Fördermittel & Ausschreibungen, Live Website-Audit & Testing, Dokumenten- & Vertrags-Check, Web-Tool Generator).
   - Integrierter 7-Tage-Aktionsplan zur systematischen Abarbeitung und einsatzbereite B2B-Akquise-E-Mail-Vorlagen mit 1-Klick Copy-to-Clipboard.

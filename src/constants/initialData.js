@@ -612,7 +612,7 @@ Wenn der Meister mitten im Baustellenlärm abnimmt (*„Ich stehe auf dem Gerüs
     status: 'synced',
     url: '/goclean_wachstumsmappe.html',
     content: `# 🧼 GoClean Harz – Wachstums- & Produktivitäts-Mappe
-> **Das Rundum-Power-Paket für Christian Gornitzka | Erstellt von KMU Service Harz**
+> **Das Rundum-Power-Paket für Marcel Gornitzka | Erstellt von KMU Service Harz**
 
 ## 1. Übersicht der 4 Kernsäulen
 1. **Blitz-Angebotsrechner**: Kalkulation von m², Stundenverrechnungssatz und Materialaufschlag in 30 Sekunden.
@@ -628,9 +628,36 @@ Wenn der Meister mitten im Baustellenlärm abnimmt (*„Ich stehe auf dem Gerüs
 - **Winterdienst / Grünpflege:** 300–500 m²/h | Stundensatz: 45,00–65,00 €/h
 
 ## 3. Direkter Zugriff auf interaktive Tools
+- 🎛️ **Präsentations-Center Hub:** \`/goclean_praesentationen_hub.html\`
+- 🤝 **Bruder-Pitch (Emotional):** \`/pitch_bruder_emotional.html\`
+- ⚡ **Power-Überblick (60s):** \`/pitch_kompakt_ueberblick.html\`
+- 📱 **App Feature-Demo:** \`/demo_app_features.html\`
+- 🧠 **KI- & Zukunfts-Vision:** \`/pitch_ki_zukunft.html\`
+- 🚀 **Solo-Wachstumsplan:** \`/pitch_wachstum_solo.html\`
+- 📊 **Business-Pitch:** \`/pitch_professionell.html\`
 - 🖨️ **Druckbare VIP-Präsentationsmappe:** \`/goclean_wachstumsmappe.html\`
-- 📊 **VIP-Pitch Deck:** \`/pitch_goclean.html\`
 - ⚡ **In-App Live Toolkit:** Über den Sidebar-Reiter „🧼 GoClean Harz Suite“`
+  },
+  {
+    id: 'd_manus_presentation_prompts',
+    title: 'MANUS_PROMPTS_GOCLEAN_PRAESENTATIONEN.md',
+    tags: ['manus', 'prompts', 'präsentation', 'goclean', 'pitch', 'ki', 'vorlage'],
+    category: 'vertrieb',
+    status: 'synced',
+    url: '/goclean_praesentationen_hub.html',
+    content: `# 🎤 GoClean Harz × Manus AI – Präsentations-Generator Master-Suite
+> **Hochoptimierte XML-Prompts für Manus AI zur Erstellung aller 8 GoClean Harz Präsentationen**
+
+Enthält schlüsselfertige Master-Prompts für:
+1. **Bruder-Pitch (Emotional - 4 Folien)**
+2. **Business-Pitch (Sachlich & ROI - 5 Folien)**
+3. **App Feature-Walkthrough (Produkt-Demo - 7 Folien)**
+4. **KI & Zukunfts-Vision (Social Media & Automation - 5 Folien)**
+5. **Solo-Wachstumsplan (Einzelkämpfer-Offensive - 6 Folien)**
+6. **Power-Überblick (Ultra-Kompakt / 60s Teaser - 3 Folien)**
+7. **Master-Hub & Präsentations-Portal (Web-App)**
+
+*Vollständige Prompts in \`DOCS/MANUS_PROMPTS_GOCLEAN_PRAESENTATIONEN.md\`.*`
   }
 ];
 

@@ -5,11 +5,30 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **🧼 GoClean Harz × Manus AI – Deep-Research Master-Prompt Suite (`DOCS/MANUS_GOCLEAN_DEEP_RESEARCH_PROMPTS.md` & `manus_power_cockpit.html`):**
+  - **4 spezialisierte Master-Prompts im XML-Tag-Format:**
+    - *🗺️ Master-Prompt 1: Regionaler Marktatlas & Wettbewerbs-Audit (30–40 km Harz)* – Vollständige Analyse aller Reinigungs-, GaLa- und Hausmeisterbetriebe in Goslar, Langelsheim, Bad Harzburg, Wernigerode, Clausthal-Zellerfeld, Osterode & Salzgitter-Süd inkl. Stundensätzen, Google-Rezensionslücken und unbesetzten Marktlücken.
+    - *🎯 Master-Prompt 2: B2B-Liegenschaften & Kombi-Auftraggeber (50+ Leads)* – Strukturierte Datenerfassung von Hausverwaltungen, WEG-Verwaltern, Bauträgern, Ärztehäusern und Gewerbeparks für das lukrative Kombipaket (Innenreinigung + Außenanlagenpflege).
+    - *🏛️ Master-Prompt 3: Kommunale Vergaben & Ausschreibungs-Radar* – Vergabeplattformen, Wertgrenzen für freihändige Vergaben, Ansprechpartner in Liegenschaftsämtern und Bieterkartei-Eintragung.
+    - *📊 Master-Prompt 4: Hochmargige Spezial-Dienste & 12-Monats-Kalkulation* – m²/h Leistungswerte, Netto-Stundensätze, Margen für Photovoltaik-, Baufein-, Winterdienst- und Heckenschnitt-Services sowie 12-Monate-Liquiditätsplan.
+  - **Multi-Mode UI-Erweiterung im Manus Power-Cockpit (`manus_power_cockpit.html`):** Schnelle Umschaltung zwischen allen 5 Prompts (Web-App Builder + 4 Deep Researches) mit 1-Klick Zwischenablagen-Kopie.
+  - **Praxis-Leitfaden:** Schritt-für-Schritt Anleitung zur Transformation der generierten CSV-Leadlisten in Vor-Ort-Abschlüsse mit dem GoClean Blitz-Kalkulator.
+
 - **🤖 Manus.ai Power-Cockpit & Playbook (`manus_power_cockpit.html`):**
   - **Dynamischer Prompt-Generator:** 6 spezialisierte Module (Lead-Scout, Fördermittel & Ausschreibungen, Live Website-Audit, Dokumenten- & Vertrags-Check, Web-Tool Generator sowie **GoClean 3-Portal Suite Master-Generator**) mit anpassbaren Feldern und 1-Klick Copy-to-Clipboard.
-  - **7-Tage-Aktionsplan:** Strukturierte Schritt-für-Schritt Roadmap zur systematischen Nutzung von Manus.ai für lokale KMU.
+  - **7-Aktionsplan:** Strukturierte Schritt-für-Schritt Roadmap zur systematischen Nutzung von Manus.ai für lokale KMU.
   - **Akquise-Vorlagen:** Fertige E-Mail-Templates (Website-Audit Kaltakquise & Fördermittel-Guide Türöffner) zum direkten Versand an Leads.
-
+### Added
+- **🤖 Manus AI Präsentations-Generator Master-Suite (`DOCS/MANUS_PROMPTS_GOCLEAN_PRAESENTATIONEN.md`):**
+  - **7 schlüsselfertige XML-Master-Prompts** für autonome KI-Generatoren wie Manus AI:
+    - *Master-Prompt 1:* Emotionaler Bruder-Pitch (4 Folien)
+    - *Master-Prompt 2:* Sachlicher Business- & ROI-Pitch (5 Folien)
+    - *Master-Prompt 3:* App Feature-Walkthrough (7 Folien)
+    - *Master-Prompt 4:* KI- & Zukunfts-Vision (5 Folien)
+    - *Master-Prompt 5:* Solo-Wachstumsplan (6 Folien)
+    - *Master-Prompt 6:* 60s Power-Überblick (3 Folien)
+    - *Master-Prompt 7:* Master-Hub & Präsentations-Portal
+  - Vollständige Integration in `DocsHub` (`INITIAL_DOCS`) mit 1-Klick Quick-Copy.
 - **🎤 GoClean Harz – Multi-Varianten Präsentations-Suite & In-App Galerie für Marcel:**
   - **Neuer Tab 5 im Toolkit (`src/components/GoCleanToolkit.jsx`):** Dedizierte Präsentations-Galerie mit allen 8 Decks, Kategorie-Filtern (Pitches, Demos, Solo-Wachstum, KI & Zukunft) und Einzel-Buttons für jedes Deck.
   - **In-App Live-Präsentations-Modal:** Jede Präsentation kann mit 1 Klick direkt in der App in einem responsiven Vollbild-Iframe mit Deck-Wechsler, Tastatursteuerung und Druckfunktion getestet werden.

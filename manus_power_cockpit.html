@@ -332,11 +332,11 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                         <div>
                             <label class="block text-xs font-semibold text-slate-300 mb-1">Inhaber & Firmenname</label>
-                            <input type="text" id="gc-company" value="GoClean Harz (Inhaber: Marcel Gornitzka)" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:border-emerald-500 focus:outline-none">
+                            <input type="text" id="gc-company" value="GoClean Harz (Inhaber: Christian Gornitzka)" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:border-emerald-500 focus:outline-none">
                         </div>
                         <div>
                             <label class="block text-xs font-semibold text-slate-300 mb-1">Einsatzgebiet / Region</label>
-                            <input type="text" id="gc-region" value="Landkreis Harz (Wernigerode, Goslar, Halberstadt, Blankenburg, Quedlinburg)" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:border-emerald-500 focus:outline-none">
+                            <input type="text" id="gc-region" value="Langelsheim / Goslar (30-40 km Radius: Goslar, Bad Harzburg, Wernigerode, Clausthal-Zellerfeld, Osterode, Salzgitter-Süd)" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:border-emerald-500 focus:outline-none">
                         </div>
                         <div class="md:col-span-2">
                             <label class="block text-xs font-semibold text-slate-300 mb-1">Haupt-Dienstleistungen</label>
@@ -344,9 +344,31 @@
                         </div>
                     </div>
 
+                    <!-- Prompt Mode Selector -->
+                    <div class="mb-4">
+                        <label class="block text-xs font-semibold text-slate-300 mb-2">Prompt-Auswahl für Manus.ai:</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                            <button type="button" onclick="selectGcPrompt('suite')" id="gc-btn-suite" class="gc-prompt-btn active px-3 py-2 rounded-lg text-xs font-semibold text-left border bg-emerald-500/20 text-emerald-300 border-emerald-500/40">
+                                📱 1. Web-App & 3 Portale
+                            </button>
+                            <button type="button" onclick="selectGcPrompt('market')" id="gc-btn-market" class="gc-prompt-btn px-3 py-2 rounded-lg text-xs font-semibold text-left border bg-slate-950 text-slate-400 border-slate-800 hover:border-slate-700">
+                                🗺️ 2. Deep Research: Marktatlas
+                            </button>
+                            <button type="button" onclick="selectGcPrompt('leads')" id="gc-btn-leads" class="gc-prompt-btn px-3 py-2 rounded-lg text-xs font-semibold text-left border bg-slate-950 text-slate-400 border-slate-800 hover:border-slate-700">
+                                🎯 3. Deep Research: 50+ B2B Leads
+                            </button>
+                            <button type="button" onclick="selectGcPrompt('tenders')" id="gc-btn-tenders" class="gc-prompt-btn px-3 py-2 rounded-lg text-xs font-semibold text-left border bg-slate-950 text-slate-400 border-slate-800 hover:border-slate-700">
+                                🏛️ 4. Deep Research: Vergaben
+                            </button>
+                            <button type="button" onclick="selectGcPrompt('calc')" id="gc-btn-calc" class="gc-prompt-btn px-3 py-2 rounded-lg text-xs font-semibold text-left border bg-slate-950 text-slate-400 border-slate-800 hover:border-slate-700">
+                                📊 5. Deep Research: Kalkulation
+                            </button>
+                        </div>
+                    </div>
+
                     <div class="relative">
                         <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs font-semibold text-emerald-400">Generierter Master-Prompt für Manus.ai:</span>
+                            <span id="gc-prompt-label" class="text-xs font-semibold text-emerald-400">Generierter Master-Prompt für Manus.ai (Web-App & 3-Portal Suite):</span>
                             <button onclick="copyPrompt('prompt-goclean')" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition shadow-md shadow-emerald-600/30">
                                 <span>📋</span> In Zwischenablage kopieren
                             </button>
@@ -590,49 +612,149 @@ Erforderliche Features: ${toolFeatures}.
 Design: Modern, dunkel/hell umschaltbar, mobil optimiert.
 Teste die Anwendung in deiner Umgebung und stelle die fertige index.html zum Download bereit.`;
 
-            // 6. GoClean 3-Portal Suite Master Prompt
+            // 6. GoClean Prompts (Multi-Mode)
             const gcCompany = document.getElementById('gc-company').value;
             const gcRegion = document.getElementById('gc-region').value;
             const gcServices = document.getElementById('gc-services').value;
 
-            document.getElementById('prompt-goclean').value = 
+            if (currentGcPromptMode === 'market') {
+                document.getElementById('gc-prompt-label').innerText = "Generierter Master-Prompt: 🗺️ Deep Research 1 (Regionaler Marktatlas & Wettbewerbs-Audit)";
+                document.getElementById('prompt-goclean').value = 
+`<ROLE>
+Du bist ein führender Senior-Marktforscher und Unternehmensberater für das Handwerk, spezialisiert auf Gebäudereinigung, Hausmeisterservices und Garten-/Landschaftspflege in Deutschland. Du arbeitest mit kompromissloser Präzision, belegbaren Daten und tiefgreifender Marktlogik.
+</ROLE>
+
+<GOAL>
+Führe eine lückenlose, tiefgehende Marktanalyse und ein Wettbewerbs-Audit für das Unternehmen "${gcCompany}" im Kerngebiet Harz durch. Identifiziere alle direkten und indirekten Mitbewerber, analysiere deren Stärken/Schwächen, ermittle marktübliche Preise und decke profitable Angebotslücken auf.
+</GOAL>
+
+<CONTEXT>
+- Unternehmen: ${gcCompany}
+- Standort: 38685 Langelsheim / Landkreis Goslar
+- Positionierung: Zuverlässiger Full-Service-Partner für Liegenschaften – "Innen makellos sauber, außen perfekt gepflegt" (Kombination aus professioneller Gebäudereinigung und Garten-/Liegenschaftspflege).
+- Zielkunden: Hausverwaltungen, WEGs, Gewerbebetriebe, Praxen, Bauträger und anspruchsvolle Privathaushalte.
+- Leistungen: ${gcServices}
+</CONTEXT>
+
+<SEARCH_RADIUS>
+Analysiere alle Betriebe in einem Radius von 30 bis 40 km um Langelsheim:
+- Landkreis Goslar: Langelsheim, Goslar, Bad Harzburg, Liebenburg, Clausthal-Zellerfeld, Braunlage, Seesen
+- Landkreis Harz: Wernigerode, Blankenburg, Ilsenburg, Osterwieck
+- Landkreis Göttingen: Osterode am Harz, Herzberg am Harz
+- Angrenzend: Salzgitter (insb. Salzgitter-Bad / Süd)
+</SEARCH_RADIUS>
+
+<EXECUTION_PROTOCOL>
+1. SYSTEMATISCHE WETTBEWERBER-ERFASSUNG:
+   - Suche über Google Maps, Gelbe Seiten, Handwerkskammern und Register nach Gebäudereinigern, GaLa-Bauern und Hausmeisterbetrieben. Erfasse 25-40 relevante Betriebe.
+2. DETAIL-AUDIT PRO WETTBEWERBER:
+   - Google-Bewertungen, Beschwerden, Digitaler Reifegrad, Kombi-Angebot-Check.
+3. PREIS- & STUNDENSATZ-BENCHMARKING:
+   - Netto-Stundensätze & m²-Preise für Unterhalts-, Treppenhaus-, Glas-, Bau- und Gartenpflege.
+4. GAP- & CHANCEN-ANALYSE:
+   - Identifiziere 3 unbesetzte Marktlücken im Harz.
+</EXECUTION_PROTOCOL>
+
+<OUTPUT_DELIVERABLES>
+1. TABELLE: WETTBEWERBER-MATRIX (CSV-kompatibel):
+   | Unternehmensname | Standort | Kernleistungen (Reinigung / Garten / Beides) | Google Rating (# Reviews) | Größte Schwachstelle | Website & Kontakt | Bedrohungspotenzial |
+2. STRATEGIE-DOSSIER:
+   - Detaillierter Preisspiegel 2026 für den Harz & 3 profitable Marktlücken.
+</OUTPUT_DELIVERABLES>`;
+            } else if (currentGcPromptMode === 'leads') {
+                document.getElementById('gc-prompt-label').innerText = "Generierter Master-Prompt: 🎯 Deep Research 2 (50+ B2B Leads & Liegenschafts-Verwalter)";
+                document.getElementById('prompt-goclean').value = 
+`<ROLE>
+Du bist ein erfahrener B2B-Vertriebsleiter, Lead-Scout und Datenanalyst für den gewerblichen Dienstleistungssektor in Deutschland.
+</ROLE>
+
+<GOAL>
+Recherchiere, verifiziere und erstelle eine hochqualitative B2B-Leadliste mit mindestens 50 qualifizierten Zielkunden im Umkreis von 30–40 km um Langelsheim/Goslar, die einen kontinuierlichen Bedarf an Gebäudereinigung UND/ODER Garten- und Liegenschaftspflege haben.
+</GOAL>
+
+<TARGET_SEGMENTS>
+1. Hausverwaltungen & WEG-Verwalter (Treppenhäuser, Grünanlagen, Winterdienst)
+2. Wohnungsbaugesellschaften & Genossenschaften
+3. Bauträger, Generalunternehmer & Sanierungsbetriebe (Bau-Endreinigung)
+4. Gewerbliche Großobjekte, Ärztehäuser & Autohäuser
+</TARGET_SEGMENTS>
+
+<SEARCH_REGION>
+${gcRegion}
+</SEARCH_REGION>
+
+<OUTPUT_DELIVERABLES>
+1. TABELLE: B2B-LEAD-DATABASE HARZ (CSV-kompatibel mit 50+ verifizierten Datensätzen):
+   | ID | Firmenname | Branche | Stadt / PLZ | Adresse | Ansprechpartner (Vorname, Nachname, Funktion) | Telefonnummer | E-Mail | Website | Geschätzter Bedarf | Pitch-Aufhänger |
+2. VERTRIEBS-PLAYBOOK:
+   - Die 5 heißesten Leads für sofortigen Großumsatz & Einwandbehandlung für Hausverwalter.
+</OUTPUT_DELIVERABLES>`;
+            } else if (currentGcPromptMode === 'tenders') {
+                document.getElementById('gc-prompt-label').innerText = "Generierter Master-Prompt: 🏛️ Deep Research 3 (Kommunale Vergaben & Ausschreibungs-Radar)";
+                document.getElementById('prompt-goclean').value = 
+`<ROLE>
+Du bist ein Fachberater für öffentliches Vergaberecht und Ausschreibungsmanagement im Bereich Facility Management, Gebäudedienstleistungen und kommunale Grünflächenpflege in Niedersachsen und Sachsen-Anhalt.
+</ROLE>
+
+<GOAL>
+Identifiziere alle relevanten öffentlichen Vergabestellen, Vergabeplattformen und wiederkehrenden Ausschreibungen für Unterhaltsreinigung, Glasreinigung, Bauendreinigung und kommunale Grünpflege im Landkreis Goslar, Landkreis Harz und angrenzenden Kommunen.
+</GOAL>
+
+<OUTPUT_DELIVERABLES>
+1. VERGABESTELLEN-KATALOG HARZ (Tabelle mit Ansprechpartnern der Liegenschaftsämter)
+2. LEITFADEN ÖFFENTLICHE AUFTRÄGE & FREIHÄNDIGE VERGABEN (Schwellenwerte & Initiativ-Anschreiben)
+</OUTPUT_DELIVERABLES>`;
+            } else if (currentGcPromptMode === 'calc') {
+                document.getElementById('gc-prompt-label').innerText = "Generierter Master-Prompt: 📊 Deep Research 4 (Spezial-Dienste & 12-Monats-Kalkulation)";
+                document.getElementById('prompt-goclean').value = 
+`<ROLE>
+Du bist ein leitender Kalkulator und Wirtschaftsingenieur für das Gebäudereiniger- und Gartenbauer-Handwerk in Nord-/Mitteldeutschland.
+</ROLE>
+
+<GOAL>
+Erstelle ein vollständiges, hochmargiges Leistungs- und Kalkulationsverzeichnis sowie ein 12-Monats-Saison-Playbook für ${gcCompany} (${gcRegion}).
+</GOAL>
+
+<SERVICES_TO_BENCHMARK>
+- Photovoltaik- & Solaranlagen-Reinigung (Reinstwasser)
+- Bauzwischen- & Baufeinreinigung für Bauträger
+- Professioneller Hecken- & Gehölzschnitt nach Fristen
+- Winterdienst-Pakete (Bereitschaftspauschale + Streueinsatz)
+</SERVICES_TO_BENCHMARK>
+
+<OUTPUT_DELIVERABLES>
+1. KALKULATIONS-LEISTUNGSVERZEICHNIS (m²/h, Materialkosten, Netto-Stundensätze & Margen)
+2. 12-MONATE UMSATZ-ROUTENPLAN (Saisonalitäts-Ausgleich gegen Liquiditätslöcher)
+</OUTPUT_DELIVERABLES>`;
+            } else {
+                document.getElementById('gc-prompt-label').innerText = "Generierter Master-Prompt: 📱 Web-App & 3-Portal Suite (Landingpage, Kunden, Mitarbeiter, Admin)";
+                document.getElementById('prompt-goclean').value = 
 `Du bist ein Senior Fullstack Software-Architekt und erfahrener Product Designer.
-Deine Aufgabe ist es, eine vollständige, hochmoderne und produktionsreife Webanwendung für das Reinigungsunternehmen "${gcCompany}" im Einsatzgebiet "${gcRegion}" zu erstellen.
+Deine Aufgabe ist es, eine vollständige, hochmoderne und produktionsreife Webanwendung für das Reinigungs- und Gartenpflegeunternehmen "${gcCompany}" im Einsatzgebiet "${gcRegion}" zu erstellen.
 
 Die Web-Applikation muss als interaktive Single-Page-Application (mit Tailwind CSS, HTML5 und modularem JavaScript / Alpine.js) in einer vollständigen Datei oder einem sauberen Web-Bundle realisiert werden. Alle Daten müssen über einen vorbefüllten LocalStorage-State direkt interaktiv und testbar sein.
 
-Die Anwendung MUSS 4 nahtlos integrierte Bereiche / Portale enthalten (mit einem prominenten Rollen-Umschalter oben im Header zum schnellen Testen):
-
-1. ÖFFENTLICHE WEBSITE & LANDINGPAGE (Conversion-optimiert):
-   - Hero-Bereich: Starker Slogan ("Sauberkeit mit Harzer Handschlag-Qualität"), Vertrauenssiegel, Notdienst-Badge & Direktkontakt.
-   - Interaktiver Blitz-Kalkulator: Berechnung von Reinigungsflächen (m²), Leistungsart (${gcServices}) und Intervall mit sofortiger Preisindikation und 1-Klick-Anfrageformular.
-   - Qualitätsversprechen: Darstellung des 4-Farben-Hygienesystems (Blau=Oberfläche, Rot=Sanitär/WC, Gelb=Fliesen/Waschbecken, Grün=Küche) und Vorher-/Nachher-Vergleich.
-   - Regionaler Trust: Fokus auf ${gcRegion}, Kundenbewertungen (Hausverwaltungen, Kanzleien, Praxen).
-
-2. KUNDENPORTAL (Delegierter Self-Service für Auftraggeber & Hausverwaltungen):
-   - Dashboard mit Übersicht der betreuten Objekte & nächster Reinigungstermine.
-   - Digitales Abnahmeprotokoll & Fotobeweise (Vorher-/Nachher-Bilder jedes Einsatzes mit Zeitstempel).
-   - Rechnungsarchiv mit Status (Bezahlt / Offen) und PDF-Download-Simulation.
-   - 1-Klick-Melder für Sonderreinigungen oder Zusatzaufgaben mit Foto-Upload-Feld.
-
-3. MITARBEITERPORTAL (Mobile-optimierter digitaler Laufzettel für Reinigungskräfte):
-   - Mobiles Smartphone-Interface mit Tagesroute und Objekt-Details (inkl. Schlüsselcode, Besonderheiten).
-   - Digitale Zeiterfassung: "Einsatz starten" und "Einsatz abschließen" mit Zeitstempel.
-   - Interaktive Qualitäts-Checkliste (SOP) mit Pflichtfeldern für Fotobeweise.
-   - Digitales Kunden-Unterschriftenfeld direkt auf dem Touchscreen.
-
-4. ADMIN- & INHABER-PORTAL (Marcel's Schaltzentrale):
-   - Executive Dashboard: Monatsumsatz, aktive Dauerverträge, Team-Auslastung & Kundenzufriedenheit.
-   - Touren- & Einsatzplaner: Zuweisung von Reinigungskräften zu Kundenobjekten.
-   - Kunden- & Mitarbeiterverwaltung (CRM mit Kontaktdaten, Verträgen und Stundensätzen).
-   - 1-Klick Rechnungs- und DATEV/ZUGFeRD-Export-Simulation.
-
-DESIGN & TECHNIK:
-- Modernes Dark/Light Glassmorphism Design mit Emerald-/Teal-Akzenten.
-- Vorbefüllte Demo-Daten für alle 4 Portale (z. B. "Hausverwaltung Harz-Blick", 3 Mitarbeiter, 5 erledigte Aufträge).
-- 100% responsiv auf Smartphone, Tablet und Desktop.
+Die Anwendung MUSS 4 nahtlos integrierte Bereiche / Portale enthalten:
+1. ÖFFENTLICHE WEBSITE & LANDINGPAGE (Conversion-optimiert mit Vorher-/Nachher-Vergleich & Blitz-Kalkulator)
+2. KUNDENPORTAL (Objektübersicht, Vorher-/Nachher-Fotobeweise & Rechnungsarchiv)
+3. MITARBEITERPORTAL (Mobile Touren-Checkliste, Zeiterfassung & SOP)
+4. ADMIN- & INHABER-PORTAL (Dashboard, Tourenplaner, CRM & DATEV/ZUGFeRD-Export)
 
 Erstelle die vollständige Web-Applikation und stelle sie mir als lauffähige index.html (oder ZIP-Paket) zum Download bereit.`;
+            }
+        }
+
+        let currentGcPromptMode = 'suite';
+        function selectGcPrompt(mode) {
+            currentGcPromptMode = mode;
+            document.querySelectorAll('.gc-prompt-btn').forEach(btn => {
+                btn.className = "gc-prompt-btn px-3 py-2 rounded-lg text-xs font-semibold text-left border bg-slate-950 text-slate-400 border-slate-800 hover:border-slate-700";
+            });
+            const activeBtn = document.getElementById(`gc-btn-${mode}`);
+            if (activeBtn) {
+                activeBtn.className = "gc-prompt-btn active px-3 py-2 rounded-lg text-xs font-semibold text-left border bg-emerald-500/20 text-emerald-300 border-emerald-500/40 shadow-sm";
+            }
+            updatePrompts();
         }
 
         // Event Listeners for Live Update
