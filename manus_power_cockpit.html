@@ -108,6 +108,14 @@
                 </div>
             </button>
 
+            <button onclick="switchTab('goclean')" id="tab-btn-goclean" class="tab-btn flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition text-left bg-gradient-to-r from-emerald-950/80 to-teal-950/80 text-emerald-300 hover:bg-slate-800/80 border border-emerald-500/40 shadow-lg shadow-emerald-950/50">
+                <span class="text-lg">🧼</span>
+                <div>
+                    <div class="font-bold flex items-center gap-1.5">6. GoClean 3-Portal Suite <span class="text-[10px] bg-emerald-500/20 text-emerald-400 px-1.5 py-0.5 rounded font-mono">Master</span></div>
+                    <div class="text-xs text-slate-400">Website, Kunden, Team & Admin</div>
+                </div>
+            </button>
+
             <div class="my-3 border-t border-slate-800"></div>
 
             <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider px-3 mb-1">Strategie & Praxis</h2>
@@ -307,7 +315,48 @@
                 </div>
             </div>
 
-            <!-- TAB 6: 7-TAGE-PLAN -->
+            <!-- TAB 6: GOCLEAN 3-PORTAL SUITE -->
+            <div id="tab-content-goclean" class="tab-pane hidden flex flex-col gap-6">
+                <div class="bg-gradient-to-b from-slate-900/90 to-emerald-950/20 border border-emerald-500/30 rounded-2xl p-6 shadow-2xl">
+                    <div class="mb-4">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="text-xl">🧼</span>
+                            <h3 class="text-lg font-bold text-white">
+                                GoClean Harz: All-in-One Website & 3-Portal Suite
+                            </h3>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Vollständiges Ökosystem</span>
+                        </div>
+                        <p class="text-sm text-slate-400">Generiert einen extrem detaillierten Architektur-Prompt für Manus.ai, der eine komplette Web-App mit Landingpage, Kundenportal, Mitarbeiterportal und Admin-Cockpit in einem Schritt baut.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Inhaber & Firmenname</label>
+                            <input type="text" id="gc-company" value="GoClean Harz (Inhaber: Marcel Gornitzka)" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:border-emerald-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Einsatzgebiet / Region</label>
+                            <input type="text" id="gc-region" value="Landkreis Harz (Wernigerode, Goslar, Halberstadt, Blankenburg, Quedlinburg)" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:border-emerald-500 focus:outline-none">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Haupt-Dienstleistungen</label>
+                            <input type="text" id="gc-services" value="Büro- & Praxisreinigung, Treppenhausreinigung (WEGs), Glas- & Schaufensterreinigung, Bau-Endreinigung, Grünanlagen- & Winterdienst" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:border-emerald-500 focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div class="relative">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-semibold text-emerald-400">Generierter Master-Prompt für Manus.ai:</span>
+                            <button onclick="copyPrompt('prompt-goclean')" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition shadow-md shadow-emerald-600/30">
+                                <span>📋</span> In Zwischenablage kopieren
+                            </button>
+                        </div>
+                        <textarea id="prompt-goclean" readonly class="w-full h-64 bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs font-mono text-slate-300 custom-scrollbar focus:outline-none resize-none"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 7: 7-TAGE-PLAN -->
             <div id="tab-content-plan" class="tab-pane hidden flex flex-col gap-6">
                 <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 shadow-xl">
                     <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
@@ -540,6 +589,50 @@ Erforderliche Features: ${toolFeatures}.
 
 Design: Modern, dunkel/hell umschaltbar, mobil optimiert.
 Teste die Anwendung in deiner Umgebung und stelle die fertige index.html zum Download bereit.`;
+
+            // 6. GoClean 3-Portal Suite Master Prompt
+            const gcCompany = document.getElementById('gc-company').value;
+            const gcRegion = document.getElementById('gc-region').value;
+            const gcServices = document.getElementById('gc-services').value;
+
+            document.getElementById('prompt-goclean').value = 
+`Du bist ein Senior Fullstack Software-Architekt und erfahrener Product Designer.
+Deine Aufgabe ist es, eine vollständige, hochmoderne und produktionsreife Webanwendung für das Reinigungsunternehmen "${gcCompany}" im Einsatzgebiet "${gcRegion}" zu erstellen.
+
+Die Web-Applikation muss als interaktive Single-Page-Application (mit Tailwind CSS, HTML5 und modularem JavaScript / Alpine.js) in einer vollständigen Datei oder einem sauberen Web-Bundle realisiert werden. Alle Daten müssen über einen vorbefüllten LocalStorage-State direkt interaktiv und testbar sein.
+
+Die Anwendung MUSS 4 nahtlos integrierte Bereiche / Portale enthalten (mit einem prominenten Rollen-Umschalter oben im Header zum schnellen Testen):
+
+1. ÖFFENTLICHE WEBSITE & LANDINGPAGE (Conversion-optimiert):
+   - Hero-Bereich: Starker Slogan ("Sauberkeit mit Harzer Handschlag-Qualität"), Vertrauenssiegel, Notdienst-Badge & Direktkontakt.
+   - Interaktiver Blitz-Kalkulator: Berechnung von Reinigungsflächen (m²), Leistungsart (${gcServices}) und Intervall mit sofortiger Preisindikation und 1-Klick-Anfrageformular.
+   - Qualitätsversprechen: Darstellung des 4-Farben-Hygienesystems (Blau=Oberfläche, Rot=Sanitär/WC, Gelb=Fliesen/Waschbecken, Grün=Küche) und Vorher-/Nachher-Vergleich.
+   - Regionaler Trust: Fokus auf ${gcRegion}, Kundenbewertungen (Hausverwaltungen, Kanzleien, Praxen).
+
+2. KUNDENPORTAL (Delegierter Self-Service für Auftraggeber & Hausverwaltungen):
+   - Dashboard mit Übersicht der betreuten Objekte & nächster Reinigungstermine.
+   - Digitales Abnahmeprotokoll & Fotobeweise (Vorher-/Nachher-Bilder jedes Einsatzes mit Zeitstempel).
+   - Rechnungsarchiv mit Status (Bezahlt / Offen) und PDF-Download-Simulation.
+   - 1-Klick-Melder für Sonderreinigungen oder Zusatzaufgaben mit Foto-Upload-Feld.
+
+3. MITARBEITERPORTAL (Mobile-optimierter digitaler Laufzettel für Reinigungskräfte):
+   - Mobiles Smartphone-Interface mit Tagesroute und Objekt-Details (inkl. Schlüsselcode, Besonderheiten).
+   - Digitale Zeiterfassung: "Einsatz starten" und "Einsatz abschließen" mit Zeitstempel.
+   - Interaktive Qualitäts-Checkliste (SOP) mit Pflichtfeldern für Fotobeweise.
+   - Digitales Kunden-Unterschriftenfeld direkt auf dem Touchscreen.
+
+4. ADMIN- & INHABER-PORTAL (Marcel's Schaltzentrale):
+   - Executive Dashboard: Monatsumsatz, aktive Dauerverträge, Team-Auslastung & Kundenzufriedenheit.
+   - Touren- & Einsatzplaner: Zuweisung von Reinigungskräften zu Kundenobjekten.
+   - Kunden- & Mitarbeiterverwaltung (CRM mit Kontaktdaten, Verträgen und Stundensätzen).
+   - 1-Klick Rechnungs- und DATEV/ZUGFeRD-Export-Simulation.
+
+DESIGN & TECHNIK:
+- Modernes Dark/Light Glassmorphism Design mit Emerald-/Teal-Akzenten.
+- Vorbefüllte Demo-Daten für alle 4 Portale (z. B. "Hausverwaltung Harz-Blick", 3 Mitarbeiter, 5 erledigte Aufträge).
+- 100% responsiv auf Smartphone, Tablet und Desktop.
+
+Erstelle die vollständige Web-Applikation und stelle sie mir als lauffähige index.html (oder ZIP-Paket) zum Download bereit.`;
         }
 
         // Event Listeners for Live Update

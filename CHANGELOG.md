@@ -6,7 +6,7 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 
 ### Added
 - **🤖 Manus.ai Power-Cockpit & Playbook (`manus_power_cockpit.html`):**
-  - **Dynamischer Prompt-Generator:** 5 spezialisierte Module (Lead-Scout, Fördermittel & Ausschreibungen, Live Website-Audit, Dokumenten- & Vertrags-Check, Web-Tool Generator) mit anpassbaren Feldern für Region, Branche, Kriterien und 1-Klick Copy-to-Clipboard.
+  - **Dynamischer Prompt-Generator:** 6 spezialisierte Module (Lead-Scout, Fördermittel & Ausschreibungen, Live Website-Audit, Dokumenten- & Vertrags-Check, Web-Tool Generator sowie **GoClean 3-Portal Suite Master-Generator**) mit anpassbaren Feldern und 1-Klick Copy-to-Clipboard.
   - **7-Tage-Aktionsplan:** Strukturierte Schritt-für-Schritt Roadmap zur systematischen Nutzung von Manus.ai für lokale KMU.
   - **Akquise-Vorlagen:** Fertige E-Mail-Templates (Website-Audit Kaltakquise & Fördermittel-Guide Türöffner) zum direkten Versand an Leads.
 
