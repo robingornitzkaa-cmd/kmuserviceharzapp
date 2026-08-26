@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="de" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manus.ai Power-Cockpit | KMU Service Harz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            900: '#14532d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans">
+
+    <!-- Header -->
+    <header class="bg-slate-900/90 border-b border-slate-800 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-500/20 text-white font-black text-xl">
+                    M
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold bg-gradient-to-r from-emerald-400 to-teal-200 bg-clip-text text-transparent">
+                        Manus.ai Agenten-Cockpit
+                    </h1>
+                    <p class="text-xs text-slate-400">Automatisiertes Playbook & Prompt-Generator für KMU & Agenten</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 animate-pulse">
+                    ● Unlimited Agent Mode
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Navigation Tabs (Links / Oben auf Mobile) -->
+        <div class="lg:col-span-3 flex flex-col gap-2">
+            <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider px-3 mb-1">Module & Generatoren</h2>
+            
+            <button onclick="switchTab('leads')" id="tab-btn-leads" class="tab-btn active flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition text-left bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 shadow-sm">
+                <span class="text-lg">🎯</span>
+                <div>
+                    <div class="font-semibold">1. Lead-Scout (B2B)</div>
+                    <div class="text-xs text-slate-400">Firmen & Schwachstellen scrapen</div>
+                </div>
+            </button>
+
+            <button onclick="switchTab('foerderung')" id="tab-btn-foerderung" class="tab-btn flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition text-left bg-slate-900/60 text-slate-300 hover:bg-slate-800/80 border border-slate-800">
+                <span class="text-lg">🏛️</span>
+                <div>
+                    <div class="font-semibold">2. Fördermittel & Vergabe</div>
+                    <div class="text-xs text-slate-400">Öffentliche Töpfe & Aufträge</div>
+                </div>
+            </button>
+
+            <button onclick="switchTab('audit')" id="tab-btn-audit" class="tab-btn flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition text-left bg-slate-900/60 text-slate-300 hover:bg-slate-800/80 border border-slate-800">
+                <span class="text-lg">🔍</span>
+                <div>
+                    <div class="font-semibold">3. Live Website-Audit</div>
+                    <div class="text-xs text-slate-400">Testing, Mobile & Formulare</div>
+                </div>
+            </button>
+
+            <button onclick="switchTab('vertrag')" id="tab-btn-vertrag" class="tab-btn flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition text-left bg-slate-900/60 text-slate-300 hover:bg-slate-800/80 border border-slate-800">
+                <span class="text-lg">📑</span>
+                <div>
+                    <div class="font-semibold">4. Dokumenten-Vergleich</div>
+                    <div class="text-xs text-slate-400">Angebote & AGBs gegenprüfen</div>
+                </div>
+            </button>
+
+            <button onclick="switchTab('tool')" id="tab-btn-tool" class="tab-btn flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition text-left bg-slate-900/60 text-slate-300 hover:bg-slate-800/80 border border-slate-800">
+                <span class="text-lg">🚀</span>
+                <div>
+                    <div class="font-semibold">5. Web-Tool Generator</div>
+                    <div class="text-xs text-slate-400">Rechner & interaktive Apps</div>
+                </div>
+            </button>
+
+            <div class="my-3 border-t border-slate-800"></div>
+
+            <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider px-3 mb-1">Strategie & Praxis</h2>
+
+            <button onclick="switchTab('plan')" id="tab-btn-plan" class="tab-btn flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition text-left bg-slate-900/60 text-slate-300 hover:bg-slate-800/80 border border-slate-800">
+                <span class="text-lg">📅</span>
+                <div>
+                    <div class="font-semibold">7-Tage-Aktionsplan</div>
+                    <div class="text-xs text-slate-400">Schrittweise Umsetzung</div>
+                </div>
+            </button>
+
+            <button onclick="switchTab('emails')" id="tab-btn-emails" class="tab-btn flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition text-left bg-slate-900/60 text-slate-300 hover:bg-slate-800/80 border border-slate-800">
+                <span class="text-lg">✉️</span>
+                <div>
+                    <div class="font-semibold">Akquise-Vorlagen</div>
+                    <div class="text-xs text-slate-400">E-Mails für die Ergebnisse</div>
+                </div>
+            </button>
+        </div>
+
+        <!-- Content Area (Rechts) -->
+        <div class="lg:col-span-9 flex flex-col gap-6">
+
+            <!-- TAB 1: LEAD SCOUT -->
+            <div id="tab-content-leads" class="tab-pane flex flex-col gap-6">
+                <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 shadow-xl">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                                🎯 B2B Lead-Scout & Schwachstellen-Analyse
+                            </h3>
+                            <p class="text-sm text-slate-400">Findet regionale Unternehmen, analysiert deren Internetauftritt und exportiert eine strukturierte Excel-Liste.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Region / Städte</label>
+                            <input type="text" id="lead-region" value="Landkreis Harz (Wernigerode, Goslar, Halberstadt, Quedlinburg)" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:border-emerald-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Ziel-Branchen</label>
+                            <input type="text" id="lead-branch" value="Handwerk, Bau, SHK, Elektro, Dienstleister" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:border-emerald-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Anzahl der Leads</label>
+                            <select id="lead-count" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:border-emerald-500 focus:outline-none">
+                                <option value="25">25 Unternehmen (Schneller Durchlauf ~5-10 Min)</option>
+                                <option value="50" selected>50 Unternehmen (Umfassend ~15-20 Min)</option>
+                                <option value="100">100 Unternehmen (Deep Dive)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Prüfkriterien für Websites</label>
+                            <input type="text" id="lead-criteria" value="Mobile-Optimierung, Impressum/DSGVO, Online-Kontaktmöglichkeit, Ladezeit" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:border-emerald-500 focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div class="relative">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-semibold text-emerald-400">Generierter Prompt für Manus.ai:</span>
+                            <button onclick="copyPrompt('prompt-leads')" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition shadow-md shadow-emerald-600/30">
+                                <span>📋</span> In Zwischenablage kopieren
+                            </button>
+                        </div>
+                        <textarea id="prompt-leads" readonly class="w-full h-56 bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs font-mono text-slate-300 custom-scrollbar focus:outline-none resize-none"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: FOERDERUNG & AUSSCHREIBUNGEN -->
+            <div id="tab-content-foerderung" class="tab-pane hidden flex flex-col gap-6">
+                <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 shadow-xl">
+                    <div class="mb-4">
+                        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                            🏛️ Fördermittel-Guide & Ausschreibungs-Monitor
+                        </h3>
+                        <p class="text-sm text-slate-400">Recherchiert offizielle Fördertöpfe und offene behördliche Vergaben und generiert einen druckfertigen PDF-Leitfaden.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Bundesland / Einzugsgebiet</label>
+                            <input type="text" id="foerder-land" value="Sachsen-Anhalt, Thüringen, Niedersachsen & Bund" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:border-emerald-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Themenfokus</label>
+                            <input type="text" id="foerder-focus" value="Digitalisierung, Prozessautomatisierung, IT-Sicherheit, neue Website" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:border-emerald-500 focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div class="relative">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-semibold text-emerald-400">Generierter Prompt für Manus.ai:</span>
+                            <button onclick="copyPrompt('prompt-foerderung')" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition shadow-md shadow-emerald-600/30">
+                                <span>📋</span> In Zwischenablage kopieren
+                            </button>
+                        </div>
+                        <textarea id="prompt-foerderung" readonly class="w-full h-56 bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs font-mono text-slate-300 custom-scrollbar focus:outline-none resize-none"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: AUDIT & LIVE TESTING -->
+            <div id="tab-content-audit" class="tab-pane hidden flex flex-col gap-6">
+                <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 shadow-xl">
+                    <div class="mb-4">
+                        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                            🔍 Live Website-Audit & Interaktives QA-Testing
+                        </h3>
+                        <p class="text-sm text-slate-400">Manus steuert einen echten Browser, klickt Buttons, füllt Formulare mit Testdaten aus und erstellt Fehler-Screenshots.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Ziel-Website URL</label>
+                            <input type="text" id="audit-url" value="https://beispiel-kmu-harz.de" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:border-emerald-500 focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div class="relative">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-semibold text-emerald-400">Generierter Prompt für Manus.ai:</span>
+                            <button onclick="copyPrompt('prompt-audit')" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition shadow-md shadow-emerald-600/30">
+                                <span>📋</span> In Zwischenablage kopieren
+                            </button>
+                        </div>
+                        <textarea id="prompt-audit" readonly class="w-full h-56 bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs font-mono text-slate-300 custom-scrollbar focus:outline-none resize-none"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: VERTRAG & DOKUMENTE -->
+            <div id="tab-content-vertrag" class="tab-pane hidden flex flex-col gap-6">
+                <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 shadow-xl">
+                    <div class="mb-4">
+                        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                            📑 Dokumenten- & Vertrags-Prüfer (Gegenüberstellung)
+                        </h3>
+                        <p class="text-sm text-slate-400">Lässt Manus mehrere PDFs/Dokumente zeilenweise auf Preisunterschiede, Klauseln und versteckte Risiken prüfen.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Dokument-Typ</label>
+                            <input type="text" id="doc-type" value="2 verschiedene IT-Dienstleister Angebote / AGBs" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:border-emerald-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Besonderer Fokus</label>
+                            <input type="text" id="doc-focus" value="Stundensätze, Kündigungsfristen, Haftungsausschlüsse, Nebenkosten" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:border-emerald-500 focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div class="relative">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-semibold text-emerald-400">Generierter Prompt für Manus.ai:</span>
+                            <button onclick="copyPrompt('prompt-vertrag')" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition shadow-md shadow-emerald-600/30">
+                                <span>📋</span> In Zwischenablage kopieren
+                            </button>
+                        </div>
+                        <textarea id="prompt-vertrag" readonly class="w-full h-56 bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs font-mono text-slate-300 custom-scrollbar focus:outline-none resize-none"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 5: WEB TOOL GENERATOR -->
+            <div id="tab-content-tool" class="tab-pane hidden flex flex-col gap-6">
+                <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 shadow-xl">
+                    <div class="mb-4">
+                        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                            🚀 Web-Tool & Interaktiver Rechner Generator
+                        </h3>
+                        <p class="text-sm text-slate-400">Manus schreibt echten Code, testet ihn live im Browser und liefert eine eigenständige HTML/JS-Datei zum Weitergeben oder Einbinden.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Art des Rechners</label>
+                            <input type="text" id="tool-name" value="Stundensatz- & Rentabilitätsrechner für Handwerker & Dienstleister" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:border-emerald-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Gewünschte Features</label>
+                            <input type="text" id="tool-features" value="Echtzeit-Berechnung, interaktives Chart.js Diagramm, PDF-Export-Button, Dark Mode" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:border-emerald-500 focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div class="relative">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-semibold text-emerald-400">Generierter Prompt für Manus.ai:</span>
+                            <button onclick="copyPrompt('prompt-tool')" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition shadow-md shadow-emerald-600/30">
+                                <span>📋</span> In Zwischenablage kopieren
+                            </button>
+                        </div>
+                        <textarea id="prompt-tool" readonly class="w-full h-56 bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs font-mono text-slate-300 custom-scrollbar focus:outline-none resize-none"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 6: 7-TAGE-PLAN -->
+            <div id="tab-content-plan" class="tab-pane hidden flex flex-col gap-6">
+                <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 shadow-xl">
+                    <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                        📅 7-Tage-Aktionsplan für maximale Manus-Power
+                    </h3>
+                    <p class="text-sm text-slate-400 mb-6">Arbeite diesen Plan Schritt für Schritt ab, um die unbegrenzte Nutzungsphase systematisch in Ergebnisse zu verwandeln.</p>
+
+                    <div class="space-y-4">
+                        <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 flex items-start gap-4">
+                            <span class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-400 font-bold text-xs">Tag 1</span>
+                            <div>
+                                <h4 class="text-sm font-bold text-white">Lead-Generierung & Markterfassung</h4>
+                                <p class="text-xs text-slate-400 mt-1">Starte Modul 1 (Lead-Scout) für deine Kernregion. Lade die generierte Excel-Datei mit 50 Unternehmen herunter.</p>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 flex items-start gap-4">
+                            <span class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-400 font-bold text-xs">Tag 2</span>
+                            <div>
+                                <h4 class="text-sm font-bold text-white">Fördermittel-Whitepaper erstellen</h4>
+                                <p class="text-xs text-slate-400 mt-1">Lass Manus den offiziellen Fördermittel-Guide als druckfertiges PDF generieren. Das ist dein kostenloser Türöffner für Kunden.</p>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 flex items-start gap-4">
+                            <span class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-400 font-bold text-xs">Tag 3</span>
+                            <div>
+                                <h4 class="text-sm font-bold text-white">Top 10 Website-Audits generieren</h4>
+                                <p class="text-xs text-slate-400 mt-1">Wähle die 10 Firmen aus Tag 1 mit den schwächsten Webseiten aus. Lass Manus für jede ein kurzes 2-seitiges Audit mit Screenshots erstellen.</p>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 flex items-start gap-4">
+                            <span class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-400 font-bold text-xs">Tag 4</span>
+                            <div>
+                                <h4 class="text-sm font-bold text-white">Interaktives Web-Tool bauen</h4>
+                                <p class="text-xs text-slate-400 mt-1">Lass Manus den Stundensatz- oder Amortisationsrechner als eigenständige HTML-Datei programmieren und teste ihn.</p>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 flex items-start gap-4">
+                            <span class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-400 font-bold text-xs">Tag 5-7</span>
+                            <div>
+                                <h4 class="text-sm font-bold text-white">Akquise & Outreach</h4>
+                                <p class="text-xs text-slate-400 mt-1">Nutze die E-Mail-Vorlagen (Tab Akquise-Vorlagen), um den Firmen ihr kostenloses Audit oder den Fördermittel-Guide zu senden.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 7: AKQUISE VORLAGEN -->
+            <div id="tab-content-emails" class="tab-pane hidden flex flex-col gap-6">
+                <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 shadow-xl">
+                    <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                        ✉️ Akquise-Vorlagen (Direkt passend zu den Manus-Ergebnissen)
+                    </h3>
+                    <p class="text-sm text-slate-400 mb-6">Kopiere diese E-Mails, um die generierten Audits und Guides direkt an potenzielle Kunden zu verschicken.</p>
+
+                    <div class="space-y-6">
+                        <!-- Template 1 -->
+                        <div class="p-4 rounded-xl bg-slate-950 border border-slate-800">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="text-sm font-bold text-emerald-400">Vorlage 1: Website-Audit Kaltansprache (Hohe Antwortrate)</h4>
+                                <button onclick="copyRawText('email-1')" class="text-xs text-slate-400 hover:text-white flex items-center gap-1">
+                                    📋 Kopieren
+                                </button>
+                            </div>
+                            <div id="email-1" class="text-xs font-mono text-slate-300 bg-slate-900/90 p-3 rounded-lg border border-slate-800 whitespace-pre-wrap">Betreff: Kurzer technischer Hinweis zu Ihrer Website [Firmenname]
+
+Hallo Herr/Frau [Nachname],
+
+bei einer regionalen Recherche zu Handwerks- und Dienstleistungsbetrieben im Landkreis Harz ist mir Ihre Website aufgefallen.
+
+Da wir lokale Unternehmen bei der Digitalisierung unterstützen, haben wir einen kurzen automatisierten Sicherheits- und Qualitäts-Check Ihrer Seite durchgeführt. Dabei sind 2-3 kleinere Punkte aufgefallen (u. a. bei der mobilen Darstellung auf Smartphones und der Ladezeit).
+
+Ich habe Ihnen den kurzen, 2-seitigen Prüfbericht als PDF an diese E-Mail angehängt – komplett unverbindlich und kostenfrei als Service für Sie.
+
+Falls Sie Fragen dazu haben oder wissen möchten, wie man diese Punkte schnell behebt, stehe ich gerne für ein kurzes Telefonat zur Verfügung.
+
+Beste Grüße aus dem Harz,
+[Dein Name]
+KMU Service Harz</div>
+                        </div>
+
+                        <!-- Template 2 -->
+                        <div class="p-4 rounded-xl bg-slate-950 border border-slate-800">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="text-sm font-bold text-emerald-400">Vorlage 2: Fördermittel-Guide als kostenloser Türöffner</h4>
+                                <button onclick="copyRawText('email-2')" class="text-xs text-slate-400 hover:text-white flex items-center gap-1">
+                                    📋 Kopieren
+                                </button>
+                            </div>
+                            <div id="email-2" class="text-xs font-mono text-slate-300 bg-slate-900/90 p-3 rounded-lg border border-slate-800 whitespace-pre-wrap">Betreff: Aktuelle Digital-Förderungen für KMU in Sachsen-Anhalt / Harz
+
+Hallo Herr/Frau [Nachname],
+
+viele regionale Betriebe wissen aktuell nicht, dass es für neue Websites, Software und Digitalisierungsprojekte nicht rückzahlbare Zuschüsse von bis zu 50–70% gibt.
+
+Wir haben die aktuellsten Förderprogramme für 2025/2026 für kleine Unternehmen in unserer Region in einem kompakten Leitfaden zusammengefasst. 
+
+Den Guide finden Sie anbei als PDF – vielleicht ist auch für [Firmenname] ein passender Fördertopf dabei.
+
+Wenn Sie prüfen möchten, ob ein geplantes Vorhaben bei Ihnen förderfähig ist, sprechen Sie mich gerne an.
+
+Herzliche Grüße,
+[Dein Name]
+KMU Service Harz</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-emerald-500 text-slate-950 px-4 py-2.5 rounded-xl font-bold text-sm shadow-2xl transition-all duration-300 transform translate-y-20 opacity-0 flex items-center gap-2 z-50">
+        <span>✓</span> Prompt erfolgreich kopiert!
+    </div>
+
+    <script>
+        // Tab Switching
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('bg-emerald-500/10', 'text-emerald-400', 'border-emerald-500/30');
+                el.classList.add('bg-slate-900/60', 'text-slate-300', 'border-slate-800');
+            });
+
+            const activeContent = document.getElementById('tab-content-' + tabId);
+            const activeBtn = document.getElementById('tab-btn-' + tabId);
+
+            if(activeContent) activeContent.classList.remove('hidden');
+            if(activeBtn) {
+                activeBtn.classList.remove('bg-slate-900/60', 'text-slate-300', 'border-slate-800');
+                activeBtn.classList.add('bg-emerald-500/10', 'text-emerald-400', 'border-emerald-500/30');
+            }
+        }
+
+        // Live Prompt Update Functions
+        function updatePrompts() {
+            // 1. Leads Prompt
+            const region = document.getElementById('lead-region').value;
+            const branch = document.getElementById('lead-branch').value;
+            const count = document.getElementById('lead-count').value;
+            const crit = document.getElementById('lead-criteria').value;
+
+            document.getElementById('prompt-leads').value = 
+`Du bist ein professioneller Marktforscher und B2B-Scout.
+Deine Aufgabe ist es, eine detaillierte Marktrecherche für kleine und mittlere Unternehmen (KMU) in der Region ${region} durchzuführen.
+
+Bitte führe folgende Schritte autonom durch:
+1. Recherchiere mindestens ${count} aktive Unternehmen aus folgenden Branchen: ${branch}.
+2. Besuche deren Webseiten und analysiere: ${crit}.
+3. Fasse alle Ergebnisse in einer professionell formatierten Excel-Tabelle (.xlsx) zusammen.
+
+Die Excel-Tabelle muss folgende Spalten enthalten:
+- Firmenname
+- Branche / Gewerk
+- Stadt / PLZ & Adresse
+- Website-URL
+- Telefonnummer & E-Mail
+- Name der Geschäftsführung / Ansprechpartner
+- Digitalisierungs-Score (Schulnote 1 bis 6)
+- 2-3 konkrete Optimierungspotenziale (z. B. "Keine mobile Optimierung", "Altes Design", "Kein Kontaktformular")
+
+Erstelle die .xlsx-Datei sauber mit formatierter Kopfzeile und stelle sie mir zum Download bereit.`;
+
+            // 2. Foerderung Prompt
+            const foerderLand = document.getElementById('foerder-land').value;
+            const foerderFocus = document.getElementById('foerder-focus').value;
+
+            document.getElementById('prompt-foerderung').value = 
+`Du bist ein erfahrener Fördermittelberater für den deutschen Mittelstand.
+Erstelle eine umfassende Recherche zu staatlichen Förderprogrammen in ${foerderLand} mit dem Schwerpunkt ${foerderFocus}.
+
+Schritte:
+1. Durchsuche offizielle Förderdatenbanken und Förderbanken (z. B. IB Sachsen-Anhalt, BAFA, KfW).
+2. Identifiziere die Top 5 aktuell beantragbaren Förderprogramme.
+3. Erstelle ein druckfertiges 4- bis 6-seitiges PDF-Whitepaper mit:
+   - Deckblatt & Inhaltsverzeichnis
+   - Detaillierte Profile der Programme (Förderquote %, max. Summe, wer ist berechtigt, Antragsfristen)
+   - Schritt-für-Schritt Anleitung zur Beantragung
+   - Offizielle Antrags-Links
+
+Stelle das fertige PDF (.pdf) zum Download bereit.`;
+
+            // 3. Audit Prompt
+            const auditUrl = document.getElementById('audit-url').value;
+
+            document.getElementById('prompt-audit').value = 
+`Du bist ein Senior QA-Tester und Web-Security-Analyst.
+Führe ein technisches und visuelles Audit der Website ${auditUrl} durch.
+
+Führe folgende Schritte autonom im echten Browser aus:
+1. Navigation & Links: Prüfe alle Haupt- und Unterseiten auf defekte 404-Links.
+2. Responsiveness: Teste Desktop (1920x1080) und Mobile (375x812). Mache Screenshots von eventuellen Layout-Fehlern.
+3. Formulare: Teste Kontaktformulare mit Pflichtfeldern und ungültigen E-Mails.
+4. Recht & Technik: Prüfe SSL-Verschlüsselung, Cookie-Banner, Impressum und JavaScript-Fehler in der Konsole.
+
+Fasse alle Ergebnisse in einem PDF-Testbericht (.pdf) mit eingebetteten Screenshots und konkreten Handlungsempfehlungen zusammen.`;
+
+            // 4. Vertrag Prompt
+            const docType = document.getElementById('doc-type').value;
+            const docFocus = document.getElementById('doc-focus').value;
+
+            document.getElementById('prompt-vertrag').value = 
+`Du bist ein erfahrener Vertragsprüfer und Einkaufsleiter.
+Analysiere die bereitgestellten Dokumente (${docType}).
+
+Aufgabe:
+1. Lies alle Dokumente vollständig ein.
+2. Erstelle eine Side-by-Side Vergleichstabelle für: ${docFocus}.
+3. Hebe hervor:
+   - Wo liegen versteckte Mehrkosten oder unklare Klauseln?
+   - Welches Angebot bietet das beste Preis-Leistungs-Verhältnis?
+4. Exportiere das Ergebnis als übersichtliche Excel-Tabelle (.xlsx) und PDF-Entscheidungsvorlage.`;
+
+            // 5. Tool Generator Prompt
+            const toolName = document.getElementById('tool-name').value;
+            const toolFeatures = document.getElementById('tool-features').value;
+
+            document.getElementById('prompt-tool').value = 
+`Du bist ein erfahrener Frontend-Entwickler und UX-Designer.
+Erstelle eine vollständige, interaktive Webanwendung als eigenständige HTML-Datei (mit Tailwind CSS und JavaScript in einer Datei).
+
+Die Web-App soll ein "${toolName}" sein.
+Erforderliche Features: ${toolFeatures}.
+
+Design: Modern, dunkel/hell umschaltbar, mobil optimiert.
+Teste die Anwendung in deiner Umgebung und stelle die fertige index.html zum Download bereit.`;
+        }
+
+        // Event Listeners for Live Update
+        document.querySelectorAll('input, select').forEach(input => {
+            input.addEventListener('input', updatePrompts);
+        });
+
+        // Copy Functions
+        function copyPrompt(textareaId) {
+            const textarea = document.getElementById(textareaId);
+            navigator.clipboard.writeText(textarea.value).then(() => {
+                showToast();
+            });
+        }
+
+        function copyRawText(elementId) {
+            const text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                showToast();
+            });
+        }
+
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 2500);
+        }
+
+        // Init on load
+        updatePrompts();
+    </script>
+</body>
+</html>

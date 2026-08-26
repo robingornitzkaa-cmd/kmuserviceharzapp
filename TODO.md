@@ -1,5 +1,10 @@
 # TODO - Founder OS
 
+- [x] **🤖 [Manus AI] Interaktives Power-Cockpit & Automatisierungs-Playbook (`manus_power_cockpit.html`):**
+  - Standalone HTML-Cockpit mit dynamischem Prompt-Generator für alle 4 Kern-Workflows (B2B Lead-Scout, Fördermittel & Ausschreibungen, Live Website-Audit & Testing, Dokumenten- & Vertrags-Check, Web-Tool Generator).
+  - Integrierter 7-Tage-Aktionsplan zur systematischen Abarbeitung und einsatzbereite B2B-Akquise-E-Mail-Vorlagen mit 1-Klick Copy-to-Clipboard.
+
+
 - [x] **🎤 [GoClean Harz] Multi-Varianten Präsentations-Suite & Hub für Marcel:**
   - 6 neue spezialisierte HTML-Präsentationen mit individuellem Fokus:
     1. `pitch_bruder_emotional.html` (4 Folien, emotional/persönlich)
