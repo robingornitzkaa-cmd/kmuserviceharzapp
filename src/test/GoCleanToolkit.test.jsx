@@ -59,4 +59,34 @@ describe('GoCleanToolkit Component Tests', () => {
 
     expect(screen.getByText(/Digital quittiert/i)).toBeInTheDocument();
   });
+
+  it('wechselt zum Präsentationen Tab und öffnet das In-App Vorschau-Modal', () => {
+    render(<GoCleanToolkit />);
+
+    // Klick auf den Präsentationen Tab
+    const presTabBtn = screen.getByRole('button', { name: /5\. 🎤 Präsentationen/i });
+    fireEvent.click(presTabBtn);
+
+    // Prüfen, ob die Galerie gerendert wird
+    expect(screen.getByText(/GoClean Harz – Präsentations-Galerie/i)).toBeInTheDocument();
+    expect(screen.getByText(/1\. Bruder-Pitch \(Emotional\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/2\. Power-Überblick \(3 Min\.\)/i)).toBeInTheDocument();
+
+    // Erstes In-App Vorschau-Modal öffnen
+    const inAppPreviewBtns = screen.getAllByRole('button', { name: /In-App ansehen/i });
+    expect(inAppPreviewBtns.length).toBeGreaterThan(0);
+    fireEvent.click(inAppPreviewBtns[0]);
+
+    // Modal muss sichtbar sein
+    expect(screen.getByText(/Tipp: Nutze Pfeiltasten/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Schließen/i })).toBeInTheDocument();
+
+    // Modal wieder schließen
+    const closeBtn = screen.getByRole('button', { name: /Schließen/i });
+    fireEvent.click(closeBtn);
+
+    // Modal geschlossen
+    expect(screen.queryByText(/Tipp: Nutze Pfeiltasten/i)).not.toBeInTheDocument();
+  });
 });
+

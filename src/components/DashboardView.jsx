@@ -219,7 +219,7 @@ export const DashboardView = ({
           </div>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
           <button
             onClick={onOpenGoCleanSuite}
             style={{
@@ -227,7 +227,7 @@ export const DashboardView = ({
               color: '#022c22',
               fontWeight: 700,
               fontSize: '0.85rem',
-              padding: '10px 18px',
+              padding: '10px 16px',
               borderRadius: '12px',
               border: 'none',
               cursor: 'pointer',
@@ -241,7 +241,29 @@ export const DashboardView = ({
             ⚡ Live-Toolkit öffnen
           </button>
           <a
-            href="/goclean_wachstumsmappe.html"
+            href="/goclean_praesentationen_hub.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              background: 'linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(129, 140, 248, 0.2))',
+              color: '#38bdf8',
+              fontWeight: 700,
+              fontSize: '0.85rem',
+              padding: '10px 16px',
+              borderRadius: '12px',
+              border: '1px solid rgba(56, 189, 248, 0.4)',
+              textDecoration: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              boxShadow: '0 0 12px rgba(56, 189, 248, 0.25)',
+              transition: 'all 0.2s ease'
+            }}
+          >
+            🎤 8 Präsentationen (Hub) ➔
+          </a>
+          <a
+            href="/pitch_bruder_emotional.html"
             target="_blank"
             rel="noopener noreferrer"
             style={{
@@ -249,7 +271,7 @@ export const DashboardView = ({
               color: '#e2e8f0',
               fontWeight: 600,
               fontSize: '0.85rem',
-              padding: '10px 16px',
+              padding: '10px 14px',
               borderRadius: '12px',
               border: '1px solid rgba(255, 255, 255, 0.15)',
               textDecoration: 'none',
@@ -259,7 +281,7 @@ export const DashboardView = ({
               transition: 'all 0.2s ease'
             }}
           >
-            🖨️ PDF-Präsentationsmappe
+            🤝 Bruder-Pitch
           </a>
         </div>
       </div>

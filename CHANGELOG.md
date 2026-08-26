@@ -5,8 +5,11 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
-- **🎤 GoClean Harz – Multi-Varianten Präsentations-Suite & Hub für Marcel:**
-  - **Präsentations-Hub (`public/goclean_praesentationen_hub.html`):** Zentrale Übersichtskarte aller 8 Präsentationen mit Filter-Badges, Folienanzahl und Direkt-Links zum bequemen Wechseln.
+- **🎤 GoClean Harz – Multi-Varianten Präsentations-Suite & In-App Galerie für Marcel:**
+  - **Neuer Tab 5 im Toolkit (`src/components/GoCleanToolkit.jsx`):** Dedizierte Präsentations-Galerie mit allen 8 Decks, Kategorie-Filtern (Pitches, Demos, Solo-Wachstum, KI & Zukunft) und Einzel-Buttons für jedes Deck.
+  - **In-App Live-Präsentations-Modal:** Jede Präsentation kann mit 1 Klick direkt in der App in einem responsiven Vollbild-Iframe mit Deck-Wechsler, Tastatursteuerung und Druckfunktion getestet werden.
+  - **Quick-Access Buttons:** Prominente Buttons im Dashboard-Banner (`🎤 8 Präsentationen (Hub) ➔`, `🤝 Bruder-Pitch`) sowie im Toolkit-Header (`🎤 Alle 8 Präsentationen`, `🎛️ Hub`, `⚡ 60s Teaser`).
+  - **Präsentations-Hub (`public/goclean_praesentationen_hub.html`):** Zentrale Übersichtskarte aller 8 Präsentationen mit Filter-Badges, Folienanzahl und Direkt-Links.
   - **6 neue zielgerichtete Präsentations-Decks (Dark Glassmorphism, Keyboard-, Touch- & Print-Ready):**
     - *🤝 Variante 1: Bruder-Pitch (emotional) (`public/pitch_bruder_emotional.html` - 4 Folien):* Persönliche Du-Ansprache an Marcel („Marcel, ich hab dir was gebaut"), Fokus auf Feierabend, Entlastung und den Brüder-Deal.
     - *📊 Variante 2: Business-Pitch (professionell) (`public/pitch_professionell.html` - 5 Folien):* Sachlicher Ton, Branchenzahlen, ROI-Kalkulation (bis zu 11 Std./Woche gespart = +1.500–4.000 € Mehrumsatz) und 3-Stufen-Fahrplan.
@@ -14,7 +17,8 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
     - *🧠 Variante 4: KI & Zukunfts-Vision (`public/pitch_ki_zukunft.html` - 5 Folien):* KI-Texter für Instagram/Facebook, smarte Routen- & Auslastungsplanung, 24/7 digitaler Assistent und KI-Marktanalyse im Harzkreis.
     - *🚀 Variante 5: Solo-Wachstumsplan (`public/pitch_wachstum_solo.html` - 6 Folien):* Speziell für Marcel als Einzelkämpfer – mit Automatisierung die Power von 3 Mitarbeitern nutzen, B2B-Skalierung, 90-Tage-Fahrplan und Team-Vorbereitung.
     - *⚡ Variante 6: Power-Überblick (`public/pitch_kompakt_ueberblick.html` - 3 Folien):* Ultra-kompakter 60-Sekunden-Teaser („8h Arbeiten. 3h Büro. 0h Feierabend?"), 6 Module auf einen Blick und 15-Minuten-Kaffee-CTA.
-  - **Korrektur & Personalisierung:** Korrektur des Namens auf **Marcel** in allen Dokumenten und Vorlagen (`goclean_wachstumsmappe.html` u.a.).
+  - **Korrektur & Personalisierung:** Vollständige Korrektur des Inhabernamens auf **Marcel Gornitzka** in allen Vorlagen, Akquisebriefen und WhatsApp-Vorlagen.
+  - **Testabdeckung:** Neuer Testfall in `src/test/GoCleanToolkit.test.jsx` für Präsentations-Tab und In-App-Modal (5/5 Tests bestanden).
 - **🧼 GoClean Harz VIP-Wachstums- & Produktivitäts-Suite (Bruder-Offensive 2026):**
   - **Interaktives In-App Toolkit (`src/components/GoCleanToolkit.jsx`):**
     - *⚡ Blitz-Angebotsrechner:* Live-Kalkulation nach Branchenrichtwerten (m²/h) für Büro/Unterhalt (200 m²/h), Treppenhäuser (140 m²/h), Glas (90 m²/h), Bau-Endreinigung (55 m²/h) und Grün/Winterdienst (350 m²/h) mit Material- & Anfahrtszuschlag.
