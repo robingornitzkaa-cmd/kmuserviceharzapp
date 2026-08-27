@@ -1,40 +1,46 @@
-# 🧼 GoClean Harz × Manus AI – Deep Research Master-Suite
-**Weltklasse Prompt-Engineering für autonome Marktforschung, B2B-Lead-Generierung & Margen-Optimierung**  
+# 🧼 GoClean Harz × Manus AI – Deep Research Master-Suite (10-Module Power-Edition)
+**Weltklasse Prompt-Engineering für autonome Marktforschung, B2B-Lead-Generierung, SEO-Dominanz & Recruiting**  
 *Erstellt von KMU Service Harz für GoClean Harz (Inhaber: Marcel Gornitzka)*
 
 ---
 
 ## 🧭 Inhaltsverzeichnis & Schnellzugriff
 
-1. [Anleitung: So führst du die Prompts in Manus AI aus](#1-anleitung-so-f%C3%BChrst-du-die-prompts-in-manus-ai-aus)
+1. [Anleitung: So schöpfst du das volle Potenzial von Manus AI aus](#1-anleitung-so-sch%C3%B6pfst-du-das-volle-potenzial-von-manus-ai-aus)
 2. [Master-Prompt 1: Regionaler Marktatlas & Wettbewerbs-Audit (30–40 km Harz)](#master-prompt-1-regionaler-marktatlas--wettbewerbs-audit-3040-km-harz)
 3. [Master-Prompt 2: B2B-Liegenschaften & Kombi-Auftraggeber (50+ Leads)](#master-prompt-2-b2b-liegenschaften--kombi-auftraggeber-50-leads)
 4. [Master-Prompt 3: Kommunale Vergaben & Ausschreibungs-Radar](#master-prompt-3-kommunale-vergaben--ausschreibungs-radar)
 5. [Master-Prompt 4: Hochmargige Spezial-Dienste & Saison-Kalkulation](#master-prompt-4-hochmargige-spezial-dienste--saison-kalkulation)
-6. [Auswertungs-Playbook: Wie du die Manus-Ergebnisse in Umsatz verwandelst](#6-auswertungs-playbook-wie-du-die-manus-ergebnisse-in-umsatz-verwandelst)
+6. [Master-Prompt 5: Google Maps & Local SEO Dominanz-Audit (Top 1 in 30 Tagen)](#master-prompt-5-google-maps--local-seo-dominanz-audit-top-1-in-30-tagen)
+7. [Master-Prompt 6: Recruiting- & Mitarbeiter-Funnel (Reinigung & Gartenkräfte im Harz)](#master-prompt-6-recruiting---mitarbeiter-funnel-reinigung--gartenkr%C3%A4fte-im-harz)
+8. [Master-Prompt 7: Ferienwohnungs-, Hotel- & Tourismus-Großkunden Radar](#master-prompt-7-ferienwohnungs--hotel---tourismus-gro%C3%9Fkunden-radar)
+9. [Master-Prompt 8: Social Media & Viral-Content-Maschine (30 Tage Vorher/Nachher Skripte)](#master-prompt-8-social-media--viral-content-maschine-30-tage-vorhernachher-skripte)
+10. [Master-Prompt 9: Gewerbeparks & Industriehallen-Spezial (Aufträge bis 10.000 €)](#master-prompt-9-gewerbeparks--industriehallen-spezial-auftr%C3%A4ge-bis-10000-%E2%82%AC)
+11. [Master-Prompt 10: KMU Service Harz Partner-Audit (Digitalisierung & E-Rechnung für Betriebe)](#master-prompt-10-kmu-service-harz-partner-audit-digitalisierung--e-rechnung-f%C3%BCr-betriebe)
+12. [Auswertungs-Playbook: Wie du die Manus-Ergebnisse in bare Münze verwandelst](#auswertungs-playbook-wie-du-die-manus-ergebnisse-in-bare-m%C3%BCnze-verwandelst)
 
 ---
 
-## 1. Anleitung: So führst du die Prompts in Manus AI aus
+## 1. Anleitung: So schöpfst du das volle Potenzial von Manus AI aus
 
 ### 💡 Warum diese Prompts wie ein „Weltklasse Prompt Engineer“ aufgebaut sind:
-Manus AI ist kein einfacher Chatbot, sondern ein **autonomer Agent**. Er kann selbstständig Browserfenster öffnen, Google Maps durchsuchen, Webseiten analysieren, PDFs herunterladen und strukturierte Tabellen (CSV/Excel) erstellen.
+Manus AI ist kein einfacher Text-Chatbot, sondern ein **vollwertiger autonomer KI-Agent**. Er kann im Hintergrund einen echten Webbrowser steuern, Google Maps auswerten, Register durchforsten, Dokumente analysieren und fertige Tabellen (`.csv`, `.xlsx`) sowie Dossiers (`.pdf`, `.md`) generieren.
 
-Damit Manus maximale Tiefe liefert und nicht nach 2 Minuten oberflächlich abbricht, nutzen diese Prompts die **CO-STAR & XML-Tag-Architektur**:
-- `<ROLE>`: Definiert Manus als Senior-Marktanalyst & B2B-Stratege für Handwerk & Gebäudedienstleistungen.
-- `<GOAL>`: Präzises, messbares Forschungsziel ohne Interpretationsspielraum.
-- `<CONTEXT>`: Lokale Gegebenheiten im Harzkreis und die duale Positionierung von GoClean Harz (Reinigung **UND** Garten-/Objektpflege).
-- `<SEARCH_RADIUS>`: Exakte Städte und Postleitzahlen zur Vermeidung von Streuverlusten.
-- `<EXECUTION_PROTOCOL>`: Schritt-für-Schritt-Vorgehen für den KI-Browser.
-- `<OUTPUT_SCHEMA>`: Erzwingt strukturierte Tabellen (CSV-kompatibel) und strategische Zusammenfassungen.
+Jeder Prompt in dieser Suite nutzt die **CO-STAR & XML-Tag-Architektur**:
+- `<ROLE>`: Verleiht Manus die Persona eines führenden Fachberaters, B2B-Scouts oder SEO-Architekten.
+- `<GOAL>`: Präzises, messbares und kompromissloses Forschungsziel.
+- `<CONTEXT>`: Lokale Parameter im Harzkreis und die duale Positionierung von GoClean Harz (*„Innen makellos sauber, außen perfekt gepflegt“*).
+- `<SEARCH_RADIUS>`: Exakte Städte (Goslar, Langelsheim, Bad Harzburg, Wernigerode, Clausthal-Zellerfeld, Osterode, Salzgitter-Süd) zur Vermeidung von Streuverlusten.
+- `<EXECUTION_PROTOCOL>`: Strenges Vorgehensprotokoll für den KI-Browser (Verzeichnisse, Bewertungen, Register, Webseiten-Crawling).
+- `<OUTPUT_DELIVERABLES>`: Zwingt Manus zur Erstellung strukturierter CSV-Tabellen und druckfertiger Strategie-Dossiers.
 
-### 🚀 Schritt-für-Schritt-Durchführung:
-1. Öffne dein **Manus AI Dashboard** (`https://manus.im` oder deine Manus-Oberfläche).
-2. Eröffne eine **neue Task / Session**.
-3. Kopiere den gewünschten Master-Prompt aus den untenstehenden Code-Blöcken (1 zu 1 mit allen XML-Tags).
-4. Füge den Text in Manus ein und starte die Ausführung.
-5. **Wartezeit:** Ein Deep-Research-Durchlauf dauert ca. **10 bis 25 Minuten**, da Manus hunderte Webseiten, Register und Google-Maps-Einträge live ansteuert.
-6. **Download:** Lade nach Abschluss sowohl den **Markdown/PDF-Bericht** als auch die generierte **CSV- oder Excel-Tabelle** herunter.
+### 🚀 So startest du eine Deep-Research-Session:
+1. Öffne dein **Manus AI Dashboard** (`https://manus.im`).
+2. Eröffne eine **neue Task**.
+3. Kopiere einen der nachfolgenden Master-Prompts (vollständig mit allen XML-Tags).
+4. Füge den Text ein und starte Manus.
+5. **Dauer:** Ein vollwertiger Deep Research dauert in der Regel **10 bis 25 Minuten**. Manus steuert dabei dutzende Webseiten und Register autonom an.
+6. **Artefakte sichern:** Lade am Ende die erzeugten **CSV-Leadlisten** und **PDF-Reports** herunter.
 
 ---
 
@@ -253,7 +259,7 @@ Erstelle ein vollständiges, hochmargiges Leistungs- und Kalkulationsverzeichnis
    - Berechne für jede Serviceart:
      * Standard-Leistungswert (m² pro Mitarbeiterstunde).
      * Material- & Maschinenkosten pro m² (Reinigungsmittel, Reinstwasserfilter, Kraftstoff, Verschleiß).
-     * Empfohlener Netto-Mindeststundensatz für Christian Gornitzka & eventuelle Mitarbeiter.
+     * Empfohlener Netto-Mindeststundensatz für Marcel Gornitzka & eventuelle Mitarbeiter.
      * Empfohlene Mindestauftragspauschale (Anfahrt + Rüstzeit).
 
 2. 12-MONATS-SAISONALITÄTS-AUSGLEICH (Umsatz-Glättung):
@@ -276,7 +282,241 @@ Erstelle ein vollständiges, hochmargiges Leistungs- und Kalkulationsverzeichnis
 
 ---
 
-## 6. Auswertungs-Playbook: Wie du die Manus-Ergebnisse in Umsatz verwandelst
+## Master-Prompt 5: Google Maps & Local SEO Dominanz-Audit (Top 1 in 30 Tagen)
+
+> **Zweck:** Analyse der Top-Rankings bei Google Maps & Google Search im Harzkreis für Reinigung & Gartenbau. Erstellt eine exakte Checkliste zur Übernahme von Platz 1.
+
+```xml
+<ROLE>
+Du bist ein führender Experte für Local SEO, Google Business Profile (GBP) Optimierung und regionale Suchmaschinen-Dominanz für Handwerks- und Dienstleistungsbetriebe im DACH-Raum.
+</ROLE>
+
+<GOAL>
+Führe ein tiefgehendes Local-SEO-Audit für die Suchbegriffe "Gebäudereinigung Goslar", "Treppenhausreinigung Harz", "Gartenpflege Goslar", "Fensterreinigung Wernigerode" und "Winterdienst Harz" durch. Entwickle einen konkreten 30-Tage-Aktionsplan, mit dem "GoClean Harz" auf Platz 1 im Google Local 3-Pack rankt.
+</GOAL>
+
+<TARGET_TERMS>
+1. "Gebäudereinigung Goslar" / "Reinigungsfirma Langelsheim"
+2. "Treppenhausreinigung Harz" / "Hausmeisterservice Goslar"
+3. "Gartenpflege Bad Harzburg" / "Heckenschnitt Wernigerode"
+4. "Fensterreinigung & Glasreinigung Goslar"
+5. "Bauendreinigung Landkreis Goslar"
+6. "Winterdienst Langelsheim Goslar"
+</TARGET_TERMS>
+
+<EXECUTION_PROTOCOL>
+1. LIVE SEARCH AUDIT (Google Maps & Search):
+   - Analysiere die aktuellen Top 3 Anbieter im Local 3-Pack für jeden Suchbegriff.
+   - Erfasse deren:
+     * Exakter GBP-Unternehmensname (Wird Keyword-Stuffing betrieben?).
+     * Haupt- und Nebenkategorien (z.B. "Gebäudereiniger", "Garten- und Landschaftsbau", "Hausmeisterdienst").
+     * Anzahl und Frequenz der Google-Bewertungen, Keyword-Dichte in Rezensionen und Inhaber-Antworten.
+     * Webseiten-OnPage-Signale (H1-H3 Struktur, Schema.org LocalBusiness Markup, City-Landingpages).
+     * Lokale Citations / Branchenverzeichnisse (Gelbe Seiten, Das Örtliche, 11880, Cylex, meinestadt.de).
+
+2. SCHWÄCHEN DER KONKURRENZ AUFDECKEN:
+   - Welche Anbieter haben keine SSL-Verschlüsselung, keine mobiloptimierte Seite, keine GBP-Beiträge oder schlechte Rezensionen?
+
+3. 30-TAGE LOCAL-SEO MASTERPLAN FÜR GOCLEAN HARZ:
+   - Exakte GBP-Konfiguration (Primärkategorie, Sekundärkategorien, Leistungsbeschreibungen mit regionalen Keywords).
+   - Die Top 20 kostenlosen Verzeichnisse & Citations mit der höchsten Domain-Autorität für den Harz.
+   - Textvorlagen für 4 suchmaschinenoptimierte Stadt-Landingpages (Goslar, Langelsheim, Bad Harzburg, Wernigerode).
+</EXECUTION_PROTOCOL>
+
+<OUTPUT_DELIVERABLES>
+1. WETTBEWERBS-SEO-MATRIX (Tabelle):
+   | Keyword | Rang 1 Konkurrent | Rang 2 Konkurrent | Rang 3 Konkurrent | Durchschnittliche Reviews | Identifizierte Ranking-Schwachstelle |
+2. LOCAL SEO PLAYBOOK (30-Tage Fahrplan):
+   - Checkliste zur perfekten Google Business Profile Einrichtung.
+   - 20 Citation-Portale mit Direkt-Registrierungslinks.
+   - Schema.org JSON-LD Code für `LocalBusiness` / `CleaningService` zum direkten Einfügen auf der Website.
+</OUTPUT_DELIVERABLES>
+```
+
+---
+
+## Master-Prompt 6: Recruiting- & Mitarbeiter-Funnel (Reinigung & Gartenkräfte im Harz)
+
+> **Zweck:** Überwindung des Personalengpasses. Findet heraus, was Konkurrenten zahlen, welche Benefits Mitarbeiter suchen und erstellt einen automatisierten Bewerber-Funnel.
+
+```xml
+<ROLE>
+Du bist ein Headhunter und Recruiting-Stratege für das Handwerk und Facility-Dienstleistungen in Deutschland. Du verstehst die Psychologie von gewerblichen Arbeitskräften (Minijobber, Teilzeit, Vollzeit, Quereinsteiger).
+</ROLE>
+
+<GOAL>
+Analysiere den regionalen Arbeitsmarkt für Reinigungskräfte, Objektbetreuer und Gartenhelfer im Landkreis Goslar / Harz und erstelle ein automatisiertes Recruiting-System für GoClean Harz, um verlässliches Personal ohne teure Zeitarbeitsfirmen zu gewinnen.
+</GOAL>
+
+<EXECUTION_PROTOCOL>
+1. ARBEITSMARKT- & WETTBEWERBS-BENCHMARK:
+   - Durchsuche Jobbörsen (Arbeitsagentur, Indeed, Kleinanzeigen, StepStone, lokale Zeitungen) nach aktuellen Stellenanzeigen für Reinigungskräfte und Gartenhelfer in Goslar, Bad Harzburg, Wernigerode und Osterode.
+   - Welche Stundenlöhne werden geboten (Mindestlohn vs. tariflicher Gebäudereiniger-Lohn vs. Überzahlung)?
+   - Welche Benefits werden beworben (Fahrgeld, moderne Geräte, flexible Arbeitszeiten, 4-Tage-Woche)?
+
+2. ARBEITNEHMER-PAIN-POINTS ANALYSIEREN:
+   - Warum kündigen Reinigungskräfte bei der Konkurrenz? (z.B. unbezahlte Fahrzeiten, schlechtes Arbeitsmaterial, Druck, mangelnde Wertschätzung).
+
+3. RECRUITING-FUNNEL & KAMPAGNEN-ENTWURF:
+   - Erstelle 3 hochkonvertierende Stellenanzeigen:
+     a) Für 538 € Minijobber (z.B. Frührentner, Studenten, Zuverdiener für Treppenhäuser am Vormittag).
+     b) Für Teilzeit/Vollzeit Reinigungskräfte (Gewerbe & Praxen).
+     c) Für Garten- & Allround-Helfer (Grünpflege, Rasen, Winterdienst).
+   - Entwickle einen 60-Sekunden-Bewerbungs-Prozess via WhatsApp (ohne Lebenslauf!).
+</EXECUTION_PROTOCOL>
+
+<OUTPUT_DELIVERABLES>
+1. GEHALTS- & BENEFITS-BENCHMARK HARZ (Tabelle)
+2. DAS 3-STUFEN RECRUITING-KIT:
+   - 3 fertige Anzeigentexte für eBay Kleinanzeigen & Facebook/Instagram Ads.
+   - Textvorlage für Abreißzettel-Aushänge in regionalen Supermärkten (Edeka, Rewe im Harz).
+   - 5-Punkte-Telefoninterview-Leitfaden zur Blitz-Qualifizierung von Bewerbern in 3 Minuten.
+</OUTPUT_DELIVERABLES>
+```
+
+---
+
+## Master-Prompt 7: Ferienwohnungs-, Hotel- & Tourismus-Großkunden Radar
+
+> **Zweck:** Der Harz ist ein Tourismus-Hotspot. Dieser Prompt spürt alle Fewo-Agenturen, Chalet-Dörfer und Hotelbetriebe auf, die dringend Reinigung & Gartenpflege brauchen.
+
+```xml
+<ROLE>
+Du bist ein B2B-Tourismus-Analyst und Key-Account-Manager für das Gastgewerbe im Harz (Niedersachsen/Sachsen-Anhalt/Thüringen).
+</ROLE>
+
+<GOAL>
+Recherchiere und erstelle eine VIP-Leadliste aller relevanten Ferienwohnungs-Agenturen, Fewo-Verwalter, Chalet-Dörfer, Boutique-Hotels und Campingplätze im Oberharz und Ostharz, die für professionelle Endreinigung, Wäscheservice, Gartenpflege und Winterdienst in Frage kommen.
+</GOAL>
+
+<HOTSPOTS>
+Braunlage, Bad Harzburg, Wernigerode, Schierke, Clausthal-Zellerfeld, Altenau, Hahnenklee, Ilsenburg, Sankt Andreasberg, Thale.
+</HOTSPOTS>
+
+<EXECUTION_PROTOCOL>
+1. PORTAL- & AGENTUR-RECHERCHE:
+   - Durchforste Portale wie Harz-Travel, Traum-Ferienwohnungen, Fewo-Direkt, Booking.com und lokale Tourismusverbände nach Agenturen, die MEHRERE Ferienobjekte im Harz verwalten (z.B. 10 bis 100+ Einheiten).
+   - Finde Inhaber, Betriebsleiter und Objektmanager heraus.
+
+2. BEDARFSANALYSE:
+   - Turnus-Reinigung an Gästewechsel-Tagen (typischerweise Freitag und Sonntag zwischen 10:00 und 15:00 Uhr).
+   - Außenanlagenpflege (Garten, Terrasse, Grillplatz) und garantierter Winterdienst / Schneeräumung für Feriengäste.
+
+3. KOOPERATIONS-ANGEBOT:
+   - Entwickle ein maßgeschneidertes "Sorglos-Fewo-Paket" (Turnusreinigung + Wäsche + Winterdienst + Sofort-Mängelbericht mit Foto).
+</EXECUTION_PROTOCOL>
+
+<OUTPUT_DELIVERABLES>
+1. TOURISMUS-B2B-LEADLISTE (CSV-kompatible Tabelle mit min. 35 Agenturen & Großanbietern):
+   | Agentur / Hotelname | Standort / Objekte | Anzahl verwaltete Fewos/Betten | Ansprechpartner | Telefon | E-Mail | Website | Spezifischer Bedarf |
+2. PARTNERSCHAFTS-PITCH:
+   - 1-Seiter B2B-Kooperationsanschreiben an Fewo-Verwalter im Harz.
+   - Kalkulationsschema für Wechselreinigungen nach Bettenanzahl / m².
+</OUTPUT_DELIVERABLES>
+```
+
+---
+
+## Master-Prompt 8: Social Media & Viral-Content-Maschine (30 Tage Vorher/Nachher Skripte)
+
+> **Zweck:** Generiert einen vollständigen 30-Tage Video- und Foto-Contentplan für Instagram Reels, TikTok und Facebook mit viralen Vorher-/Nachher-Transformationen.
+
+```xml
+<ROLE>
+Du bist ein führender Social Media Creative Director und Video-Marketing-Stratege für das Handwerk. Du weißt exakt, welche visuellen "Oddly Satisfying"-Elemente im Reinigungs- und GaLa-Sektor Millionen Views und lokale Kundenanfragen erzeugen.
+</ROLE>
+
+<GOAL>
+Erstelle einen vollständigen 30-Tage-Redaktionsplan mit 30 konkreten Video- und Post-Konzepten für GoClean Harz. Der Fokus liegt auf authentischen, hochgradig befriedigenden Vorher/Nachher-Transformationen aus Reinigung und Gartenpflege im Harz.
+</GOAL>
+
+<CONTENT_PILLARS>
+1. "Oddly Satisfying" Reinigung:
+   - Moosige Terrassenplatten kärchern mit Flächenreiniger.
+   - Tiefenreinigung von stark verschmutzten Fliesenfugen.
+   - Bauendreinigung: Entfernung von Kleberesten und Zementschleier.
+   - Fensterreinigung mit Profi-Abzieher in einer fließenden Bewegung.
+2. Garten- & Liegenschafts-Transformationen:
+   - Zugewachsene Hecke perfekt auf Kante schneiden.
+   - Verunkrauteter Parkplatz wird sauber gekehrt und thermisch entkrautet.
+   - Rasenkanten abstechen für perfekte Linien.
+3. Lokales Vertrauen & Hinter den Kulissen:
+   - Marcel stellt seine Maschinen vor (Kärcher, Stihl, Osmose-Filter).
+   - "Ein Tag im Leben eines Harzer Gebäudereinigers".
+</CONTENT_PILLARS>
+
+<OUTPUT_DELIVERABLES>
+1. 30-TAGE REDAKTIONSPLAN (Tabelle):
+   | Tag | Format (Reel / Carousel / Story) | Titel / Hook | Visuelle Szene (Vorher/Nachher) | Musik / Sound-Empfehlung | Caption-Text (inkl. Lokale Hashtags #Goslar #Harz) | Call to Action |
+2. DIE TOP 5 HOOK-SKRIPTE:
+   - Wortwörtliche Sprech- und Text-Einblender für die ersten 3 Sekunden jedes Videos.
+</OUTPUT_DELIVERABLES>
+```
+
+---
+
+## Master-Prompt 9: Gewerbeparks & Industriehallen-Spezial (Aufträge bis 10.000 €)
+
+> **Zweck:** Identifikation von Industriehallen, Logistiklagern, Autohäusern und Maschinenbauern in den Harzer Gewerbegebieten für Großaufträge.
+
+```xml
+<ROLE>
+Du bist ein B2B-Industrieberater und Key-Account-Spezialist für industrielle Sonderreinigung, Hallenpflege und gewerbliches Facility Management.
+</ROLE>
+
+<GOAL>
+Erstelle ein umfassendes B2B-Dossier und eine Leadliste der produzierenden Unternehmen, Logistiker, Autohäuser und Werkstätten in den Industrie- und Gewerbegebieten des Harzes für maschinelle Großflächenreinigung und Außenanlagenpflege.
+</GOAL>
+
+<TARGET_ZONES>
+- Gewerbegebiet Baßgeige Goslar
+- Gewerbegebiet Im Schleeke Goslar
+- Gewerbegebiet Langelsheim (Nord/Süd)
+- Gewerbe- & Industriepark Wernigerode (Stadtfeld, Dornbergsweg)
+- Gewerbegebiete Bad Harzburg, Seesen und Salzgitter-Bad
+</TARGET_ZONES>
+
+<SERVICES_FOCUS>
+- Maschinelle Scheuersaug-Reinigung von Industrie- und Werkstattböden (Entölung, Reifenspurbeseitigung).
+- Hochdruckreinigung von Hofflächen, Laderampen und Entwässerungsrinnen.
+- Glas- & Industriefassadenreinigung (Trapezblech, Alucobond).
+- Großflächen-Winterdienst und Parkplatzkehrung.
+</SERVICES_FOCUS>
+
+<OUTPUT_DELIVERABLES>
+1. INDUSTRIE-LEADLISTE HARZ (CSV-Tabelle mit min. 30 Unternehmen):
+   | Firmenname | Gewerbegebiet / Adresse | Branche | Hallengröße / m² Schätzung | Geschäftsführer / Werkleiter | Telefon | E-Mail | Konkreter Service-Bedarf |
+2. INDUSTRIE-ANGEBOTS-DOSSIER:
+   - Formelles Anschreiben an Werks- und Betriebsleiter zur jährlichen Hallengrundreinigung.
+   - Checkliste für Sicherheitsunterweisungen und Maschineneinsatz in Industrieobjekten.
+</OUTPUT_DELIVERABLES>
+```
+
+---
+
+## Master-Prompt 10: KMU Service Harz Partner-Audit (Digitalisierung & E-Rechnung für Betriebe)
+
+> **Zweck:** Cross-Selling-Hebel! Nutze diesen Prompt, um für Handwerksbetriebe im Harz ein 1-Klick-Digitalisierungs- und E-Rechnungs-Audit zu erstellen (Kombination aus GoClean Harz und KMU Service Harz).
+
+```xml
+<ROLE>
+Du bist der Chef-Digitalisierungsberater und Prozessautomatisierer von "KMU Service Harz". Deine Mission ist es, Handwerksmeistern und Dienstleistern im Harz zu zeigen, wie sie durch Make.com, Lexware Office und digitale Workflows 10+ Stunden Büroarbeit pro Woche einsparen und die E-Rechnungspflicht 2025/2026 fehlerfrei meistern.
+</ROLE>
+
+<GOAL>
+Recherchiere 30 Handwerks- und Dienstleistungsbetriebe im Harzkreis (SHK, Elektro, Dachdecker, Maler, GaLa-Bau) und analysiere deren digitalen Auftritt, E-Rechnungs-Bereitschaft und Büro-Engpässe für einen 500 € Büro-Stress-Test Pitch.
+</GOAL>
+
+<OUTPUT_DELIVERABLES>
+1. HANDWERKS-DIGITAL-AUDIT LISTE (CSV-kompatibel mit 30 Betrieben):
+   | Handwerksbetrieb | Gewerk | Inhaber | Website-Status | Fehlende Features (Online-Termin, WhatsApp-Notdienst, E-Invoice) | Geschätzte Büro-Schattenkosten (€/Monat) |
+2. AKQUISE-BRIEF FÜR 500 € AUDIT (Mit Gutschein-Code & ROI-Garantie).
+</OUTPUT_DELIVERABLES>
+```
+
+---
+
+## Auswertungs-Playbook: Wie du die Manus-Ergebnisse in bare Münze verwandelst
 
 Sobald Manus AI die Deep Researches abgeschlossen hat, setzt du die Ergebnisse in **3 simplen Schritten** in aktiven Umsatz um:
 
@@ -288,13 +528,13 @@ graph LR
 ```
 
 ### Schritt 1: Lead-Liste filtern & Top-10 Hausverwaltungen markieren
-- Öffne die von Manus erzeugte CSV-Datei aus **Master-Prompt 2**.
+- Öffne die von Manus erzeugte CSV-Datei aus **Master-Prompt 2** oder **Master-Prompt 7**.
 - Sortiere nach der Spalte `Geschätzter Bedarf` und filtere nach **Kombi (Innen & Außen)**.
 - Hausverwaltungen haben in der Regel zwischen 5 und 30 Liegenschaften. Ein einziger gewonnener Hausverwalter bringt oft **2.000 € bis 6.000 € monatlich wiederkehrenden Umsatz**!
 
 ### Schritt 2: Persönliche Ansprache mit dem Kombi-Vorteil
 Nutze für den Erstkontakt diesen praxiserprobten Leitfaden:
-> *„Guten Tag Frau/Herr [Nachname], mein Name ist Christian Gornitzka von GoClean Harz aus Langelsheim. Wir betreuen Liegenschaften im Harzkreis mit einem kombinierten Konzept aus Treppenhausreinigung, Grünpflege und Winterdienst. Viele Verwalter schätzen es, dass sie bei uns nicht drei verschiedene Handwerker koordinieren müssen, sondern einen festen Ansprechpartner haben. Dürfen wir Ihnen bei einer Liegenschaft Ihrer Wahl unverbindlich zeigen, wie reibungslos das läuft?“*
+> *„Guten Tag Frau/Herr [Nachname], mein Name ist Marcel Gornitzka von GoClean Harz aus Langelsheim. Wir betreuen Liegenschaften im Harzkreis mit einem kombinierten Konzept aus Treppenhausreinigung, Grünpflege und Winterdienst. Viele Verwalter schätzen es, dass sie bei uns nicht drei verschiedene Handwerker koordinieren müssen, sondern einen festen Ansprechpartner haben. Dürfen wir Ihnen bei einer Liegenschaft Ihrer Wahl unverbindlich zeigen, wie reibungslos das läuft?“*
 
 ### Schritt 3: Angebot vor Ort in 60 Sekunden kalkulieren
 - Gehe zum Besichtigungstermin und öffne dein Tablet oder Smartphone.

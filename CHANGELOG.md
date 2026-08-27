@@ -5,13 +5,19 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
-- **🧼 GoClean Harz × Manus AI – Deep-Research Master-Prompt Suite (`DOCS/MANUS_GOCLEAN_DEEP_RESEARCH_PROMPTS.md` & `manus_power_cockpit.html`):**
-  - **4 spezialisierte Master-Prompts im XML-Tag-Format:**
+- **🧼 GoClean Harz × Manus AI – 10-Module Deep-Research Master-Suite (`DOCS/MANUS_GOCLEAN_DEEP_RESEARCH_PROMPTS.md` & `manus_power_cockpit.html`):**
+  - **10 spezialisierte Master-Prompts im XML-Tag-Format für maximale KI-Ausbeute:**
     - *🗺️ Master-Prompt 1: Regionaler Marktatlas & Wettbewerbs-Audit (30–40 km Harz)* – Vollständige Analyse aller Reinigungs-, GaLa- und Hausmeisterbetriebe in Goslar, Langelsheim, Bad Harzburg, Wernigerode, Clausthal-Zellerfeld, Osterode & Salzgitter-Süd inkl. Stundensätzen, Google-Rezensionslücken und unbesetzten Marktlücken.
     - *🎯 Master-Prompt 2: B2B-Liegenschaften & Kombi-Auftraggeber (50+ Leads)* – Strukturierte Datenerfassung von Hausverwaltungen, WEG-Verwaltern, Bauträgern, Ärztehäusern und Gewerbeparks für das lukrative Kombipaket (Innenreinigung + Außenanlagenpflege).
     - *🏛️ Master-Prompt 3: Kommunale Vergaben & Ausschreibungs-Radar* – Vergabeplattformen, Wertgrenzen für freihändige Vergaben, Ansprechpartner in Liegenschaftsämtern und Bieterkartei-Eintragung.
     - *📊 Master-Prompt 4: Hochmargige Spezial-Dienste & 12-Monats-Kalkulation* – m²/h Leistungswerte, Netto-Stundensätze, Margen für Photovoltaik-, Baufein-, Winterdienst- und Heckenschnitt-Services sowie 12-Monate-Liquiditätsplan.
-  - **Multi-Mode UI-Erweiterung im Manus Power-Cockpit (`manus_power_cockpit.html`):** Schnelle Umschaltung zwischen allen 5 Prompts (Web-App Builder + 4 Deep Researches) mit 1-Klick Zwischenablagen-Kopie.
+    - *📍 Master-Prompt 5: Google Maps & Local SEO Dominanz-Audit* – GBP-Keywords, Citations, Schema.org Markup und City-Landingpage-Texte für Rang 1 im Harzer Local 3-Pack.
+    - *👥 Master-Prompt 6: Recruiting- & Mitarbeiter-Funnel* – Lohn-Benchmark, 3 conversion-starke Stellenanzeigen und 60-Sekunden WhatsApp-Bewerbungsprozess.
+    - *🏨 Master-Prompt 7: Ferienwohnungs-, Hotel- & Tourismus-Radar* – 35+ Fewo-Agenturen & Chalet-Dörfer (Braunlage, Bad Harzburg, Schierke, Wernigerode) mit B2B-Wechselreinigungsangebot.
+    - *🎬 Master-Prompt 8: Social Media & 30-Tage Viral-Content-Maschine* – 30 genaue Video-Skripte für Vorher/Nachher-Transformationen mit Hooks, Musik-Tipps und Hashtags.
+    - *🏭 Master-Prompt 9: Gewerbeparks & Industriehallen-Sonderreinigung* – Großkunden-Dossier (Gewerbegebiet Baßgeige, Langelsheim, Wernigerode) für Hallenboden- und Fassadenreinigung bis 10.000 €.
+    - *🤝 Master-Prompt 10: KMU Service Harz B2B-Digitalisierungs-Audit* – Cross-Selling-Audit für regionale Handwerksbetriebe zur Büro-Automatisierung und E-Rechnung.
+  - **Multi-Mode UI-Erweiterung im Manus Power-Cockpit (`manus_power_cockpit.html`):** Schnelle Umschaltung zwischen allen 11 Prompts (Web-App Builder + 10 Deep Researches) mit 1-Klick Zwischenablagen-Kopie.
   - **Praxis-Leitfaden:** Schritt-für-Schritt Anleitung zur Transformation der generierten CSV-Leadlisten in Vor-Ort-Abschlüsse mit dem GoClean Blitz-Kalkulator.
 
 - **🤖 Manus.ai Power-Cockpit & Playbook (`manus_power_cockpit.html`):**

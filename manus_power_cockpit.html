@@ -346,7 +346,7 @@
 
                     <!-- Prompt Mode Selector -->
                     <div class="mb-4">
-                        <label class="block text-xs font-semibold text-slate-300 mb-2">Prompt-Auswahl für Manus.ai:</label>
+                        <label class="block text-xs font-semibold text-slate-300 mb-2">Prompt-Auswahl für Manus.ai (10-Module Power-Suite):</label>
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
                             <button type="button" onclick="selectGcPrompt('suite')" id="gc-btn-suite" class="gc-prompt-btn active px-3 py-2 rounded-lg text-xs font-semibold text-left border bg-emerald-500/20 text-emerald-300 border-emerald-500/40">
                                 📱 1. Web-App & 3 Portale
@@ -362,6 +362,24 @@
                             </button>
                             <button type="button" onclick="selectGcPrompt('calc')" id="gc-btn-calc" class="gc-prompt-btn px-3 py-2 rounded-lg text-xs font-semibold text-left border bg-slate-950 text-slate-400 border-slate-800 hover:border-slate-700">
                                 📊 5. Deep Research: Kalkulation
+                            </button>
+                            <button type="button" onclick="selectGcPrompt('seo')" id="gc-btn-seo" class="gc-prompt-btn px-3 py-2 rounded-lg text-xs font-semibold text-left border bg-slate-950 text-slate-400 border-slate-800 hover:border-slate-700">
+                                📍 6. Deep Research: Local SEO #1
+                            </button>
+                            <button type="button" onclick="selectGcPrompt('recruiting')" id="gc-btn-recruiting" class="gc-prompt-btn px-3 py-2 rounded-lg text-xs font-semibold text-left border bg-slate-950 text-slate-400 border-slate-800 hover:border-slate-700">
+                                👥 7. Deep Research: Recruiting
+                            </button>
+                            <button type="button" onclick="selectGcPrompt('tourism')" id="gc-btn-tourism" class="gc-prompt-btn px-3 py-2 rounded-lg text-xs font-semibold text-left border bg-slate-950 text-slate-400 border-slate-800 hover:border-slate-700">
+                                🏨 8. Deep Research: Fewo & Hotels
+                            </button>
+                            <button type="button" onclick="selectGcPrompt('social')" id="gc-btn-social" class="gc-prompt-btn px-3 py-2 rounded-lg text-xs font-semibold text-left border bg-slate-950 text-slate-400 border-slate-800 hover:border-slate-700">
+                                🎬 9. Deep Research: Social Media
+                            </button>
+                            <button type="button" onclick="selectGcPrompt('industry')" id="gc-btn-industry" class="gc-prompt-btn px-3 py-2 rounded-lg text-xs font-semibold text-left border bg-slate-950 text-slate-400 border-slate-800 hover:border-slate-700">
+                                🏭 10. Deep Research: Industriehallen
+                            </button>
+                            <button type="button" onclick="selectGcPrompt('partner')" id="gc-btn-partner" class="gc-prompt-btn px-3 py-2 rounded-lg text-xs font-semibold text-left border bg-slate-950 text-slate-400 border-slate-800 hover:border-slate-700">
+                                🤝 11. KMU Digital-Audit (Handwerk)
                             </button>
                         </div>
                     </div>
@@ -725,6 +743,96 @@ Erstelle ein vollständiges, hochmargiges Leistungs- und Kalkulationsverzeichnis
 <OUTPUT_DELIVERABLES>
 1. KALKULATIONS-LEISTUNGSVERZEICHNIS (m²/h, Materialkosten, Netto-Stundensätze & Margen)
 2. 12-MONATE UMSATZ-ROUTENPLAN (Saisonalitäts-Ausgleich gegen Liquiditätslöcher)
+</OUTPUT_DELIVERABLES>`;
+            } else if (currentGcPromptMode === 'seo') {
+                document.getElementById('gc-prompt-label').innerText = "Generierter Master-Prompt: 📍 Deep Research 5 (Google Maps & Local SEO Dominanz #1)";
+                document.getElementById('prompt-goclean').value = 
+`<ROLE>
+Du bist ein führender Experte für Local SEO und Google Business Profile Optimierung für Handwerksbetriebe.
+</ROLE>
+
+<GOAL>
+Führe ein tiefgehendes Local-SEO-Audit für "Gebäudereinigung Goslar", "Treppenhausreinigung Harz", "Gartenpflege Goslar" und "Winterdienst Harz" durch und erstelle einen 30-Tage-Aktionsplan für Platz 1 im Google Local 3-Pack für ${gcCompany}.
+</GOAL>
+
+<OUTPUT_DELIVERABLES>
+1. WETTBEWERBS-SEO-MATRIX (Top 3 Konkurrenten, GBP-Kategorien, Review-Lücken)
+2. LOCAL SEO PLAYBOOK (20 Top-Citations Harz, Schema.org Code & Stadt-Landingpage-Texte)
+</OUTPUT_DELIVERABLES>`;
+            } else if (currentGcPromptMode === 'recruiting') {
+                document.getElementById('gc-prompt-label').innerText = "Generierter Master-Prompt: 👥 Deep Research 6 (Recruiting & Mitarbeiter-Funnel Harz)";
+                document.getElementById('prompt-goclean').value = 
+`<ROLE>
+Du bist ein Headhunter und Recruiting-Stratege für das Handwerk und Facility-Dienstleistungen in Deutschland.
+</ROLE>
+
+<GOAL>
+Analysiere den regionalen Arbeitsmarkt für Reinigungskräfte und Gartenhelfer im Landkreis Goslar / Harz und erstelle ein automatisiertes Recruiting-System für ${gcCompany}, um verlässliches Personal ohne teure Zeitarbeit zu gewinnen.
+</GOAL>
+
+<OUTPUT_DELIVERABLES>
+1. GEHALTS- & BENEFITS-BENCHMARK HARZ (Tatsächliche Löhne der Konkurrenz)
+2. DAS 3-STUFEN RECRUITING-KIT (3 Anzeigentexte für Kleinanzeigen/Social Media, WhatsApp-Bewerbung & 3-Minuten Telefonleitfaden)
+</OUTPUT_DELIVERABLES>`;
+            } else if (currentGcPromptMode === 'tourism') {
+                document.getElementById('gc-prompt-label').innerText = "Generierter Master-Prompt: 🏨 Deep Research 7 (Ferienwohnungs- & Tourismus-Großkunden)";
+                document.getElementById('prompt-goclean').value = 
+`<ROLE>
+Du bist ein B2B-Tourismus-Analyst und Key-Account-Manager für das Gastgewerbe im Harz (Braunlage, Bad Harzburg, Wernigerode, Schierke).
+</ROLE>
+
+<GOAL>
+Recherchiere und erstelle eine VIP-Leadliste aller Fewo-Agenturen, Chalet-Dörfer, Boutique-Hotels und Campingplätze im Harz für Turnus-Endreinigung, Wäscheservice, Gartenpflege und Winterdienst.
+</GOAL>
+
+<OUTPUT_DELIVERABLES>
+1. TOURISMUS-B2B-LEADLISTE (CSV-Tabelle mit min. 35 Agenturen & Großanbietern)
+2. PARTNERSCHAFTS-PITCH (1-Seiter B2B-Kooperationsanschreiben an Fewo-Verwalter & Preisschema)
+</OUTPUT_DELIVERABLES>`;
+            } else if (currentGcPromptMode === 'social') {
+                document.getElementById('gc-prompt-label').innerText = "Generierter Master-Prompt: 🎬 Deep Research 8 (Social Media & 30-Tage Vorher/Nachher Viral-Plan)";
+                document.getElementById('prompt-goclean').value = 
+`<ROLE>
+Du bist ein führender Social Media Creative Director und Video-Marketing-Stratege für das Handwerk.
+</ROLE>
+
+<GOAL>
+Erstelle einen vollständigen 30-Tage-Redaktionsplan mit 30 konkreten Video- und Post-Konzepten für ${gcCompany}. Fokus auf visuelle "Oddly Satisfying" Vorher/Nachher-Transformationen (Terrassen kärchern, Hecken schneiden, Bauendreinigung).
+</GOAL>
+
+<OUTPUT_DELIVERABLES>
+1. 30-TAGE REDAKTIONSPLAN (Tabelle mit Format, Hook, Szene, Musik, Caption & Hashtags)
+2. DIE TOP 5 HOOK-SKRIPTE (Erste 3 Sekunden für TikTok/Reels)
+</OUTPUT_DELIVERABLES>`;
+            } else if (currentGcPromptMode === 'industry') {
+                document.getElementById('gc-prompt-label').innerText = "Generierter Master-Prompt: 🏭 Deep Research 9 (Gewerbeparks & Industriehallen-Sonderreinigung)";
+                document.getElementById('prompt-goclean').value = 
+`<ROLE>
+Du bist ein B2B-Industrieberater und Key-Account-Spezialist für industrielle Sonderreinigung und Hallenpflege.
+</ROLE>
+
+<GOAL>
+Erstelle ein B2B-Dossier und eine Leadliste der produzierenden Unternehmen, Logistiker, Autohäuser und Werkstätten in den Industriegebieten des Harzes (Baßgeige Goslar, Langelsheim, Wernigerode) für maschinelle Großflächenreinigung und Außenanlagenpflege.
+</GOAL>
+
+<OUTPUT_DELIVERABLES>
+1. INDUSTRIE-LEADLISTE HARZ (CSV-Tabelle mit min. 30 Industrieunternehmen)
+2. INDUSTRIE-ANGEBOTS-DOSSIER (Formelles Anschreiben an Werksleiter & Checkliste)
+</OUTPUT_DELIVERABLES>`;
+            } else if (currentGcPromptMode === 'partner') {
+                document.getElementById('gc-prompt-label').innerText = "Generierter Master-Prompt: 🤝 KMU Digital-Audit (Handwerker-Büro-Optimierung & E-Rechnung)";
+                document.getElementById('prompt-goclean').value = 
+`<ROLE>
+Du bist der Chef-Digitalisierungsberater und Prozessautomatisierer von "KMU Service Harz".
+</ROLE>
+
+<GOAL>
+Recherchiere 30 Handwerksbetriebe im Harzkreis (SHK, Elektro, Dachdecker, GaLa-Bau) und analysiere deren digitalen Auftritt, E-Rechnungs-Bereitschaft und Büro-Engpässe für einen 500 € Büro-Stress-Test Pitch.
+</GOAL>
+
+<OUTPUT_DELIVERABLES>
+1. HANDWERKS-DIGITAL-AUDIT LISTE (CSV-Tabelle mit 30 Betrieben)
+2. AKQUISE-BRIEF FÜR 500 € AUDIT (Mit Gutschein-Code & ROI-Garantie)
 </OUTPUT_DELIVERABLES>`;
             } else {
                 document.getElementById('gc-prompt-label').innerText = "Generierter Master-Prompt: 📱 Web-App & 3-Portal Suite (Landingpage, Kunden, Mitarbeiter, Admin)";

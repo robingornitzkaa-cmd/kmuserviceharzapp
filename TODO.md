@@ -1,12 +1,18 @@
 # TODO - Founder OS
 
-- [x] **🧼 [GoClean Harz × Manus AI] Deep-Research Master-Prompt Suite (`DOCS/MANUS_GOCLEAN_DEEP_RESEARCH_PROMPTS.md` & `manus_power_cockpit.html`):**
-  - Standalone Master-Dokument mit 4 hochkarätigen Deep-Research Prompts im XML-Tag-Format für Manus AI:
+- [x] **🧼 [GoClean Harz × Manus AI] 10-Module Deep-Research Master-Suite (`DOCS/MANUS_GOCLEAN_DEEP_RESEARCH_PROMPTS.md` & `manus_power_cockpit.html`):**
+  - Standalone Master-Dokument mit 10 hochkarätigen Deep-Research Prompts im XML-Tag-Format für Manus AI:
     1. *Modul 1: Regionaler Marktatlas & Wettbewerbs-Audit (30–40 km Harz: Goslar, Langelsheim, Bad Harzburg, Wernigerode, Clausthal-Zellerfeld, Osterode, Salzgitter-Süd).*
     2. *Modul 2: B2B-Liegenschaften & Kombi-Auftraggeber (50+ Leads: Hausverwaltungen, Bauträger, WEGs, Gewerbeparks für Reinigung & Garten).*
     3. *Modul 3: Kommunale Vergaben & Ausschreibungs-Radar (Schulen, Kitas, Liegenschaftsämter, Wohnungsbaugesellschaften Harz).*
     4. *Modul 4: Hochmargige Spezial-Dienste & 12-Monats-Saison-Kalkulation (PV-Reinigung, Winterdienst, Heckenschnitt, Bauendreinigung).*
-  - Vollständige Integration aller 5 Modi in das interaktive Cockpit (`manus_power_cockpit.html`) mit 1-Klick Copy-to-Clipboard.
+    5. *Modul 5: Google Maps & Local SEO Dominanz-Audit (Top 1 Rank in 30 Tagen).*
+    6. *Modul 6: Recruiting- & Mitarbeiter-Funnel (Reinigungskräfte & Gartenhelfer im Harz).*
+    7. *Modul 7: Ferienwohnungs-, Hotel- & Tourismus-Großkunden Radar (Braunlage, Bad Harzburg, Wernigerode).*
+    8. *Modul 8: Social Media & 30-Tage Viral-Content-Plan (Vorher/Nachher Skripte).*
+    9. *Modul 9: Gewerbeparks & Industriehallen-Sonderreinigung (Aufträge bis 10.000 €).*
+    10. *Modul 10: KMU Service Harz B2B-Digitalisierungs-Audit (Cross-Selling).*
+  - Vollständige Integration aller 11 Modi in das interaktive Cockpit (`manus_power_cockpit.html`) mit 1-Klick Copy-to-Clipboard.
   - Schritt-für-Schritt Auswertungs- & Umsetzungs-Leitfaden für den schnellen B2B-Verkaufsabschluss vor Ort.
 
 - [x] **🤖 [Manus AI] Interaktives Power-Cockpit & Automatisierungs-Playbook (`manus_power_cockpit.html`):**
