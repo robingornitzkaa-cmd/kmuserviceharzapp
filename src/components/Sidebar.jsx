@@ -15,7 +15,8 @@ import {
   Zap,
   Globe,
   ShieldCheck,
-  Sparkles
+  Sparkles,
+  Bell
 } from 'lucide-react';
 
 export const Sidebar = ({
@@ -26,7 +27,8 @@ export const Sidebar = ({
   setMobileMenuOpen,
   activeTab,
   setActiveTab,
-  clientPortalMode
+  clientPortalMode,
+  onOpenNotificationCenter
 }) => {
   if (clientPortalMode) return null;
 
@@ -157,6 +159,17 @@ export const Sidebar = ({
               <ShieldCheck size={18} />
               <span className="sidebar-nav-label">🎯 Coaching Live-Portal</span>
             </button>
+            {onOpenNotificationCenter && (
+              <button 
+                className="sidebar-nav-item"
+                onClick={onOpenNotificationCenter}
+                title="🔔 Push-Benachrichtigungen & Android-Widgets"
+                style={{ color: 'var(--accent-cyan)', marginTop: '0.25rem' }}
+              >
+                <Bell size={18} />
+                <span className="sidebar-nav-label">🔔 Push & Widgets</span>
+              </button>
+            )}
           </div>
           <div className="sidebar-footer">
             <button 
@@ -295,6 +308,16 @@ export const Sidebar = ({
                 <ShieldCheck size={18} />
                 <span>🎯 Coaching Live-Portal</span>
               </button>
+              {onOpenNotificationCenter && (
+                <button 
+                  className="sidebar-nav-item" 
+                  onClick={() => { onOpenNotificationCenter(); setMobileMenuOpen(false); }}
+                  style={{ color: 'var(--accent-cyan)' }}
+                >
+                  <Bell size={18} />
+                  <span>🔔 Push & Widgets</span>
+                </button>
+              )}
             </div>
           </aside>
         </>

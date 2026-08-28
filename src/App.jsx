@@ -108,6 +108,13 @@ import { ErrorBoundary } from './components/ErrorBoundary';
 import { RewardShopModal } from './components/RewardShopModal';
 import { PenaltyModal } from './components/PenaltyModal';
 import { BackupManagerModal } from './components/BackupManagerModal';
+import { NotificationCenterModal } from './components/NotificationCenterModal';
+import { 
+  checkAndNotifyFollowUps, 
+  checkAndNotifyDueTodos, 
+  checkAndNotifyHabitStreak, 
+  scheduleMorningFocus 
+} from './services/notificationService';
 import { SkeletonLoader } from './components/common/SkeletonLoader';
 
 // Lazy Loaded Tab Views (Asynchronous Code Splitting)
@@ -492,6 +499,7 @@ function App() {
   const [isRewardModalOpen, setIsRewardModalOpen] = useState(false);
   const [isPenaltyModalOpen, setIsPenaltyModalOpen] = useState(false);
   const [isBackupModalOpen, setIsBackupModalOpen] = useState(false);
+  const [isNotificationCenterOpen, setIsNotificationCenterOpen] = useState(false);
   
   // Wochen-Review & Archiv States (Feature A3)
   const [weeklyArchive, setWeeklyArchive] = useState(() => {
@@ -818,10 +826,41 @@ function App() {
     localStorage.setItem('f_dash_local_updated_at', nowIso);
   }, [dashNotes, dashNotesList, dashTodos, stickyNoteColor, dashboardWidgets, dashboardMode]);
 
-  // Phase v9: Sync to Android Widget
+  // Phase v9: Sync to Android Widgets (All-in-One, To-Dos, CRM, Quick-Capture)
   useEffect(() => {
-    updateAndroidWidget(dashNotes, dashTodos);
-  }, [dashNotes, dashTodos]);
+    updateAndroidWidget({
+      dashNotes,
+      dashTodos,
+      leads,
+      streak: habitStreak,
+      dailyGoal: dashboardGoal
+    });
+  }, [dashNotes, dashTodos, leads, habitStreak, dashboardGoal]);
+
+  // Background Notification Automation (Follow-ups, Todos, Streaks, Focus)
+  useEffect(() => {
+    if (leads && leads.length > 0) {
+      checkAndNotifyFollowUps(leads);
+    }
+  }, [leads]);
+
+  useEffect(() => {
+    if (dashTodos && dashTodos.length > 0) {
+      checkAndNotifyDueTodos(dashTodos);
+    }
+  }, [dashTodos]);
+
+  useEffect(() => {
+    if (habits && habits.length > 0) {
+      checkAndNotifyHabitStreak(habits, habitStreak);
+    }
+  }, [habits, habitStreak]);
+
+  useEffect(() => {
+    if (dashboardGoal) {
+      scheduleMorningFocus(dashboardGoal);
+    }
+  }, [dashboardGoal]);
   useEffect(() => {
     localStorage.setItem('f_google_connected', String(googleConnected));
   }, [googleConnected]);
@@ -3996,6 +4035,7 @@ Hier ist die Frage des Nutzers:
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         clientPortalMode={clientPortalMode}
+        onOpenNotificationCenter={() => setIsNotificationCenterOpen(true)}
       />
 
       {/* Main Container */}
@@ -4264,6 +4304,7 @@ Hier ist die Frage des Nutzers:
             setDashboardWidgets={setDashboardWidgets}
             isEditingDashboard={isEditingDashboard}
             setIsEditingDashboard={setIsEditingDashboard}
+            onOpenNotificationCenter={() => setIsNotificationCenterOpen(true)}
             dashboardGoal={dashboardGoal}
             setDashboardGoal={setDashboardGoal}
             stickyNoteColor={stickyNoteColor}
@@ -4756,6 +4797,21 @@ Hier ist die Frage des Nutzers:
         }}
         onRestoreSuccess={() => {
           setToastMessage('✅ Backup erfolgreich eingespielt! Seite lädt neu...');
+          setShowToast(true);
+        }}
+      />
+
+      {/* Push-Benachrichtigungen & Android-Widgets Control Center */}
+      <NotificationCenterModal
+        isOpen={isNotificationCenterOpen}
+        onClose={() => setIsNotificationCenterOpen(false)}
+        dashNotes={dashNotes}
+        dashTodos={dashTodos}
+        leads={leads}
+        streak={habitStreak}
+        dailyGoal={dashboardGoal || ''}
+        onShowToast={(msg, type) => {
+          setToastMessage(msg);
           setShowToast(true);
         }}
       />

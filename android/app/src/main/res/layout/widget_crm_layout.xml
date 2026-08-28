@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_crm_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/widget_background"
+    android:padding="12dp">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="6dp">
+        
+        <View
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:background="@drawable/widget_dot"
+            android:layout_marginEnd="6dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Founder OS • CRM Pipeline"
+            android:textColor="#38bdf8"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/widget_crm_total_badge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="518 Betriebe"
+            android:textColor="#94a3b8"
+            android:textSize="10sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#27272a"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Pipeline KPI Grid -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="8dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+            
+            <TextView
+                android:id="@+id/widget_crm_followups_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="#fbbf24"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Wiedervorlagen"
+                android:textColor="#94a3b8"
+                android:textSize="9sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+            
+            <TextView
+                android:id="@+id/widget_crm_won_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="#34d399"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gewonnen"
+                android:textColor="#94a3b8"
+                android:textSize="9sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Quick Action / Status Note -->
+    <TextView
+        android:id="@+id/widget_crm_status_note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="⚡ Tippe hier, um die B2B-Lead-Pipeline zu öffnen."
+        android:textColor="#cbd5e1"
+        android:textSize="10sp"
+        android:gravity="center"
+        android:padding="4dp" />
+</LinearLayout>

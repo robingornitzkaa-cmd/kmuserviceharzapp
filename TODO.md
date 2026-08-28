@@ -1,5 +1,17 @@
 # TODO - Founder OS
 
+- [x] **🔔 [Push & Widgets] Hybrides Benachrichtigungs-System & Android 4-Widget-Suite:**
+  - *Zentraler Notification-Service (`src/services/notificationService.js`):* Web Notifications API, PWA Service Worker Push und Capacitor Native Local/Push Notifications (`@capacitor/local-notifications`, `@capacitor/push-notifications`).
+  - *4 automatisierte Benachrichtigungs-Trigger:* 📞 CRM-Wiedervorlagen am Fälligkeitstag, ⏰ To-Do Fristen & Aufgaben-Flow, ☀️ Täglicher Morgen-Fokus mit Uhrzeit-Wähler (z. B. 08:00 Uhr) und 🔥 Habit-Tracker Streak-Schutz.
+  - *In-App Control Center (`NotificationCenterModal.jsx`, `SettingsView.jsx`, `Sidebar.jsx`, `DashboardView.jsx`):* Master-Toggle, Audio-Signalton-Schalter, Kategorie-Toggles, Uhrzeit-Wähler, Sofort-Test-Button (`🧪 Test-Benachrichtigung senden`) und 1-Klick Widget-Synchronisation.
+  - *Android 4-Widget-Suite (`android/app/src/main/`):*
+    1. **All-in-One Power Widget** (`MyWidgetProvider.java`, `widget_layout.xml`): Notizen, Top-3 To-Dos, CRM-Kennzahlen (518 Leads, Wiedervorlagen) und Streak-Badge.
+    2. **To-Do & Fokus Widget** (`TodoWidgetProvider.java`, `widget_todo_layout.xml`): Aufgabenliste mit Zähler und Fokus-Hauptziel.
+    3. **CRM Pipeline Widget** (`CrmWidgetProvider.java`, `widget_crm_layout.xml`): Lead-Kennzahlen, offene Wiedervorlagen und 1-Klick Pipeline-Sprung.
+    4. **Quick-Capture & Voice Widget** (`QuickCaptureWidgetProvider.java`, `widget_quick_capture_layout.xml`): 1-Klick Sprung in Sprachaufnahme und Notizen.
+  - *Capacitor Bridge & Lifecycle (`WidgetBridgePlugin.java`, `MainActivity.java`, `AndroidManifest.xml`):* Vollständige Bridge-Anbindung via `registerPlugin('WidgetBridge')` und Broadcast-Verteilung an alle Widgets.
+  - *100% Testabdeckung:* 13 Vitest-Tests in `notificationsAndWidgets.test.jsx`, 251 Tests grün, Build & PWA Precache fehlerfrei.
+
 - [x] **🧼 [GoClean Harz × Manus AI] 10-Module Deep-Research Master-Suite (`DOCS/MANUS_GOCLEAN_DEEP_RESEARCH_PROMPTS.md` & `manus_power_cockpit.html`):**
   - Standalone Master-Dokument mit 10 hochkarätigen Deep-Research Prompts im XML-Tag-Format für Manus AI:
     1. *Modul 1: Regionaler Marktatlas & Wettbewerbs-Audit (30–40 km Harz: Goslar, Langelsheim, Bad Harzburg, Wernigerode, Clausthal-Zellerfeld, Osterode, Salzgitter-Süd).*

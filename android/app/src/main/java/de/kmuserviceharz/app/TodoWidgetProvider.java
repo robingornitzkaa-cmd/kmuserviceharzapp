@@ -10,7 +10,7 @@ import android.widget.RemoteViews;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class MyWidgetProvider extends AppWidgetProvider {
+public class TodoWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -21,67 +21,53 @@ public class MyWidgetProvider extends AppWidgetProvider {
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         SharedPreferences sharedPref = context.getSharedPreferences("WidgetPrefs", Context.MODE_PRIVATE);
-        String notes = sharedPref.getString("notes", "Keine Notizen vorhanden. Tippe hier zum Öffnen.");
         String todosJson = sharedPref.getString("todos", "[]");
-        int leadsCount = sharedPref.getInt("leadsCount", 518);
-        int followUpsToday = sharedPref.getInt("followUpsToday", 0);
-        int streak = sharedPref.getInt("streak", 0);
         String dailyGoal = sharedPref.getString("dailyGoal", "");
 
-        // Format Todos
         StringBuilder todosBuilder = new StringBuilder();
+        int activeCount = 0;
         try {
             JSONArray arr = new JSONArray(todosJson);
-            int count = 0;
             for (int i = 0; i < arr.length(); i++) {
                 JSONObject obj = arr.getJSONObject(i);
                 boolean done = obj.optBoolean("done", false);
                 String text = obj.optString("text", "");
-                if (text.isEmpty()) {
-                    text = obj.optString("title", "");
-                }
+                if (text.isEmpty()) text = obj.optString("title", "");
                 
                 if (!done && !text.isEmpty()) {
-                    todosBuilder.append("☐ ").append(text).append("\n");
-                    count++;
+                    activeCount++;
+                    if (activeCount <= 5) {
+                        todosBuilder.append("☐ ").append(text).append("\n");
+                    }
                 }
-                if (count >= 3) break;
             }
-            if (count == 0) {
-                todosBuilder.append("✓ Alle Aufgaben erledigt!");
+            if (activeCount == 0) {
+                todosBuilder.append("✓ Alle Aufgaben erledigt! Starker Flow.");
+            } else if (activeCount > 5) {
+                todosBuilder.append("+ ").append(activeCount - 5).append(" weitere Aufgaben...");
             }
         } catch (Exception e) {
-            todosBuilder.append("Keine aktiven Aufgaben.");
+            todosBuilder.append("Keine Aufgaben gefunden.");
         }
 
-        // Construct RemoteViews
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_todo_layout);
+        views.setTextViewText(R.id.widget_todo_counter, activeCount + " offen");
         
-        // CRM & Streak Info
-        String crmStatsText = leadsCount + " Leads • " + followUpsToday + " Wiedervorlage(n) heute";
-        views.setTextViewText(R.id.widget_crm_stats, crmStatsText);
-        views.setTextViewText(R.id.widget_streak_badge, "🔥 " + streak + "d Streak");
-
-        // Focus Goal
         if (dailyGoal != null && !dailyGoal.trim().isEmpty()) {
-            views.setTextViewText(R.id.widget_goal_text, "🎯 Fokus: " + dailyGoal.trim());
+            views.setTextViewText(R.id.widget_todo_focus_goal, "🎯 Fokus: " + dailyGoal.trim());
         } else {
-            views.setTextViewText(R.id.widget_goal_text, "🎯 Fokus: Bereit für den Tag");
+            views.setTextViewText(R.id.widget_todo_focus_goal, "🎯 Fokus: Bereit für den Tag");
         }
 
-        // Notes & Todos
-        views.setTextViewText(R.id.widget_notes_text, notes);
-        views.setTextViewText(R.id.widget_todos_text, todosBuilder.toString().trim());
+        views.setTextViewText(R.id.widget_todo_list_text, todosBuilder.toString().trim());
 
-        // Intent to launch app when clicking widget
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(
             context, 0, intent, 
             PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
         );
-        views.setOnClickPendingIntent(R.id.widget_container, pendingIntent);
+        views.setOnClickPendingIntent(R.id.widget_todo_container, pendingIntent);
 
-        // Update widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 }

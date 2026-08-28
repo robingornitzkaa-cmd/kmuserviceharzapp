@@ -23,7 +23,8 @@ import {
   Zap,
   BookOpen,
   BedDouble,
-  Award
+  Award,
+  Bell
 } from 'lucide-react';
 import { SettingsView, getWidgetOrder } from './SettingsView';
 import { VoiceQuickCaptureWidget } from './VoiceQuickCaptureWidget';
@@ -51,6 +52,7 @@ export const DashboardView = ({
   setDashboardWidgets,
   isEditingDashboard,
   setIsEditingDashboard,
+  onOpenNotificationCenter,
   dashboardGoal,
   setDashboardGoal,
   stickyNoteColor,
@@ -157,14 +159,25 @@ export const DashboardView = ({
             Gründer-Cockpit: {Object.values(dashboardWidgets).filter(Boolean).length} von {Object.keys(dashboardWidgets).length} Widgets aktiv
           </span>
         </div>
-        <button 
-          type="button"
-          onClick={() => setIsEditingDashboard(!isEditingDashboard)} 
-          className="btn btn-secondary"
-          style={{ fontSize: '0.75rem', padding: '0.35rem 0.75rem', display: 'flex', alignItems: 'center', gap: '0.35rem', border: isEditingDashboard ? '1px solid var(--accent-cyan)' : '1px solid var(--border-color)', height: '30px', flexShrink: 0 }}
-        >
-          <Sliders size={12} /> {isEditingDashboard ? 'Layout fertigstellen' : 'Layout anpassen'}
-        </button>
+        <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
+          <button 
+            type="button"
+            onClick={onOpenNotificationCenter} 
+            className="btn btn-secondary"
+            style={{ fontSize: '0.75rem', padding: '0.35rem 0.75rem', display: 'flex', alignItems: 'center', gap: '0.35rem', border: '1px solid rgba(6, 182, 212, 0.4)', color: 'var(--accent-cyan)', height: '30px', flexShrink: 0 }}
+            title="Push-Benachrichtigungen & Android-Widgets verwalten"
+          >
+            <Bell size={12} /> Push & Widgets
+          </button>
+          <button 
+            type="button"
+            onClick={() => setIsEditingDashboard(!isEditingDashboard)} 
+            className="btn btn-secondary"
+            style={{ fontSize: '0.75rem', padding: '0.35rem 0.75rem', display: 'flex', alignItems: 'center', gap: '0.35rem', border: isEditingDashboard ? '1px solid var(--accent-cyan)' : '1px solid var(--border-color)', height: '30px', flexShrink: 0 }}
+          >
+            <Sliders size={12} /> {isEditingDashboard ? 'Layout fertigstellen' : 'Layout anpassen'}
+          </button>
+        </div>
       </div>
 
       {/* Customization Settings Drawer / Box */}
@@ -172,6 +185,7 @@ export const DashboardView = ({
         isEditingDashboard={isEditingDashboard}
         dashboardWidgets={dashboardWidgets}
         setDashboardWidgets={setDashboardWidgets}
+        onOpenNotificationCenter={onOpenNotificationCenter}
       />
 
       {/* ==================== GOCLEAN HARZ VIP BANNER (BRUDER-TREFFEN) ==================== */}

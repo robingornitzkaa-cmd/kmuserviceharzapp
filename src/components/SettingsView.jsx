@@ -1,5 +1,5 @@
 import React from 'react';
-import { Settings, ArrowUp, ArrowDown, RotateCcw } from 'lucide-react';
+import { Settings, ArrowUp, ArrowDown, RotateCcw, Bell } from 'lucide-react';
 
 export const DEFAULT_WIDGET_ORDER = [
   'mediaDrop',
@@ -27,7 +27,8 @@ export const getWidgetOrder = (dashboardWidgets) => {
 export const SettingsView = ({
   isEditingDashboard,
   dashboardWidgets,
-  setDashboardWidgets
+  setDashboardWidgets,
+  onOpenNotificationCenter
 }) => {
   if (!isEditingDashboard) return null;
 
@@ -75,7 +76,7 @@ export const SettingsView = ({
 
   return (
     <div className="card" style={{ background: 'rgba(9, 13, 22, 0.95)', border: '1px dashed var(--accent-cyan)', animation: 'fadeIn 0.2s ease-out' }}>
-      <div className="card-header" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className="card-header" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
         <div>
           <h3 className="card-title" style={{ fontSize: '0.9rem', color: 'var(--accent-cyan)', display: 'flex', alignItems: 'center', gap: '0.35rem', margin: 0 }}>
             <Settings size={16} /> Dashboard-Widgets konfigurieren & verschieben
@@ -85,15 +86,29 @@ export const SettingsView = ({
           </p>
         </div>
 
-        <button
-          type="button"
-          onClick={handleResetOrder}
-          className="btn btn-secondary"
-          style={{ fontSize: '0.7rem', padding: '0.25rem 0.5rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}
-          title="Zurück zur Standard-Reihenfolge"
-        >
-          <RotateCcw size={12} /> Standard-Reihenfolge
-        </button>
+        <div style={{ display: 'flex', gap: '0.4rem' }}>
+          {onOpenNotificationCenter && (
+            <button
+              type="button"
+              onClick={onOpenNotificationCenter}
+              className="btn btn-secondary"
+              style={{ fontSize: '0.7rem', padding: '0.25rem 0.5rem', display: 'flex', alignItems: 'center', gap: '0.25rem', borderColor: 'rgba(6, 182, 212, 0.4)', color: 'var(--accent-cyan)' }}
+              title="Push-Benachrichtigungen & Android-Widgets verwalten"
+            >
+              <Bell size={12} /> Push & Widgets
+            </button>
+          )}
+
+          <button
+            type="button"
+            onClick={handleResetOrder}
+            className="btn btn-secondary"
+            style={{ fontSize: '0.7rem', padding: '0.25rem 0.5rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}
+            title="Zurück zur Standard-Reihenfolge"
+          >
+            <RotateCcw size={12} /> Standard-Reihenfolge
+          </button>
+        </div>
       </div>
       
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '0.75rem', marginTop: '1rem' }}>
@@ -188,4 +203,3 @@ export const SettingsView = ({
     </div>
   );
 };
-

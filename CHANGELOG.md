@@ -5,6 +5,35 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **🔔 Hybrides Push-Benachrichtigungssystem & Android 4-Widget-Suite:**
+  - **Notification Engine (`src/services/notificationService.js`):** Hybrides Benachrichtigungssystem mit Unterstützung für Browser Web Notifications API, PWA Service Worker Push und native Capacitor Android Local/Push Alarme (`@capacitor/local-notifications`, `@capacitor/push-notifications`).
+  - **4 Automatisierte Benachrichtigungs-Trigger:**
+    1. *📞 CRM-Wiedervorlagen & Follow-ups:* Tägliche Erinnerung bei anstehenden Kundengesprächen und Angeboten.
+    2. *⏰ To-Do Fristen & Aufgaben-Flow:* Intelligente Erinnerung an offene Kern-Aufgaben.
+    3. *☀️ Täglicher Morgen-Fokus:* Anpassbarer Start-Reminder (z. B. 08:00 Uhr) mit direktem Fokus-Ziel.
+    4. *🔥 Habit & Streak-Schutz:* Nachmittags-/Abend-Erinnerung zur Aufrechterhaltung des täglichen Streaks.
+  - **Zentrales Kontrollzentrum (`NotificationCenterModal.jsx`):**
+    - Integriert in `SettingsView.jsx`, `DashboardView.jsx` und `Sidebar.jsx`.
+    - Permission-Status-Banner mit 1-Klick Erlauben-Button.
+    - Master-Toggle, Audio-Signalton-Schalter und individuelle Kategorie-Schalter.
+    - Konfigurierbarer Morgen-Fokus Uhrzeit-Wähler (`<input type="time" />`).
+    - Sofort-Test-Button (`🧪 Test-Benachrichtigung senden`).
+    - 1-Klick Android-Widget Synchronisations-Button (`📱 Widgets manuell updaten`).
+    - Ausklappbare Schritt-für-Schritt-Anleitung für die Platzierung auf dem Android-Startbildschirm.
+  - **Android 4-Widget-Suite (`android/app/src/main/`):**
+    1. *All-in-One Power Widget (`MyWidgetProvider.java`, `widget_layout.xml`):* Notiz-Vorschau, Top-3 To-Dos mit Checkboxen, CRM-Kennzahlen (518 Leads, Wiedervorlagen) und Streak-Badge.
+    2. *To-Do & Fokus Widget (`TodoWidgetProvider.java`, `widget_todo_layout.xml`):* Schlankes Aufgaben-Widget mit Zähler und Tagesziel.
+    3. *CRM Pipeline Widget (`CrmWidgetProvider.java`, `widget_crm_layout.xml`):* Live Lead-Radar mit KPI-Grid und Follow-up Status.
+    4. *Quick-Capture & Voice Widget (`QuickCaptureWidgetProvider.java`, `widget_quick_capture_layout.xml`):* 1-Klick Schnellstart für Diktier- & Sprachaufnahme-Studio.
+  - **Capacitor Plugin Bridge (`WidgetBridgePlugin.java`, `MainActivity.java`, `AndroidManifest.xml`):**
+    - Saubere Bridge-Registrierung via `registerPlugin('WidgetBridge')`.
+    - Vollständiger Datenabgleich für Notizen, To-Dos, Leads, Streak und Tagesziel.
+    - Automatische Hintergrund-Aktualisierung bei jeder Zustandsänderung in der App.
+  - **100% Testabdeckung & Qualitätssicherung:**
+    - 13 Vitest-Tests in `notificationsAndWidgets.test.jsx`.
+    - 251 Tests bestanden (`npm run test:all`).
+    - Fehlerfreier Produktions-Build (`npm run build`) mit PWA Workbox Precache.
+
 - **🧼 GoClean Harz × Manus AI – 10-Module Deep-Research Master-Suite (`DOCS/MANUS_GOCLEAN_DEEP_RESEARCH_PROMPTS.md` & `manus_power_cockpit.html`):**
   - **10 spezialisierte Master-Prompts im XML-Tag-Format für maximale KI-Ausbeute:**
     - *🗺️ Master-Prompt 1: Regionaler Marktatlas & Wettbewerbs-Audit (30–40 km Harz)* – Vollständige Analyse aller Reinigungs-, GaLa- und Hausmeisterbetriebe in Goslar, Langelsheim, Bad Harzburg, Wernigerode, Clausthal-Zellerfeld, Osterode & Salzgitter-Süd inkl. Stundensätzen, Google-Rezensionslücken und unbesetzten Marktlücken.

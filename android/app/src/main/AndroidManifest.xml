@@ -24,7 +24,7 @@
 
         </activity>
 
-        <!-- Startbildschirm Widget Receiver -->
+        <!-- 1. All-in-One Power Widget Receiver -->
         <receiver android:name=".MyWidgetProvider" android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -32,6 +32,36 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_info" />
+        </receiver>
+
+        <!-- 2. To-Do Fokus Widget Receiver -->
+        <receiver android:name=".TodoWidgetProvider" android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_todo_info" />
+        </receiver>
+
+        <!-- 3. CRM Pipeline Widget Receiver -->
+        <receiver android:name=".CrmWidgetProvider" android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_crm_info" />
+        </receiver>
+
+        <!-- 4. Quick-Capture & Voice Widget Receiver -->
+        <receiver android:name=".QuickCaptureWidgetProvider" android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_quick_capture_info" />
         </receiver>
 
         <provider
@@ -46,6 +76,9 @@
     </application>
 
     <!-- Permissions -->
-
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 </manifest>

@@ -51,6 +51,16 @@ Die Anwendung zeichnet sich durch ein futuristisches "Glassmorphic Dark Theme" a
 ### 1b. Gründungs-Roadmap & Command Center -- *NEU!*
 - **🗺️ Interaktive Gründungs-Roadmap & Meilenstein-Matrix:** 4 strategische Gründungsphasen (1: Fundament/Recht/Banken, 2: Pilot-Kunden Harz, 3: Automation Stack, 4: B2B-Skalierung). Mit Ampelstatus (`⚪`, `🟡`, `🔴`, `🟢`), interaktiven Checklisten und XP-Belohnungen für das Life OS bei Meilenstein-Abschluss.
 
+### 1c. 🔔 Push-Benachrichtigungen & Android 4-Widget-Suite -- *NEU!*
+- **🔔 Hybrides Benachrichtigungssystem (`src/services/notificationService.js`):** Unterstützt Desktop- & Mobile-Browser Web Notifications, PWA Service Worker Push und native Capacitor Android Alarme (`@capacitor/local-notifications`, `@capacitor/push-notifications`).
+- **🎯 4 Smarte Trigger:** Automatische Benachrichtigungen bei fälligen CRM-Wiedervorlagen, offenen To-Do-Fristen, anpassbarem morgendlichem Fokus-Start (z. B. 08:00 Uhr) und Habit-Streak-Schutz am Nachmittag.
+- **🎛️ Zentrales Kontrollzentrum (`NotificationCenterModal.jsx`):** Permission-Check, Toggles für alle Trigger, Morgen-Fokus Uhrzeit-Wähler, Sofort-Test-Button (`🧪 Test-Benachrichtigung senden`) und 1-Klick Widget-Synchronisation.
+- **📱 Android 4-Widget-Suite:**
+  1. *All-in-One Power Widget:* Notizen, Top-3 To-Dos, CRM-Kennzahlen (518 Betriebe, fällige Wiedervorlagen) und Streak-Badge.
+  2. *To-Do & Fokus Widget:* Aufgabenliste mit Checkboxen, Zähler und Tagesziel.
+  3. *CRM Pipeline Widget:* Lead-Zähler, fällige Wiedervorlagen und Schnellstart in die Lead-Akte.
+  4. *Quick-Capture & Voice Widget:* 1-Klick Diktier- & Sprachnotizen-Studio.
+
 ### 2. Inbox & Tasks (Posteingang)
 - **WhatsApp-Gateway & Webhook-Simulation:** Teste den Empfang strukturierter WhatsApp-Nachrichten samt HTTP-Post-Weiterleitung.
 - **Kanban-Board:** Drag-and-Drop Aufgaben-Board für den optimalen Arbeitsfluss.

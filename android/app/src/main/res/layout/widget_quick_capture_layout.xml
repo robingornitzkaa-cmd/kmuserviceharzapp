@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_qc_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/widget_background"
+    android:padding="12dp">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="6dp">
+        
+        <View
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:background="@drawable/widget_dot"
+            android:layout_marginEnd="6dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Founder OS • Voice & Notiz"
+            android:textColor="#a855f7"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#27272a"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Action Prompt Area -->
+    <TextView
+        android:id="@+id/widget_qc_notes_preview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="🎙️ Tippe hier zum sofortigen Diktieren oder Erfassen einer Sprach-Notiz."
+        android:textColor="#f8fafc"
+        android:textSize="12sp"
+        android:maxLines="3"
+        android:ellipsize="end" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="⚡ 1-Klick Diktier- & Notiz-Studio"
+        android:textColor="#c084fc"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:gravity="end" />
+</LinearLayout>
