@@ -5,6 +5,18 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **🌐 Google Workspace Live-Radar (Google Kalender & Gmail Push-Alarme):**
+  - **Live Google API Integration (`src/services/googleWorkspace.js`):** Vollständiger OAuth2 Token-Service und REST-Client für Google Calendar v3 und Gmail v1.
+  - **Smarte Termin- & Posteingangs-Alarme (`src/services/notificationService.js`):**
+    - 📅 **15-Minuten-Vorab-Alarm:** Prüft Google-Kalender-Termine und sendet 15–30 Minuten vor Beginn automatisch eine Push-Benachrichtigung mit Betreff, Uhrzeit und Ort.
+    - ✉️ **Gmail Posteingangs-Radar:** Erkennt neu eingehende ungelesene E-Mails und benachrichtigt sofort mit Absender, Betreff und Kurzvorschau.
+  - **Live-Dashboard & Agenda (`DashboardView.jsx`):**
+    - Anzeige der echten Google-Termine in der Kalender-Kachel.
+    - Neue Gmail-Posteingangs-Radar Kachel mit Live-Zähler („X ungelesen“) und Nachrichten-Auszügen.
+    - 1-Klick Google-Verbindungs- und Synchronisations-Workflow mit detailliertem Protokoll.
+  - **Android Widget-Anbindung:** Übermittlung des nächsten Termins (`nextMeeting`) und des ungelesenen Mail-Zählers (`unreadMailsCount`) an alle 4 Android Home-Screen-Widgets.
+  - **Qualitätssicherung:** 6 neue Vitest-Tests in `googleWorkspaceAndNotifications.test.jsx`, 257 Tests bestanden, fehlerfreier Produktions-Build.
+
 - **🔔 Hybrides Push-Benachrichtigungssystem & Android 4-Widget-Suite:**
   - **Notification Engine (`src/services/notificationService.js`):** Hybrides Benachrichtigungssystem mit Unterstützung für Browser Web Notifications API, PWA Service Worker Push und native Capacitor Android Local/Push Alarme (`@capacitor/local-notifications`, `@capacitor/push-notifications`).
   - **4 Automatisierte Benachrichtigungs-Trigger:**

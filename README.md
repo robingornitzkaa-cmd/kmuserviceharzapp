@@ -61,6 +61,12 @@ Die Anwendung zeichnet sich durch ein futuristisches "Glassmorphic Dark Theme" a
   3. *CRM Pipeline Widget:* Lead-Zähler, fällige Wiedervorlagen und Schnellstart in die Lead-Akte.
   4. *Quick-Capture & Voice Widget:* 1-Klick Diktier- & Sprachnotizen-Studio.
 
+### 1d. 🌐 Google Workspace Live-Radar (Google Kalender & Gmail) -- *NEU!*
+- **📅 Google Kalender Live-Radar:** Automatische Synchronisation aller anstehenden Termine mit **15-Minuten-Vorab-Push-Alarm** direkt auf den Sperrbildschirm und Desktop.
+- **✉️ Gmail Posteingangs-Radar:** Hintergrund-Prüfung auf neue ungelesene Nachrichten mit Sofort-Benachrichtigung (`Absender`, `Betreff`, `Kurzvorschau`) und In-App Posteingangs-Liste.
+- **📱 Home-Screen-Widget Synchronisation:** Der nächste anstehende Google-Termin und der Zähler ungelesener Mails werden live auf das Android-Widget übertragen.
+
+
 ### 2. Inbox & Tasks (Posteingang)
 - **WhatsApp-Gateway & Webhook-Simulation:** Teste den Empfang strukturierter WhatsApp-Nachrichten samt HTTP-Post-Weiterleitung.
 - **Kanban-Board:** Drag-and-Drop Aufgaben-Board für den optimalen Arbeitsfluss.

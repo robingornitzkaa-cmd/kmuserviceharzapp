@@ -34,6 +34,8 @@ export const DEFAULT_NOTIFICATION_SETTINGS = {
   morningFocusTime: '08:00',
   clientPortal: true,
   streaks: true,
+  googleCalendarReminders: true,
+  gmailRadar: true,
   sound: true
 };
 
@@ -237,7 +239,7 @@ export const sendTestNotification = async () => {
 
   const success = await sendImmediateNotification({
     title: '🚀 Founder OS • Benachrichtigung aktiv!',
-    body: 'Perfekt! Dein System ist bereit für CRM-Wiedervorlagen, Morgen-Fokus und Status-Alerts.',
+    body: 'Perfekt! Dein System ist bereit für Google-Termine, Gmail-Radar, CRM-Wiedervorlagen und Morgen-Fokus.',
     tag: 'test-notification',
     data: { action: 'open_dashboard', timestamp: Date.now() }
   });
@@ -361,4 +363,61 @@ export const checkAndNotifyHabitStreak = (habits = [], streak = 0) => {
       });
     }
   }
+};
+
+/**
+ * Prüft anstehende Google-Kalender-Termine und alarmiert 15-30 Minuten vor Beginn
+ */
+export const checkAndNotifyCalendarEvents = (events = []) => {
+  const settings = getNotificationSettings();
+  if (!settings.enabled || !settings.googleCalendarReminders || !Array.isArray(events)) return;
+
+  const now = Date.now();
+  const thirtyMinutesMs = 30 * 60 * 1000;
+
+  events.forEach(ev => {
+    if (!ev.start) return;
+    const startTime = new Date(ev.start).getTime();
+    if (isNaN(startTime)) return;
+
+    const diff = startTime - now;
+    // Liegt der Termin zwischen jetzt und den nächsten 30 Minuten?
+    if (diff > 0 && diff <= thirtyMinutesMs) {
+      const minsLeft = Math.max(1, Math.round(diff / (60 * 1000)));
+      const notifKey = `notified_cal_${ev.id}_${new Date().toISOString().split('T')[0]}`;
+      
+      if (!sessionStorage.getItem(notifKey)) {
+        sessionStorage.setItem(notifKey, 'true');
+        sendImmediateNotification({
+          title: `📅 Termin in ${minsLeft} Min: ${ev.title}`,
+          body: `Uhrzeit: ${ev.time || 'Heute'} ${ev.location ? '• Ort: ' + ev.location : ''}. Jetzt vorbereiten!`,
+          tag: `cal-${ev.id}`,
+          data: { type: 'calendar', eventId: ev.id }
+        });
+      }
+    }
+  });
+};
+
+/**
+ * Prüft ungelesene Gmail-Nachrichten und meldet neue Mails
+ */
+export const checkAndNotifyNewEmails = (emails = []) => {
+  const settings = getNotificationSettings();
+  if (!settings.enabled || !settings.gmailRadar || !Array.isArray(emails)) return;
+
+  emails.forEach(mail => {
+    if (!mail.id) return;
+    const notifKey = `notified_mail_${mail.id}`;
+    
+    if (!localStorage.getItem(notifKey)) {
+      localStorage.setItem(notifKey, 'true');
+      sendImmediateNotification({
+        title: `✉️ Neue E-Mail von ${mail.from}`,
+        body: `${mail.subject}\n${mail.snippet || ''}`.trim(),
+        tag: `mail-${mail.id}`,
+        data: { type: 'gmail', messageId: mail.id }
+      });
+    }
+  });
 };

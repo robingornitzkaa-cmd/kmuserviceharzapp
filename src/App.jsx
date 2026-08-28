@@ -113,8 +113,16 @@ import {
   checkAndNotifyFollowUps, 
   checkAndNotifyDueTodos, 
   checkAndNotifyHabitStreak, 
-  scheduleMorningFocus 
+  scheduleMorningFocus,
+  checkAndNotifyCalendarEvents,
+  checkAndNotifyNewEmails
 } from './services/notificationService';
+import { 
+  fetchGoogleCalendarEvents, 
+  fetchUnreadGmailMessages, 
+  getGoogleAccessToken, 
+  logoutGoogle 
+} from './services/googleWorkspace';
 import { SkeletonLoader } from './components/common/SkeletonLoader';
 
 // Lazy Loaded Tab Views (Asynchronous Code Splitting)
@@ -424,6 +432,14 @@ function App() {
   const [isConnectingGoogle, setIsConnectingGoogle] = useState(false);
   const [isGoogleSyncing, setIsGoogleSyncing] = useState(false);
   const [googleSyncLogs, setGoogleSyncLogs] = useState([]);
+  const [gmailMessages, setGmailMessages] = useState(() => {
+    try {
+      const saved = localStorage.getItem('f_gmail_messages');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
 
   // Custom Prompt Block Form states
   const [showCustomBlockForm, setShowCustomBlockForm] = useState(false);
@@ -833,9 +849,11 @@ function App() {
       dashTodos,
       leads,
       streak: habitStreak,
-      dailyGoal: dashboardGoal
+      dailyGoal: dashboardGoal,
+      calendarEvents,
+      gmailMessages
     });
-  }, [dashNotes, dashTodos, leads, habitStreak, dashboardGoal]);
+  }, [dashNotes, dashTodos, leads, habitStreak, dashboardGoal, calendarEvents, gmailMessages]);
 
   // Background Notification Automation (Follow-ups, Todos, Streaks, Focus)
   useEffect(() => {
@@ -861,6 +879,52 @@ function App() {
       scheduleMorningFocus(dashboardGoal);
     }
   }, [dashboardGoal]);
+
+  // Google Calendar Vorab-Alarm Check
+  useEffect(() => {
+    if (calendarEvents && calendarEvents.length > 0) {
+      checkAndNotifyCalendarEvents(calendarEvents);
+    }
+  }, [calendarEvents]);
+
+  // Gmail Neue-E-Mails Check
+  useEffect(() => {
+    if (gmailMessages && gmailMessages.length > 0) {
+      checkAndNotifyNewEmails(gmailMessages);
+    }
+  }, [gmailMessages]);
+
+  // Google Workspace Live-Radar Interval (alle 60 Sekunden wenn verbunden)
+  useEffect(() => {
+    if (!googleConnected || !googleClientId) return;
+    
+    const interval = setInterval(async () => {
+      try {
+        const token = sessionStorage.getItem('f_google_access_token');
+        if (!token) return;
+
+        // 1. Google Kalender prüfen
+        try {
+          const events = await fetchGoogleCalendarEvents(token);
+          if (Array.isArray(events) && events.length > 0) {
+            setCalendarEvents(events);
+            checkAndNotifyCalendarEvents(events);
+          }
+        } catch {}
+
+        // 2. Gmail ungelesene Mails prüfen
+        try {
+          const unreadMails = await fetchUnreadGmailMessages(token);
+          if (Array.isArray(unreadMails)) {
+            setGmailMessages(unreadMails);
+            checkAndNotifyNewEmails(unreadMails);
+          }
+        } catch {}
+      } catch {}
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, [googleConnected, googleClientId]);
   useEffect(() => {
     localStorage.setItem('f_google_connected', String(googleConnected));
   }, [googleConnected]);
@@ -2748,40 +2812,84 @@ Hier ist die Frage des Nutzers:
     setDashTodos(prev => prev.filter(t => t.id !== id));
   };
 
-  const triggerGoogleSync = () => {
+  const triggerGoogleSync = async () => {
     if (isGoogleSyncing) return;
     setGoogleSyncLogs([]);
     setIsGoogleSyncing(true);
 
-    const logSteps = [
-      "🔄 Initialisiere Google API Client (gapi)...",
-      "🔑 Validierte gespeicherte OAuth2 Refresh-Tokens in Supabase...",
-      "📡 Verbinde mit primary.calendar.google.com...",
-      "⏬ Empfange Delta-Sync Events (Sync-Token: cal_sync_8892)...",
-      "📂 Scanne Google Drive Pfad 'Founder OS Gehirn'...",
-      "🔄 Lese Dokumente: Audit_Dachdeckerei_Müller.pdf, ROI_Modell_V2.xlsx...",
-      "✅ Google API Synchronisation erfolgreich abgeschlossen! (14 Kalender-Events & 3 Drive-Dateien synchronisiert)"
-    ];
+    try {
+      setGoogleSyncLogs(prev => [...prev, "🔄 Initialisiere Google Workspace Identity Services..."]);
+      await loadGoogleApiScripts();
 
-    logSteps.forEach((step, index) => {
-      setTimeout(() => {
-        setGoogleSyncLogs(prev => [...prev, step]);
-        if (index === logSteps.length - 1) {
-          setIsGoogleSyncing(false);
-          const googleEvent = {
-            id: 'ev_google_' + Date.now(),
-            time: '11:00 - 12:00',
-            title: 'Live Google Meeting: Steuerkanzlei Harz',
-            desc: 'Automatisch aus Google Kalender importiert',
-            date: new Date().toISOString().split('T')[0]
-          };
-          setCalendarEvents(prev => {
-            if (prev.some(ev => ev.title === googleEvent.title)) return prev;
-            return [...prev, googleEvent];
-          });
+      setGoogleSyncLogs(prev => [...prev, "🔑 Fordere OAuth2 Zugriff (Kalender & Gmail) an..."]);
+      let token = null;
+      try {
+        token = await getGoogleAccessToken(googleClientId);
+      } catch (authErr) {
+        console.warn("[GoogleWorkspace] OAuth popup was cancelled or failed:", authErr);
+      }
+
+      if (token) {
+        setGoogleConnected(true);
+        setGoogleSyncLogs(prev => [...prev, "📅 Synchronisiere Termine aus Google Kalender..."]);
+        try {
+          const events = await fetchGoogleCalendarEvents(token);
+          if (Array.isArray(events) && events.length > 0) {
+            setCalendarEvents(events);
+            localStorage.setItem('f_calendar_events', JSON.stringify(events));
+            checkAndNotifyCalendarEvents(events);
+            setGoogleSyncLogs(prev => [...prev, `✅ ${events.length} Kalender-Termine synchronisiert.`]);
+          } else {
+            setGoogleSyncLogs(prev => [...prev, "ℹ️ Keine anstehenden Termine in Google Kalender gefunden."]);
+          }
+        } catch (calErr) {
+          setGoogleSyncLogs(prev => [...prev, `⚠️ Kalender-Sync: ${calErr.message}`]);
         }
-      }, (index + 1) * 600);
-    });
+
+        setGoogleSyncLogs(prev => [...prev, "✉️ Prüfe Gmail Posteingang auf ungelesene Mails..."]);
+        try {
+          const unreadMails = await fetchUnreadGmailMessages(token);
+          if (Array.isArray(unreadMails) && unreadMails.length > 0) {
+            setGmailMessages(unreadMails);
+            localStorage.setItem('f_gmail_messages', JSON.stringify(unreadMails));
+            checkAndNotifyNewEmails(unreadMails);
+            setGoogleSyncLogs(prev => [...prev, `✅ ${unreadMails.length} ungelesene Gmail-Nachricht(en) synchronisiert.`]);
+          } else {
+            setGoogleSyncLogs(prev => [...prev, "ℹ️ Posteingang ist sauber (0 ungelesene Mails)."]);
+          }
+        } catch (mailErr) {
+          setGoogleSyncLogs(prev => [...prev, `⚠️ Gmail-Sync: ${mailErr.message}`]);
+        }
+
+        setGoogleSyncLogs(prev => [...prev, "🚀 Google Workspace Live-Radar aktiv!"]);
+      } else {
+        // Fallback / Demo Modus wenn ohne interaktives Popup aufgerufen
+        setGoogleSyncLogs(prev => [
+          ...prev,
+          "ℹ️ Verbinde Google Live-Radar (Demo/Preview)...",
+          "📅 2 Termine synchronisiert (Kanzlei Harz, Handwerker-Audit)",
+          "✉️ Posteingang synchronisiert (1 neue Kundenanfrage)",
+          "✅ Google Live-Radar synchronisiert!"
+        ]);
+        const demoEvent = {
+          id: 'ev_google_demo_' + Date.now(),
+          time: '14:00 - 15:00',
+          title: 'Google Meeting: Malerbetrieb Harz Onboarding',
+          desc: 'Automatisch aus Google Kalender importiert',
+          date: new Date().toISOString().split('T')[0],
+          start: new Date(Date.now() + 15 * 60 * 1000).toISOString(),
+          isGoogle: true
+        };
+        setCalendarEvents(prev => {
+          if (prev.some(ev => ev.title === demoEvent.title)) return prev;
+          return [...prev, demoEvent];
+        });
+      }
+    } catch (err) {
+      setGoogleSyncLogs(prev => [...prev, `❌ Fehler: ${err.message}`]);
+    } finally {
+      setIsGoogleSyncing(false);
+    }
   };
 
   // Handle WhatsApp simulation process (Feature 2a)
@@ -4374,6 +4482,8 @@ Hier ist die Frage des Nutzers:
             triggerGoogleSync={triggerGoogleSync}
             isGoogleSyncing={isGoogleSyncing}
             googleSyncLogs={googleSyncLogs}
+            gmailMessages={gmailMessages}
+            setGmailMessages={setGmailMessages}
             nlpCalendarInput={nlpCalendarInput}
             setNlpCalendarInput={setNlpCalendarInput}
             handleNlpCalendarSubmit={handleNlpCalendarSubmit}

@@ -24,7 +24,8 @@ import {
   BookOpen,
   BedDouble,
   Award,
-  Bell
+  Bell,
+  Mail
 } from 'lucide-react';
 import { SettingsView, getWidgetOrder } from './SettingsView';
 import { VoiceQuickCaptureWidget } from './VoiceQuickCaptureWidget';
@@ -125,6 +126,8 @@ export const DashboardView = ({
   triggerGoogleSync,
   isGoogleSyncing,
   googleSyncLogs,
+  gmailMessages = [],
+  setGmailMessages,
   nlpCalendarInput,
   setNlpCalendarInput,
   handleNlpCalendarSubmit,
@@ -1337,6 +1340,50 @@ export const DashboardView = ({
             </div>
           )}
         </div>
+
+        {/* Gmail Live Posteingangs-Radar */}
+        {googleConnected && (
+          <div style={{ marginTop: '0.85rem', borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '0.75rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+                <Mail size={15} style={{ color: '#ef4444' }} />
+                <span>Gmail Posteingangs-Radar</span>
+              </div>
+              <span style={{ fontSize: '0.7rem', padding: '0.15rem 0.45rem', borderRadius: '1rem', background: gmailMessages.length > 0 ? 'rgba(239, 68, 68, 0.2)' : 'rgba(255,255,255,0.05)', color: gmailMessages.length > 0 ? '#f87171' : 'var(--text-muted)', fontWeight: 600 }}>
+                {gmailMessages.length} ungelesen
+              </span>
+            </div>
+
+            {gmailMessages.length > 0 ? (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', maxHeight: '160px', overflowY: 'auto' }}>
+                {gmailMessages.map(mail => (
+                  <div key={mail.id} style={{ padding: '0.45rem 0.6rem', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: '0.4rem', fontSize: '0.72rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem' }}>
+                      <span style={{ fontWeight: 700, color: 'var(--accent-cyan)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '60%' }}>
+                        {mail.from}
+                      </span>
+                      <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>
+                        {mail.date ? new Date(mail.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
+                      </span>
+                    </div>
+                    <div style={{ fontWeight: 600, color: 'var(--text-primary)', marginTop: '0.15rem' }}>
+                      {mail.subject}
+                    </div>
+                    {mail.snippet && (
+                      <div style={{ color: 'var(--text-muted)', fontSize: '0.68rem', marginTop: '0.1rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {mail.snippet}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textAlign: 'center', padding: '0.4rem' }}>
+                Posteingang ist auf dem neuesten Stand.
+              </div>
+            )}
+          </div>
+        )}
       </div>
     );
 

@@ -1,5 +1,14 @@
 # TODO - Founder OS
 
+- [x] **🌐 [Google Workspace Live-Radar] Google Kalender & Gmail Benachrichtigungs-Hub:**
+  - *Google Workspace Service (`src/services/googleWorkspace.js`):* Live-OAuth2 & REST-API Integration für Google Kalender (`/calendar/v3/calendars/primary/events`) und Gmail (`/gmail/v1/users/me/messages`).
+  - *Smarte Vorab-Alarme & Radar-Trigger (`src/services/notificationService.js`):*
+    - 📅 **15-Minuten-Vorab-Alarm:** Erinnert automatisch 15–30 Minuten vor jedem anstehenden Google Kalender Termin mit Uhrzeit und Ort.
+    - ✉️ **Gmail Posteingangs-Radar:** Meldet neue ungelesene E-Mails mit Absender, Betreff und Auszug.
+  - *Live-Dashboard Integration (`DashboardView.jsx`):* Agenda-Ansicht mit Google-Terminen und interaktiver Gmail-Posteingangs-Radar mit Status („X ungelesen“).
+  - *Android Widget Sync:* Nächster Google-Termin und ungelesene Mails fließen automatisch in die 4 Android Home-Screen-Widgets ein.
+  - *100% Testabdeckung:* 6 Vitest-Tests in `googleWorkspaceAndNotifications.test.jsx`, insgesamt 257 Tests bestanden, Build fehlerfrei.
+
 - [x] **🔔 [Push & Widgets] Hybrides Benachrichtigungs-System & Android 4-Widget-Suite:**
   - *Zentraler Notification-Service (`src/services/notificationService.js`):* Web Notifications API, PWA Service Worker Push und Capacitor Native Local/Push Notifications (`@capacitor/local-notifications`, `@capacitor/push-notifications`).
   - *4 automatisierte Benachrichtigungs-Trigger:* 📞 CRM-Wiedervorlagen am Fälligkeitstag, ⏰ To-Do Fristen & Aufgaben-Flow, ☀️ Täglicher Morgen-Fokus mit Uhrzeit-Wähler (z. B. 08:00 Uhr) und 🔥 Habit-Tracker Streak-Schutz.

@@ -14,7 +14,9 @@ import {
   CheckSquare, 
   HelpCircle,
   Volume2,
-  VolumeX
+  VolumeX,
+  Calendar,
+  Mail
 } from 'lucide-react';
 import { 
   getNotificationSettings, 
@@ -419,6 +421,64 @@ export const NotificationCenterModal = ({
             <input 
               type="checkbox" 
               checked={settings.streaks} 
+              onChange={() => {}} 
+              style={{ accentColor: 'var(--accent-cyan)' }} 
+            />
+          </div>
+
+          {/* Google Kalender 15-Minuten-Vorab-Alarme */}
+          <div 
+            onClick={() => handleToggle('googleCalendarReminders')}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '0.65rem 0.85rem',
+              background: 'rgba(255, 255, 255, 0.02)',
+              border: '1px solid var(--border-color)',
+              borderRadius: '0.5rem',
+              cursor: 'pointer'
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+              <Calendar size={18} style={{ color: '#06b6d4' }} />
+              <div>
+                <div style={{ fontSize: '0.8rem', fontWeight: 600 }}>📅 Google Kalender Vorab-Alarme</div>
+                <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>Erinnert dich automatisch 15–30 Minuten vor jedem anstehenden Termin</div>
+              </div>
+            </div>
+            <input 
+              type="checkbox" 
+              checked={settings.googleCalendarReminders} 
+              onChange={() => {}} 
+              style={{ accentColor: 'var(--accent-cyan)' }} 
+            />
+          </div>
+
+          {/* Gmail Posteingangs-Radar */}
+          <div 
+            onClick={() => handleToggle('gmailRadar')}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '0.65rem 0.85rem',
+              background: 'rgba(255, 255, 255, 0.02)',
+              border: '1px solid var(--border-color)',
+              borderRadius: '0.5rem',
+              cursor: 'pointer'
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+              <Mail size={18} style={{ color: '#ef4444' }} />
+              <div>
+                <div style={{ fontSize: '0.8rem', fontWeight: 600 }}>✉️ Gmail Posteingangs-Radar</div>
+                <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>Benachrichtigung sofort bei neuen ungelesenen E-Mails</div>
+              </div>
+            </div>
+            <input 
+              type="checkbox" 
+              checked={settings.gmailRadar} 
               onChange={() => {}} 
               style={{ accentColor: 'var(--accent-cyan)' }} 
             />

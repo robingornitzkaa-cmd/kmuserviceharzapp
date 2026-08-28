@@ -24,7 +24,9 @@ export const updateAndroidWidget = async (data = {}) => {
     dashTodos = [],
     leads = [],
     streak = 0,
-    dailyGoal = ''
+    dailyGoal = '',
+    calendarEvents = [],
+    gmailMessages = []
   } = typeof data === 'object' && !Array.isArray(data) && data !== null && 'dashNotes' in data
     ? data
     : {
@@ -32,7 +34,9 @@ export const updateAndroidWidget = async (data = {}) => {
         dashTodos: arguments[1] || [],
         leads: arguments[2] || [],
         streak: arguments[3] || 0,
-        dailyGoal: arguments[4] || ''
+        dailyGoal: arguments[4] || '',
+        calendarEvents: [],
+        gmailMessages: []
       };
 
   // Berechne CRM Kennzahlen für das CRM-Widget
@@ -44,6 +48,13 @@ export const updateAndroidWidget = async (data = {}) => {
     return d && String(d).startsWith(todayStr);
   }).length : 0;
 
+  // Nächster Termin
+  let nextMeetingStr = '';
+  if (Array.isArray(calendarEvents) && calendarEvents.length > 0) {
+    const nextEv = calendarEvents[0];
+    nextMeetingStr = `${nextEv.time || ''} ${nextEv.title || ''}`.trim();
+  }
+
   const payload = {
     notes: String(dashNotes || ''),
     todos: JSON.stringify(Array.isArray(dashTodos) ? dashTodos : []),
@@ -52,6 +63,8 @@ export const updateAndroidWidget = async (data = {}) => {
     followUpsToday,
     streak: Number(streak || 0),
     dailyGoal: String(dailyGoal || ''),
+    nextMeeting: nextMeetingStr,
+    unreadMailsCount: Array.isArray(gmailMessages) ? gmailMessages.length : 0,
     timestamp: Date.now()
   };
 

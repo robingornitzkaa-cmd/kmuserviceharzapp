@@ -23,6 +23,8 @@ public class WidgetBridgePlugin extends Plugin {
         int followUpsToday = call.getInt("followUpsToday", 0);
         int streak = call.getInt("streak", 0);
         String dailyGoal = call.getString("dailyGoal", "");
+        String nextMeeting = call.getString("nextMeeting", "");
+        int unreadMailsCount = call.getInt("unreadMailsCount", 0);
         
         Context context = getContext();
         SharedPreferences sharedPref = context.getSharedPreferences("WidgetPrefs", Context.MODE_PRIVATE);
@@ -34,6 +36,8 @@ public class WidgetBridgePlugin extends Plugin {
         editor.putInt("followUpsToday", followUpsToday);
         editor.putInt("streak", streak);
         editor.putString("dailyGoal", dailyGoal);
+        editor.putString("nextMeeting", nextMeeting);
+        editor.putInt("unreadMailsCount", unreadMailsCount);
         editor.putLong("lastSync", System.currentTimeMillis());
         editor.apply();
         
