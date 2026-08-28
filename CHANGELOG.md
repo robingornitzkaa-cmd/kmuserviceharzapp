@@ -5,6 +5,25 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **🎨 In-App Widget-Studio (Android Home-Screen Live-Konfigurator):**
+  - **Interaktiver Editor (`WidgetStudio.jsx`):** Voll ausgestattetes Studio mit fotorealistischer Live-Smartphone-Vorschau in Echtzeit.
+  - **4 1-Klick Schnell-Profile:**
+    - 🌟 *All-in-One Master:* Vollständiges Business-Cockpit im Glassmorphic Dark Design.
+    - 🎯 *Deep Work & Fokus:* Fokus auf Tagesziel, Top-5 To-Dos und Streak; CRM ausgeblendet.
+    - 💼 *Sales Hunter:* CRM-Wiedervorlagen und Google-Radar im Mittelpunkt.
+    - 🖤 *Minimalist AMOLED:* Pure Black Hintergrund (akkusparend) mit minimalistischer Notiz & Fokus.
+  - **Detail-Feintuning & Styling:**
+    - Modul-Toggles für Notizen, Aufgaben, CRM, Streak, Google-Termine und Tagesziel.
+    - To-Do Umfang frei wählbar (Top 3 vs. Top 5 Aufgaben).
+    - 4 Farbschemata (*Glassmorphic Dark*, *AMOLED Pure Black*, *Cyber Cyan*, *Deep Navy*).
+    - Stufenloser Transparenz-Schieberegler (20% bis 100% Deckkraft).
+    - Klick-Routing (Auswahl des Ziel-Tabs beim Antippen des Widgets).
+  - **Native Android RemoteViews Integration (`WidgetBridgePlugin.java`, `MyWidgetProvider.java`, `widget_layout.xml`):**
+    - Dynamische Steuerung der Kachel-Sichtbarkeiten (`View.VISIBLE` vs `View.GONE`).
+    - Dynamische Anpassung des Aufgaben-Limits und der Ziel-Aktionen.
+  - **Tab-Navigation im Control-Center (`NotificationCenterModal.jsx`):** Nahtloses Umschalten zwischen *🔔 Benachrichtigungen* und *🎨 Widget-Studio*.
+  - **Qualitätssicherung:** 9 neue Vitest-Tests in `widgetStudioAndCustomizer.test.jsx`, insgesamt 266 Tests bestanden, fehlerfreier Produktions-Build.
+
 - **🌐 Google Workspace Live-Radar (Google Kalender & Gmail Push-Alarme):**
   - **Live Google API Integration (`src/services/googleWorkspace.js`):** Vollständiger OAuth2 Token-Service und REST-Client für Google Calendar v3 und Gmail v1.
   - **Smarte Termin- & Posteingangs-Alarme (`src/services/notificationService.js`):**

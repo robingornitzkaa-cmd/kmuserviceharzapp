@@ -1,5 +1,17 @@
 # TODO - Founder OS
 
+- [x] **🎨 [In-App Widget-Studio] Live-Konfigurator für Android Home-Screen-Widgets:**
+  - *Visuelles In-App Studio (`WidgetStudio.jsx`):* Vollwertiger Editor mit interaktiver Live-Smartphone-Vorschau in Echtzeit.
+  - *4 1-Klick Presets:* 🌟 All-in-One Master, 🎯 Deep Work & Fokus, 💼 Sales Hunter, 🖤 Minimalist AMOLED.
+  - *Detail-Feintuning:*
+    - Modul-Sichtbarkeiten (Notizen, To-Dos, CRM-Radar, Streak-Badge, Google Kalender Termin, Tagesziel).
+    - To-Do Umfang (Top 3 vs Top 5 Aufgaben).
+    - Farbschemata (*Glassmorphic Dark*, *AMOLED Pure Black*, *Cyber Cyan*, *Deep Navy*).
+    - Hintergrund-Transparenz-Slider (20% bis 100%).
+    - Klick-Routing Ziel-Auswahl (Dashboard, Kanban, CRM, Voice Studio).
+  - *Native Android RemoteViews Steuerung (`WidgetBridgePlugin.java`, `MyWidgetProvider.java`, `widget_layout.xml`):* Dynamisches Ein-/Ausblenden der Kacheln und dynamische To-Do-Limits direkt auf dem Smartphone-Homescreen.
+  - *100% Testabdeckung:* 9 Vitest-Tests in `widgetStudioAndCustomizer.test.jsx`, insgesamt 266 Tests bestanden, Build fehlerfrei.
+
 - [x] **🌐 [Google Workspace Live-Radar] Google Kalender & Gmail Benachrichtigungs-Hub:**
   - *Google Workspace Service (`src/services/googleWorkspace.js`):* Live-OAuth2 & REST-API Integration für Google Kalender (`/calendar/v3/calendars/primary/events`) und Gmail (`/gmail/v1/users/me/messages`).
   - *Smarte Vorab-Alarme & Radar-Trigger (`src/services/notificationService.js`):*

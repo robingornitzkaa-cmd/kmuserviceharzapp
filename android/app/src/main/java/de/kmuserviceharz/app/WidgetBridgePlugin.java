@@ -25,6 +25,18 @@ public class WidgetBridgePlugin extends Plugin {
         String dailyGoal = call.getString("dailyGoal", "");
         String nextMeeting = call.getString("nextMeeting", "");
         int unreadMailsCount = call.getInt("unreadMailsCount", 0);
+
+        // Konfigurations-Flags
+        boolean showNotes = call.getBoolean("showNotes", true);
+        boolean showTodos = call.getBoolean("showTodos", true);
+        boolean showCrm = call.getBoolean("showCrm", true);
+        boolean showStreak = call.getBoolean("showStreak", true);
+        boolean showMeeting = call.getBoolean("showMeeting", true);
+        boolean showDailyGoal = call.getBoolean("showDailyGoal", true);
+        int todoLimit = call.getInt("todoLimit", 3);
+        String theme = call.getString("theme", "glassmorphic");
+        int bgAlpha = call.getInt("bgAlpha", 85);
+        String tapAction = call.getString("tapAction", "dashboard");
         
         Context context = getContext();
         SharedPreferences sharedPref = context.getSharedPreferences("WidgetPrefs", Context.MODE_PRIVATE);
@@ -38,6 +50,19 @@ public class WidgetBridgePlugin extends Plugin {
         editor.putString("dailyGoal", dailyGoal);
         editor.putString("nextMeeting", nextMeeting);
         editor.putInt("unreadMailsCount", unreadMailsCount);
+
+        // Speichern der Konfiguration
+        editor.putBoolean("showNotes", showNotes);
+        editor.putBoolean("showTodos", showTodos);
+        editor.putBoolean("showCrm", showCrm);
+        editor.putBoolean("showStreak", showStreak);
+        editor.putBoolean("showMeeting", showMeeting);
+        editor.putBoolean("showDailyGoal", showDailyGoal);
+        editor.putInt("todoLimit", todoLimit);
+        editor.putString("theme", theme);
+        editor.putInt("bgAlpha", bgAlpha);
+        editor.putString("tapAction", tapAction);
+
         editor.putLong("lastSync", System.currentTimeMillis());
         editor.apply();
         

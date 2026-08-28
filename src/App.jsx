@@ -4920,6 +4920,8 @@ Hier ist die Frage des Nutzers:
         leads={leads}
         streak={habitStreak}
         dailyGoal={dashboardGoal || ''}
+        calendarEvents={calendarEvents}
+        gmailMessages={gmailMessages}
         onShowToast={(msg, type) => {
           setToastMessage(msg);
           setShowToast(true);

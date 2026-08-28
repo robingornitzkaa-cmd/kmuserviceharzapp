@@ -66,6 +66,14 @@ Die Anwendung zeichnet sich durch ein futuristisches "Glassmorphic Dark Theme" a
 - **✉️ Gmail Posteingangs-Radar:** Hintergrund-Prüfung auf neue ungelesene Nachrichten mit Sofort-Benachrichtigung (`Absender`, `Betreff`, `Kurzvorschau`) und In-App Posteingangs-Liste.
 - **📱 Home-Screen-Widget Synchronisation:** Der nächste anstehende Google-Termin und der Zähler ungelesener Mails werden live auf das Android-Widget übertragen.
 
+### 1e. 🎨 In-App Widget-Studio (Android Home-Screen Live-Konfigurator) -- *NEU!*
+- **📱 Fotorealistische Live-Smartphone-Vorschau:** Sieh alle Anpassungen in Echtzeit auf einem virtuellen Smartphone-Startbildschirm.
+- **⚡ 4 1-Klick Presets:** *🌟 All-in-One Master*, *🎯 Deep Work & Fokus*, *💼 Sales Hunter*, *🖤 Minimalist AMOLED*.
+- **🎛️ Modul-Toggles & Feintuning:** Schalte Notizen, To-Dos (Top 3 vs 5), CRM-Radar, Streak, Termine und Tagesziel individuell ein/aus.
+- **🎨 4 Farbschemata & Transparenz-Slider:** Wähle zwischen *Glassmorphic Dark*, *AMOLED Black*, *Cyber Cyan*, *Deep Navy* und passe die Hintergrund-Deckkraft stufenlos von 20% bis 100% an.
+- **🚀 Klick-Routing:** Lege fest, welcher App-Bereich sich beim Antippen des Widgets öffnet (Dashboard, Kanban, CRM, Voice Studio).
+
+
 
 ### 2. Inbox & Tasks (Posteingang)
 - **WhatsApp-Gateway & Webhook-Simulation:** Teste den Empfang strukturierter WhatsApp-Nachrichten samt HTTP-Post-Weiterleitung.

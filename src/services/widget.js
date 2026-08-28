@@ -15,8 +15,104 @@ const WidgetBridge = registerPlugin('WidgetBridge', {
   })
 });
 
+const WIDGET_CONFIG_KEY = 'founder_widget_config';
+
+export const WIDGET_PRESETS = {
+  allInOne: {
+    id: 'allInOne',
+    name: '🌟 All-in-One Master',
+    description: 'Vollständiges Cockpit mit allen Business-Modulen',
+    showNotes: true,
+    showTodos: true,
+    todoLimit: 3,
+    showCrm: true,
+    showStreak: true,
+    showMeeting: true,
+    showDailyGoal: true,
+    theme: 'glassmorphic', // 'glassmorphic', 'amoled', 'cyan', 'navy'
+    bgAlpha: 85, // 20 - 100 %
+    tapAction: 'dashboard' // 'dashboard', 'kanban', 'crm', 'voice'
+  },
+  deepWork: {
+    id: 'deepWork',
+    name: '🎯 Deep Work & Fokus',
+    description: 'Fokus auf Tagesziel, Top-5 Aufgaben und Streak-Schutz',
+    showNotes: false,
+    showTodos: true,
+    todoLimit: 5,
+    showCrm: false,
+    showStreak: true,
+    showMeeting: true,
+    showDailyGoal: true,
+    theme: 'navy',
+    bgAlpha: 90,
+    tapAction: 'kanban'
+  },
+  salesHunter: {
+    id: 'salesHunter',
+    name: '💼 Sales Hunter',
+    description: 'CRM Pipeline, Follow-ups und Kundengespräche im Fokus',
+    showNotes: true,
+    showTodos: false,
+    todoLimit: 3,
+    showCrm: true,
+    showStreak: false,
+    showMeeting: true,
+    showDailyGoal: false,
+    theme: 'cyan',
+    bgAlpha: 85,
+    tapAction: 'crm'
+  },
+  minimalist: {
+    id: 'minimalist',
+    name: '🖤 Minimalist AMOLED',
+    description: 'Pure Black, super clean und maximal akkusparend',
+    showNotes: true,
+    showTodos: false,
+    todoLimit: 3,
+    showCrm: false,
+    showStreak: true,
+    showMeeting: false,
+    showDailyGoal: true,
+    theme: 'amoled',
+    bgAlpha: 100,
+    tapAction: 'dashboard'
+  }
+};
+
+export const DEFAULT_WIDGET_CONFIG = {
+  ...WIDGET_PRESETS.allInOne
+};
+
 /**
- * Aktualisiert alle Android Home-Screen-Widgets mit den aktuellen App-Daten
+ * Lädt die gespeicherte Widget-Konfiguration
+ */
+export const getWidgetConfig = () => {
+  try {
+    const raw = localStorage.getItem(WIDGET_CONFIG_KEY);
+    if (!raw) return { ...DEFAULT_WIDGET_CONFIG };
+    return { ...DEFAULT_WIDGET_CONFIG, ...JSON.parse(raw) };
+  } catch {
+    return { ...DEFAULT_WIDGET_CONFIG };
+  }
+};
+
+/**
+ * Speichert eine neue Widget-Konfiguration
+ */
+export const saveWidgetConfig = (config) => {
+  try {
+    const updated = { ...getWidgetConfig(), ...config };
+    localStorage.setItem(WIDGET_CONFIG_KEY, JSON.stringify(updated));
+    return updated;
+  } catch (e) {
+    console.error('[WidgetService] Fehler beim Speichern der Widget-Konfiguration:', e);
+    return DEFAULT_WIDGET_CONFIG;
+  }
+};
+
+/**
+ * Aktualisiert alle Android Home-Screen-Widgets mit den aktuellen App-Daten und Konfigurationen
  */
 export const updateAndroidWidget = async (data = {}) => {
   const {
@@ -26,7 +122,8 @@ export const updateAndroidWidget = async (data = {}) => {
     streak = 0,
     dailyGoal = '',
     calendarEvents = [],
-    gmailMessages = []
+    gmailMessages = [],
+    config = null
   } = typeof data === 'object' && !Array.isArray(data) && data !== null && 'dashNotes' in data
     ? data
     : {
@@ -36,8 +133,11 @@ export const updateAndroidWidget = async (data = {}) => {
         streak: arguments[3] || 0,
         dailyGoal: arguments[4] || '',
         calendarEvents: [],
-        gmailMessages: []
+        gmailMessages: [],
+        config: null
       };
+
+  const activeConfig = config || getWidgetConfig();
 
   // Berechne CRM Kennzahlen für das CRM-Widget
   const todayStr = new Date().toISOString().split('T')[0];
@@ -55,9 +155,12 @@ export const updateAndroidWidget = async (data = {}) => {
     nextMeetingStr = `${nextEv.time || ''} ${nextEv.title || ''}`.trim();
   }
 
+  // To-Dos gemäß Konfigurations-Limit filtern
+  const limitedTodos = Array.isArray(dashTodos) ? dashTodos.slice(0, activeConfig.todoLimit || 3) : [];
+
   const payload = {
     notes: String(dashNotes || ''),
-    todos: JSON.stringify(Array.isArray(dashTodos) ? dashTodos : []),
+    todos: JSON.stringify(limitedTodos),
     leadsCount: totalLeads,
     wonCount: wonLeads,
     followUpsToday,
@@ -65,6 +168,19 @@ export const updateAndroidWidget = async (data = {}) => {
     dailyGoal: String(dailyGoal || ''),
     nextMeeting: nextMeetingStr,
     unreadMailsCount: Array.isArray(gmailMessages) ? gmailMessages.length : 0,
+    
+    // Konfigurations-Parameter
+    showNotes: Boolean(activeConfig.showNotes),
+    showTodos: Boolean(activeConfig.showTodos),
+    showCrm: Boolean(activeConfig.showCrm),
+    showStreak: Boolean(activeConfig.showStreak),
+    showMeeting: Boolean(activeConfig.showMeeting),
+    showDailyGoal: Boolean(activeConfig.showDailyGoal),
+    todoLimit: Number(activeConfig.todoLimit || 3),
+    theme: String(activeConfig.theme || 'glassmorphic'),
+    bgAlpha: Number(activeConfig.bgAlpha || 85),
+    tapAction: String(activeConfig.tapAction || 'dashboard'),
+
     timestamp: Date.now()
   };
 

@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.view.View;
 import android.widget.RemoteViews;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -27,6 +28,17 @@ public class MyWidgetProvider extends AppWidgetProvider {
         int followUpsToday = sharedPref.getInt("followUpsToday", 0);
         int streak = sharedPref.getInt("streak", 0);
         String dailyGoal = sharedPref.getString("dailyGoal", "");
+        String nextMeeting = sharedPref.getString("nextMeeting", "");
+
+        // Config Flags
+        boolean showNotes = sharedPref.getBoolean("showNotes", true);
+        boolean showTodos = sharedPref.getBoolean("showTodos", true);
+        boolean showCrm = sharedPref.getBoolean("showCrm", true);
+        boolean showStreak = sharedPref.getBoolean("showStreak", true);
+        boolean showMeeting = sharedPref.getBoolean("showMeeting", true);
+        boolean showDailyGoal = sharedPref.getBoolean("showDailyGoal", true);
+        int todoLimit = sharedPref.getInt("todoLimit", 3);
+        String tapAction = sharedPref.getString("tapAction", "dashboard");
 
         // Format Todos
         StringBuilder todosBuilder = new StringBuilder();
@@ -45,7 +57,7 @@ public class MyWidgetProvider extends AppWidgetProvider {
                     todosBuilder.append("☐ ").append(text).append("\n");
                     count++;
                 }
-                if (count >= 3) break;
+                if (count >= todoLimit) break;
             }
             if (count == 0) {
                 todosBuilder.append("✓ Alle Aufgaben erledigt!");
@@ -57,10 +69,22 @@ public class MyWidgetProvider extends AppWidgetProvider {
         // Construct RemoteViews
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
         
-        // CRM & Streak Info
+        // CRM Stats
         String crmStatsText = leadsCount + " Leads • " + followUpsToday + " Wiedervorlage(n) heute";
         views.setTextViewText(R.id.widget_crm_stats, crmStatsText);
-        views.setTextViewText(R.id.widget_streak_badge, "🔥 " + streak + "d Streak");
+        views.setViewVisibility(R.id.widget_crm_stats, showCrm ? View.VISIBLE : View.GONE);
+
+        // Streak Badge
+        views.setTextViewText(R.id.widget_streak_badge, "🔥 " + streak + "d");
+        views.setViewVisibility(R.id.widget_streak_badge, showStreak ? View.VISIBLE : View.GONE);
+
+        // Google Meeting
+        if (nextMeeting != null && !nextMeeting.trim().isEmpty()) {
+            views.setTextViewText(R.id.widget_meeting_text, "📅 " + nextMeeting.trim());
+        } else {
+            views.setTextViewText(R.id.widget_meeting_text, "📅 Kein anstehender Termin");
+        }
+        views.setViewVisibility(R.id.widget_meeting_text, (showMeeting && nextMeeting != null && !nextMeeting.trim().isEmpty()) ? View.VISIBLE : View.GONE);
 
         // Focus Goal
         if (dailyGoal != null && !dailyGoal.trim().isEmpty()) {
@@ -68,13 +92,18 @@ public class MyWidgetProvider extends AppWidgetProvider {
         } else {
             views.setTextViewText(R.id.widget_goal_text, "🎯 Fokus: Bereit für den Tag");
         }
+        views.setViewVisibility(R.id.widget_goal_text, showDailyGoal ? View.VISIBLE : View.GONE);
 
-        // Notes & Todos
+        // Notes & Todos Visibility
         views.setTextViewText(R.id.widget_notes_text, notes);
+        views.setViewVisibility(R.id.widget_notes_text, showNotes ? View.VISIBLE : View.GONE);
+
         views.setTextViewText(R.id.widget_todos_text, todosBuilder.toString().trim());
+        views.setViewVisibility(R.id.widget_todos_text, showTodos ? View.VISIBLE : View.GONE);
 
         // Intent to launch app when clicking widget
         Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra("tapAction", tapAction);
         PendingIntent pendingIntent = PendingIntent.getActivity(
             context, 0, intent, 
             PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
