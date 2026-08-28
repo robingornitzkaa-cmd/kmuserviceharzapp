@@ -1,5 +1,11 @@
 # TODO - Founder OS
 
+- [x] **🛠️ [System- & Fehler-Diagnose Hub] Echtzeit-Logging & Fehler-Zentrale:**
+  - *Zentraler Logger-Service (`src/services/logger.js`):* Ringspeicher für System-Events, Widget-Updates, Syncs und globale JS-Fehler (`window.onerror`, `unhandledrejection`).
+  - *Interaktives Diagnose-Center (`DiagnosticLogModal.jsx`):* Live-Logstream mit Level-Filtern (🔴 Fehler, 🟡 Warnungen, 📱 Widgets, 🌐 Google), Echtzeit-Volltextsuche, aufklappbaren Stacktraces und 1-Klick Zwischenablage-Kopieren & JSON-Export.
+  - *Sidebar & In-App Integration (`Sidebar.jsx`, `App.jsx`):* Direkter Schnellzugriff auf das Diagnose-Logbuch im Menü und Control Center.
+  - *100% Testabdeckung:* 6 Vitest-Tests in `diagnosticLogger.test.jsx`, insgesamt 272 Tests bestanden, Build fehlerfrei.
+
 - [x] **🎨 [In-App Widget-Studio] Live-Konfigurator für Android Home-Screen-Widgets:**
   - *Visuelles In-App Studio (`WidgetStudio.jsx`):* Vollwertiger Editor mit interaktiver Live-Smartphone-Vorschau in Echtzeit.
   - *4 1-Klick Presets:* 🌟 All-in-One Master, 🎯 Deep Work & Fokus, 💼 Sales Hunter, 🖤 Minimalist AMOLED.

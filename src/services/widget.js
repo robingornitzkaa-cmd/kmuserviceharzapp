@@ -1,4 +1,5 @@
 import { Capacitor, registerPlugin } from '@capacitor/core';
+import { logInfo, logSuccess, logWarn, logError } from './logger.js';
 
 // Registriere Capacitor Native Plugin Bridge
 const WidgetBridge = registerPlugin('WidgetBridge', {
@@ -188,14 +189,22 @@ export const updateAndroidWidget = async (data = {}) => {
     if (Capacitor.isNativePlatform()) {
       if (WidgetBridge && typeof WidgetBridge.updateWidgetData === 'function') {
         await WidgetBridge.updateWidgetData(payload);
+        logSuccess('Widget', 'Daten erfolgreich an native Android-Bridge gesendet', {
+          theme: activeConfig.theme,
+          todos: limitedTodos.length,
+          leads: totalLeads
+        });
+      } else {
+        logWarn('Widget', 'Capacitor läuft nativ, aber WidgetBridge Plugin fehlt');
       }
     } else {
       // Im Web-Modus Fallback ins LocalStorage
       localStorage.setItem('founder_widget_preview_data', JSON.stringify(payload));
+      logInfo('Widget', 'Widget-Vorschau im Browser-LocalStorage aktualisiert');
     }
     return true;
   } catch (e) {
-    console.warn('[WidgetService] Widget update warning:', e);
+    logError('Widget', 'Fehler beim Widget-Update: ' + (e.message || String(e)), e);
     return false;
   }
 };

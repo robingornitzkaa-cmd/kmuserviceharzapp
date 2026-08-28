@@ -109,6 +109,7 @@ import { RewardShopModal } from './components/RewardShopModal';
 import { PenaltyModal } from './components/PenaltyModal';
 import { BackupManagerModal } from './components/BackupManagerModal';
 import { NotificationCenterModal } from './components/NotificationCenterModal';
+import { DiagnosticLogModal } from './components/DiagnosticLogModal';
 import { 
   checkAndNotifyFollowUps, 
   checkAndNotifyDueTodos, 
@@ -516,6 +517,7 @@ function App() {
   const [isPenaltyModalOpen, setIsPenaltyModalOpen] = useState(false);
   const [isBackupModalOpen, setIsBackupModalOpen] = useState(false);
   const [isNotificationCenterOpen, setIsNotificationCenterOpen] = useState(false);
+  const [isDiagnosticModalOpen, setIsDiagnosticModalOpen] = useState(false);
   
   // Wochen-Review & Archiv States (Feature A3)
   const [weeklyArchive, setWeeklyArchive] = useState(() => {
@@ -4144,6 +4146,7 @@ Hier ist die Frage des Nutzers:
         setActiveTab={setActiveTab}
         clientPortalMode={clientPortalMode}
         onOpenNotificationCenter={() => setIsNotificationCenterOpen(true)}
+        onOpenDiagnosticLogs={() => setIsDiagnosticModalOpen(true)}
       />
 
       {/* Main Container */}
@@ -4923,6 +4926,16 @@ Hier ist die Frage des Nutzers:
         calendarEvents={calendarEvents}
         gmailMessages={gmailMessages}
         onShowToast={(msg, type) => {
+          setToastMessage(msg);
+          setShowToast(true);
+        }}
+      />
+
+      {/* System- & Fehler-Diagnose Hub */}
+      <DiagnosticLogModal
+        isOpen={isDiagnosticModalOpen}
+        onClose={() => setIsDiagnosticModalOpen(false)}
+        onShowToast={(msg) => {
           setToastMessage(msg);
           setShowToast(true);
         }}

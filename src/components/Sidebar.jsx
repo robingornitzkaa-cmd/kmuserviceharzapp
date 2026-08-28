@@ -16,7 +16,8 @@ import {
   Globe,
   ShieldCheck,
   Sparkles,
-  Bell
+  Bell,
+  Terminal
 } from 'lucide-react';
 
 export const Sidebar = ({
@@ -28,7 +29,8 @@ export const Sidebar = ({
   activeTab,
   setActiveTab,
   clientPortalMode,
-  onOpenNotificationCenter
+  onOpenNotificationCenter,
+  onOpenDiagnosticLogs
 }) => {
   if (clientPortalMode) return null;
 
@@ -168,6 +170,17 @@ export const Sidebar = ({
               >
                 <Bell size={18} />
                 <span className="sidebar-nav-label">🔔 Push & Widgets</span>
+              </button>
+            )}
+            {onOpenDiagnosticLogs && (
+              <button 
+                className="sidebar-nav-item" 
+                onClick={onOpenDiagnosticLogs}
+                title="🛠️ System- & Fehler-Diagnose"
+                style={{ color: '#f87171', marginTop: '0.15rem' }}
+              >
+                <Terminal size={18} />
+                <span className="sidebar-nav-label">🛠️ System-Logs</span>
               </button>
             )}
           </div>
@@ -316,6 +329,16 @@ export const Sidebar = ({
                 >
                   <Bell size={18} />
                   <span>🔔 Push & Widgets</span>
+                </button>
+              )}
+              {onOpenDiagnosticLogs && (
+                <button 
+                  className="sidebar-nav-item" 
+                  onClick={() => { onOpenDiagnosticLogs(); setMobileMenuOpen(false); }}
+                  style={{ color: '#f87171' }}
+                >
+                  <Terminal size={18} />
+                  <span>🛠️ System-Logs & Diagnose</span>
                 </button>
               )}
             </div>

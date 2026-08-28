@@ -5,6 +5,12 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added
+- **🛠️ System- & Fehler-Diagnose Hub (Echtzeit-Logging & Fehler-Zentrale):**
+  - **Zentraler Logging-Service (`src/services/logger.js`):** Intelligenter Ringspeicher für bis zu 300 Einträge, automatische Erfassung globaler JavaScript-Fehler und Promise-Rejections.
+  - **Interaktive Diagnose-Konsole (`DiagnosticLogModal.jsx`):** Filter nach Fehler-Levels (🔴 Fehler, 🟡 Warnungen, 📱 Widgets, 🌐 Google), Volltextsuche, aufklappbare Stacktraces und 1-Klick Export/Kopieren für schnelles Support- und Mentor-Debugging.
+  - **Sidebar-Integration (`Sidebar.jsx`):** Direkter Zugriff auf das Diagnose-Logbuch über den neuen Menüpunkt `🛠️ System-Logs`.
+  - **Qualitätssicherung:** 6 neue Vitest-Tests in `diagnosticLogger.test.jsx`, insgesamt 272 Tests bestanden, fehlerfreier Produktions-Build.
+
 - **🎨 In-App Widget-Studio (Android Home-Screen Live-Konfigurator):**
   - **Interaktiver Editor (`WidgetStudio.jsx`):** Voll ausgestattetes Studio mit fotorealistischer Live-Smartphone-Vorschau in Echtzeit.
   - **4 1-Klick Schnell-Profile:**
