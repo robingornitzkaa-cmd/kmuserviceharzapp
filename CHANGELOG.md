@@ -10,8 +10,15 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
   - **Kundendaten & PII aus Git-Tracking entfernt (`.gitignore`):** `leads_master_harz.csv` und `leads_master_harz_backup_all.csv` (mit über 500 Kontaktdaten Harzer Unternehmen) sicher aus dem Git-Index entfernt (`git rm --cached`) und in `.gitignore` verankert. Die lokalen Dateien auf dem Rechner bleiben unverändert erhalten.
   - **Content Security Policy (CSP) integriert (`index.html`):** Strenger CSP-Meta-Tag schützt vor Cross-Site-Scripting (XSS) und begrenzt Skripte und Verbindungen auf verifizierte Domänen.
   - **Backup-Restore Integritätsprüfung (`src/services/backupService.js`):** Whitelist-Schutz verhindert das Einschleusen nicht autorisierter Schlüssel in den lokalen Speicher bei der Wiederherstellung.
+  - **Row Level Security (RLS) & Policies aktiviert (Supabase Cloud):** RLS auf allen 8 Kern-Tabellen (`leads`, `contacts`, `dashboard_state`, `prompts`, `client_tickets`, `tasks`, `inbox`, `docs`) aktiviert. Anonymer Zugriff ist gesperrt, nur die Rolle `authenticated` hat Zugriff.
 
 ### Added
+- **🔒 Supabase Auth & Silent Token Refresh (Dauerhaft eingeloggt bleiben):**
+  - **Echter Cloud-Login & Registrierung (`src/services/supabase.js`, `src/App.jsx`):** Vollständige E-Mail- und Passwort-Authentifizierung gegen Supabase GoTrue Auth REST API ohne neue npm-Pakete.
+  - **Silent Token Refresh:** Der langlebige Refresh-Token erneuert die Nutzersitzung beim App-Start und vor Token-Ablauf vollautomatisch im Hintergrund. Kein lästiges 10-maliges Anmelden pro Tag.
+  - **Dualer Schutz-Screen:** Schnelles Entsperren via Master-PIN (z. B. am Schreibtisch) oder Wechsel zum Supabase Cloud-Login mit Account-Registrierung.
+  - **Header-Steuerung:** Neuer „Abmelden“-Button zum regulären Beenden der Cloud-Sitzung neben dem bewährten Schnell-Sperren-Button.
+  - **Qualitätssicherung:** 5 neue Vitest-Tests in `supabaseAuth.test.jsx`, alle Tests bestanden, Produktions-Build fehlerfrei.
 - **🛠️ System- & Fehler-Diagnose Hub (Echtzeit-Logging & Fehler-Zentrale):**
   - **Zentraler Logging-Service (`src/services/logger.js`):** Intelligenter Ringspeicher für bis zu 300 Einträge, automatische Erfassung globaler JavaScript-Fehler und Promise-Rejections.
   - **Interaktive Diagnose-Konsole (`DiagnosticLogModal.jsx`):** Filter nach Fehler-Levels (🔴 Fehler, 🟡 Warnungen, 📱 Widgets, 🌐 Google), Volltextsuche, aufklappbare Stacktraces und 1-Klick Export/Kopieren für schnelles Support- und Mentor-Debugging.

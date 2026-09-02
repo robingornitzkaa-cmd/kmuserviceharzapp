@@ -6,9 +6,14 @@
   - *Content Security Policy (CSP):* Strenger CSP-Meta-Tag in `index.html` integriert.
   - *Schema-Validierung beim Backup:* Whitelist für erlaubte Keys in `applyBackupRestore` implementiert.
 
-- [ ] **🔒 [AppSec Phase 1] Supabase Row Level Security (RLS) & Auth-Härtung:**
-  - *RLS aktivieren:* Auf allen 19 öffentlichen Tabellen (`leads`, `contacts`, `dashboard_state`, etc.) RLS aktivieren und Zugriffspolicies definieren.
-  - *API-Key Rotation:* Google Gemini API-Key in der Cloud Console neu erzeugen und alten Key invalidieren.
+- [x] **🔒 [AppSec Phase 1] Supabase Row Level Security (RLS) & Auth-Härtung:**
+  - *RLS aktiviert & Policies per MCP konfiguriert:* RLS auf allen 8 Founder OS Tabellen (`leads`, `contacts`, `dashboard_state`, `prompts`, `client_tickets`, `tasks`, `inbox`, `docs`) aktiviert. Öffentlicher Zugriff gesperrt, nur `authenticated` hat Lese- und Schreibzugriff.
+  - *Supabase Auth & Silent Refresh:* Echte E-Mail- und Passwort-Authentifizierung mit automatischem Token-Refresh im Hintergrund via Standard REST API (`/auth/v1/`).
+  - *Sitzungs-Persistenz:* Kein 10-maliges Anmelden mehr nötig – Nutzer bleibt auf seinem Gerät dauerhaft eingeloggt.
+  - *5 neue Tests:* 100% Testabdeckung in `supabaseAuth.test.jsx`.
+
+- [ ] **🔑 [AppSec Phase 2] Externe API-Key Rotation:**
+  - *API-Key Rotation:* Google Gemini API-Key in der Google AI Studio Console neu erzeugen und alten Key invalidieren.
   - *Zentraler Logger-Service (`src/services/logger.js`):* Ringspeicher für System-Events, Widget-Updates, Syncs und globale JS-Fehler (`window.onerror`, `unhandledrejection`).
   - *Interaktives Diagnose-Center (`DiagnosticLogModal.jsx`):* Live-Logstream mit Level-Filtern (🔴 Fehler, 🟡 Warnungen, 📱 Widgets, 🌐 Google), Echtzeit-Volltextsuche, aufklappbaren Stacktraces und 1-Klick Zwischenablage-Kopieren & JSON-Export.
   - *Sidebar & In-App Integration (`Sidebar.jsx`, `App.jsx`):* Direkter Schnellzugriff auf das Diagnose-Logbuch im Menü und Control Center.

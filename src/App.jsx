@@ -43,7 +43,8 @@ import {
   Volume2,
   Download,
   Database,
-  RefreshCw
+  RefreshCw,
+  LogOut
 } from 'lucide-react';
 
 // INITIAL DATA FOR FIRST LAUNCH IMPORT
@@ -83,7 +84,12 @@ import {
   deletePromptFromSupabase,
   fetchDashboardStateFromSupabase,
   saveDashboardStateToSupabase,
-  flushOfflineQueueWithSupabase
+  flushOfflineQueueWithSupabase,
+  signInWithEmail,
+  signUpWithEmail,
+  signOut,
+  getStoredSession,
+  refreshSession
 } from './services/supabase';
 import { updateAndroidWidget } from './services/widget';
 import { 
@@ -3953,49 +3959,100 @@ Hier ist die Frage des Nutzers:
     return localStorage.getItem('f_master_pin') || import.meta.env.VITE_APP_MASTER_PIN || '2026';
   });
 
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    return localStorage.getItem('f_app_authenticated') === 'true' || sessionStorage.getItem('f_app_authenticated') === 'true';
-  });
+  const [authSession, setAuthSession] = useState(() => getStoredSession());
+  const [authEmail, setAuthEmail] = useState(() => localStorage.getItem('f_auth_email') || 'rob@test.de');
+  const [authPassword, setAuthPassword] = useState('');
+  const [authMode, setAuthMode] = useState('pin'); // 'pin' | 'login' | 'signup'
+  const [loginSuccessMessage, setLoginSuccessMessage] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [loginError, setLoginError] = useState('');
   const [isAuthenticating, setIsAuthenticating] = useState(false);
 
-  const handleLoginSubmit = async (e) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    // 1. Wenn bereits eine gültige Supabase-Session vorliegt, ist der Nutzer direkt freigeschaltet!
+    const session = getStoredSession();
+    if (session && (session.access_token || session.refresh_token)) return true;
+    return localStorage.getItem('f_app_authenticated') === 'true' || sessionStorage.getItem('f_app_authenticated') === 'true';
+  });
+
+  // 2. Silent Token Refresh beim App-Start (Dauerhaft eingeloggt bleiben)
+  useEffect(() => {
+    const session = getStoredSession();
+    if (session && session.refresh_token) {
+      refreshSession(supabaseConfig)
+        .then(newSession => {
+          if (newSession) {
+            setAuthSession(newSession);
+            setIsAuthenticated(true);
+            localStorage.setItem('f_app_authenticated', 'true');
+          }
+        })
+        .catch(err => {
+          console.warn('Silent Session Refresh:', err);
+        });
+    }
+  }, [supabaseConfig]);
+
+  const handleAuthSubmit = async (e) => {
     e.preventDefault();
     setIsAuthenticating(true);
     setLoginError('');
-    
-    try {
-      const inputTrimmed = loginPassword.trim();
-      const expectedHash = import.meta.env.VITE_APP_PASSWORD_HASH;
-      
-      let isValid = false;
-      if (inputTrimmed === masterPin) {
-        isValid = true;
-      } else if (expectedHash && expectedHash.trim() !== '') {
-        const hash = await hashPassword(loginPassword);
-        if (hash === expectedHash) {
-          isValid = true;
-        }
-      }
+    setLoginSuccessMessage('');
 
-      if (isValid) {
+    try {
+      if (authMode === 'pin') {
+        // Fallback Master-PIN
+        const inputTrimmed = loginPassword.trim();
+        const expectedHash = import.meta.env.VITE_APP_PASSWORD_HASH;
+        let isValid = false;
+        if (inputTrimmed === masterPin) {
+          isValid = true;
+        } else if (expectedHash && expectedHash.trim() !== '') {
+          const hash = await hashPassword(loginPassword);
+          if (hash === expectedHash) {
+            isValid = true;
+          }
+        }
+
+        if (isValid) {
+          setIsAuthenticated(true);
+          localStorage.setItem('f_app_authenticated', 'true');
+          sessionStorage.setItem('f_app_authenticated', 'true');
+          setLoginPassword('');
+        } else {
+          setLoginError('Ungültiger PIN.');
+        }
+      } else if (authMode === 'signup') {
+        await signUpWithEmail(authEmail, authPassword, supabaseConfig);
+        setLoginSuccessMessage('Account erfolgreich registriert! Bitte logge dich jetzt ein.');
+        setAuthMode('login');
+      } else {
+        // Standard: Supabase E-Mail & Passwort
+        const session = await signInWithEmail(authEmail, authPassword, supabaseConfig);
+        setAuthSession(session);
         setIsAuthenticated(true);
         localStorage.setItem('f_app_authenticated', 'true');
-        sessionStorage.setItem('f_app_authenticated', 'true');
-        setLoginPassword('');
-      } else {
-        setLoginError('Ungültiger PIN / Passwort.');
+        localStorage.setItem('f_auth_email', authEmail.trim());
+        setAuthPassword('');
+        syncAllFromCloud();
       }
     } catch (err) {
-      console.error(err);
-      setLoginError('Ein Fehler bei der Verifizierung ist aufgetreten.');
+      console.error('Auth-Fehler:', err);
+      setLoginError(err.message || 'Authentifizierung fehlgeschlagen.');
     } finally {
       setIsAuthenticating(false);
     }
   };
 
   const handleLockApp = () => {
+    localStorage.removeItem('f_app_authenticated');
+    sessionStorage.removeItem('f_app_authenticated');
+    setIsAuthenticated(false);
+  };
+
+  const handleSignOutApp = async () => {
+    await signOut(supabaseConfig);
+    setAuthSession(null);
     localStorage.removeItem('f_app_authenticated');
     sessionStorage.removeItem('f_app_authenticated');
     setIsAuthenticated(false);
@@ -4021,7 +4078,7 @@ Hier ist die Frage des Nutzers:
           borderRadius: '24px',
           padding: '2.5rem',
           width: '100%',
-          maxWidth: '420px',
+          maxWidth: '440px',
           boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 30px rgba(99, 102, 241, 0.2)',
           textAlign: 'center'
         }}>
@@ -4034,48 +4091,160 @@ Hier ist die Frage des Nutzers:
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            margin: '0 auto 1.5rem',
+            margin: '0 auto 1.25rem',
             boxShadow: '0 0 20px rgba(168, 85, 247, 0.4)'
           }}>
             <Lock size={32} color="#ffffff" />
           </div>
           
-          <h2 style={{ fontSize: '1.75rem', fontWeight: '800', marginBottom: '0.5rem', letterSpacing: '-0.025em' }}>
+          <h2 style={{ fontSize: '1.75rem', fontWeight: '800', marginBottom: '0.35rem', letterSpacing: '-0.025em' }}>
             Founder OS – Geschützt
           </h2>
-          <p style={{ fontSize: '0.85rem', color: '#94a3b8', marginBottom: '2rem', lineHeight: '1.5' }}>
-            Bitte gib deinen 4-stelligen Master-PIN ein, um auf deine Betriebsdaten, Dokumente und Leads zuzugreifen.
+          <p style={{ fontSize: '0.85rem', color: '#94a3b8', marginBottom: '1.5rem', lineHeight: '1.5' }}>
+            {authMode === 'pin' 
+              ? 'Gib deinen Master-PIN ein, um die lokale App-Ansicht freizuschalten.' 
+              : authMode === 'signup'
+                ? 'Erstelle einen neuen Gründer-Account für die Supabase Cloud.'
+                : 'Melde dich an, um auf deine Betriebsdaten, Dokumente und Leads zuzugreifen.'}
           </p>
+
+          {/* Mode Switch Tabs */}
+          <div style={{
+            display: 'flex',
+            background: 'rgba(0, 0, 0, 0.4)',
+            borderRadius: '12px',
+            padding: '0.25rem',
+            marginBottom: '1.25rem',
+            border: '1px solid rgba(255, 255, 255, 0.05)'
+          }}>
+            <button
+              type="button"
+              onClick={() => { setAuthMode('login'); setLoginError(''); setLoginSuccessMessage(''); }}
+              style={{
+                flex: 1,
+                padding: '0.5rem',
+                borderRadius: '8px',
+                border: 'none',
+                background: authMode !== 'pin' ? 'linear-gradient(135deg, #6366f1, #a855f7)' : 'transparent',
+                color: authMode !== 'pin' ? '#ffffff' : '#94a3b8',
+                fontWeight: 600,
+                fontSize: '0.8rem',
+                cursor: 'pointer',
+                transition: 'all 0.2s'
+              }}
+            >
+              ☁️ Cloud-Login
+            </button>
+            <button
+              type="button"
+              onClick={() => { setAuthMode('pin'); setLoginError(''); setLoginSuccessMessage(''); }}
+              style={{
+                flex: 1,
+                padding: '0.5rem',
+                borderRadius: '8px',
+                border: 'none',
+                background: authMode === 'pin' ? 'linear-gradient(135deg, #6366f1, #a855f7)' : 'transparent',
+                color: authMode === 'pin' ? '#ffffff' : '#94a3b8',
+                fontWeight: 600,
+                fontSize: '0.8rem',
+                cursor: 'pointer',
+                transition: 'all 0.2s'
+              }}
+            >
+              🔢 Master-PIN
+            </button>
+          </div>
           
-          <form onSubmit={handleLoginSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <div style={{ textAlign: 'left' }}>
-              <label style={{ fontSize: '0.8rem', fontWeight: '500', color: '#94a3b8', display: 'block', marginBottom: '0.5rem' }}>
-                Master-PIN / Passwort eingeben
-              </label>
-              <input
-                type="password"
-                className="input-field"
-                style={{
-                  width: '100%',
-                  padding: '0.85rem 1rem',
-                  borderRadius: '12px',
-                  border: loginError ? '2px solid #ef4444' : '1px solid rgba(163, 116, 255, 0.3)',
-                  background: 'rgba(0, 0, 0, 0.3)',
-                  color: '#ffffff',
-                  fontSize: '1.25rem',
-                  letterSpacing: '0.15em',
-                  textAlign: 'center',
-                  outline: 'none',
-                  boxSizing: 'border-box'
-                }}
-                placeholder="PIN eingeben (z.B. 2026)"
-                value={loginPassword}
-                onChange={(e) => setLoginPassword(e.target.value)}
-                disabled={isAuthenticating}
-                autoFocus
-                required
-              />
-            </div>
+          <form onSubmit={handleAuthSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            {authMode === 'pin' ? (
+              <div style={{ textAlign: 'left' }}>
+                <label style={{ fontSize: '0.8rem', fontWeight: '500', color: '#94a3b8', display: 'block', marginBottom: '0.5rem' }}>
+                  Master-PIN eingeben
+                </label>
+                <input
+                  type="password"
+                  className="input-field"
+                  style={{
+                    width: '100%',
+                    padding: '0.85rem 1rem',
+                    borderRadius: '12px',
+                    border: loginError ? '2px solid #ef4444' : '1px solid rgba(163, 116, 255, 0.3)',
+                    background: 'rgba(0, 0, 0, 0.3)',
+                    color: '#ffffff',
+                    fontSize: '1.25rem',
+                    letterSpacing: '0.15em',
+                    textAlign: 'center',
+                    outline: 'none',
+                    boxSizing: 'border-box'
+                  }}
+                  placeholder="PIN eingeben"
+                  value={loginPassword}
+                  onChange={(e) => setLoginPassword(e.target.value)}
+                  disabled={isAuthenticating}
+                  autoFocus
+                  required
+                />
+              </div>
+            ) : (
+              <>
+                <div style={{ textAlign: 'left' }}>
+                  <label style={{ fontSize: '0.8rem', fontWeight: '500', color: '#94a3b8', display: 'block', marginBottom: '0.5rem' }}>
+                    E-Mail-Adresse
+                  </label>
+                  <input
+                    type="email"
+                    className="input-field"
+                    style={{
+                      width: '100%',
+                      padding: '0.75rem 1rem',
+                      borderRadius: '12px',
+                      border: loginError ? '2px solid #ef4444' : '1px solid rgba(163, 116, 255, 0.3)',
+                      background: 'rgba(0, 0, 0, 0.3)',
+                      color: '#ffffff',
+                      fontSize: '0.9rem',
+                      outline: 'none',
+                      boxSizing: 'border-box'
+                    }}
+                    placeholder="deine-email@domain.de"
+                    value={authEmail}
+                    onChange={(e) => setAuthEmail(e.target.value)}
+                    disabled={isAuthenticating}
+                    autoFocus
+                    required
+                  />
+                </div>
+
+                <div style={{ textAlign: 'left' }}>
+                  <label style={{ fontSize: '0.8rem', fontWeight: '500', color: '#94a3b8', display: 'block', marginBottom: '0.5rem' }}>
+                    Passwort
+                  </label>
+                  <input
+                    type="password"
+                    className="input-field"
+                    style={{
+                      width: '100%',
+                      padding: '0.75rem 1rem',
+                      borderRadius: '12px',
+                      border: loginError ? '2px solid #ef4444' : '1px solid rgba(163, 116, 255, 0.3)',
+                      background: 'rgba(0, 0, 0, 0.3)',
+                      color: '#ffffff',
+                      fontSize: '0.9rem',
+                      outline: 'none',
+                      boxSizing: 'border-box'
+                    }}
+                    placeholder="••••••••"
+                    value={authPassword}
+                    onChange={(e) => setAuthPassword(e.target.value)}
+                    disabled={isAuthenticating}
+                    required
+                  />
+                </div>
+
+                <div style={{ fontSize: '0.75rem', color: '#10b981', display: 'flex', alignItems: 'center', gap: '0.35rem', textAlign: 'left' }}>
+                  <span>🔒</span> Dauerhafte Sitzung: Du bleibst auf diesem Gerät dauerhaft angemeldet.
+                </div>
+              </>
+            )}
             
             {loginError && (
               <div style={{
@@ -4088,6 +4257,20 @@ Hier ist die Frage des Nutzers:
                 border: '1px solid rgba(239, 68, 68, 0.2)'
               }}>
                 ⚠️ {loginError}
+              </div>
+            )}
+
+            {loginSuccessMessage && (
+              <div style={{
+                color: '#10b981',
+                fontSize: '0.85rem',
+                textAlign: 'center',
+                background: 'rgba(16, 185, 129, 0.1)',
+                padding: '0.75rem',
+                borderRadius: '8px',
+                border: '1px solid rgba(16, 185, 129, 0.2)'
+              }}>
+                ✅ {loginSuccessMessage}
               </div>
             )}
             
@@ -4105,19 +4288,47 @@ Hier ist die Frage des Nutzers:
                 justifyContent: 'center',
                 gap: '0.5rem',
                 cursor: 'pointer',
-                marginTop: '0.5rem',
+                marginTop: '0.25rem',
                 background: 'linear-gradient(135deg, #6366f1, #a855f7)',
                 border: 'none',
                 boxShadow: '0 4px 15px rgba(99, 102, 241, 0.4)'
               }}
               disabled={isAuthenticating}
             >
-              {isAuthenticating ? 'Prüfe PIN...' : 'App freischalten 🔓'}
+              {isAuthenticating 
+                ? 'Verifiziere...' 
+                : authMode === 'signup'
+                  ? 'Account erstellen ✍️'
+                  : authMode === 'pin'
+                    ? 'App freischalten 🔓'
+                    : 'Anmelden & Dauerhaft verbunden bleiben 🚀'}
             </button>
+
+            {authMode !== 'pin' && (
+              <div style={{ marginTop: '0.5rem' }}>
+                {authMode === 'login' ? (
+                  <button
+                    type="button"
+                    onClick={() => { setAuthMode('signup'); setLoginError(''); setLoginSuccessMessage(''); }}
+                    style={{ background: 'none', border: 'none', color: '#a855f7', fontSize: '0.8rem', cursor: 'pointer', textDecoration: 'underline' }}
+                  >
+                    Noch keinen Account? Neuen Gründer-Account anlegen
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => { setAuthMode('login'); setLoginError(''); setLoginSuccessMessage(''); }}
+                    style={{ background: 'none', border: 'none', color: '#a855f7', fontSize: '0.8rem', cursor: 'pointer', textDecoration: 'underline' }}
+                  >
+                    Bereits registriert? Zum Login wechseln
+                  </button>
+                )}
+              </div>
+            )}
           </form>
 
-          <div style={{ marginTop: '2rem', paddingTop: '1rem', borderTop: '1px solid rgba(255, 255, 255, 0.08)', fontSize: '0.75rem', color: '#64748b' }}>
-            KMU Service Harz OS • Geschützter Bereich
+          <div style={{ marginTop: '1.75rem', paddingTop: '1rem', borderTop: '1px solid rgba(255, 255, 255, 0.08)', fontSize: '0.75rem', color: '#64748b' }}>
+            KMU Service Harz OS • Supabase Auth & RLS geschützt
           </div>
         </div>
       </div>
@@ -4263,8 +4474,30 @@ Hier ist die Frage des Nutzers:
             onClick={handleLockApp}
             title="Sperrt die App sofort und schützt deine Daten mit dem Master-PIN."
           >
-            <Lock size={14} /> App sperren
+            <Lock size={14} /> Sperren
           </button>
+
+          {authSession && (
+            <button
+              type="button"
+              className="btn btn-secondary"
+              style={{
+                padding: '0.35rem 0.65rem',
+                fontSize: '0.75rem',
+                background: 'rgba(239, 68, 68, 0.1)',
+                borderColor: 'rgba(239, 68, 68, 0.3)',
+                color: '#ef4444',
+                marginRight: '0.35rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.35rem'
+              }}
+              onClick={handleSignOutApp}
+              title="Cloud-Sitzung beenden und abmelden."
+            >
+              <LogOut size={14} /> Abmelden
+            </button>
+          )}
 
           <button
             type="button"

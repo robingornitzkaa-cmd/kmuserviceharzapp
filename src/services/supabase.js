@@ -18,15 +18,150 @@ const getKey = (config) => {
   return DEFAULT_KEY;
 };
 
-export const fetchLeadsFromSupabase = async (supabaseConfig) => {
-  const url = getUrl(supabaseConfig);
-  const key = getKey(supabaseConfig);
-  
-  const response = await fetch(`${url}/rest/v1/leads?select=*&order=priority.asc,company.asc`, {
+const AUTH_STORAGE_KEY = 'f_sb_auth_session';
+
+export const getStoredSession = () => {
+  try {
+    const raw = localStorage.getItem(AUTH_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+};
+
+export const setStoredSession = (session) => {
+  try {
+    if (session) {
+      localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(session));
+    } else {
+      localStorage.removeItem(AUTH_STORAGE_KEY);
+    }
+  } catch (e) {
+    console.error('Failed to store Supabase session:', e);
+  }
+};
+
+export const signInWithEmail = async (email, password, config) => {
+  const url = getUrl(config);
+  const key = getKey(config);
+  const res = await fetch(`${url}/auth/v1/token?grant_type=password`, {
+    method: 'POST',
     headers: {
       'apikey': key,
-      'Authorization': `Bearer ${key}`
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ email: email.trim(), password })
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.msg || err.error_description || `Login fehlgeschlagen (${res.status})`);
+  }
+  const session = await res.json();
+  setStoredSession(session);
+  return session;
+};
+
+export const signUpWithEmail = async (email, password, config) => {
+  const url = getUrl(config);
+  const key = getKey(config);
+  const res = await fetch(`${url}/auth/v1/signup`, {
+    method: 'POST',
+    headers: {
+      'apikey': key,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ email: email.trim(), password })
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.msg || err.error_description || `Registrierung fehlgeschlagen (${res.status})`);
+  }
+  const data = await res.json();
+  if (data.access_token) {
+    setStoredSession(data);
+  }
+  return data;
+};
+
+export const refreshSession = async (config) => {
+  const session = getStoredSession();
+  if (!session || !session.refresh_token) return null;
+  const url = getUrl(config);
+  const key = getKey(config);
+
+  try {
+    const res = await fetch(`${url}/auth/v1/token?grant_type=refresh_token`, {
+      method: 'POST',
+      headers: {
+        'apikey': key,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ refresh_token: session.refresh_token })
+    });
+    if (!res.ok) {
+      setStoredSession(null);
+      return null;
     }
+    const newSession = await res.json();
+    setStoredSession(newSession);
+    return newSession;
+  } catch (e) {
+    console.warn('Silent refresh error:', e);
+    return null;
+  }
+};
+
+export const signOut = async (config) => {
+  const session = getStoredSession();
+  if (session && session.access_token) {
+    const url = getUrl(config);
+    const key = getKey(config);
+    try {
+      await fetch(`${url}/auth/v1/logout`, {
+        method: 'POST',
+        headers: {
+          'apikey': key,
+          'Authorization': `Bearer ${session.access_token}`
+        }
+      });
+    } catch {
+      // Ignoriere Netzwerkfehler beim Logout
+    }
+  }
+  setStoredSession(null);
+};
+
+export const getAuthToken = async (config) => {
+  let session = getStoredSession();
+  if (!session) return getKey(config);
+
+  // Wenn der Token bald abläuft (in den nächsten 60 Sek.) -> stiller Refresh im Hintergrund
+  const expiresAt = session.expires_at ? session.expires_at * 1000 : 0;
+  if (expiresAt && Date.now() > expiresAt - 60000) {
+    const refreshed = await refreshSession(config);
+    if (refreshed && refreshed.access_token) {
+      return refreshed.access_token;
+    }
+  }
+
+  return session.access_token || getKey(config);
+};
+
+export const getAuthHeaders = async (config) => {
+  const key = getKey(config);
+  const token = await getAuthToken(config);
+  return {
+    'apikey': key,
+    'Authorization': `Bearer ${token}`
+  };
+};
+
+export const fetchLeadsFromSupabase = async (supabaseConfig) => {
+  const url = getUrl(supabaseConfig);
+  const headers = await getAuthHeaders(supabaseConfig);
+  
+  const response = await fetch(`${url}/rest/v1/leads?select=*&order=priority.asc,company.asc`, {
+    headers
   });
   if (response.ok) {
     return await response.json();
@@ -36,16 +171,14 @@ export const fetchLeadsFromSupabase = async (supabaseConfig) => {
 
 export const saveLeadToSupabase = async (leadToSave, supabaseConfig) => {
   const url = getUrl(supabaseConfig);
-  const key = getKey(supabaseConfig);
   try {
+    const headers = await getAuthHeaders(supabaseConfig);
+    headers['Content-Type'] = 'application/json';
+    headers['Prefer'] = 'resolution=merge-duplicates';
+
     const response = await fetch(`${url}/rest/v1/leads`, {
       method: 'POST',
-      headers: {
-        'apikey': key,
-        'Authorization': `Bearer ${key}`,
-        'Content-Type': 'application/json',
-        'Prefer': 'resolution=merge-duplicates'
-      },
+      headers,
       body: JSON.stringify(leadToSave)
     });
     if (response.ok) return true;
@@ -63,12 +196,9 @@ export const saveLeadToSupabase = async (leadToSave, supabaseConfig) => {
 
 export const fetchPromptsFromSupabase = async (supabaseConfig) => {
   const url = getUrl(supabaseConfig);
-  const key = getKey(supabaseConfig);
+  const headers = await getAuthHeaders(supabaseConfig);
   const response = await fetch(`${url}/rest/v1/prompts?select=*`, {
-    headers: {
-      'apikey': key,
-      'Authorization': `Bearer ${key}`
-    }
+    headers
   });
   if (response.ok) {
     const data = await response.json();
@@ -83,7 +213,6 @@ export const fetchPromptsFromSupabase = async (supabaseConfig) => {
 
 export const savePromptToSupabase = async (promptToAdd, supabaseConfig) => {
   const url = getUrl(supabaseConfig);
-  const key = getKey(supabaseConfig);
   const payload = {
     id: String(promptToAdd.id),
     title: promptToAdd.title || '',
@@ -95,14 +224,13 @@ export const savePromptToSupabase = async (promptToAdd, supabaseConfig) => {
   };
 
   try {
+    const headers = await getAuthHeaders(supabaseConfig);
+    headers['Content-Type'] = 'application/json';
+    headers['Prefer'] = 'resolution=merge-duplicates';
+
     const response = await fetch(`${url}/rest/v1/prompts`, {
       method: 'POST',
-      headers: {
-        'apikey': key,
-        'Authorization': `Bearer ${key}`,
-        'Content-Type': 'application/json',
-        'Prefer': 'resolution=merge-duplicates'
-      },
+      headers,
       body: JSON.stringify(payload)
     });
     if (response && response.ok) return true;
@@ -140,25 +268,19 @@ export const pushUnsyncedPromptsToSupabase = async (promptsToPush, supabaseConfi
 
 export const deletePromptFromSupabase = async (id, supabaseConfig) => {
   const url = getUrl(supabaseConfig);
-  const key = getKey(supabaseConfig);
+  const headers = await getAuthHeaders(supabaseConfig);
   const response = await fetch(`${url}/rest/v1/prompts?id=eq.${id}`, {
     method: 'DELETE',
-    headers: {
-      'apikey': key,
-      'Authorization': `Bearer ${key}`
-    }
+    headers
   });
   return response ? response.ok : false;
 };
 
 export const fetchDashboardStateFromSupabase = async (supabaseConfig) => {
   const url = getUrl(supabaseConfig);
-  const key = getKey(supabaseConfig);
+  const headers = await getAuthHeaders(supabaseConfig);
   const response = await fetch(`${url}/rest/v1/dashboard_state?id=eq.main&select=*`, {
-    headers: {
-      'apikey': key,
-      'Authorization': `Bearer ${key}`
-    }
+    headers
   });
   if (response && response.ok) {
     const data = await response.json();
@@ -169,7 +291,6 @@ export const fetchDashboardStateFromSupabase = async (supabaseConfig) => {
 
 export const saveDashboardStateToSupabase = async (stateData, supabaseConfig) => {
   const url = getUrl(supabaseConfig);
-  const key = getKey(supabaseConfig);
   const payload = {
     id: 'main',
     dash_notes: stateData.dashNotes ?? '',
@@ -184,14 +305,13 @@ export const saveDashboardStateToSupabase = async (stateData, supabaseConfig) =>
   };
 
   try {
+    const headers = await getAuthHeaders(supabaseConfig);
+    headers['Content-Type'] = 'application/json';
+    headers['Prefer'] = 'resolution=merge-duplicates';
+
     const response = await fetch(`${url}/rest/v1/dashboard_state`, {
       method: 'POST',
-      headers: {
-        'apikey': key,
-        'Authorization': `Bearer ${key}`,
-        'Content-Type': 'application/json',
-        'Prefer': 'resolution=merge-duplicates'
-      },
+      headers,
       body: JSON.stringify(payload)
     });
     if (response.ok) return true;
@@ -213,45 +333,29 @@ export const saveDashboardStateToSupabase = async (stateData, supabaseConfig) =>
  */
 export const flushOfflineQueueWithSupabase = async (supabaseConfig) => {
   return flushSyncQueue(async (item) => {
+    const url = getUrl(supabaseConfig);
+    const headers = await getAuthHeaders(supabaseConfig);
+    headers['Content-Type'] = 'application/json';
+    headers['Prefer'] = 'resolution=merge-duplicates';
+
     if (item.type === 'save_dashboard_state') {
-      const url = getUrl(supabaseConfig);
-      const key = getKey(supabaseConfig);
       const res = await fetch(`${url}/rest/v1/dashboard_state`, {
         method: 'POST',
-        headers: {
-          'apikey': key,
-          'Authorization': `Bearer ${key}`,
-          'Content-Type': 'application/json',
-          'Prefer': 'resolution=merge-duplicates'
-        },
+        headers,
         body: JSON.stringify(item.payload)
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
     } else if (item.type === 'save_prompt') {
-      const url = getUrl(supabaseConfig);
-      const key = getKey(supabaseConfig);
       const res = await fetch(`${url}/rest/v1/prompts`, {
         method: 'POST',
-        headers: {
-          'apikey': key,
-          'Authorization': `Bearer ${key}`,
-          'Content-Type': 'application/json',
-          'Prefer': 'resolution=merge-duplicates'
-        },
+        headers,
         body: JSON.stringify(item.payload)
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
     } else if (item.type === 'save_lead') {
-      const url = getUrl(supabaseConfig);
-      const key = getKey(supabaseConfig);
       const res = await fetch(`${url}/rest/v1/leads`, {
         method: 'POST',
-        headers: {
-          'apikey': key,
-          'Authorization': `Bearer ${key}`,
-          'Content-Type': 'application/json',
-          'Prefer': 'resolution=merge-duplicates'
-        },
+        headers,
         body: JSON.stringify(item.payload)
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
