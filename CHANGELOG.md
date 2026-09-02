@@ -8,6 +8,8 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 - **🛡️ AppSec-Härtung (Secrets Management & DSGVO-Schutz):**
   - **Hardcoded Credentials entfernt (`src/services/supabase.js`, `src/App.jsx`):** Statische Supabase URL- und JWT-Anon-Key-Fallbacks aus dem JavaScript-Quellcode entfernt. Die Anwendung lädt Verbindungsdaten nun ausschließlich aus Umgebungsvariablen (`.env`).
   - **Kundendaten & PII aus Git-Tracking entfernt (`.gitignore`):** `leads_master_harz.csv` und `leads_master_harz_backup_all.csv` (mit über 500 Kontaktdaten Harzer Unternehmen) sicher aus dem Git-Index entfernt (`git rm --cached`) und in `.gitignore` verankert. Die lokalen Dateien auf dem Rechner bleiben unverändert erhalten.
+  - **Content Security Policy (CSP) integriert (`index.html`):** Strenger CSP-Meta-Tag schützt vor Cross-Site-Scripting (XSS) und begrenzt Skripte und Verbindungen auf verifizierte Domänen.
+  - **Backup-Restore Integritätsprüfung (`src/services/backupService.js`):** Whitelist-Schutz verhindert das Einschleusen nicht autorisierter Schlüssel in den lokalen Speicher bei der Wiederherstellung.
 
 ### Added
 - **🛠️ System- & Fehler-Diagnose Hub (Echtzeit-Logging & Fehler-Zentrale):**

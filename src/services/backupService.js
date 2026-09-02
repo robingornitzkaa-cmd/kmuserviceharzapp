@@ -279,13 +279,15 @@ export function applyBackupRestore(backupPayload, selectedModules = null) {
     const data = backupPayload.data || backupPayload;
     let restoredKeysCount = 0;
 
+    const allowedKeys = new Set(Object.values(LOCAL_STORAGE_KEY_MAP).flat());
+
     // Struktur v2
     if (backupPayload.data) {
       Object.entries(data).forEach(([modKey, modValues]) => {
         if (!selectedModules || selectedModules.includes(modKey)) {
           if (modValues && typeof modValues === 'object') {
             Object.entries(modValues).forEach(([storageKey, value]) => {
-              if (value !== undefined) {
+              if (value !== undefined && allowedKeys.has(storageKey)) {
                 const serialized = typeof value === 'string' ? value : JSON.stringify(value);
                 localStorage.setItem(storageKey, serialized);
                 restoredKeysCount++;
@@ -297,7 +299,7 @@ export function applyBackupRestore(backupPayload, selectedModules = null) {
     } else {
       // Struktur v1 (Flache Keys)
       Object.entries(data).forEach(([key, value]) => {
-        if (key.startsWith('f_')) {
+        if (allowedKeys.has(key)) {
           const serialized = typeof value === 'string' ? value : JSON.stringify(value);
           localStorage.setItem(key, serialized);
           restoredKeysCount++;

@@ -3,12 +3,12 @@
 - [x] **🛡️ [AppSec Quick-Fix] Bereinigung von Hardcoded Secrets & Git-Tracking:**
   - *Hardcoded Credentials entfernt:* Fallback-Keys aus `src/services/supabase.js` und `src/App.jsx` entfernt.
   - *DSGVO Git-Bereinigung:* `leads_master_harz.csv` und Backup sicher aus Git-Index entfernt (`git rm --cached`) und in `.gitignore` verankert.
+  - *Content Security Policy (CSP):* Strenger CSP-Meta-Tag in `index.html` integriert.
+  - *Schema-Validierung beim Backup:* Whitelist für erlaubte Keys in `applyBackupRestore` implementiert.
 
 - [ ] **🔒 [AppSec Phase 1] Supabase Row Level Security (RLS) & Auth-Härtung:**
   - *RLS aktivieren:* Auf allen 19 öffentlichen Tabellen (`leads`, `contacts`, `dashboard_state`, etc.) RLS aktivieren und Zugriffspolicies definieren.
   - *API-Key Rotation:* Google Gemini API-Key in der Cloud Console neu erzeugen und alten Key invalidieren.
-  - *Content Security Policy (CSP):* Meta-Tag in `index.html` einbetten.
-  - *Schema-Validierung beim Backup:* Whitelist für erlaubte Keys in `applyBackupRestore` implementieren.
   - *Zentraler Logger-Service (`src/services/logger.js`):* Ringspeicher für System-Events, Widget-Updates, Syncs und globale JS-Fehler (`window.onerror`, `unhandledrejection`).
   - *Interaktives Diagnose-Center (`DiagnosticLogModal.jsx`):* Live-Logstream mit Level-Filtern (🔴 Fehler, 🟡 Warnungen, 📱 Widgets, 🌐 Google), Echtzeit-Volltextsuche, aufklappbaren Stacktraces und 1-Klick Zwischenablage-Kopieren & JSON-Export.
   - *Sidebar & In-App Integration (`Sidebar.jsx`, `App.jsx`):* Direkter Schnellzugriff auf das Diagnose-Logbuch im Menü und Control Center.
