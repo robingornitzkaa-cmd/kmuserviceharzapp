@@ -598,8 +598,8 @@ function App() {
   const [supabaseLastSync, setSupabaseLastSync] = useState(() => localStorage.getItem('f_sb_last_sync') || 'Noch nie');
   const [isInitialStateLoaded, setIsInitialStateLoaded] = useState(false);
   const [supabaseConfig, setSupabaseConfig] = useState(() => {
-    const fallbackUrl = import.meta.env.VITE_SUPABASE_URL || 'https://ypqlssyrlykjzjnoyjoa.supabase.co';
-    const fallbackKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwcWxzc3lybHlranpqbm95am9hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzMTc5OTYsImV4cCI6MjA5Nzg5Mzk5Nn0.l1gbcQkrgjGJyTsRp3cjCqYIVrme9M48sbqUILhoAes';
+    const fallbackUrl = import.meta.env.VITE_SUPABASE_URL || '';
+    const fallbackKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
     try {
       const saved = JSON.parse(localStorage.getItem('f_sb_config'));
       if (saved && typeof saved === 'object') {

@@ -24,3 +24,7 @@ dist-ssr
 *.sw?
 .env
 .env.*
+
+# Sensitive customer databases & lead lists
+*.csv
+leads_master_harz*.csv
