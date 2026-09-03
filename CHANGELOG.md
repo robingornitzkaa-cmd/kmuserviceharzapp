@@ -13,7 +13,18 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
   - **Row Level Security (RLS) & Policies aktiviert (Supabase Cloud):** RLS auf allen 8 Kern-Tabellen (`leads`, `contacts`, `dashboard_state`, `prompts`, `client_tickets`, `tasks`, `inbox`, `docs`) aktiviert. Anonymer Zugriff ist gesperrt, nur die Rolle `authenticated` hat Zugriff.
 
 ### Added
-- **🔒 Supabase Auth & Silent Token Refresh (Dauerhaft eingeloggt bleiben):**
+- **📌 Windows Desktop Notizzettel (Natives WPF Sticky Note Widget - Option B):**
+  - **Natives Desktop-Widget (`desktop-widget/FounderOS-StickyNote.ps1`):** Schlankes, rahmenloses Windows-WPF-Post-It mit abgerundeten Ecken, weichem Windows-Schatten und flüssiger Segoe UI Typografie ohne schwere externe Abhängigkeiten (Zero-Dependency über .NET Framework).
+  - **Funktionsumfang:**
+    - 📌 **Immer im Vordergrund (Pin-to-Top):** Notiz bleibt wahlweise über allen anderen Programmen schwebend oder verhält sich wie ein normales Fenster.
+    - 🎨 **Post-It Farbwähler:** 6 Farbthemen (Sonnengelb `#FEF08A`, Himmelblau `#BFDBFE`, Minzgrün `#BBF7D0`, Sanftrosa `#FBCFE8`, Pfirsich `#FED7AA`, Dark Mode `#1E293B`).
+    - 🗂️ **Multi-Notizen & Navigator:** Schnelles Durchblättern (◀ 1/2 ▶), Hinzufügen (➕) und Löschen (🗑) mit Sicherheitsabfrage.
+    - 💾 **Autosave mit Debouncing:** Speichert beim Tippen mit 750ms Pufferung vollautomatisch in `desktop-widget/notes-data.json`, merkt sich Fensterposition, Notizen und Pin-Status.
+    - 🔄 **Cloud-Sync Vorbereitung:** Modulare Schnittstelle vorbereitet für die spätere 2-Wege-Synchronisation mit der Supabase-Tabelle `dashboard_state`.
+  - **1-Klick Start & Desktop-Shortcut:**
+    - `desktop-widget/Start-Notizzettel.cmd`: Startet das Widget im Hintergrund ohne schwarzes Konsolenfenster.
+    - `desktop-widget/Create-Desktop-Shortcut.ps1`: Legt eine schicke Verknüpfung direkt auf den Windows-Desktop des Nutzers.
+
   - **Echter Cloud-Login & Registrierung (`src/services/supabase.js`, `src/App.jsx`):** Vollständige E-Mail- und Passwort-Authentifizierung gegen Supabase GoTrue Auth REST API ohne neue npm-Pakete.
   - **Silent Token Refresh:** Der langlebige Refresh-Token erneuert die Nutzersitzung beim App-Start und vor Token-Ablauf vollautomatisch im Hintergrund. Kein lästiges 10-maliges Anmelden pro Tag.
   - **Dualer Schutz-Screen:** Schnelles Entsperren via Master-PIN (z. B. am Schreibtisch) oder Wechsel zum Supabase Cloud-Login mit Account-Registrierung.

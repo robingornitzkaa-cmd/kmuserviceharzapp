@@ -71,9 +71,15 @@ Die Anwendung zeichnet sich durch ein futuristisches "Glassmorphic Dark Theme" a
 - **⚡ 4 1-Klick Presets:** *🌟 All-in-One Master*, *🎯 Deep Work & Fokus*, *💼 Sales Hunter*, *🖤 Minimalist AMOLED*.
 - **🎛️ Modul-Toggles & Feintuning:** Schalte Notizen, To-Dos (Top 3 vs 5), CRM-Radar, Streak, Termine und Tagesziel individuell ein/aus.
 - **🎨 4 Farbschemata & Transparenz-Slider:** Wähle zwischen *Glassmorphic Dark*, *AMOLED Black*, *Cyber Cyan*, *Deep Navy* und passe die Hintergrund-Deckkraft stufenlos von 20% bis 100% an.
-- **🚀 Klick-Routing:** Lege fest, welcher App-Bereich sich beim Antippen des Widgets öffnet (Dashboard, Kanban, CRM, Voice Studio).
 
-
+### 1f. 📌 Windows Desktop Notizzettel (Natives WPF Sticky Note Widget) -- *NEU!*
+- **🪟 Echtes Windows-Desktop-Post-It (`desktop-widget/FounderOS-StickyNote.ps1`):** Schlanker, rahmenloser Notizzettel direkt auf dem Windows-Desktop mit weichem Schatten, abgerundeten Ecken und flüssiger Texteingabe ohne zusätzliche Software-Installationen (Zero-Dependency über .NET).
+- **📌 Immer im Vordergrund (Pin-to-Top):** Kann mit dem Nadel-Symbol dauerhaft über allen anderen Windows-Fenstern angepinnt werden.
+- **🎨 6 Farbthemen:** Wähle zwischen *Sonnengelb*, *Himmelblau*, *Minzgrün*, *Sanftrosa*, *Pfirsich* und *Dark Mode*.
+- **🗂️ Multi-Notizen System:** Schnelles Erstellen (➕), Wechseln (◀ 1/2 ▶) und Verwalten mehrerer Zettel.
+- **💾 Autosave & Positionsspeicher:** Speichert Eingaben, Fensterposition und Größe automatisch lokal in `notes-data.json`.
+- **🚀 1-Klick Start & Desktop-Icon:** `desktop-widget/Start-Notizzettel.cmd` startet ohne störendes Konsolenfenster, `Create-Desktop-Shortcut.ps1` platziert die Verknüpfung direkt auf dem Desktop.
+- **🔄 Cloud-Sync Vorbereitung:** Schnittstelle zur Supabase-Tabelle `dashboard_state` modular vorbereitet für die spätere 2-Wege-Synchronisation mit Founder OS & Handy.
 
 ### 2. Inbox & Tasks (Posteingang)
 - **WhatsApp-Gateway & Webhook-Simulation:** Teste den Empfang strukturierter WhatsApp-Nachrichten samt HTTP-Post-Weiterleitung.

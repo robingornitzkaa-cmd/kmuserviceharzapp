@@ -1,6 +1,18 @@
 # TODO - Founder OS
 
-- [x] **🛡️ [AppSec Quick-Fix] Bereinigung von Hardcoded Secrets & Git-Tracking:**
+- [x] **📌 [Desktop Widget Phase 1] Lokaler Windows Desktop Notizzettel (WPF Sticky Note):**
+  - *Natives Windows-WPF Widget (`desktop-widget/FounderOS-StickyNote.ps1`):* Post-It Look, Farbwahl (6 Themes), Multi-Notizen mit Navigator, Pin-to-Top („Immer im Vordergrund“).
+  - *Lokales Autosave & Persistenz:* Speichert Notizen, Fensterposition und Pin-Status in `notes-data.json`.
+  - *Doppelklick-Start & Desktop-Shortcut:* `Start-Notizzettel.cmd` (ohne Konsole) & `Create-Desktop-Shortcut.ps1` (Icon auf Windows-Desktop).
+  - *Schnittstelle für Cloud-Sync vorbereitet:* Datenstruktur 100% kompatibel zu `dash_notes_list`.
+
+- [ ] **🔄 [Desktop Widget Phase 2] Supabase Cloud-Synchronisation für Desktop-Notizzettel:**
+  - Anbindung von `Sync-NotesWithCloud` an die Supabase-Tabelle `dashboard_state`.
+  - Polling im Hintergrund für Änderungen vom Smartphone/Handy-Widget.
+
+- [ ] **⭐ [Desktop Widget Phase 3] Option A: Web-Popout / Picture-in-Picture im Dashboard:**
+  - Pop-out Button am Dashboard-Notizzettel zum Ausdocken direkt aus dem Browser.
+
   - *Hardcoded Credentials entfernt:* Fallback-Keys aus `src/services/supabase.js` und `src/App.jsx` entfernt.
   - *DSGVO Git-Bereinigung:* `leads_master_harz.csv` und Backup sicher aus Git-Index entfernt (`git rm --cached`) und in `.gitignore` verankert.
   - *Content Security Policy (CSP):* Strenger CSP-Meta-Tag in `index.html` integriert.
