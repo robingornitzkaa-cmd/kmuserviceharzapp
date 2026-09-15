@@ -229,6 +229,102 @@ export const GoCleanToolkit = ({ onClose }) => {
   const [reviewServiceGiven, setReviewServiceGiven] = useState('Glas- und Fassadenreinigung');
   const [googleReviewLink, setGoogleReviewLink] = useState('https://g.page/r/gocleanharz/review');
 
+  // --- TAB 5: ONBOARDING CHATBOT STATE ---
+  const [botStep, setBotStep] = useState(0);
+  const [botAnswers, setBotAnswers] = useState([]);
+  const [botFinished, setBotFinished] = useState(false);
+  const [botTotalPoints, setBotTotalPoints] = useState(0);
+
+  const toolkitBotQuestions = [
+    {
+      id: 1,
+      q: "Wie erreichen dich neue Kundenanfragen aktuell meistens?",
+      comment: "Wenn Anfragen überall verstreut reinkommen, geht auf der Baustelle schnell der Überblick verloren.",
+      options: [
+        { label: "💬 Privates WhatsApp", points: 15 },
+        { label: "📞 Anrufe auf der Baustelle", points: 10 },
+        { label: "✉️ E-Mails im Postfach", points: 20 },
+        { label: "📝 Zettel & Visitenkarten", points: 5 }
+      ]
+    },
+    {
+      id: 2,
+      q: "Wie planst du deine Termine, Besichtigungen und Fahrten im Harzkreis?",
+      comment: "Wenn alles im Kopf oder auf Zetteln ist, entsteht unbewusst ständiger mentaler Druck.",
+      options: [
+        { label: "🧠 Alles im Kopf", points: 5 },
+        { label: "📅 Papierkalender / Notizbuch", points: 10 },
+        { label: "📱 Google / Apple Kalender", points: 25 },
+        { label: "📋 Auf Zuruf am Morgen", points: 5 }
+      ]
+    },
+    {
+      id: 3,
+      q: "Wie schreibst du deine Rechnungen und Angebote?",
+      comment: "Der Küchentisch nach 8 Stunden Arbeit ist der größte Feierabend-Killer!",
+      options: [
+        { label: "💻 Word / Excel am Abend", points: 15 },
+        { label: "✍️ Vordrucke von Hand", points: 5 },
+        { label: "⏳ Ich sammle bis Monatsende", points: 10 },
+        { label: "📑 Fertiges Programm (Lexoffice etc.)", points: 30 }
+      ]
+    },
+    {
+      id: 4,
+      q: "Wie kommen Tankquittungen und Material-Belege zu deinem Steuerberater?",
+      comment: "Der klassische Belegberg! Das kostet jedes Mal Nerven und Nachfragen vom Steuerberater.",
+      options: [
+        { label: "📦 Klassischer Schuhkarton / Ordner", points: 5 },
+        { label: "📸 Fotos per WhatsApp / Mail", points: 20 },
+        { label: "📂 Liegen verstreut im Auto", points: 5 },
+        { label: "🧾 Steuerberater fordert ständig nach", points: 5 }
+      ]
+    },
+    {
+      id: 5,
+      q: "Wie dokumentierst du deine Arbeit vor Ort (Vorher/Nachher-Beweise)?",
+      comment: "Ganz wichtig für den Schutz: Ohne klare Fotos gibt es bei peniblen Kunden leider oft Diskussionen.",
+      options: [
+        { label: "📸 Handy-Galerie (unsortiert)", points: 15 },
+        { label: "💬 WhatsApp-Foto an Kunden", points: 20 },
+        { label: "📝 Unterschriebener Zettel", points: 20 },
+        { label: "🤷 Kaum / Nur bei Reklamationen", points: 5 }
+      ]
+    },
+    {
+      id: 6,
+      q: "Was ist dein wichtigstes persönliches Ziel für die kommenden Monate?",
+      comment: "Genau darum geht es: Mehr Freiheit und weniger sinnloses Büro-Chaos!",
+      options: [
+        { label: "⏰ Echter Feierabend & freies Wochenende", points: 20 },
+        { label: "📈 Feste WEGs & lukrative Gewerbekunden", points: 20 },
+        { label: "👥 Erste feste Aushilfe einstellen", points: 20 },
+        { label: "🧘 Kopf frei & weniger Stress", points: 20 }
+      ]
+    }
+  ];
+
+  const handleToolkitBotAnswer = (option) => {
+    const currentQ = toolkitBotQuestions[botStep];
+    const newAnswers = [...botAnswers, { question: currentQ.q, answer: option.label, points: option.points }];
+    const newPoints = botTotalPoints + option.points;
+    setBotAnswers(newAnswers);
+    setBotTotalPoints(newPoints);
+
+    if (botStep + 1 < toolkitBotQuestions.length) {
+      setBotStep(botStep + 1);
+    } else {
+      setBotFinished(true);
+    }
+  };
+
+  const resetToolkitBot = () => {
+    setBotStep(0);
+    setBotAnswers([]);
+    setBotFinished(false);
+    setBotTotalPoints(0);
+  };
+
   const copyToClipboard = (text, id) => {
     navigator.clipboard.writeText(text);
     setCopiedId(id);
@@ -456,7 +552,8 @@ GoClean Harz | Mobil: 0170-XXXXXXX | info@gocleanharz.de`;
           { id: 'leads', icon: Building2, label: '2. B2B-Akquise Mappen' },
           { id: 'sop', icon: ShieldCheck, label: '3. Baustellen-SOP & Abnahme' },
           { id: 'reviews', icon: Star, label: '4. 5★ Bewertungs-Booster' },
-          { id: 'presentations', icon: Sparkles, label: '5. 🎤 Präsentationen (8 Decks)', highlight: true }
+          { id: 'presentations', icon: Sparkles, label: '5. 🎤 Präsentationen (9 Decks)', highlight: true },
+          { id: 'onboardingBot', icon: Brain, label: '6. 🤖 Onboarding-Chatbot', highlightBot: true }
         ].map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -477,15 +574,19 @@ GoClean Harz | Mobil: 0170-XXXXXXX | info@gocleanharz.de`;
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
                 background: isActive 
-                  ? tab.highlight 
-                    ? 'linear-gradient(135deg, #38bdf8, #818cf8)' 
-                    : 'linear-gradient(135deg, #10b981, #059669)' 
+                  ? tab.highlightBot
+                    ? 'linear-gradient(135deg, #a855f7, #6366f1)'
+                    : tab.highlight 
+                      ? 'linear-gradient(135deg, #38bdf8, #818cf8)' 
+                      : 'linear-gradient(135deg, #10b981, #059669)' 
                   : 'transparent',
-                color: isActive ? '#022c22' : tab.highlight ? '#38bdf8' : '#94a3b8',
+                color: isActive ? '#ffffff' : tab.highlightBot ? '#c084fc' : tab.highlight ? '#38bdf8' : '#94a3b8',
                 boxShadow: isActive 
-                  ? tab.highlight 
-                    ? '0 4px 15px rgba(56, 189, 248, 0.4)' 
-                    : '0 4px 12px rgba(16, 185, 129, 0.3)' 
+                  ? tab.highlightBot
+                    ? '0 4px 15px rgba(168, 85, 247, 0.4)'
+                    : tab.highlight 
+                      ? '0 4px 15px rgba(56, 189, 248, 0.4)' 
+                      : '0 4px 12px rgba(16, 185, 129, 0.3)' 
                   : 'none'
               }}
             >
@@ -1338,7 +1439,252 @@ GoClean Harz | Mobil: 0170-XXXXXXX | info@gocleanharz.de`;
         </div>
       )}
 
-      {/* --- TAB 5: PRÄSENTATIONEN (8 DECK-VARIANTEN FÜR MARCEL) --- */}
+      {/* --- TAB 5: ONBOARDING CHATBOT & AUDIT --- */}
+      {activeTab === 'onboardingBot' && (
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '1.5rem'
+        }}>
+          {/* Header */}
+          <div style={{
+            background: 'linear-gradient(135deg, rgba(30, 27, 46, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%)',
+            border: '1px solid rgba(192, 132, 252, 0.35)',
+            borderRadius: '16px',
+            padding: '1.25rem',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '1rem'
+          }}>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                <span style={{
+                  background: 'linear-gradient(135deg, #a855f7, #6366f1)',
+                  color: '#ffffff',
+                  fontWeight: 800,
+                  fontSize: '0.75rem',
+                  textTransform: 'uppercase',
+                  padding: '2px 8px',
+                  borderRadius: '6px'
+                }}>
+                  Express-Audit (6 Fragen)
+                </span>
+                <span style={{ fontSize: '0.8rem', color: '#c084fc', fontWeight: 600 }}>
+                  ● Interaktiver Onboarding-Chatbot für Marcel
+                </span>
+              </div>
+              <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 800, color: '#ffffff' }}>
+                🤖 GoClean Harz Onboarding-Chatbot
+              </h3>
+              <p style={{ margin: '4px 0 0 0', fontSize: '0.85rem', color: '#94a3b8' }}>
+                Führt Marcel spielerisch durch seinen Alltag, identifiziert Engpässe und berechnet seinen Digitalisierungs-Score.
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <a
+                href="/goclean_pilot_preview.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  background: 'linear-gradient(135deg, #34d399, #059669)',
+                  color: '#064e3b',
+                  border: 'none',
+                  padding: '8px 16px',
+                  borderRadius: '10px',
+                  fontSize: '0.85rem',
+                  fontWeight: 800,
+                  textDecoration: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  boxShadow: '0 0 15px rgba(52, 211, 153, 0.3)'
+                }}
+              >
+                <span>⭐ Vorschau-App für Marcel öffnen</span>
+                <ExternalLink size={13} />
+              </a>
+            </div>
+          </div>
+
+          {/* Chatbot Body */}
+          <div style={{
+            background: '#0b141a',
+            border: '1px solid rgba(192, 132, 252, 0.25)',
+            borderRadius: '18px',
+            overflow: 'hidden',
+            boxShadow: '0 10px 30px rgba(0,0,0,0.5)'
+          }}>
+            {/* Progress Bar */}
+            <div style={{ height: '4px', background: 'rgba(255, 255, 255, 0.08)', width: '100%' }}>
+              <div style={{
+                height: '4px',
+                background: 'linear-gradient(90deg, #a855f7, #38bdf8)',
+                width: `${botFinished ? 100 : Math.round(((botStep + 1) / toolkitBotQuestions.length) * 100)}%`,
+                transition: 'width 0.3s ease'
+              }} />
+            </div>
+
+            {!botFinished ? (
+              <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: '0.8rem', color: '#c084fc', fontWeight: 700 }}>
+                    Frage {botStep + 1} von {toolkitBotQuestions.length}
+                  </span>
+                  <button
+                    onClick={resetToolkitBot}
+                    style={{ background: 'transparent', border: 'none', color: '#64748b', fontSize: '0.75rem', cursor: 'pointer' }}
+                  >
+                    Neu starten ↺
+                  </button>
+                </div>
+
+                {/* Bot Message Bubble */}
+                <div style={{
+                  background: '#1e293b',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '16px',
+                  borderBottomLeftRadius: '4px',
+                  padding: '1rem',
+                  color: '#f8fafc',
+                  fontSize: '1rem',
+                  lineHeight: 1.5
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                    <span style={{ fontSize: '1.1rem' }}>🤖</span>
+                    <strong style={{ color: '#c084fc', fontSize: '0.85rem' }}>KMU Onboarding Bot:</strong>
+                  </div>
+                  <div>{toolkitBotQuestions[botStep].q}</div>
+                  <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginTop: '6px', fontStyle: 'italic' }}>
+                    {toolkitBotQuestions[botStep].comment}
+                  </div>
+                </div>
+
+                {/* Options Grid */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '4px' }}>
+                  <span style={{ fontSize: '0.78rem', color: '#94a3b8' }}>Marcels Antwort auswählen:</span>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '8px' }}>
+                    {toolkitBotQuestions[botStep].options.map((opt, i) => (
+                      <button
+                        key={i}
+                        onClick={() => handleToolkitBotAnswer(opt)}
+                        style={{
+                          background: 'rgba(255, 255, 255, 0.04)',
+                          border: '1px solid rgba(255, 255, 255, 0.1)',
+                          borderRadius: '12px',
+                          padding: '12px 16px',
+                          color: '#e2e8f0',
+                          fontSize: '0.9rem',
+                          fontWeight: 600,
+                          textAlign: 'left',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s ease',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px'
+                        }}
+                      >
+                        <span>👉</span>
+                        <span>{opt.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              /* Finished Audit Screen */
+              <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                <div style={{ textAlign: 'center' }}>
+                  <div style={{ fontSize: '2.5rem' }}>🎯</div>
+                  <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#ffffff', margin: '6px 0' }}>
+                    Onboarding-Audit erfolgreich abgeschlossen!
+                  </h3>
+                  <p style={{ fontSize: '0.85rem', color: '#94a3b8', margin: 0 }}>
+                    Hier ist die strategische Auswertung für GoClean Harz:
+                  </p>
+                </div>
+
+                <div style={{
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  border: '1px solid rgba(52, 211, 153, 0.3)',
+                  borderRadius: '16px',
+                  padding: '1.25rem'
+                }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '12px', marginBottom: '12px' }}>
+                    <div>
+                      <div style={{ fontSize: '0.75rem', color: '#94a3b8', textTransform: 'uppercase' }}>Digitalisierungs-Score</div>
+                      <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#34d399' }}>
+                        {Math.min(95, Math.max(22, Math.round((botTotalPoints / 130) * 100)))} / 100
+                      </div>
+                    </div>
+                    <div style={{ textAlign: 'right', maxWidth: '60%' }}>
+                      <span style={{ background: 'rgba(251, 191, 36, 0.2)', color: '#fbbf24', padding: '3px 8px', borderRadius: '8px', fontSize: '0.75rem', fontWeight: 700 }}>
+                        Hohes Entlastungspotenzial
+                      </span>
+                      <div style={{ fontSize: '0.75rem', color: '#cbd5e1', marginTop: '4px' }}>
+                        Mindestens 3–4 Stunden Bürokram pro Woche automatisierbar!
+                      </div>
+                    </div>
+                  </div>
+
+                  <h4 style={{ fontSize: '0.95rem', color: '#38bdf8', margin: '0 0 8px 0' }}>
+                    🚀 Deine 3 Sofort-Hebel für Marcel:
+                  </h4>
+                  <ul style={{ fontSize: '0.85rem', color: '#cbd5e1', lineHeight: 1.6, paddingLeft: '20px', margin: '0 0 16px 0' }}>
+                    <li><strong>WhatsApp-Business Routing:</strong> Trennt Privat- von Arbeitsnachrichten und sendet automatische 15-Minuten-Anfahrtspings.</li>
+                    <li><strong>1-Klick-Rechnung im Firmenwagen:</strong> Betrag direkt vor Ort generieren – nie wieder abends am Küchentisch Rechnungen tippen.</li>
+                    <li><strong>Lautlose Belegablage:</strong> Tankquittungen an der Kasse knipsen – kein Schuhkarton mehr für den Steuerberater.</li>
+                  </ul>
+
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                    <a
+                      href={`https://wa.me/?text=${encodeURIComponent(
+                        `Moin Marcel! Hier ist dein Onboarding-Profil für GoClean Harz 🚀\n\nDigital-Score: ${Math.min(95, Math.max(22, Math.round((botTotalPoints / 130) * 100)))}/100\n\nLass uns die Tage quatschen!`
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        background: '#25d366',
+                        color: '#064e3b',
+                        padding: '10px 18px',
+                        borderRadius: '10px',
+                        fontWeight: 800,
+                        fontSize: '0.85rem',
+                        textDecoration: 'none',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px'
+                      }}
+                    >
+                      <Send size={15} />
+                      <span>Ergebnis per WhatsApp an Marcel senden</span>
+                    </a>
+                    <button
+                      onClick={resetToolkitBot}
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.08)',
+                        border: '1px solid rgba(255, 255, 255, 0.15)',
+                        color: '#ffffff',
+                        padding: '10px 16px',
+                        borderRadius: '10px',
+                        fontWeight: 600,
+                        fontSize: '0.85rem',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      Chatbot neu starten
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* --- TAB 6: PRÄSENTATIONEN (9 DECK-VARIANTEN FÜR MARCEL) --- */}
       {activeTab === 'presentations' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           {/* Header & Filter Leiste */}

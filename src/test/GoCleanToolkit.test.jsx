@@ -88,5 +88,25 @@ describe('GoCleanToolkit Component Tests', () => {
     // Modal geschlossen
     expect(screen.queryByText(/Tipp: Nutze Pfeiltasten/i)).not.toBeInTheDocument();
   });
+
+  it('wechselt zum Onboarding-Chatbot Tab und erlaubt das Durchklicken der Fragen', () => {
+    render(<GoCleanToolkit />);
+
+    // Klick auf den Onboarding-Chatbot Tab
+    const botTabBtn = screen.getByRole('button', { name: /6\. 🤖 Onboarding-Chatbot/i });
+    fireEvent.click(botTabBtn);
+
+    // Prüfen, ob der Chatbot-Header und Frage 1 gerendert werden
+    expect(screen.getByText(/GoClean Harz Onboarding-Chatbot/i)).toBeInTheDocument();
+    expect(screen.getByText(/Frage 1 von 6/i)).toBeInTheDocument();
+    expect(screen.getByText(/Wie erreichen dich neue Kundenanfragen aktuell meistens\?/i)).toBeInTheDocument();
+
+    // Option anklicken
+    const optBtn = screen.getByRole('button', { name: /Privates WhatsApp/i });
+    fireEvent.click(optBtn);
+
+    // Weiter zu Frage 2
+    expect(screen.getByText(/Frage 2 von 6/i)).toBeInTheDocument();
+  });
 });
 

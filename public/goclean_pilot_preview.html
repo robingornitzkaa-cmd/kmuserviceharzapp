@@ -730,6 +730,149 @@
       font-weight: 700;
     }
 
+    /* Onboarding Chatbot Styles */
+    .bot-chat-container {
+      background: #0b141a;
+      border: 1px solid rgba(192, 132, 252, 0.25);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .bot-top-bar {
+      background: #1e1b2e;
+      padding: 12px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .bot-avatar-badge {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .bot-avatar-circle {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #a855f7, #6366f1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      box-shadow: 0 0 12px rgba(168, 85, 247, 0.4);
+    }
+    .bot-progress-track {
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      width: 100%;
+    }
+    .bot-progress-fill {
+      height: 4px;
+      background: linear-gradient(90deg, #a855f7, #38bdf8);
+      width: 16%;
+      transition: width 0.3s ease;
+    }
+    .bot-messages-box {
+      padding: 20px 16px;
+      min-height: 280px;
+      max-height: 420px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background: radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 18px 18px;
+    }
+    .bot-msg-in {
+      align-self: flex-start;
+      background: #1e293b;
+      color: #f1f5f9;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      border-bottom-left-radius: 4px;
+      padding: 12px 16px;
+      max-width: 88%;
+      font-size: 0.93rem;
+      line-height: 1.45;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      animation: fadeIn 0.2s ease;
+    }
+    .bot-msg-out {
+      align-self: flex-end;
+      background: #005c4b;
+      color: #e9edef;
+      border-radius: 16px;
+      border-bottom-right-radius: 4px;
+      padding: 10px 16px;
+      max-width: 85%;
+      font-size: 0.92rem;
+      line-height: 1.4;
+      animation: fadeIn 0.2s ease;
+    }
+    .bot-typing {
+      align-self: flex-start;
+      background: rgba(30, 41, 59, 0.6);
+      border-radius: 12px;
+      padding: 8px 14px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .bot-options-shelf {
+      padding: 16px;
+      background: rgba(15, 23, 42, 0.95);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .bot-chip-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    @media (min-width: 600px) {
+      .bot-chip-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    .bot-choice-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 10px 14px;
+      color: #e2e8f0;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .bot-choice-btn:hover {
+      background: rgba(168, 85, 247, 0.15);
+      border-color: rgba(168, 85, 247, 0.4);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+    .bot-custom-input-wrap {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .audit-card {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%);
+      border: 1px solid rgba(52, 211, 153, 0.35);
+      border-radius: 18px;
+      padding: 20px;
+      margin-top: 12px;
+    }
+
     /* Print View for Invoice */
     @media print {
       body {
@@ -804,6 +947,9 @@
         <a href="#prototypen" class="btn btn-primary" onclick="scrollToPrototypes()">
           Direkt zu den Live-Prototypen ↓
         </a>
+        <a href="#prototypen" class="btn btn-secondary" onclick="openOnboardingBotTab()">
+          <span>🤖</span> 2-Minuten Onboarding-Chatbot
+        </a>
         <a href="https://wa.me/?text=Hey%20Robin%2C%20hab%20mir%20deinen%20Prototypen%20angeschaut!%20Lass%20uns%20die%20Tage%20unbedingt%20mal%20einen%20Kaffee%20trinken." target="_blank" class="btn btn-whatsapp">
           <span>💬</span> WhatsApp an mich
         </a>
@@ -817,27 +963,119 @@
         <h2>Interaktive Prototypen zum Ausprobieren</h2>
       </div>
       <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 16px;">
-        Klicke dich durch die 5 Bereiche. Alles hier ist voll klickbar und für deinen Alltag bei GoClean Harz vorkonfiguriert:
+        Klicke dich durch die 6 Bereiche oder starte direkt den Onboarding-Chatbot:
       </p>
 
       <!-- Sticky Tab Bar -->
       <div class="tab-bar-container">
         <div class="tab-bar">
-          <button class="tab-btn active" onclick="switchTab('tab-wa', this)">
+          <button class="tab-btn" id="tab-btn-bot" onclick="switchTab('tab-bot', this)" style="background: rgba(192, 132, 252, 0.15); color: #c084fc; border-color: rgba(192, 132, 252, 0.3);">
+            <span>🤖</span> Onboarding-Chatbot
+          </button>
+          <button class="tab-btn active" id="tab-btn-wa" onclick="switchTab('tab-wa', this)">
             <span>💬</span> WhatsApp-Assistent
           </button>
-          <button class="tab-btn" onclick="switchTab('tab-portal', this)">
+          <button class="tab-btn" id="tab-btn-portal" onclick="switchTab('tab-portal', this)">
             <span>📱</span> Kundenportal
           </button>
-          <button class="tab-btn" onclick="switchTab('tab-rechnung', this)">
+          <button class="tab-btn" id="tab-btn-rechnung" onclick="switchTab('tab-rechnung', this)">
             <span>⚡</span> 1-Klick-Rechnung
           </button>
-          <button class="tab-btn" onclick="switchTab('tab-tour', this)">
+          <button class="tab-btn" id="tab-btn-tour" onclick="switchTab('tab-tour', this)">
             <span>📅</span> Tagesplaner
           </button>
-          <button class="tab-btn" onclick="switchTab('tab-ideen', this)">
+          <button class="tab-btn" id="tab-btn-ideen" onclick="switchTab('tab-ideen', this)">
             <span>💡</span> Ideen-Schmiede
           </button>
+        </div>
+      </div>
+
+      <!-- TAB 0: ONBOARDING-CHATBOT -->
+      <div id="tab-bot" class="tab-content glass-panel">
+        <div class="prototype-header">
+          <div>
+            <h3>🤖 2-Minuten Onboarding-Chatbot & Express-Audit</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Beantworte 6 kurze Alltagsfragen per Klick – am Ende steht dein fertiges GoClean Digital-Profil & Score.</p>
+          </div>
+          <span class="badge-live" style="background: rgba(192, 132, 252, 0.2); color: #c084fc; border-color: rgba(192, 132, 252, 0.4);">Express-Audit (2 Min.)</span>
+        </div>
+
+        <div class="bot-chat-container">
+          <div class="bot-top-bar">
+            <div class="bot-avatar-badge">
+              <div class="bot-avatar-circle">🤖</div>
+              <div>
+                <h4 style="font-size: 0.95rem; color: #fff;">KMU Onboarding Assistent</h4>
+                <span style="font-size: 0.75rem; color: #a855f7;">GoClean Harz Express-Setup</span>
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <span id="bot-progress-text" style="font-size: 0.8rem; font-weight: 700; color: #c084fc;">Frage 1 von 6</span>
+            </div>
+          </div>
+
+          <div class="bot-progress-track">
+            <div id="bot-progress-fill" class="bot-progress-fill"></div>
+          </div>
+
+          <div id="bot-messages-box" class="bot-messages-box">
+            <!-- Messages rendered dynamically -->
+          </div>
+
+          <!-- Options Shelf -->
+          <div id="bot-options-shelf" class="bot-options-shelf">
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px;">Wähle deine Antwort per Klick:</div>
+            <div id="bot-chip-grid" class="bot-chip-grid">
+              <!-- Choice buttons rendered dynamically -->
+            </div>
+            <div class="bot-custom-input-wrap">
+              <input type="text" id="bot-custom-text" class="input-field" placeholder="Oder eigene Antwort tippen..." style="margin: 0;" onkeydown="if(event.key==='Enter') submitBotCustomAnswer()">
+              <button class="btn btn-primary btn-sm" onclick="submitBotCustomAnswer()">Senden</button>
+            </div>
+          </div>
+
+          <!-- Result Card (Hidden Initially) -->
+          <div id="bot-result-card" style="display: none; padding: 20px; background: rgba(15, 23, 42, 0.98); border-top: 1px solid rgba(255, 255, 255, 0.1);">
+            <div style="text-align: center; margin-bottom: 16px;">
+              <div style="font-size: 2.2rem; margin-bottom: 4px;">🎯</div>
+              <h3 style="font-size: 1.3rem; color: #fff;">Marcels GoClean Digital-Audit ist fertig!</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted);">Auswertung deiner Antworten für KMU Service Harz</p>
+            </div>
+
+            <div class="audit-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px; margin-bottom: 14px;">
+                <div>
+                  <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Digitalisierungs-Score</div>
+                  <div style="font-size: 1.6rem; font-weight: 800; color: #34d399;" id="bot-score-display">32 / 100</div>
+                </div>
+                <div style="text-align: right; max-width: 60%;">
+                  <span class="badge-live" style="background: rgba(251, 191, 36, 0.2); color: #fbbf24;">Hoher Praxis-Fokus</span>
+                  <div style="font-size: 0.75rem; color: #cbd5e1; margin-top: 4px;">Sehr stark vor Ort – maximaler Hebel für Feierabend-Entlastung!</div>
+                </div>
+              </div>
+
+              <h4 style="font-size: 0.95rem; color: #38bdf8; margin-bottom: 8px;">🚀 Deine 3 Sofort-Hebel von Robin:</h4>
+              <ul style="font-size: 0.85rem; color: #e2e8f0; line-height: 1.5; padding-left: 18px; margin-bottom: 16px;" id="bot-recommendations-list">
+                <li><strong>WhatsApp Business Gateway:</strong> Trennung von Privatchat und Kundenanfragen mit automatischen Bestätigungen.</li>
+                <li><strong>1-Klick-Rechnungsautomatik:</strong> Betrag direkt nach getaner Arbeit im Auto per Knopfdruck erzeugen & versenden.</li>
+                <li><strong>Lautlose Beleg-Ablage:</strong> Tankquittung an der Kasse knipsen – nie wieder sonntags Schuhkarton sortieren.</li>
+              </ul>
+
+              <div id="bot-answers-summary" style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 12px; font-size: 0.8rem; color: #94a3b8; margin-bottom: 16px;">
+                <!-- Summary of choices -->
+              </div>
+
+              <div class="btn-group">
+                <a id="bot-whatsapp-share-btn" href="#" target="_blank" class="btn btn-whatsapp" style="width: 100%;">
+                  <span>📲</span> Mein Onboarding-Profil per WhatsApp an Robin senden
+                </a>
+                <button class="btn btn-secondary btn-sm" onclick="restartBot()" style="width: 100%; margin-top: 6px;">
+                  <span>🔄</span> Chatbot neu starten
+                </button>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -1298,6 +1536,199 @@
       if (el) el.scrollIntoView({ behavior: 'smooth' });
     }
 
+    // --- ONBOARDING CHATBOT LOGIC ---
+    const botQuestions = [
+      {
+        id: 1,
+        botMsg: "Moin Marcel! ☕ Lass uns in 2 Minuten durch 6 kurze Fragen schauen, damit Robin genau sieht, wo dein Alltag bei GoClean Harz am meisten Zeit verliert.\n\nFrage 1: Wie erreichen dich neue Kundenanfragen aktuell meistens?",
+        replyComment: "Alles klar! Wenn Anfragen überall verstreut reinkommen, geht auf der Baustelle schnell der Überblick verloren.",
+        options: [
+          { label: "💬 Privates WhatsApp", points: 15 },
+          { label: "📞 Anrufe auf der Baustelle", points: 10 },
+          { label: "✉️ E-Mails im Postfach", points: 20 },
+          { label: "📝 Zettel & Visitenkarten", points: 5 }
+        ]
+      },
+      {
+        id: 2,
+        botMsg: "Frage 2: Wie planst du deine Termine, Besichtigungen und Fahrten im Harzkreis?",
+        replyComment: "Verstehe! Wenn alles im Kopf oder auf Zetteln ist, entsteht unbewusst ständiger mentaler Druck.",
+        options: [
+          { label: "🧠 Alles im Kopf", points: 5 },
+          { label: "📅 Papierkalender / Notizbuch", points: 10 },
+          { label: "📱 Google / Apple Kalender", points: 25 },
+          { label: "📋 Auf Zuruf am Morgen", points: 5 }
+        ]
+      },
+      {
+        id: 3,
+        botMsg: "Frage 3: Wie schreibst du deine Rechnungen und Angebote?",
+        replyComment: "Oh ja, der Küchentisch nach 8 Stunden Arbeit ist der größte Feierabend-Killer!",
+        options: [
+          { label: "💻 Word / Excel am Abend", points: 15 },
+          { label: "✍️ Vordrucke von Hand", points: 5 },
+          { label: "⏳ Ich sammle bis Monatsende", points: 10 },
+          { label: "📑 Fertiges Programm (Lexoffice etc.)", points: 30 }
+        ]
+      },
+      {
+        id: 4,
+        botMsg: "Frage 4: Wie kommen Tankquittungen und Material-Belege zu deinem Steuerberater?",
+        replyComment: "Der klassische Belegberg! Das kostet jedes Mal Nerven und Nachfragen vom Steuerberater.",
+        options: [
+          { label: "📦 Klassischer Schuhkarton / Ordner", points: 5 },
+          { label: "📸 Fotos per WhatsApp / Mail", points: 20 },
+          { label: "📂 Liegen verstreut im Auto", points: 5 },
+          { label: "🧾 Steuerberater fordert ständig nach", points: 5 }
+        ]
+      },
+      {
+        id: 5,
+        botMsg: "Frage 5: Wie dokumentierst du deine Arbeit vor Ort (Vorher/Nachher-Beweise)?",
+        replyComment: "Ganz wichtig für den Schutz: Ohne klare Fotos gibt es bei peniblen Kunden leider oft Diskussionen.",
+        options: [
+          { label: "📸 Handy-Galerie (unsortiert)", points: 15 },
+          { label: "💬 WhatsApp-Foto an Kunden", points: 20 },
+          { label: "📝 Unterschriebener Zettel", points: 20 },
+          { label: "🤷 Kaum / Nur bei Reklamationen", points: 5 }
+        ]
+      },
+      {
+        id: 6,
+        botMsg: "Letzte Frage: Was ist dein wichtigstes persönliches Ziel für die kommenden Monate?",
+        replyComment: "Genau darum geht es: Mehr Freiheit und weniger sinnloses Büro-Chaos!",
+        options: [
+          { label: "⏰ Echter Feierabend & freies Wochenende", points: 20 },
+          { label: "📈 Feste WEGs & lukrative Gewerbekunden", points: 20 },
+          { label: "👥 Erste feste Aushilfe einstellen", points: 20 },
+          { label: "🧘 Kopf frei & weniger Stress", points: 20 }
+        ]
+      }
+    ];
+
+    let botCurrentStep = 0;
+    let botUserAnswers = [];
+    let botTotalScore = 0;
+
+    function openOnboardingBotTab() {
+      const btn = document.getElementById('tab-btn-bot');
+      if (btn) switchTab('tab-bot', btn);
+      const el = document.getElementById('tab-bot');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function initBot() {
+      botCurrentStep = 0;
+      botUserAnswers = [];
+      botTotalScore = 0;
+      const msgBox = document.getElementById('bot-messages-box');
+      if (!msgBox) return;
+      msgBox.innerHTML = '';
+      document.getElementById('bot-options-shelf').style.display = 'flex';
+      document.getElementById('bot-result-card').style.display = 'none';
+      renderNextBotQuestion();
+    }
+
+    function renderNextBotQuestion() {
+      if (botCurrentStep >= botQuestions.length) {
+        finishBotAudit();
+        return;
+      }
+
+      const q = botQuestions[botCurrentStep];
+      document.getElementById('bot-progress-text').innerText = `Frage ${botCurrentStep + 1} von ${botQuestions.length}`;
+      const progressPercent = Math.round(((botCurrentStep + 1) / botQuestions.length) * 100);
+      document.getElementById('bot-progress-fill').style.width = `${progressPercent}%`;
+
+      appendBotMessage(q.botMsg, 'in');
+      renderBotOptions(q.options);
+    }
+
+    function appendBotMessage(text, direction) {
+      const msgBox = document.getElementById('bot-messages-box');
+      const bubble = document.createElement('div');
+      bubble.className = direction === 'in' ? 'bot-msg-in' : 'bot-msg-out';
+      bubble.innerText = text;
+      msgBox.appendChild(bubble);
+      msgBox.scrollTop = msgBox.scrollHeight;
+    }
+
+    function renderBotOptions(options) {
+      const grid = document.getElementById('bot-chip-grid');
+      grid.innerHTML = '';
+      options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'bot-choice-btn';
+        btn.innerHTML = `<span>👉</span> <span>${opt.label}</span>`;
+        btn.onclick = () => selectBotOption(opt.label, opt.points);
+        grid.appendChild(btn);
+      });
+    }
+
+    function selectBotOption(label, points) {
+      const q = botQuestions[botCurrentStep];
+      appendBotMessage(label, 'out');
+      botUserAnswers.push({ questionId: q.id, question: q.botMsg.split('\n\n')[1] || q.botMsg, answer: label });
+      botTotalScore += (points || 15);
+
+      // Disable options during typing
+      document.getElementById('bot-chip-grid').innerHTML = '<div class="bot-typing"><span>🤖</span> <em>Marcel antwortet...</em></div>';
+
+      setTimeout(() => {
+        if (q.replyComment) {
+          appendBotMessage(q.replyComment, 'in');
+        }
+        botCurrentStep++;
+        setTimeout(() => {
+          renderNextBotQuestion();
+        }, 400);
+      }, 500);
+    }
+
+    function submitBotCustomAnswer() {
+      const input = document.getElementById('bot-custom-text');
+      const val = input.value.trim();
+      if (!val) return;
+      input.value = '';
+      selectBotOption(val, 15);
+    }
+
+    function finishBotAudit() {
+      document.getElementById('bot-options-shelf').style.display = 'none';
+      document.getElementById('bot-result-card').style.display = 'block';
+
+      // Normalized score out of 100
+      const finalScore = Math.min(95, Math.max(22, Math.round((botTotalScore / 130) * 100)));
+      document.getElementById('bot-score-display').innerText = `${finalScore} / 100`;
+
+      // Summary
+      const sumDiv = document.getElementById('bot-answers-summary');
+      let summaryHtml = '<strong>Deine erfassten Antworten:</strong><br><ul style="margin-top:6px; padding-left:16px;">';
+      botUserAnswers.forEach((a, idx) => {
+        summaryHtml += `<li>Frage ${idx+1}: <strong>${a.answer}</strong></li>`;
+      });
+      summaryHtml += '</ul>';
+      sumDiv.innerHTML = summaryHtml;
+
+      // WhatsApp Message Generator
+      let waText = `Moin Robin! Hab gerade den GoClean Onboarding-Chatbot ausgefüllt 🤖%0A%0A` +
+        `📊 Mein Digital-Score: ${finalScore}/100%0A%0A` +
+        `Meine Antworten:%0A`;
+      botUserAnswers.forEach((a, idx) => {
+        waText += `${idx+1}. ${encodeURIComponent(a.answer)}%0A`;
+      });
+      waText += `%0ALass uns die Tage quatschen! ☕`;
+
+      document.getElementById('bot-whatsapp-share-btn').href = `https://wa.me/?text=${waText}`;
+
+      const msgBox = document.getElementById('bot-messages-box');
+      msgBox.scrollTop = msgBox.scrollHeight;
+    }
+
+    function restartBot() {
+      initBot();
+    }
+
     // Tab Switching
     function switchTab(tabId, btn) {
       document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
@@ -1342,8 +1773,9 @@
       });
     }
 
-    // Initial WhatsApp Setup
+    // Initial Setups
     setWaTemplate('anfahrt');
+    initBot();
 
     // Tab 2: Kundenportal Simulation
     function setPortalStep(step) {
