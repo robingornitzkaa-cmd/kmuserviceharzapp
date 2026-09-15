@@ -151,6 +151,17 @@ export const DashboardView = ({
   updateReflection,
   insertMarkdownIntoNotes
 }) => {
+  const [copiedGoCleanLink, setCopiedGoCleanLink] = React.useState(false);
+
+  const handleCopyGoCleanPilotLink = () => {
+    const url = typeof window !== 'undefined' ? `${window.location.origin}/goclean_pilot_preview.html` : '/goclean_pilot_preview.html';
+    if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url);
+    }
+    setCopiedGoCleanLink(true);
+    setTimeout(() => setCopiedGoCleanLink(false), 2500);
+  };
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', width: '100%' }}>
       
@@ -191,115 +202,203 @@ export const DashboardView = ({
         onOpenNotificationCenter={onOpenNotificationCenter}
       />
 
-      {/* ==================== GOCLEAN HARZ VIP BANNER (BRUDER-TREFFEN) ==================== */}
+      {/* ==================== GOCLEAN HARZ VIP BANNER (PILOTPROJEKT & ONBOARDING-ZENTRALE) ==================== */}
       <div style={{
-        background: 'linear-gradient(135deg, rgba(6, 78, 59, 0.9) 0%, rgba(2, 44, 34, 0.95) 50%, rgba(15, 23, 42, 0.95) 100%)',
-        border: '1px solid rgba(52, 211, 153, 0.4)',
+        background: 'linear-gradient(135deg, rgba(6, 78, 59, 0.95) 0%, rgba(2, 44, 34, 0.98) 50%, rgba(15, 23, 42, 0.98) 100%)',
+        border: '1px solid rgba(52, 211, 153, 0.45)',
         borderRadius: '16px',
-        padding: '16px 20px',
+        padding: '18px 22px',
         display: 'flex',
-        flexWrap: 'wrap',
-        alignItems: 'center',
-        justifyContent: 'space-between',
+        flexDirection: 'column',
         gap: '14px',
-        boxShadow: '0 10px 30px rgba(6, 78, 59, 0.3)',
+        boxShadow: '0 10px 30px rgba(6, 78, 59, 0.35)',
         marginBottom: '0.75rem'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flex: '1 1 300px' }}>
-          <div style={{
-            background: 'linear-gradient(135deg, #34d399, #059669)',
-            color: '#022c22',
-            fontSize: '1.4rem',
-            width: '44px',
-            height: '44px',
-            borderRadius: '12px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: '0 0 15px rgba(52, 211, 153, 0.4)',
-            flexShrink: 0
-          }}>
-            🧼
-          </div>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px', color: '#34d399', background: 'rgba(52, 211, 153, 0.15)', padding: '2px 8px', borderRadius: '8px', border: '1px solid rgba(52, 211, 153, 0.3)' }}>
-                VIP-Bruder-Offensive 2026
-              </span>
+        <div style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '14px'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flex: '1 1 320px' }}>
+            <div style={{
+              background: 'linear-gradient(135deg, #34d399, #059669)',
+              color: '#022c22',
+              fontSize: '1.5rem',
+              width: '48px',
+              height: '48px',
+              borderRadius: '14px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 0 20px rgba(52, 211, 153, 0.45)',
+              flexShrink: 0
+            }}>
+              🧼
             </div>
-            <h3 style={{ margin: '4px 0 0 0', fontSize: '1.1rem', fontWeight: 800, color: '#ffffff' }}>
-              GoClean Harz – Wachstums- & Produktivitäts-Toolkit
-            </h3>
-            <p style={{ margin: '2px 0 0 0', fontSize: '0.8rem', color: '#a7f3d0' }}>
-              Blitz-Kalkulator (m² & Std.), 3x B2B-Akquise Mappen, Foto-SOP & 5-Sterne-Bewertungsbooster.
-            </p>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                <span style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px', color: '#34d399', background: 'rgba(52, 211, 153, 0.15)', padding: '2px 8px', borderRadius: '8px', border: '1px solid rgba(52, 211, 153, 0.3)' }}>
+                  VIP Pilotprojekt 2026 (Marcel)
+                </span>
+                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#38bdf8', background: 'rgba(56, 189, 248, 0.15)', padding: '2px 8px', borderRadius: '8px', border: '1px solid rgba(56, 189, 248, 0.3)' }}>
+                  🤖 Inkl. Onboarding-Chatbot
+                </span>
+              </div>
+              <h3 style={{ margin: '4px 0 0 0', fontSize: '1.15rem', fontWeight: 800, color: '#ffffff' }}>
+                GoClean Harz – Pilotprojekt & Onboarding-Zentrale
+              </h3>
+              <p style={{ margin: '2px 0 0 0', fontSize: '0.82rem', color: '#a7f3d0' }}>
+                Interaktiver 6-Fragen Express-Audit Chatbot, eigenständige Web-App mit 4 Prototypen & komplettes B2B-Toolkit.
+              </p>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+            <button
+              onClick={() => onOpenGoCleanSuite && onOpenGoCleanSuite('chatbot')}
+              style={{
+                background: 'linear-gradient(135deg, #34d399, #10b981)',
+                color: '#022c22',
+                fontWeight: 800,
+                fontSize: '0.85rem',
+                padding: '10px 16px',
+                borderRadius: '12px',
+                border: 'none',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                boxShadow: '0 4px 15px rgba(52, 211, 153, 0.4)',
+                transition: 'all 0.2s ease'
+              }}
+              title="Onboarding-Chatbot im GoClean Toolkit öffnen"
+            >
+              🤖 Onboarding-Chatbot starten
+            </button>
+
+            <a
+              href="/goclean_pilot_preview.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                background: 'linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(129, 140, 248, 0.25))',
+                color: '#38bdf8',
+                fontWeight: 700,
+                fontSize: '0.85rem',
+                padding: '10px 16px',
+                borderRadius: '12px',
+                border: '1px solid rgba(56, 189, 248, 0.5)',
+                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                boxShadow: '0 0 12px rgba(56, 189, 248, 0.25)',
+                transition: 'all 0.2s ease'
+              }}
+              title="Eigenständige mobile Web-App für Marcel in neuem Tab öffnen"
+            >
+              ⭐ Mobile Vorschau (Web-App) ➔
+            </a>
+
+            <button
+              onClick={handleCopyGoCleanPilotLink}
+              style={{
+                background: copiedGoCleanLink ? 'rgba(52, 211, 153, 0.25)' : 'rgba(255, 255, 255, 0.08)',
+                color: copiedGoCleanLink ? '#34d399' : '#e2e8f0',
+                fontWeight: 600,
+                fontSize: '0.85rem',
+                padding: '10px 14px',
+                borderRadius: '12px',
+                border: copiedGoCleanLink ? '1px solid #34d399' : '1px solid rgba(255, 255, 255, 0.15)',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                transition: 'all 0.2s ease'
+              }}
+              title="Link zur mobilen Web-App für WhatsApp kopieren"
+            >
+              {copiedGoCleanLink ? '✅ Link kopiert!' : '📋 Link kopieren (WhatsApp)'}
+            </button>
+
+            <button
+              onClick={() => onOpenGoCleanSuite && onOpenGoCleanSuite('calculator')}
+              style={{
+                background: 'rgba(255, 255, 255, 0.06)',
+                color: '#cbd5e1',
+                fontWeight: 600,
+                fontSize: '0.85rem',
+                padding: '10px 14px',
+                borderRadius: '12px',
+                border: '1px solid rgba(255, 255, 255, 0.15)',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                transition: 'all 0.2s ease'
+              }}
+              title="Kalkulator, B2B-Mappen und SOPs öffnen"
+            >
+              ⚡ Kalkulator & SOPs
+            </button>
+
+            <a
+              href="/goclean_praesentationen_hub.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                background: 'rgba(255, 255, 255, 0.05)',
+                color: '#94a3b8',
+                fontWeight: 600,
+                fontSize: '0.85rem',
+                padding: '10px 12px',
+                borderRadius: '12px',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                transition: 'all 0.2s ease'
+              }}
+              title="Alle 9 Pitch- & Wachstums-Präsentationen"
+            >
+              🎤 9 Decks Hub
+            </a>
           </div>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-          <button
-            onClick={onOpenGoCleanSuite}
-            style={{
-              background: 'linear-gradient(135deg, #34d399, #10b981)',
-              color: '#022c22',
-              fontWeight: 700,
-              fontSize: '0.85rem',
-              padding: '10px 16px',
-              borderRadius: '12px',
-              border: 'none',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              boxShadow: '0 4px 15px rgba(52, 211, 153, 0.3)',
-              transition: 'all 0.2s ease'
-            }}
-          >
-            ⚡ Live-Toolkit öffnen
-          </button>
-          <a
-            href="/goclean_praesentationen_hub.html"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              background: 'linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(129, 140, 248, 0.2))',
-              color: '#38bdf8',
-              fontWeight: 700,
-              fontSize: '0.85rem',
-              padding: '10px 16px',
-              borderRadius: '12px',
-              border: '1px solid rgba(56, 189, 248, 0.4)',
-              textDecoration: 'none',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              boxShadow: '0 0 12px rgba(56, 189, 248, 0.25)',
-              transition: 'all 0.2s ease'
-            }}
-          >
-            🎤 8 Präsentationen (Hub) ➔
-          </a>
-          <a
-            href="/pitch_bruder_emotional.html"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              background: 'rgba(255, 255, 255, 0.08)',
-              color: '#e2e8f0',
-              fontWeight: 600,
-              fontSize: '0.85rem',
-              padding: '10px 14px',
-              borderRadius: '12px',
-              border: '1px solid rgba(255, 255, 255, 0.15)',
-              textDecoration: 'none',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              transition: 'all 0.2s ease'
-            }}
-          >
-            🤝 Bruder-Pitch
-          </a>
+        {/* Schnellübersicht 3-Stufen-Fahrplan */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+          gap: '8px',
+          paddingTop: '8px',
+          borderTop: '1px solid rgba(52, 211, 153, 0.2)'
+        }}>
+          <div style={{ background: 'rgba(0, 0, 0, 0.25)', padding: '8px 12px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ fontSize: '1rem' }}>💬</span>
+            <div>
+              <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#34d399' }}>1. Express-Audit</div>
+              <div style={{ fontSize: '0.7rem', color: '#94a3b8' }}>6 Fragen Chatbot mit Marcel durchgehen</div>
+            </div>
+          </div>
+          <div style={{ background: 'rgba(0, 0, 0, 0.25)', padding: '8px 12px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ fontSize: '1rem' }}>📱</span>
+            <div>
+              <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#38bdf8' }}>2. Live-Prototypen</div>
+              <div style={{ fontSize: '0.7rem', color: '#94a3b8' }}>Kundenportal, Belege & WhatsApp testen</div>
+            </div>
+          </div>
+          <div style={{ background: 'rgba(0, 0, 0, 0.25)', padding: '8px 12px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ fontSize: '1rem' }}>🤝</span>
+            <div>
+              <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#fbbf24' }}>3. Pilot-Absprache</div>
+              <div style={{ fontSize: '0.7rem', color: '#94a3b8' }}>Begleitung ohne Risiko vereinbaren</div>
+            </div>
+          </div>
         </div>
       </div>
 

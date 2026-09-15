@@ -26,7 +26,8 @@ export const OnboardingView = ({
   showcaseMode = false,
   isOnline = true,
   supabaseConfig,
-  showToast
+  showToast,
+  onOpenGoCleanSuite
 }) => {
   const [onboardingLeadId, setOnboardingLeadId] = useState(null);
   const [onboardingPlaybook, setOnboardingPlaybook] = useState('standardSetup2000');
@@ -458,6 +459,74 @@ export const OnboardingView = ({
 
   return (
     <div className="onboarding-container" id="onboarding-tab-content">
+      {/* GoClean Harz Express-Audit Pilot Banner */}
+      <div style={{
+        background: 'linear-gradient(135deg, rgba(6, 78, 59, 0.85) 0%, rgba(15, 23, 42, 0.9) 100%)',
+        border: '1px solid rgba(52, 211, 153, 0.35)',
+        borderRadius: '12px',
+        padding: '14px 18px',
+        marginBottom: '1.25rem',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
+        gap: '12px'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <span style={{ fontSize: '1.5rem' }}>🧼</span>
+          <div>
+            <div style={{ fontSize: '0.95rem', fontWeight: 800, color: '#34d399', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              GoClean Harz – Pilotprojekt Express-Audit (Marcel)
+              <span style={{ fontSize: '0.7rem', padding: '1px 6px', borderRadius: '4px', background: 'rgba(52, 211, 153, 0.2)', color: '#6ee7b7' }}>6 Fragen Chatbot</span>
+            </div>
+            <div style={{ fontSize: '0.8rem', color: '#cbd5e1', marginTop: '2px' }}>
+              Führe das schnelle 2-Minuten Onboarding-Audit mit Marcel direkt im interaktiven Chatbot oder in der mobilen Web-App durch.
+            </div>
+          </div>
+        </div>
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          {onOpenGoCleanSuite && (
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => onOpenGoCleanSuite('chatbot')}
+              style={{
+                fontSize: '0.8rem',
+                padding: '6px 12px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                background: 'linear-gradient(135deg, #34d399, #10b981)',
+                color: '#022c22',
+                fontWeight: 700,
+                border: 'none',
+                cursor: 'pointer'
+              }}
+            >
+              🤖 In-App Chatbot starten
+            </button>
+          )}
+          <a
+            href="/goclean_pilot_preview.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-secondary"
+            style={{
+              fontSize: '0.8rem',
+              padding: '6px 12px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              color: '#38bdf8',
+              borderColor: 'rgba(56, 189, 248, 0.4)',
+              textDecoration: 'none'
+            }}
+          >
+            ⭐ Mobile Web-App für Marcel ➔
+          </a>
+        </div>
+      </div>
+
       <div className="card" style={{ marginBottom: '1.5rem' }}>
         <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
           <h2 className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0 }}>

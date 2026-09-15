@@ -13,6 +13,14 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
   - **Row Level Security (RLS) & Policies aktiviert (Supabase Cloud):** RLS auf allen 8 Kern-Tabellen (`leads`, `contacts`, `dashboard_state`, `prompts`, `client_tickets`, `tasks`, `inbox`, `docs`) aktiviert. Anonymer Zugriff ist gesperrt, nur die Rolle `authenticated` hat Zugriff.
 
 ### Added
+- **🚀 GoClean Harz Pilotprojekt & Onboarding-Zentrale im Founder OS Dashboard (`src/components/DashboardView.jsx`, `src/App.jsx`):**
+  - **VIP-Banner auf dem Haupt-Dashboard:** Vollständig integrierte Steuerzentrale für Robins Pilotprojekt mit Bruder Marcel direkt im Founder OS.
+  - **1-Klick Onboarding-Chatbot Start:** Wechselt sofort in die GoClean-Suite und öffnet direkt Tab 6 (`onboardingBot`).
+  - **Direktlink zur Mobilen Web-App:** Öffnet die für Marcel gebaute Vorschauseite (`public/goclean_pilot_preview.html`) in einem neuen Tab.
+  - **1-Klick WhatsApp Link-Kopierer:** Kopiert den Link zur mobilen Web-App mit visuellem Feedback („✅ Link kopiert!“) in die Zwischenablage für den sofortigen Versand per WhatsApp.
+  - **3-Stufen-Fahrplan:** Kompakte Übersicht (1. Express-Audit, 2. Live-Prototypen, 3. Pilot-Absprache).
+  - **Integration in Kunden-Onboarding (`src/components/OnboardingView.jsx`):** Neuer Schnellstart-Banner für Marcel's 6-Fragen Express-Audit direkt im Onboarding-Leitfaden.
+
 - **⭐ GoClean Pilotprojekt-Vorschau & Interaktive Prototypen-App (`public/goclean_pilot_preview.html`):**
   - **Eigenständige Mobile Web-App:** Standalone-Seite ohne Login oder App-Installation, die direkt per Link (z. B. WhatsApp) auf jedem Smartphone oder Rechner geöffnet werden kann.
   - **Stufe 1 (Von Bruder zu Bruder):** Persönliche, herzliche Botschaft über die Gründungsvision von KMU Service Harz, das 100% kostenlose und risikofreie Pilotprojekt-Angebot sowie die Bitte um einen Vormittag zur Arbeitsplatz-Hospitation („Über die Schulter schauen“).

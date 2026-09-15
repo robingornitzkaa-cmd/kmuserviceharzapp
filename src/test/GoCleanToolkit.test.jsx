@@ -108,5 +108,12 @@ describe('GoCleanToolkit Component Tests', () => {
     // Weiter zu Frage 2
     expect(screen.getByText(/Frage 2 von 6/i)).toBeInTheDocument();
   });
+
+  it('öffnet direkt den Onboarding-Chatbot Tab, wenn initialTab="chatbot" übergeben wird', () => {
+    render(<GoCleanToolkit initialTab="chatbot" />);
+
+    expect(screen.getByText(/GoClean Harz Onboarding-Chatbot/i)).toBeInTheDocument();
+    expect(screen.getByText(/Frage 1 von 6/i)).toBeInTheDocument();
+  });
 });
 

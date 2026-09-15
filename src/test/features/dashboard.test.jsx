@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { VoiceQuickCaptureWidget } from '../../components/VoiceQuickCaptureWidget';
+import { DashboardView } from '../../components/DashboardView';
 
 describe('Dashboard Feature - Voice Quick-Capture & Widgets', () => {
   it('rendert das Voice Quick-Capture Studio mit Tags und Ziel-Optionen', () => {
@@ -38,5 +39,33 @@ describe('Dashboard Feature - Voice Quick-Capture & Widgets', () => {
       text: 'Kunde zurückrufen wegen Angebot',
       target: 'todo'
     }));
+  });
+});
+
+describe('Dashboard Feature - GoClean Harz Pilotprojekt & Onboarding-Zentrale', () => {
+  it('rendert den GoClean Harz Pilotprojekt & Onboarding-Zentrale Banner mit allen Schnellzugriffen', () => {
+    const handleOpenGoCleanSuite = vi.fn();
+    render(
+      <DashboardView
+        dashboardWidgets={{}}
+        habits={[]}
+        onOpenGoCleanSuite={handleOpenGoCleanSuite}
+      />
+    );
+
+    expect(screen.getByText(/GoClean Harz – Pilotprojekt & Onboarding-Zentrale/i)).toBeInTheDocument();
+    expect(screen.getByText(/VIP Pilotprojekt 2026 \(Marcel\)/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Onboarding-Chatbot starten/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Mobile Vorschau \(Web-App\)/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Link kopieren/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Kalkulator & SOPs/i })).toBeInTheDocument();
+
+    // Klick auf Onboarding-Chatbot starten
+    fireEvent.click(screen.getByRole('button', { name: /Onboarding-Chatbot starten/i }));
+    expect(handleOpenGoCleanSuite).toHaveBeenCalledWith('chatbot');
+
+    // Klick auf Kalkulator & SOPs
+    fireEvent.click(screen.getByRole('button', { name: /Kalkulator & SOPs/i }));
+    expect(handleOpenGoCleanSuite).toHaveBeenCalledWith('calculator');
   });
 });

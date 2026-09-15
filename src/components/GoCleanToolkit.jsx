@@ -152,11 +152,18 @@ export const PRESENTATIONS = [
   }
 ];
 
-export const GoCleanToolkit = ({ onClose }) => {
-  const [activeTab, setActiveTab] = useState('calculator'); // 'calculator' | 'leads' | 'sop' | 'reviews' | 'presentations'
+export const GoCleanToolkit = ({ onClose, initialTab = 'calculator' }) => {
+  const normalizeTab = (tab) => (tab === 'chatbot' ? 'onboardingBot' : tab);
+  const [activeTab, setActiveTab] = useState(normalizeTab(initialTab)); // 'calculator' | 'leads' | 'sop' | 'reviews' | 'presentations' | 'onboardingBot'
   const [copiedId, setCopiedId] = useState(null);
   const [previewDeck, setPreviewDeck] = useState(null); // presentation object for in-app modal preview
   const [presentationCategory, setPresentationCategory] = useState('all'); // 'all' | 'pitch' | 'demo' | 'growth' | 'vision'
+
+  React.useEffect(() => {
+    if (initialTab) {
+      setActiveTab(normalizeTab(initialTab));
+    }
+  }, [initialTab]);
 
   // --- TAB 1: KALKULATOR STATE ---
   const [serviceType, setServiceType] = useState('unterhalt'); // 'unterhalt' | 'treppenhaus' | 'glas' | 'bau' | 'winter'

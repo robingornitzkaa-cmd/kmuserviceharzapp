@@ -6,6 +6,10 @@
   - *Ideen-Schmiede für KMU-Zukunft:* 5 Inspirationskarten (Google-Booster, KI-Kalkulator, Social-Media, Abo-Motor, Helfer-Modus).
   - *Feedback & WhatsApp-Direktversand:* 3-Fragen-Schnellumfrage mit 1-Klick WhatsApp-Versand an den Gründer.
   - *Verknüpfung:* Im Präsentations-Hub und im internen `GoCleanToolkit.jsx` verlinkt.
+- [x] **🚀 [Founder OS Integration] GoClean Pilotprojekt & Onboarding-Zentrale auf Haupt-Dashboard & Onboarding-View:**
+  - *Dashboard VIP-Banner (`DashboardView.jsx`):* 1-Klick Start für Chatbot (Tab 6), Direktlink zur Web-App (`goclean_pilot_preview.html`), 1-Klick WhatsApp-Linkkopierer, Schnellzugriff auf Kalkulator & SOPs.
+  - *OnboardingView Banner (`OnboardingView.jsx`):* Schnelleinstieg ins 6-Fragen Express-Audit für Marcel.
+  - *Testabdeckung:* 280 Tests bestanden, Build fehlerfrei.
 
 
 - [x] **📌 [Desktop Widget Phase 1] Lokaler Windows Desktop Notizzettel (WPF Sticky Note):**

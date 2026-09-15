@@ -9,6 +9,15 @@ Die Anwendung zeichnet sich durch ein futuristisches "Glassmorphic Dark Theme" a
 ## 🚀 Wichtigste Funktionen & Tab-Struktur
 
 ### 0. 🧼 GoClean Harz VIP-Wachstums- & Produktivitäts-Suite -- *NEU!*
+- **🚀 Dashboard Pilotprojekt & Onboarding-Zentrale (`src/components/DashboardView.jsx`):**
+  - Prominenter VIP-Banner direkt auf dem Haupt-Dashboard des Founder OS.
+  - 1-Klick Direktzugriff auf den **🤖 Onboarding-Chatbot** (startet Tab 6 im Toolkit).
+  - Direktlink zur **⭐ Mobilen Pilot-Web-App** (`public/goclean_pilot_preview.html`).
+  - **📋 1-Klick WhatsApp Link-Kopierer** zum sekundenschnellen Versenden an Marcel mit Kopier-Feedback.
+  - Schnellzugriff auf Kalkulator, SOPs und 9 Pitch-Decks.
+- **🤖 Interaktiver Onboarding-Chatbot (Tab 6 im Toolkit & OnboardingView):**
+  - Vollwertiges 6-Fragen Express-Audit aus dem KMU-Playbook mit dynamischer Punkteberechnung (0–100 Digitalisierungs-Score), Handlungs-Empfehlungen und WhatsApp-Zusammenfassung.
+  - Nahtlos sowohl im **Dashboard**, im **GoCleanToolkit (Tab 6)** als auch als Schnellstart im **Kunden-Onboarding (`OnboardingView.jsx`)** verankert.
 - **🤖 Manus AI Deep-Research Master-Suite (`DOCS/MANUS_GOCLEAN_DEEP_RESEARCH_PROMPTS.md`):** 10 hochkarätige Deep-Research-Prompts im XML-Tag-Format für Manus AI zur maximalen Markterschließung (Marktatlas Harz, 50+ B2B-Liegenschafts-Leads für Reinigung+Garten, kommunale Vergaben, 12-Monats-Kalkulation, Local SEO #1, Recruiting-Funnel, Fewo/Hotel-Tourismus, Social-Media Viral-Plan, Industriehallen & Handwerks-Digital-Audit).
 - **⚡ In-App Blitz-Kalkulator (`src/components/GoCleanToolkit.jsx`):** Live-Berechnung von Quadratmetern, Stundenansatz, Materialzuschlag und Netto/Brutto-Monatspauschalen für Büro/Unterhalt, Treppenhaus, Glasreinigung, Bau-Endreinigung und Winterdienst. Inklusive 1-Klick B2B-Angebotstext-Generator.
 - **🏢 B2B-Akquise-Maschine:** Vorgefertigte Akquise-Mappen für Hausverwaltungen/WEGs (feste Monatsverträge), Bauträger (lukrative Bau-Endreinigungen) und Arztpraxen/Kanzleien (4-Farben-Hygienesystem).

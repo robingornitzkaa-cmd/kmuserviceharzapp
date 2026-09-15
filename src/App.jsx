@@ -149,6 +149,12 @@ const GoCleanToolkit = lazy(() => import('./components/GoCleanToolkit').then(m =
 function App() {
   // Navigation State
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [goCleanInitialTab, setGoCleanInitialTab] = useState('calculator');
+
+  const handleOpenGoCleanSuite = (tab = 'calculator') => {
+    setGoCleanInitialTab(tab);
+    setActiveTab('goclean');
+  };
   const [sidebarCollapsed, setSidebarCollapsed] = useState(() => localStorage.getItem('f_sidebar_collapsed') === 'true');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -4757,7 +4763,7 @@ Hier ist die Frage des Nutzers:
             updateReflection={updateReflection}
             insertMarkdownIntoNotes={insertMarkdownIntoNotes}
             onOpenEInvoiceStudio={() => setActiveTab('einvoice')}
-            onOpenGoCleanSuite={() => setActiveTab('goclean')}
+            onOpenGoCleanSuite={handleOpenGoCleanSuite}
           />
         )}
 
@@ -4990,6 +4996,7 @@ Hier ist die Frage des Nutzers:
             isOnline={isOnline}
             supabaseConfig={supabaseConfig}
             showToast={showToast}
+            onOpenGoCleanSuite={handleOpenGoCleanSuite}
           />
         )}
 
@@ -5016,6 +5023,7 @@ Hier ist die Frage des Nutzers:
         {activeTab === 'goclean' && (
           <GoCleanToolkit
             onClose={() => setActiveTab('dashboard')}
+            initialTab={goCleanInitialTab}
           />
         )}
 
