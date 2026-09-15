@@ -1,5 +1,13 @@
 # TODO - Founder OS
 
+- [x] **⭐ [GoClean Pilotprojekt] Interaktive Vorschau-App für Marcel (`public/goclean_pilot_preview.html`):**
+  - *Persönliche Botschaft:* Gründungsvision von KMU Service Harz, 100% kostenloses Pilotangebot & Hospitations-Wunsch („Über die Schulter schauen“).
+  - *4 Interaktive Prototypen-Module:* WhatsApp-Assistent mit Live-Templates, Kundenportal mit Vorher/Nachher-Fotos, 1-Klick-Rechnung mit Druckvorschau, Harz-Tagesplaner.
+  - *Ideen-Schmiede für KMU-Zukunft:* 5 Inspirationskarten (Google-Booster, KI-Kalkulator, Social-Media, Abo-Motor, Helfer-Modus).
+  - *Feedback & WhatsApp-Direktversand:* 3-Fragen-Schnellumfrage mit 1-Klick WhatsApp-Versand an den Gründer.
+  - *Verknüpfung:* Im Präsentations-Hub und im internen `GoCleanToolkit.jsx` verlinkt.
+
+
 - [x] **📌 [Desktop Widget Phase 1] Lokaler Windows Desktop Notizzettel (WPF Sticky Note):**
   - *Natives Windows-WPF Widget (`desktop-widget/FounderOS-StickyNote.ps1`):* Post-It Look, Farbwahl (6 Themes), Multi-Notizen mit Navigator, Pin-to-Top („Immer im Vordergrund“).
   - *Lokales Autosave & Persistenz:* Speichert Notizen, Fensterposition und Pin-Status in `notes-data.json`.

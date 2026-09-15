@@ -34,13 +34,25 @@ export const PRESENTATIONS = [
     id: 'hub',
     title: 'Präsentations-Center (Hub)',
     subtitle: 'Zentrale Übersichtskarte aller Decks',
-    slides: '8 Decks',
+    slides: '9 Decks',
     badge: 'Zentrale Übersicht',
     badgeColor: 'cyan',
     icon: '🎛️',
     url: '/goclean_praesentationen_hub.html',
-    desc: 'Alle 8 Präsentationen auf einer Übersichtsseite mit Direktstart und Beschreibung.',
+    desc: 'Alle Präsentationen & Prototypen auf einer Übersichtsseite mit Direktstart und Beschreibung.',
     category: 'hub'
+  },
+  {
+    id: 'pilot_preview',
+    title: '⭐ Pilotprojekt-Vorschau (Bruder)',
+    subtitle: '„Persönliche Botschaft & klickbare Prototypen“',
+    slides: '5 Module',
+    badge: 'VIP Prototyp',
+    badgeColor: 'emerald',
+    icon: '✨',
+    url: '/goclean_pilot_preview.html',
+    desc: 'Eigenständige mobile Vorschau-App für Marcel: Persönliche Botschaft, WhatsApp-Assistent, Kundenportal, 1-Klick-Rechnung, Tagesplaner und Ideen-Schmiede mit 1-Klick-Feedback.',
+    category: 'demo'
   },
   {
     id: 'bruder_emotional',

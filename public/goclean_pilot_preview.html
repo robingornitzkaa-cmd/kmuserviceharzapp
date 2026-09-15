@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>GoClean Harz × KMU Service Harz – Pilotprojekt-Vorschau</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-radial: radial-gradient(circle at 50% 0%, #1e293b 0%, #090d16 100%);
+      --card-bg: rgba(30, 41, 59, 0.72);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --accent: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.25);
+      --accent-emerald: #34d399;
+      --accent-amber: #fbbf24;
+      --accent-purple: #c084fc;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: #090d16;
+      background-image: var(--bg-radial);
+      background-attachment: fixed;
+      color: var(--text-main);
+      min-height: 100vh;
+      line-height: 1.5;
+      padding-bottom: 90px;
+    }
+
+    /* Container & Layout */
+    .app-container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px 16px;
+    }
+
+    /* Glass Cards */
+    .glass-panel {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Top Brand Bar */
+    .brand-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+    .brand-pill .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    /* Headlines */
+    h1, h2, h3 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    h1 {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      line-height: 1.15;
+      margin-bottom: 14px;
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #38bdf8 0%, #34d399 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .amber-text {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Intro Story Section */
+    .intro-story {
+      background: linear-gradient(180deg, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.95) 100%);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 24px;
+      padding: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+    .intro-story::before {
+      content: "";
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .intro-text {
+      font-size: 1.05rem;
+      color: #cbd5e1;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+    .intro-points {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 16px;
+      margin-bottom: 24px;
+    }
+    @media (min-width: 640px) {
+      .intro-points {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    .intro-point-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 16px;
+      padding: 16px;
+      transition: transform 0.2s;
+    }
+    .intro-point-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(56, 189, 248, 0.3);
+    }
+    .point-icon {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+    }
+    .point-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 4px;
+    }
+    .point-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .callout-box {
+      background: rgba(251, 191, 36, 0.08);
+      border-left: 4px solid var(--accent-amber);
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.95rem;
+      color: #fef3c7;
+    }
+
+    /* Action Buttons */
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 22px;
+      border-radius: 14px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+      font-family: inherit;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4);
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+      transform: translateY(-1px);
+    }
+    .btn-whatsapp {
+      background: #25d366;
+      color: #0b2212;
+      font-weight: 800;
+      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.35);
+    }
+    .btn-whatsapp:hover {
+      background: #22c55e;
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+    }
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+    .btn-sm {
+      padding: 8px 14px;
+      font-size: 0.85rem;
+      border-radius: 10px;
+    }
+
+    /* Tab Navigation (Stage 2) */
+    .section-title {
+      font-size: 1.35rem;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .tab-bar-container {
+      position: sticky;
+      top: 10px;
+      z-index: 50;
+      margin-bottom: 20px;
+    }
+    .tab-bar {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 6px;
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+      scrollbar-width: none;
+    }
+    .tab-bar::-webkit-scrollbar {
+      display: none;
+    }
+    .tab-btn {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 12px;
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .tab-btn:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .tab-btn.active {
+      background: rgba(56, 189, 248, 0.18);
+      color: #38bdf8;
+      border-color: rgba(56, 189, 248, 0.35);
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.15);
+    }
+
+    /* Tab Contents */
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.25s ease forwards;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Prototype Box Style */
+    .prototype-header {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 14px;
+      margin-bottom: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .badge-live {
+      background: rgba(52, 211, 153, 0.15);
+      border: 1px solid rgba(52, 211, 153, 0.35);
+      color: var(--accent-emerald);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Tab 1: WhatsApp Chat Simulator */
+    .chat-simulator {
+      background: #0b141a;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .chat-top-bar {
+      background: #202c33;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .chat-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: #fff;
+    }
+    .chat-top-info h4 {
+      font-size: 0.95rem;
+      color: #e9edef;
+    }
+    .chat-top-info span {
+      font-size: 0.75rem;
+      color: #8696a0;
+    }
+    .chat-messages-area {
+      padding: 20px 16px;
+      min-height: 180px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 16px 16px;
+    }
+    .msg-bubble {
+      max-width: 85%;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 0.92rem;
+      line-height: 1.45;
+      position: relative;
+    }
+    .msg-out {
+      align-self: flex-end;
+      background: #005c4b;
+      color: #e9edef;
+      border-bottom-right-radius: 2px;
+    }
+    .msg-meta {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 4px;
+      font-size: 0.68rem;
+      color: #8696a0;
+      margin-top: 4px;
+    }
+    .template-selector {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    @media (min-width: 600px) {
+      .template-selector {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    .template-pill {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 10px 14px;
+      text-align: left;
+      cursor: pointer;
+      color: #e2e8f0;
+      font-size: 0.88rem;
+      transition: all 0.2s;
+    }
+    .template-pill:hover {
+      background: rgba(56, 189, 248, 0.1);
+      border-color: rgba(56, 189, 248, 0.3);
+    }
+    .template-pill.active {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    /* Tab 2: Kundenportal Simulation */
+    .portal-frame {
+      background: #0f172a;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 20px;
+    }
+    .portal-banner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 14px;
+      padding: 12px 18px;
+      margin-bottom: 20px;
+    }
+    .stepper {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      margin: 20px 0 26px 0;
+    }
+    .stepper::before {
+      content: "";
+      position: absolute;
+      top: 14px;
+      left: 15px;
+      right: 15px;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.1);
+      z-index: 1;
+    }
+    .stepper-progress {
+      position: absolute;
+      top: 14px;
+      left: 15px;
+      width: 75%;
+      height: 3px;
+      background: var(--accent-emerald);
+      z-index: 2;
+      transition: width 0.3s;
+    }
+    .step-node {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+    .node-circle {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #1e293b;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .step-node.done .node-circle {
+      background: var(--accent-emerald);
+      border-color: var(--accent-emerald);
+      color: #064e3b;
+    }
+    .step-node.current .node-circle {
+      background: var(--accent);
+      border-color: #fff;
+      box-shadow: 0 0 12px var(--accent);
+    }
+    .step-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+    .step-node.current .step-label {
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .gallery-preview {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .photo-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      overflow: hidden;
+      position: relative;
+    }
+    .photo-placeholder {
+      height: 130px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+    }
+    .photo-badge {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+    .badge-before {
+      background: rgba(239, 68, 68, 0.8);
+      color: #fff;
+    }
+    .badge-after {
+      background: rgba(52, 211, 153, 0.85);
+      color: #064e3b;
+    }
+
+    /* Tab 3: Rechnungs-Schnellrechner */
+    .calc-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    @media (min-width: 640px) {
+      .calc-grid {
+        grid-template-columns: 1.2fr 1fr;
+      }
+    }
+    .input-field {
+      width: 100%;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 10px 14px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.95rem;
+      margin-top: 6px;
+      margin-bottom: 12px;
+    }
+    .input-field:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    .bill-preview {
+      background: #ffffff;
+      color: #0f172a;
+      border-radius: 16px;
+      padding: 20px;
+      font-size: 0.88rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .bill-header {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+    }
+    .bill-total-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-top: 1px solid #e2e8f0;
+    }
+    .bill-total-grand {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #0284c7;
+      border-top: 2px solid #0284c7;
+      padding-top: 8px;
+      margin-top: 6px;
+    }
+
+    /* Tab 4: Tagesplaner & Checkliste */
+    .tour-stop {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 14px;
+      transition: all 0.2s;
+    }
+    .tour-stop.completed {
+      border-color: rgba(52, 211, 153, 0.4);
+      background: rgba(52, 211, 153, 0.04);
+    }
+    .tour-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 0;
+      font-size: 0.9rem;
+      color: #cbd5e1;
+      cursor: pointer;
+    }
+    .check-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent-emerald);
+      cursor: pointer;
+    }
+
+    /* Tab 5: Ideen-Schmiede Cards */
+    .ideas-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    @media (min-width: 640px) {
+      .ideas-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    .idea-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .idea-card:hover {
+      background: rgba(56, 189, 248, 0.08);
+      border-color: rgba(56, 189, 248, 0.35);
+      transform: translateY(-2px);
+    }
+    .idea-badge {
+      align-self: flex-start;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+    .badge-cyan { background: rgba(56, 189, 248, 0.15); color: #38bdf8; }
+    .badge-amber { background: rgba(251, 191, 36, 0.15); color: #fbbf24; }
+    .badge-emerald { background: rgba(52, 211, 153, 0.15); color: #34d399; }
+    .badge-purple { background: rgba(192, 132, 252, 0.15); color: #c084fc; }
+
+    /* Feedback & WhatsApp Section */
+    .survey-card {
+      background: linear-gradient(180deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+    }
+    .survey-question {
+      margin-bottom: 20px;
+    }
+    .survey-question label {
+      display: block;
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #e2e8f0;
+    }
+    .choice-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .choice-chip {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 8px 14px;
+      border-radius: 12px;
+      font-size: 0.88rem;
+      cursor: pointer;
+      color: #cbd5e1;
+      transition: all 0.2s;
+    }
+    .choice-chip:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    .choice-chip.selected {
+      background: rgba(56, 189, 248, 0.2);
+      border-color: var(--accent);
+      color: #fff;
+      font-weight: 700;
+    }
+
+    /* Print View for Invoice */
+    @media print {
+      body {
+        background: #fff !important;
+        color: #000 !important;
+        padding: 0 !important;
+      }
+      .intro-story, .tab-bar-container, .brand-pill, .survey-card, .btn-group, .controls-fixed {
+        display: none !important;
+      }
+      .bill-preview {
+        box-shadow: none !important;
+        border: none !important;
+        width: 100% !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+
+    <!-- STUFE 1: PERSÖNLICHE BOTSCHAFT -->
+    <header class="glass-panel intro-story">
+      <div class="brand-pill">
+        <span class="dot"></span> KMU Service Harz × GoClean Harz
+      </div>
+
+      <h1>
+        Marcel, hier ist meine Vision –<br />
+        <span class="gradient-text">und mein Angebot an dich.</span>
+      </h1>
+
+      <p class="intro-text">
+        Ich habe diesen interaktiven Prototypen für dich gebaut, weil wir es zeitlich noch nicht geschafft haben, uns in Ruhe zusammenzusetzen. 
+        Ich gründe <strong>KMU Service Harz</strong>, um kleinen Betrieben und Einzelkämpfern in unserer Region genau den lästigen Papier- und Bürokram abzunehmen, der ihnen nach 8 Stunden harter Arbeit den Feierabend stiehlt.
+      </p>
+
+      <div class="callout-box">
+        <div style="font-size: 1.5rem; line-height: 1;">🤝</div>
+        <div>
+          <strong>Mein ehrliches Versprechen an dich als Bruder:</strong><br />
+          Ich will dir nichts verkaufen. Du kannst mein allererster <strong>VIP-Pilotkunde werden – 100% kostenlos, ohne Risiko und ohne Verpflichtung</strong>.
+          Und selbst wenn du sagst: <em>„Lass mal, ich mach das lieber wie bisher“</em>, ist das völlig in Ordnung!
+        </div>
+      </div>
+
+      <p class="intro-text" style="font-size: 0.98rem; margin-bottom: 14px;">
+        <strong>Was mir jetzt am allermeisten helfen würde:</strong><br />
+        Wenn ich dir einfach mal an einem Vormittag <strong>über die Schulter schauen</strong> darf. Ich möchte verstehen: Wie planst du deine Route? Wann rufen Kunden an? Wo verlierst du Zettel oder Zeit? So kann ich Werkzeuge bauen, die genau deinen echten Arbeitsalltag erleichtern.
+      </p>
+
+      <div class="intro-points">
+        <div class="intro-point-card">
+          <div class="point-icon">⚡</div>
+          <div class="point-title">Sofort Feierabend</div>
+          <div class="point-desc">Rechnungen in 60 Sekunden statt abends 2 Stunden am Küchentisch.</div>
+        </div>
+        <div class="intro-point-card">
+          <div class="point-icon">💬</div>
+          <div class="point-title">Kunden begeistern</div>
+          <div class="point-desc">WhatsApp-Status & Vorher/Nachher-Fotos auf Knopfdruck senden.</div>
+        </div>
+        <div class="intro-point-card">
+          <div class="point-icon">☕</div>
+          <div class="point-title">Null Stress für dich</div>
+          <div class="point-desc">Wir trinken einen Kaffee, du zeigst mir deinen Alltag, ich baue die Lösung.</div>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <a href="#prototypen" class="btn btn-primary" onclick="scrollToPrototypes()">
+          Direkt zu den Live-Prototypen ↓
+        </a>
+        <a href="https://wa.me/?text=Hey%20Robin%2C%20hab%20mir%20deinen%20Prototypen%20angeschaut!%20Lass%20uns%20die%20Tage%20unbedingt%20mal%20einen%20Kaffee%20trinken." target="_blank" class="btn btn-whatsapp">
+          <span>💬</span> WhatsApp an mich
+        </a>
+      </div>
+    </header>
+
+    <!-- STUFE 2: INTERAKTIVE PROTOTYPEN-ZONE -->
+    <div id="prototypen" style="padding-top: 10px;">
+      <div class="section-title">
+        <span>🛠️</span>
+        <h2>Interaktive Prototypen zum Ausprobieren</h2>
+      </div>
+      <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 16px;">
+        Klicke dich durch die 5 Bereiche. Alles hier ist voll klickbar und für deinen Alltag bei GoClean Harz vorkonfiguriert:
+      </p>
+
+      <!-- Sticky Tab Bar -->
+      <div class="tab-bar-container">
+        <div class="tab-bar">
+          <button class="tab-btn active" onclick="switchTab('tab-wa', this)">
+            <span>💬</span> WhatsApp-Assistent
+          </button>
+          <button class="tab-btn" onclick="switchTab('tab-portal', this)">
+            <span>📱</span> Kundenportal
+          </button>
+          <button class="tab-btn" onclick="switchTab('tab-rechnung', this)">
+            <span>⚡</span> 1-Klick-Rechnung
+          </button>
+          <button class="tab-btn" onclick="switchTab('tab-tour', this)">
+            <span>📅</span> Tagesplaner
+          </button>
+          <button class="tab-btn" onclick="switchTab('tab-ideen', this)">
+            <span>💡</span> Ideen-Schmiede
+          </button>
+        </div>
+      </div>
+
+      <!-- TAB 1: WHATSAPP-ASSISTENT -->
+      <div id="tab-wa" class="tab-content active glass-panel">
+        <div class="prototype-header">
+          <div>
+            <h3>WhatsApp-Kommunikation auf Autopilot</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Erstelle professionelle Kunden-Nachrichten in 3 Sekunden – kein langes Tippen auf der Baustelle.</p>
+          </div>
+          <span class="badge-live">Funktionierender Prototyp</span>
+        </div>
+
+        <div style="margin-bottom: 14px;">
+          <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 6px;">Vorlage auswählen:</label>
+          <div class="template-selector">
+            <div class="template-pill active" onclick="setWaTemplate('anfahrt', this)">
+              🚗 <strong>1. Anfahrt-Ankündigung</strong><br><small>„Bin in 15 Min. bei Ihnen vor Ort“</small>
+            </div>
+            <div class="template-pill" onclick="setWaTemplate('fertig', this)">
+              ✨ <strong>2. Fertigmeldung & Fotos</strong><br><small>„Objekt glänzt, Abnahme fertig“</small>
+            </div>
+            <div class="template-pill" onclick="setWaTemplate('termin', this)">
+              📅 <strong>3. Terminbestätigung</strong><br><small>„Montag 08:30 Uhr eingetragen“</small>
+            </div>
+            <div class="template-pill" onclick="setWaTemplate('bewertung', this)">
+              ⭐ <strong>4. Google 5-Sterne-Bitte</strong><br><small>„Waren Sie zufrieden? Kurzes Feedback“</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chat Simulator -->
+        <div class="chat-simulator">
+          <div class="chat-top-bar">
+            <div class="chat-avatar">GC</div>
+            <div class="chat-top-info">
+              <h4>Kunde: Hausverwaltung Harz (Goslar)</h4>
+              <span>Online • Vorlage generiert</span>
+            </div>
+          </div>
+          <div class="chat-messages-area">
+            <div class="msg-bubble msg-out">
+              <div id="wa-preview-text">
+                Hallo Herr Müller, hier ist Marcel von GoClean Harz! 🚗 Ich bin pünktlich unterwegs zu Ihnen und in ca. 15 Minuten vor Ort am Objekt Marktstraße. Bis gleich!
+              </div>
+              <div class="msg-meta">
+                <span id="wa-time">14:52</span> ✓✓
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-group" style="margin-top: 16px;">
+          <button class="btn btn-secondary btn-sm" onclick="copyWaText()">
+            <span id="copy-icon">📋</span> <span id="copy-label">Text kopieren</span>
+          </button>
+          <a id="btn-open-wa" href="#" target="_blank" class="btn btn-whatsapp btn-sm">
+            <span>📲</span> In WhatsApp öffnen & senden
+          </a>
+        </div>
+      </div>
+
+      <!-- TAB 2: KUNDENPORTAL-VORSCHAU -->
+      <div id="tab-portal" class="tab-content glass-panel">
+        <div class="prototype-header">
+          <div>
+            <h3>Kundenportal: So sieht der Kunde deine Arbeit</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Wenn du fertig bist, sieht dein Kunde sofort den Arbeitsnachweis mit Vorher/Nachher-Fotos.</p>
+          </div>
+          <span class="badge-live">Live Kundenansicht</span>
+        </div>
+
+        <div class="portal-frame">
+          <div class="portal-banner">
+            <div>
+              <div style="font-size: 0.75rem; color: var(--accent); font-weight: 700; text-transform: uppercase;">Auftrag #GC-2026-084</div>
+              <h4 style="font-size: 1.1rem; color: #fff;">Fenster- & Treppenhausreinigung</h4>
+              <span style="font-size: 0.82rem; color: var(--text-muted);">Objekt: Villa Kaiserpassage, Bad Harzburg</span>
+            </div>
+            <div style="text-align: right;">
+              <span class="badge-live" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8; border-color: rgba(56, 189, 248, 0.4);">In Bearbeitung</span>
+            </div>
+          </div>
+
+          <!-- Stepper Status -->
+          <div class="stepper">
+            <div class="stepper-progress" id="portal-progress-bar"></div>
+            <div class="step-node done" onclick="setPortalStep(1)">
+              <div class="node-circle">✓</div>
+              <div class="step-label">Angenommen</div>
+            </div>
+            <div class="step-node done" onclick="setPortalStep(2)">
+              <div class="node-circle">✓</div>
+              <div class="step-label">Vor Ort</div>
+            </div>
+            <div class="step-node current" id="step-node-3" onclick="setPortalStep(3)">
+              <div class="node-circle">3</div>
+              <div class="step-label">Reinigung</div>
+            </div>
+            <div class="step-node" id="step-node-4" onclick="setPortalStep(4)">
+              <div class="node-circle">4</div>
+              <div class="step-label">Abnahme</div>
+            </div>
+          </div>
+
+          <!-- Vorher / Nachher Galerie -->
+          <div style="margin-top: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <h5 style="font-size: 0.95rem; color: #fff;">📸 Digitaler Vorher-/Nachher-Beweis:</h5>
+              <small style="color: var(--accent-emerald);">2 Fotos hochgeladen</small>
+            </div>
+            <div class="gallery-preview">
+              <div class="photo-card">
+                <span class="photo-badge badge-before">VORHER</span>
+                <div class="photo-placeholder">
+                  <span style="font-size: 2rem;">🪟</span>
+                  <small style="color: #94a3b8;">Schmutzige Fensterfront</small>
+                </div>
+              </div>
+              <div class="photo-card">
+                <span class="photo-badge badge-after">NACHHER</span>
+                <div class="photo-placeholder" style="background: linear-gradient(135deg, #064e3b, #0f172a);">
+                  <span style="font-size: 2rem;">✨</span>
+                  <small style="color: #6ee7b7;">Streifenfreier Glanz</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top: 20px; background: rgba(255,255,255,0.04); padding: 14px; border-radius: 12px; font-size: 0.85rem; color: #cbd5e1;">
+            <strong>Vorteil für Marcel:</strong> Nie wieder Diskussionen mit Hausverwaltungen oder Eigentümern – der Zeitstempel und die Fotos beweisen die Qualität zu 100%.
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: 1-KLICK-RECHNUNG -->
+      <div id="tab-rechnung" class="tab-content glass-panel">
+        <div class="prototype-header">
+          <div>
+            <h3>1-Klick-Rechnung & Schnellkalkulation</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Leistung eintippen, Beträge automatisch berechnen lassen und sofort eine fertige Rechnung anzeigen.</p>
+          </div>
+          <span class="badge-live">Mit Druckvorschau</span>
+        </div>
+
+        <div class="calc-grid">
+          <!-- Eingabeformular -->
+          <div style="background: rgba(15, 23, 42, 0.6); padding: 18px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08);">
+            <h4 style="font-size: 1rem; color: #fff; margin-bottom: 12px;">1. Schnelleingabe</h4>
+
+            <label style="font-size: 0.8rem; color: var(--text-muted);">Kunde / Objekt:</label>
+            <input type="text" id="calc-client" class="input-field" value="Ferienwohnungen Brockenblick Goslar" oninput="updateBill()">
+
+            <label style="font-size: 0.8rem; color: var(--text-muted);">Leistungsart:</label>
+            <select id="calc-service" class="input-field" onchange="applyServicePreset()">
+              <option value="glas">Fenster- & Glasreinigung (Gewerbe)</option>
+              <option value="treppe" selected>Treppenhausreinigung (Mehrfamilienhaus)</option>
+              <option value="bau">Bauschlussreinigung nach Sanierung</option>
+            </select>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div>
+                <label style="font-size: 0.8rem; color: var(--text-muted);">Stunden / Einheiten:</label>
+                <input type="number" id="calc-hours" class="input-field" value="4" min="1" step="0.5" oninput="updateBill()">
+              </div>
+              <div>
+                <label style="font-size: 0.8rem; color: var(--text-muted);">Stundensatz (€ Netto):</label>
+                <input type="number" id="calc-rate" class="input-field" value="48" min="20" oninput="updateBill()">
+              </div>
+            </div>
+
+            <label style="font-size: 0.8rem; color: var(--text-muted);">Material- & Anfahrtspauschale (€):</label>
+            <input type="number" id="calc-fee" class="input-field" value="25" min="0" oninput="updateBill()">
+
+            <div class="btn-group" style="margin-top: 10px;">
+              <button class="btn btn-primary btn-sm" onclick="window.print()">
+                <span>🖨️</span> Rechnung drucken / PDF
+              </button>
+            </div>
+          </div>
+
+          <!-- Live Rechnungs-Ansicht -->
+          <div class="bill-preview" id="printable-bill">
+            <div class="bill-header">
+              <div>
+                <h4 style="font-size: 1.15rem; color: #0284c7; font-weight: 800;">GoClean Harz</h4>
+                <div style="font-size: 0.75rem; color: #64748b;">Inh. Marcel Gornitzka • Meisterqualität im Harz</div>
+              </div>
+              <div style="text-align: right; font-size: 0.75rem; color: #64748b;">
+                <strong>RECHNUNG</strong><br>
+                <span id="bill-number">RE-2026-0318</span><br>
+                Datum: <span id="bill-date">15.09.2026</span>
+              </div>
+            </div>
+
+            <div style="margin-bottom: 14px; font-size: 0.8rem; color: #334155;">
+              <strong>Empfänger:</strong><br>
+              <span id="bill-client-display">Ferienwohnungen Brockenblick Goslar</span>
+            </div>
+
+            <table style="width: 100%; font-size: 0.82rem; border-collapse: collapse; margin-bottom: 14px;">
+              <thead>
+                <tr style="border-bottom: 1px solid #cbd5e1; text-align: left; color: #64748b;">
+                  <th style="padding: 4px 0;">Position</th>
+                  <th style="text-align: right; padding: 4px 0;">Betrag</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="padding: 6px 0;" id="bill-pos-desc">Treppenhausreinigung (4.0 Std × 48.00 €)</td>
+                  <td style="text-align: right; padding: 6px 0;" id="bill-pos-sum">192,00 €</td>
+                </tr>
+                <tr>
+                  <td style="padding: 6px 0;">Anfahrts- & Materialpauschale Harzkreis</td>
+                  <td style="text-align: right; padding: 6px 0;" id="bill-fee-sum">25,00 €</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="bill-total-row">
+              <span>Nettobetrag:</span>
+              <strong id="bill-net">217,00 €</strong>
+            </div>
+            <div class="bill-total-row">
+              <span>zzgl. 19% MwSt:</span>
+              <span id="bill-vat">41,23 €</span>
+            </div>
+            <div class="bill-total-row bill-total-grand">
+              <span>Gesamtbetrag:</span>
+              <span id="bill-gross">258,23 €</span>
+            </div>
+
+            <div style="margin-top: 14px; font-size: 0.72rem; color: #94a3b8; text-align: center;">
+              Zahlbar innerhalb 14 Tagen ohne Abzug. Vielen Dank für Ihren Auftrag!
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: TAGESPLANER & CHECKLISTE -->
+      <div id="tab-tour" class="tab-content glass-panel">
+        <div class="prototype-header">
+          <div>
+            <h3>Tagesroute & Mobile Checkliste (Harzkreis)</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Alle Objekte der Tour auf dem Smartphone abhaken – Zeit sparen und nichts vergessen.</p>
+          </div>
+          <span class="badge-live" id="tour-status-badge">1 von 3 erledigt</span>
+        </div>
+
+        <!-- Station 1 -->
+        <div class="tour-stop completed" id="stop-1">
+          <div class="tour-header">
+            <div>
+              <span style="font-size: 0.75rem; color: var(--accent-emerald); font-weight: 700;">08:30 UHR • GOSLAR</span>
+              <h4 style="font-size: 1rem; color: #fff;">Hausverwaltung Marktstraße 12</h4>
+            </div>
+            <span class="badge-live">Erledigt ✓</span>
+          </div>
+          <div class="check-item">
+            <input type="checkbox" checked onchange="toggleStopCheck(1)">
+            <span>6 Etagen Treppenhaus gekehrt & feucht gewischt</span>
+          </div>
+          <div class="check-item">
+            <input type="checkbox" checked onchange="toggleStopCheck(1)">
+            <span>Eingangsglastür streifenfrei poliert</span>
+          </div>
+        </div>
+
+        <!-- Station 2 -->
+        <div class="tour-stop" id="stop-2">
+          <div class="tour-header">
+            <div>
+              <span style="font-size: 0.75rem; color: var(--accent); font-weight: 700;">11:45 UHR • BAD HARZBURG</span>
+              <h4 style="font-size: 1rem; color: #fff;">Privatkunde Villa Kurpark</h4>
+            </div>
+            <span class="badge-live" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8;">Aktiver Einsatz</span>
+          </div>
+          <div class="check-item">
+            <input type="checkbox" id="check-2-1" onchange="toggleStopCheck(2)">
+            <label for="check-2-1">Wintergarten Fenster innen & außen gereinigt</label>
+          </div>
+          <div class="check-item">
+            <input type="checkbox" id="check-2-2" onchange="toggleStopCheck(2)">
+            <label for="check-2-2">Vorher/Nachher-Fotos in Kundenportal hochgeladen</label>
+          </div>
+          <div style="margin-top: 10px;">
+            <button class="btn btn-primary btn-sm" onclick="finishStop(2)">
+              ✓ Einsatz als erledigt markieren
+            </button>
+          </div>
+        </div>
+
+        <!-- Station 3 -->
+        <div class="tour-stop" id="stop-3">
+          <div class="tour-header">
+            <div>
+              <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700;">14:30 UHR • WERNIGERODE</span>
+              <h4 style="font-size: 1rem; color: #fff;">Kanzlei Dr. Hoffmann</h4>
+            </div>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Ausstehend</span>
+          </div>
+          <div class="check-item">
+            <input type="checkbox" id="check-3-1" onchange="toggleStopCheck(3)">
+            <label for="check-3-1">Büroflächen saugen & Mülleimer leeren</label>
+          </div>
+          <div class="check-item">
+            <input type="checkbox" id="check-3-2" onchange="toggleStopCheck(3)">
+            <label for="check-3-2">Hygienesanitär nach Plan desinfizieren</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 5: IDEEN-SCHMIEDE -->
+      <div id="tab-ideen" class="tab-content glass-panel">
+        <div class="prototype-header">
+          <div>
+            <h3>💡 Ideen-Schmiede: Was für KMUs noch möglich ist</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Das hier können wir für GoClean Harz und andere Betriebe als nächste Stufe aktivieren:</p>
+          </div>
+          <span class="badge-live" style="background: rgba(192, 132, 252, 0.2); color: #c084fc; border-color: rgba(192, 132, 252, 0.4);">KMU-Zukunft</span>
+        </div>
+
+        <div class="ideas-grid">
+          <div class="idea-card">
+            <div>
+              <span class="idea-badge badge-amber">⭐ Rezensionen-Magnet</span>
+              <h4 style="font-size: 1.05rem; color: #fff; margin-bottom: 6px;">Google-Bewertungs-Booster & NFC</h4>
+              <p style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.45;">
+                Marcel hält nach der Arbeit eine kleine NFC-Karte an das Smartphone des Kunden – sofort öffnet sich die 5-Sterne-Bewertungsmaske auf Google Maps. Sammelt 50+ Top-Bewertungen auf Autopilot!
+              </p>
+            </div>
+            <div style="margin-top: 14px; font-size: 0.8rem; color: var(--accent-amber);">
+              <strong>Ergebnis:</strong> Platz 1 bei Google für „Reinigung Harz“.
+            </div>
+          </div>
+
+          <div class="idea-card">
+            <div>
+              <span class="idea-badge badge-cyan">🤖 24/7 Anfragen-Assistent</span>
+              <h4 style="font-size: 1.05rem; color: #fff; margin-bottom: 6px;">KI-Kalkulator am Sonntagabend</h4>
+              <p style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.45;">
+                Ein Ferienhausbesitzer sucht sonntags um 21 Uhr einen Reinigungsdienst. Unser System antwortet sofort mit einem genauen Richtpreis und Terminvorschlag. Der Kunde unterschreibt, noch bevor die Konkurrenz am Montag das Büro aufschließt.
+              </p>
+            </div>
+            <div style="margin-top: 14px; font-size: 0.8rem; color: var(--accent);">
+              <strong>Ergebnis:</strong> Null Kundenverlust durch Wartezeiten.
+            </div>
+          </div>
+
+          <div class="idea-card">
+            <div>
+              <span class="idea-badge badge-purple">📸 Social Media Showroom</span>
+              <h4 style="font-size: 1.05rem; color: #fff; margin-bottom: 6px;">1-Klick Vorher/Nachher Posts</h4>
+              <p style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.45;">
+                Marcel schießt 2 Fotos auf der Baustelle. Die KI generiert daraus in 10 Sekunden ein ansprechendes Instagram- & Facebook-Posting mit passendem Harzer Werbetext und Hashtags.
+              </p>
+            </div>
+            <div style="margin-top: 14px; font-size: 0.8rem; color: var(--accent-purple);">
+              <strong>Ergebnis:</strong> Sichtbarkeit in der Region ohne Social-Media-Agentur.
+            </div>
+          </div>
+
+          <div class="idea-card">
+            <div>
+              <span class="idea-badge badge-emerald">🔄 Recall-Motor</span>
+              <h4 style="font-size: 1.05rem; color: #fff; margin-bottom: 6px;">Automatisches Wiederkehr-Abo</h4>
+              <p style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.45;">
+                Nach 3 Monaten erinnert das System Stammkunden vollautomatisch: <em>„Hallo Herr Meier, Zeit für den Frühjahrsputz Ihrer Fenster? 1 Klick zur Terminbestätigung.“</em>
+              </p>
+            </div>
+            <div style="margin-top: 14px; font-size: 0.8rem; color: var(--accent-emerald);">
+              <strong>Ergebnis:</strong> Regelmäßiger Umsatz ohne Kaltakquise.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STUFE 3: INTERAKTIVES FEEDBACK & WHATSAPP-REAKTION -->
+    <div class="survey-card" style="margin-top: 30px;">
+      <div class="brand-pill" style="background: rgba(52, 211, 153, 0.15); color: #34d399; border-color: rgba(52, 211, 153, 0.3);">
+        <span class="dot" style="background: #34d399; box-shadow: 0 0 10px #34d399;"></span> Dein kurzes Feedback an mich
+      </div>
+
+      <h2 style="font-size: 1.6rem; margin-bottom: 10px;">
+        Marcel, was denkst du?<br />
+        <span class="gradient-text">Sag mir kurz deine Meinung:</span>
+      </h2>
+
+      <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px;">
+        Klicke einfach an, was auf dich zutrifft. Mit einem Klick unten kannst du mir deine Auswahl direkt per WhatsApp schicken:
+      </p>
+
+      <!-- Frage 1 -->
+      <div class="survey-question">
+        <label>1. Welches Tool würde dir im Alltag am meisten bringen?</label>
+        <div class="choice-group" id="q1-group">
+          <div class="choice-chip selected" onclick="selectChoice('q1', this, '1-Klick Rechnungen')">⚡ 1-Klick Rechnungen</div>
+          <div class="choice-chip" onclick="selectChoice('q1', this, 'WhatsApp-Vorlagen')">💬 WhatsApp-Vorlagen</div>
+          <div class="choice-chip" onclick="selectChoice('q1', this, 'Kundenportal & Fotos')">📱 Kundenportal & Fotos</div>
+          <div class="choice-chip" onclick="selectChoice('q1', this, 'Tagesplaner')">📅 Tagesplaner</div>
+        </div>
+      </div>
+
+      <!-- Frage 2 -->
+      <div class="survey-question">
+        <label>2. Wobei verlierst du aktuell am meisten Nerven / Zeit?</label>
+        <div class="choice-group" id="q2-group">
+          <div class="choice-chip selected" onclick="selectChoice('q2', this, 'Rechnungen schreiben am Feierabend')">Küchentisch-Büro am Abend</div>
+          <div class="choice-chip" onclick="selectChoice('q2', this, 'Kunden nachtelefonieren')">Kunden nachtelefonieren</div>
+          <div class="choice-chip" onclick="selectChoice('q2', this, 'Zettelwirtschaft & Angebote')">Zettelwirtschaft & Angebote</div>
+        </div>
+      </div>
+
+      <!-- Frage 3 -->
+      <div class="survey-question">
+        <label>3. Wie sieht's aus mit unserem Kaffee & Schulterblick?</label>
+        <div class="choice-group" id="q3-group">
+          <div class="choice-chip selected" onclick="selectChoice('q3', this, 'Ja gerne, lass uns die Woche treffen!')">☕ Ja gerne, lass uns die Woche treffen!</div>
+          <div class="choice-chip" onclick="selectChoice('q3', this, 'Kannst mir gern mal über die Schulter schauen')">👀 Kannst mir gern über die Schulter schauen</div>
+          <div class="choice-chip" onclick="selectChoice('q3', this, 'Lass uns die Tage kurz anrufen')">📞 Lass uns kurz anrufen</div>
+        </div>
+      </div>
+
+      <div class="btn-group" style="margin-top: 24px;">
+        <button class="btn btn-whatsapp" onclick="sendSurveyWhatsApp()">
+          <span>📲</span> Antworten per WhatsApp an mich senden
+        </button>
+      </div>
+
+      <div style="margin-top: 18px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; flex-wrap: wrap; gap: 10px;">
+        <small style="color: var(--text-muted); width: 100%;">Oder schnelle 1-Klick-Antworten:</small>
+        <a href="https://wa.me/?text=Hey%20Robin%2C%20lass%20uns%20%27nen%20Kaffee%20trinken%20und%20in%20Ruhe%20quatschen!%20Wann%20passt%20es%20dir%3F" target="_blank" class="btn btn-secondary btn-sm">
+          ☕ „Lass 'nen Kaffee trinken“
+        </a>
+        <a href="https://wa.me/?text=Hey%20Robin%2C%20du%20kannst%20mir%20gerne%20mal%20an%20einem%20Tag%20%C3%BCber%20die%20Schulter%20schauen!%20Wann%20hast%20du%20Zeit%3F" target="_blank" class="btn btn-secondary btn-sm">
+          👀 „Kannst mir über die Schulter schauen“
+        </a>
+      </div>
+    </div>
+
+    <footer style="text-align: center; margin-top: 40px; color: var(--text-muted); font-size: 0.85rem;">
+      <p>KMU Service Harz • Entwickelt mit ❤️ für GoClean Harz</p>
+    </footer>
+
+  </div>
+
+  <script>
+    // State
+    const surveyState = {
+      tool: '1-Klick Rechnungen',
+      pain: 'Rechnungen schreiben am Feierabend',
+      meeting: 'Ja gerne, lass uns die Woche treffen!'
+    };
+
+    function scrollToPrototypes() {
+      const el = document.getElementById('prototypen');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Tab Switching
+    function switchTab(tabId, btn) {
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+
+      const target = document.getElementById(tabId);
+      if (target) target.classList.add('active');
+      if (btn) btn.classList.add('active');
+    }
+
+    // Tab 1: WhatsApp Vorlagen
+    const waTemplates = {
+      anfahrt: "Hallo Herr Müller, hier ist Marcel von GoClean Harz! 🚗 Ich bin pünktlich unterwegs zu Ihnen und in ca. 15 Minuten vor Ort am Objekt Marktstraße. Bis gleich!",
+      fertig: "Hallo Herr Müller! ✨ Wir haben die Arbeiten am Objekt Marktstraße erfolgreich abgeschlossen. Alle Fenster und das Treppenhaus glänzen. Die Abnahmefotos sind im Kundenportal hinterlegt. Einen schönen Feierabend wünscht GoClean Harz!",
+      termin: "Hallo Herr Müller, vielen Dank für Ihren Auftrag! 📅 Ihr Reinigungstermin ist fest eingetragen für kommenden Montag um 08:30 Uhr. Bei Rückfragen melden Sie sich jederzeit gern!",
+      bewertung: "Hallo Herr Müller! 😊 Waren Sie mit unserem Reinigungsservice zufrieden? Wir würden uns riesig über eine kurze 5-Sterne-Bewertung auf Google freuen – dauert nur 10 Sekunden: https://g.page/r/goclean-harz/review . Herzlichen Dank, Ihr Marcel!"
+    };
+
+    function setWaTemplate(type, pill) {
+      document.querySelectorAll('.template-pill').forEach(p => p.classList.remove('active'));
+      if (pill) pill.classList.add('active');
+
+      const text = waTemplates[type] || waTemplates.anfahrt;
+      document.getElementById('wa-preview-text').innerText = text;
+
+      // Update WhatsApp Send Button
+      const waUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
+      document.getElementById('btn-open-wa').href = waUrl;
+    }
+
+    function copyWaText() {
+      const text = document.getElementById('wa-preview-text').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const lbl = document.getElementById('copy-label');
+        const icon = document.getElementById('copy-icon');
+        lbl.innerText = 'Kopiert! ✓';
+        icon.innerText = '✅';
+        setTimeout(() => {
+          lbl.innerText = 'Text kopieren';
+          icon.innerText = '📋';
+        }, 2000);
+      });
+    }
+
+    // Initial WhatsApp Setup
+    setWaTemplate('anfahrt');
+
+    // Tab 2: Kundenportal Simulation
+    function setPortalStep(step) {
+      const pBar = document.getElementById('portal-progress-bar');
+      const step3 = document.getElementById('step-node-3');
+      const step4 = document.getElementById('step-node-4');
+
+      if (step === 3) {
+        pBar.style.width = '75%';
+        step3.className = 'step-node current';
+        step4.className = 'step-node';
+      } else if (step === 4) {
+        pBar.style.width = '100%';
+        step3.className = 'step-node done';
+        step4.className = 'step-node done';
+      }
+    }
+
+    // Tab 3: Rechnungsrechner
+    const servicePresets = {
+      glas: { rate: 52, hours: 3, fee: 20, desc: "Fenster- & Glasreinigung inkl. Rahmen" },
+      treppe: { rate: 48, hours: 4, fee: 25, desc: "Treppenhausreinigung (Mehrfamilienhaus)" },
+      bau: { rate: 58, hours: 6, fee: 35, desc: "Bauschlussreinigung nach Sanierung" }
+    };
+
+    function applyServicePreset() {
+      const val = document.getElementById('calc-service').value;
+      const preset = servicePresets[val];
+      if (preset) {
+        document.getElementById('calc-rate').value = preset.rate;
+        document.getElementById('calc-hours').value = preset.hours;
+        document.getElementById('calc-fee').value = preset.fee;
+        updateBill();
+      }
+    }
+
+    function updateBill() {
+      const client = document.getElementById('calc-client').value || 'Kunde im Harzkreis';
+      const hours = parseFloat(document.getElementById('calc-hours').value) || 0;
+      const rate = parseFloat(document.getElementById('calc-rate').value) || 0;
+      const fee = parseFloat(document.getElementById('calc-fee').value) || 0;
+      const serviceVal = document.getElementById('calc-service').value;
+      const descName = servicePresets[serviceVal]?.desc || "Reinigungsarbeiten";
+
+      const posSum = hours * rate;
+      const net = posSum + fee;
+      const vat = net * 0.19;
+      const gross = net + vat;
+
+      document.getElementById('bill-client-display').innerText = client;
+      document.getElementById('bill-pos-desc').innerText = `${descName} (${hours.toFixed(1)} Std × ${rate.toFixed(2)} €)`;
+      document.getElementById('bill-pos-sum').innerText = `${posSum.toFixed(2).replace('.', ',')} €`;
+      document.getElementById('bill-fee-sum').innerText = `${fee.toFixed(2).replace('.', ',')} €`;
+      document.getElementById('bill-net').innerText = `${net.toFixed(2).replace('.', ',')} €`;
+      document.getElementById('bill-vat').innerText = `${vat.toFixed(2).replace('.', ',')} €`;
+      document.getElementById('bill-gross').innerText = `${gross.toFixed(2).replace('.', ',')} €`;
+    }
+
+    // Tab 4: Tagesplaner
+    function finishStop(stopNum) {
+      const stop = document.getElementById(`stop-${stopNum}`);
+      if (stop) {
+        stop.classList.add('completed');
+        const badge = stop.querySelector('.badge-live');
+        if (badge) {
+          badge.innerText = 'Erledigt ✓';
+          badge.style.background = 'rgba(52, 211, 153, 0.2)';
+          badge.style.color = '#34d399';
+          badge.style.borderColor = 'rgba(52, 211, 153, 0.4)';
+        }
+        document.getElementById('tour-status-badge').innerText = '2 von 3 erledigt';
+      }
+    }
+
+    function toggleStopCheck(stopNum) {
+      // Small feedback
+    }
+
+    // Feedback Survey
+    function selectChoice(questionKey, chip, value) {
+      const parent = chip.parentElement;
+      parent.querySelectorAll('.choice-chip').forEach(c => c.classList.remove('selected'));
+      chip.classList.add('selected');
+
+      if (questionKey === 'q1') surveyState.tool = value;
+      if (questionKey === 'q2') surveyState.pain = value;
+      if (questionKey === 'q3') surveyState.meeting = value;
+    }
+
+    function sendSurveyWhatsApp() {
+      const msg = `Moin Robin! Hab mir deinen Prototypen für GoClean angeschaut:%0A%0A` +
+        `🚀 Wichtigstes Tool: ${encodeURIComponent(surveyState.tool)}%0A` +
+        `😤 Größter Zeitfresser: ${encodeURIComponent(surveyState.pain)}%0A` +
+        `🤝 Treffen: ${encodeURIComponent(surveyState.meeting)}%0A%0A` +
+        `Lass uns quatschen!`;
+      
+      window.open(`https://wa.me/?text=${msg}`, '_blank');
+    }
+  </script>
+</body>
+</html>

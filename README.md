@@ -14,6 +14,7 @@ Die Anwendung zeichnet sich durch ein futuristisches "Glassmorphic Dark Theme" a
 - **🏢 B2B-Akquise-Maschine:** Vorgefertigte Akquise-Mappen für Hausverwaltungen/WEGs (feste Monatsverträge), Bauträger (lukrative Bau-Endreinigungen) und Arztpraxen/Kanzleien (4-Farben-Hygienesystem).
 - **📱 Mobile Qualitäts-SOP & Digitales Abnahmeprotokoll:** Smartphone-Checkliste für Reinigungskräfte (Vorher/Nachher-Foto-Nachweis) und rechtssicheres Kunden-Abnahmeprotokoll mit digitaler Signatur.
 - **⭐ 5-Sterne Bewertungs-Booster & Reaktivierung:** 1-Klick WhatsApp-Vorlage für Google-Bewertungen direkt nach Auftragsabschluss sowie saisonale Frühjahrs-/Herbst-Kampagnen.
+- **⭐ Interaktive Pilotprojekt-Vorschau-App (`public/goclean_pilot_preview.html`):** Eigenständige mobile Web-App für Marcel (Bruder) mit persönlicher Botschaft („Über die Schulter schauen“), 4 klickbaren Prototypen (WhatsApp-Assistent, Kundenportal mit Vorher/Nachher-Fotos, 1-Klick-Rechnung mit Druckvorschau, Harz-Tagesplaner), Ideen-Schmiede für KMUs und 1-Klick-WhatsApp-Feedback.
 - **🖨️ Druckfertige VIP-Präsentationsmappe & Hub:** Standalone HTML-Mappe (`public/goclean_wachstumsmappe.html`), Präsentations-Center (`public/goclean_praesentationen_hub.html`) und Manus Cockpit (`manus_power_cockpit.html`).
 
 ### 0b. 💼 B2B-Vertriebs- & Auslieferungs-Suite (KMU Service Harz)

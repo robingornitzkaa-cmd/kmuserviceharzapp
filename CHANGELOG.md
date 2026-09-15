@@ -13,6 +13,20 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
   - **Row Level Security (RLS) & Policies aktiviert (Supabase Cloud):** RLS auf allen 8 Kern-Tabellen (`leads`, `contacts`, `dashboard_state`, `prompts`, `client_tickets`, `tasks`, `inbox`, `docs`) aktiviert. Anonymer Zugriff ist gesperrt, nur die Rolle `authenticated` hat Zugriff.
 
 ### Added
+- **⭐ GoClean Pilotprojekt-Vorschau & Interaktive Prototypen-App (`public/goclean_pilot_preview.html`):**
+  - **Eigenständige Mobile Web-App:** Standalone-Seite ohne Login oder App-Installation, die direkt per Link (z. B. WhatsApp) auf jedem Smartphone oder Rechner geöffnet werden kann.
+  - **Stufe 1 (Von Bruder zu Bruder):** Persönliche, herzliche Botschaft über die Gründungsvision von KMU Service Harz, das 100% kostenlose und risikofreie Pilotprojekt-Angebot sowie die Bitte um einen Vormittag zur Arbeitsplatz-Hospitation („Über die Schulter schauen“).
+  - **Stufe 2 (4 funktionierende Prototypen + Ideen-Schmiede):**
+    - 💬 **WhatsApp-Assistent:** 4 praxisnahe Vorlagen (Anfahrt 15 Min., Fertigmeldung & Fotos, Terminbestätigung, Google 5-Sterne Bitte) mit Live-Vorschau, Zwischenablage-Kopieren und direktem WhatsApp-Link (`https://wa.me/?text=...`).
+    - 📱 **Kundenportal-Simulation:** Interaktive Kundenansicht mit Statusbalken (Angenommen → Vor Ort → Reinigung → Abnahme) und Vorher-/Nachher-Beweisfotos.
+    - ⚡ **1-Klick-Rechnungsrechner:** Schnellauswahl von Leistungen (Fenster, Treppenhaus, Bau), dynamische Berechnung von Netto, 19% MwSt und Brutto sowie druck- und PDF-fertige Rechnungsansicht (`window.print()`).
+    - 📅 **Tagesplaner & Checkliste:** Harzer Tagesroute (Goslar, Bad Harzburg, Wernigerode) mit interaktivem Aufgaben-Abhaken und Statusaktualisierung.
+    - 💡 **Ideen-Schmiede für KMUs:** Inspirationskarten mit Zukunftspotenzialen (Google-Bewertungs-Booster per NFC, 24/7 KI-Anfragen-Assistent, Social-Media-Showroom, Abo-Recall-Motor).
+  - **Stufe 3 (Interaktives Feedback & WhatsApp-Aktionen):**
+    - Interaktive 3-Fragen-Schnellumfrage (Wichtigstes Tool, Zeitfresser, Kaffeetreffen), die mit 1 Klick als fertige WhatsApp-Nachricht an den Gründer versendet werden kann.
+    - Direkte Schnell-Aktions-Buttons für unkomplizierte Rückmeldungen.
+  - **Integration:** Direkt im Präsentations-Hub (`public/goclean_praesentationen_hub.html`) und im internen `GoCleanToolkit.jsx` als VIP-Karte verankert.
+
 - **📌 Windows Desktop Notizzettel (Natives WPF Sticky Note Widget - Option B):**
   - **Natives Desktop-Widget (`desktop-widget/FounderOS-StickyNote.ps1`):** Schlankes, rahmenloses Windows-WPF-Post-It mit abgerundeten Ecken, weichem Windows-Schatten und flüssiger Segoe UI Typografie ohne schwere externe Abhängigkeiten (Zero-Dependency über .NET Framework).
   - **Funktionsumfang:**
