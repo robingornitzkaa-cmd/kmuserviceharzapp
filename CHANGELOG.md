@@ -40,7 +40,7 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 
 - **⭐ GoClean Pilotprojekt-Vorschau & Interaktive Prototypen-App (`public/goclean_pilot_preview.html`):**
   - **Eigenständige Mobile Web-App:** Standalone-Seite ohne Login oder App-Installation, die direkt per Link (z. B. WhatsApp) auf jedem Smartphone oder Rechner geöffnet werden kann.
-  - **Stufe 1 (Von Bruder zu Bruder):** Persönliche, herzliche Botschaft über die Gründungsvision von KMU Service Harz, das 100% kostenlose und risikofreie Pilotprojekt-Angebot sowie die Bitte um einen Vormittag zur Arbeitsplatz-Hospitation („Über die Schulter schauen“).
+  - **Stufe 1 (Von Bruder zu Bruder):** Persönliche, herzliche Botschaft über die Gründungsvision (inkl. Hinweis, dass der Name „KMU Service Harz“ aktuell noch ein Arbeitstitel ist), das 100% kostenlose Pilotangebot sowie die Bitte um einen Vormittag zur Arbeitsplatz-Hospitation (Marcel zeigt seine echten Arbeitsabläufe und Tools, um einerseits konkrete Entlastung zu bauen und andererseits wertvolle erste Praxiseinblicke in einen realen Betrieb zu gewinnen).
   - **Stufe 2 (5 funktionierende Prototypen + Ideen-Schmiede):**
     - 🤖 **Onboarding-Chatbot (Express-Audit):** Interaktiver Chatbot mit 6 Kernfragen aus dem KMU-Playbook (Kundenanfragen, Tourenplanung, Rechnungen, Belege/Steuerberater, Fotodokumentation, Ziel), Berechnung des Digitalisierungs-Scores (0–100) und 1-Klick WhatsApp-Export des Profils.
     - 💬 **WhatsApp-Assistent:** 4 praxisnahe Vorlagen (Anfahrt 15 Min., Fertigmeldung & Fotos, Terminbestätigung, Google 5-Sterne Bitte) mit Live-Vorschau, Zwischenablage-Kopieren und direktem WhatsApp-Link (`https://wa.me/?text=...`).
