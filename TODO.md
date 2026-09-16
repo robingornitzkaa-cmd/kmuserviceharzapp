@@ -18,11 +18,12 @@
   - *Doppelklick-Start & Desktop-Shortcut:* `Start-Notizzettel.cmd` (ohne Konsole) & `Create-Desktop-Shortcut.ps1` (Icon auf Windows-Desktop).
   - *Schnittstelle für Cloud-Sync vorbereitet:* Datenstruktur 100% kompatibel zu `dash_notes_list`.
 
-- [x] **🔄 [Desktop Widget Phase 2] Supabase Cloud-Synchronisation für Desktop-Notizzettel:**
+- [x] **🔄 [Desktop Widget Phase 2] Supabase Cloud-Synchronisation & Dauerhaftes Desktop-Widget:**
   - *2-Wege Live-Sync (`desktop-widget/FounderOS-StickyNote.ps1`):* Anbindung von `Sync-FromCloud` und `Save-ToCloud` an die Supabase-Tabelle `dashboard_state`.
   - *Autosave & Cloud-Upload:* Getippte Notizen werden nach 850ms Debounce automatisch in Supabase gesichert.
   - *Hintergrund-Polling:* Alle 25 Sekunden automatischer Abgleich mit Änderungen von Smartphone und Dashboard.
   - *Manuelle Synchronisation:* 1-Klick Aktualisierung per Sync-Button `🔄` und Klick auf die Fußzeile.
+  - *🚀 Dauerhafter Windows-Autostart:* 1-Klick Raketen-Button (`🚀`) im Notizzettel-Header sowie Skripte `Enable-Autostart.ps1` und `Disable-Autostart.ps1` verankern den Notizzettel im Windows-Autostart-Ordner (`Startup`).
 
 - [x] **⭐ [Desktop Widget Phase 3] Option A: Web-Popout / Picture-in-Picture im Dashboard:**
   - *Button „Auf Desktop lösen“ (`DashboardView.jsx`):* Sowohl in der einfachen Notizen-Kachel (`simpleNotes`) als auch in der detaillierten Notizen-Ansicht (`notes`) integriert.

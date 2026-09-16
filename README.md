@@ -84,7 +84,8 @@ Die Anwendung zeichnet sich durch ein futuristisches "Glassmorphic Dark Theme" a
 
 ### 1f. 📌 Windows Desktop Notizzettel (Natives WPF Sticky Note Widget) -- *NEU!*
 - **🪟 Echtes Windows-Desktop-Post-It (`desktop-widget/FounderOS-StickyNote.ps1`):** Schlanker, rahmenloser Notizzettel direkt auf dem Windows-Desktop mit weichem Schatten, abgerundeten Ecken und flüssiger Texteingabe ohne zusätzliche Software-Installationen (Zero-Dependency über .NET).
-- **📌 Immer im Vordergrund (Pin-to-Top):** Kann mit dem Nadel-Symbol dauerhaft über allen anderen Windows-Fenstern angepinnt werden.
+- **🚀 Dauerhaftes Desktop-Widget & Autostart:** Über den Raketen-Button (`🚀`) im Kopfbereich oder die Skripte `Enable-Autostart.ps1` / `Disable-Autostart.ps1` startet der Zettel automatisch bei jedem Windows-Hochfahren im Hintergrund.
+- **📌 Immer im Vordergrund (Pin-to-Top):** Kann mit dem Nadel-Symbol dauerhaft über allen anderen Windows-Fenstern angepinnt werden (`📌`) oder unaufdringlich als Desktop-Hintergrund-Widget ruhen (`📍`).
 - **🎨 6 Farbthemen:** Wähle zwischen *Sonnengelb*, *Himmelblau*, *Minzgrün*, *Sanftrosa*, *Pfirsich* und *Dark Mode*.
 - **🗂️ Multi-Notizen System:** Schnelles Erstellen (➕), Wechseln (◀ 1/2 ▶) und Verwalten mehrerer Zettel.
 - **💾 Autosave & Positionsspeicher:** Speichert Eingaben, Fensterposition und Größe automatisch lokal in `notes-data.json`.

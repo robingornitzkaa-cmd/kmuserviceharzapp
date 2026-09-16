@@ -20,6 +20,10 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
     - **Autosave in die Cloud:** Jede getippte Notiz wird nach 850 ms Pufferung (Debounce) in Millisekunden nach Supabase hochgeladen und aktualisiert `dash_notes`, `dash_notes_list` und `updated_at`.
     - **Hintergrund-Polling (Handy ↔ PC):** Alle 25 Sekunden prüft das Desktop-Widget im Hintergrund, ob Notizen auf dem Smartphone oder im Web-Dashboard geändert wurden, und aktualisiert sich nahtlos, wenn der Nutzer gerade nicht selbst tippt.
     - **Manuelle Synchronisation:** 1-Klick Aktualisieren über das Refresh-Icon `🔄` oben oder Klick auf die Fußzeile.
+    - **🚀 Dauerhaftes Desktop-Widget (Autostart mit Windows):**
+      - Neuer Raketen-Button (`🚀`) im Kopfbereich des Notizzettels zum Umschalten des automatischen Windows-Starts mit sofortigem visuellen Feedback (Opacity & Tooltip).
+      - Erstellt bzw. entfernt eine saubere Verknüpfung im Windows-Startup-Ordner (`shell:startup` / `%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup`).
+      - Inklusive eigenständiger Skripte `desktop-widget/Enable-Autostart.ps1` und `desktop-widget/Disable-Autostart.ps1`.
   - **⭐ Option A: Web-Popout & Picture-in-Picture Modus (`StickyNotePopoutView.jsx`, `App.jsx`, `DashboardView.jsx`):**
     - Neuer Button **„🗗 Auf Desktop lösen“** direkt am Notizzettel im Founder OS Dashboard (sowohl in der Kompakt- als auch in der Detailansicht).
     - Öffnet mit einem Klick ein schlankes, fokussiertes Pop-out-Fenster (`/?mode=sticky`), das losgelöst vom Hauptbrowser auf dem Windows-Desktop positioniert werden kann.

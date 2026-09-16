@@ -211,6 +211,37 @@ function Save-ToCloud {
 }
 
 # ------------------------------------------------------------------------------
+# 4b. Windows Autostart Management (Dauerhaftes Desktop-Widget)
+# ------------------------------------------------------------------------------
+function Get-WindowsAutostart {
+    $startupFolder = [Environment]::GetFolderPath("Startup")
+    $shortcut = Join-Path $startupFolder "Founder OS Notizzettel.lnk"
+    return (Test-Path $shortcut)
+}
+
+function Set-WindowsAutostart ([bool]$enable) {
+    $startupFolder = [Environment]::GetFolderPath("Startup")
+    $shortcutPath = Join-Path $startupFolder "Founder OS Notizzettel.lnk"
+    $targetCmd = Join-Path $ScriptDir "Start-Notizzettel.cmd"
+
+    if ($enable) {
+        $WshShell = New-Object -ComObject WScript.Shell
+        $Shortcut = $WshShell.CreateShortcut($shortcutPath)
+        $Shortcut.TargetPath = $targetCmd
+        $Shortcut.WorkingDirectory = $ScriptDir
+        $Shortcut.Description = "Founder OS Notizzettel fuer den Windows Desktop"
+        $Shortcut.IconLocation = "%SystemRoot%\System32\shell32.dll,70"
+        $Shortcut.Save()
+        return $true
+    } else {
+        if (Test-Path $shortcutPath) {
+            Remove-Item $shortcutPath -Force
+        }
+        return $false
+    }
+}
+
+# ------------------------------------------------------------------------------
 # 5. Farb-Definitionen (Post-it Palette)
 # ------------------------------------------------------------------------------
 $ColorMap = @{
@@ -326,6 +357,7 @@ $ColorMap = @{
 
                         <!-- Fenster-Steuerung -->
                         <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                            <Button x:Name="BtnAutostart" Style="{StaticResource HeaderBtn}" Content="🚀" FontSize="11" ToolTip="Dauerhaftes Desktop-Widget (Autostart mit Windows)"/>
                             <Button x:Name="BtnSync" Style="{StaticResource HeaderBtn}" Content="🔄" FontSize="11" ToolTip="Jetzt mit Founder OS synchronisieren"/>
                             <Button x:Name="BtnPin" Style="{StaticResource HeaderBtn}" Content="&#x1F4CC;" ToolTip="Immer im Vordergrund (Pin)"/>
                             <Button x:Name="BtnMinimize" Style="{StaticResource HeaderBtn}" Content="&#x2014;" ToolTip="Minimieren"/>
@@ -413,6 +445,7 @@ $txtCharCount  = $window.FindName("TxtCharCount")
 $btnPin        = $window.FindName("BtnPin")
 $btnMin        = $window.FindName("BtnMinimize")
 $btnClose      = $window.FindName("BtnClose")
+$btnAutostart  = $window.FindName("BtnAutostart")
 $btnSync       = $window.FindName("BtnSync")
 $btnPrev       = $window.FindName("BtnPrevNote")
 $btnNext       = $window.FindName("BtnNextNote")
@@ -554,6 +587,22 @@ $script:CloudPollTimer.Add_Tick({
 # Verschieben des Fensters (Drag & Drop am Header)
 $headerBar.Add_MouseLeftButtonDown({
     $window.DragMove()
+})
+
+# Autostart mit Windows umschalten (Dauerhaftes Desktop-Widget)
+$btnAutostart.Add_Click({
+    $isCurrentlyActive = Get-WindowsAutostart
+    $newState = -not $isCurrentlyActive
+    Set-WindowsAutostart $newState
+    if ($newState) {
+        $btnAutostart.Opacity = 1.0
+        $btnAutostart.ToolTip = "Dauerhaftes Desktop-Widget: Aktiviert (Startet beim PC-Start)"
+        [System.Windows.MessageBox]::Show("Dauerhaftes Desktop-Widget aktiviert!`n`nDer Notizzettel startet ab jetzt automatisch beim Hochfahren deines Windows-PCs.", "Founder OS Widget", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Information)
+    } else {
+        $btnAutostart.Opacity = 0.35
+        $btnAutostart.ToolTip = "Dauerhaftes Desktop-Widget: Deaktiviert"
+        [System.Windows.MessageBox]::Show("Autostart deaktiviert.`n`nDer Notizzettel startet nicht mehr automatisch beim Hochfahren.", "Founder OS Widget", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Information)
+    }
 })
 
 # Manuelle Synchronisation
@@ -712,6 +761,11 @@ if ($window.Topmost) {
     $btnPin.Content = $SymPinInactive
     $btnPin.ToolTip = "Normales Fenster (Deaktiviert)"
 }
+
+# Initialer Status des Dauerhaften Autostarts
+$isAutoActive = Get-WindowsAutostart
+$btnAutostart.Opacity = if ($isAutoActive) { 1.0 } else { 0.35 }
+$btnAutostart.ToolTip = if ($isAutoActive) { "Dauerhaftes Desktop-Widget: Aktiviert (Klicken zum Umschalten)" } else { "Dauerhaftes Desktop-Widget: Deaktiviert (Klicken zum Aktivieren)" }
 
 # Initialer Sync-Versuch mit der Cloud
 $initialSyncOk = Sync-FromCloud -Silent $true
