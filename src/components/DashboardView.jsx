@@ -162,6 +162,19 @@ export const DashboardView = ({
     setTimeout(() => setCopiedGoCleanLink(false), 2500);
   };
 
+  const openStickyPopout = () => {
+    if (typeof window === 'undefined') return;
+    const width = 380;
+    const height = 490;
+    const left = Math.max(0, window.screen.width - width - 40);
+    const top = 70;
+    window.open(
+      `${window.location.origin}${window.location.pathname}?mode=sticky`,
+      'FounderOSStickyNote',
+      `width=${width},height=${height},left=${left},top=${top},menubar=no,toolbar=no,location=no,status=no,resizable=yes`
+    );
+  };
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', width: '100%' }}>
       
@@ -714,6 +727,27 @@ export const DashboardView = ({
                       }}>
                         {supabaseSyncStatus === 'syncing' ? '🔄 Speichert...' : supabaseSyncStatus === 'error' ? '⚠️ Sync-Fehler' : '☁️ Cloud-gesichert'}
                       </span>
+                      <button
+                        type="button"
+                        onClick={openStickyPopout}
+                        title="Notizzettel auf Windows-Desktop lösen (Pop-out)"
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '3px',
+                          background: 'rgba(0, 0, 0, 0.08)',
+                          border: 'none',
+                          borderRadius: '0.25rem',
+                          padding: '0.12rem 0.45rem',
+                          fontSize: '0.62rem',
+                          fontWeight: 700,
+                          cursor: 'pointer',
+                          color: '#0f172a',
+                          transition: 'background 0.2s ease'
+                        }}
+                      >
+                        <ExternalLink size={10} /> Auf Desktop lösen
+                      </button>
                     </div>
                     
                     {/* Color selector */}
@@ -1683,17 +1717,36 @@ export const DashboardView = ({
                     <FileText size={20} className="text-yellow-500" />
                     📌 Notizen ({dashNotesList.length}) & Aufgaben (Cloud-Sync)
                   </h2>
-                  <span style={{ 
-                    fontSize: '0.65rem', 
-                    fontWeight: 700, 
-                    padding: '0.15rem 0.45rem', 
-                    borderRadius: '0.25rem', 
-                    background: supabaseSyncStatus === 'syncing' ? 'rgba(234, 179, 8, 0.25)' : supabaseSyncStatus === 'error' ? 'rgba(239, 68, 68, 0.25)' : 'rgba(16, 185, 129, 0.25)', 
-                    color: supabaseSyncStatus === 'syncing' ? '#eab308' : supabaseSyncStatus === 'error' ? '#ef4444' : '#34d399',
-                    border: '1px solid var(--border-color)'
-                  }}>
-                    {supabaseSyncStatus === 'syncing' ? '🔄 Speichert...' : supabaseSyncStatus === 'error' ? '⚠️ Sync-Fehler' : '☁️ Cloud-gesichert'}
-                  </span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    <span style={{ 
+                      fontSize: '0.65rem', 
+                      fontWeight: 700, 
+                      padding: '0.15rem 0.45rem', 
+                      borderRadius: '0.25rem', 
+                      background: supabaseSyncStatus === 'syncing' ? 'rgba(234, 179, 8, 0.25)' : supabaseSyncStatus === 'error' ? 'rgba(239, 68, 68, 0.25)' : 'rgba(16, 185, 129, 0.25)', 
+                      color: supabaseSyncStatus === 'syncing' ? '#eab308' : supabaseSyncStatus === 'error' ? '#ef4444' : '#34d399',
+                      border: '1px solid var(--border-color)'
+                    }}>
+                      {supabaseSyncStatus === 'syncing' ? '🔄 Speichert...' : supabaseSyncStatus === 'error' ? '⚠️ Sync-Fehler' : '☁️ Cloud-gesichert'}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={openStickyPopout}
+                      className="btn btn-secondary"
+                      title="Notizzettel auf Windows-Desktop lösen (Pop-out)"
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '5px',
+                        padding: '0.2rem 0.6rem',
+                        fontSize: '0.72rem',
+                        fontWeight: 600,
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <ExternalLink size={12} /> Auf Desktop lösen
+                    </button>
+                  </div>
                 </div>
                 
                 <div className="dashboard-notes-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>

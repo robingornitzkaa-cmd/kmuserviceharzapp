@@ -28,3 +28,7 @@ dist-ssr
 # Sensitive customer databases & lead lists
 *.csv
 leads_master_harz*.csv
+
+# Desktop sticky notes local user storage
+desktop-widget/notes-data.json
+

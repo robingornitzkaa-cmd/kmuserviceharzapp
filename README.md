@@ -88,8 +88,8 @@ Die Anwendung zeichnet sich durch ein futuristisches "Glassmorphic Dark Theme" a
 - **🎨 6 Farbthemen:** Wähle zwischen *Sonnengelb*, *Himmelblau*, *Minzgrün*, *Sanftrosa*, *Pfirsich* und *Dark Mode*.
 - **🗂️ Multi-Notizen System:** Schnelles Erstellen (➕), Wechseln (◀ 1/2 ▶) und Verwalten mehrerer Zettel.
 - **💾 Autosave & Positionsspeicher:** Speichert Eingaben, Fensterposition und Größe automatisch lokal in `notes-data.json`.
-- **🚀 1-Klick Start & Desktop-Icon:** `desktop-widget/Start-Notizzettel.cmd` startet ohne störendes Konsolenfenster, `Create-Desktop-Shortcut.ps1` platziert die Verknüpfung direkt auf dem Desktop.
-- **🔄 Cloud-Sync Vorbereitung:** Schnittstelle zur Supabase-Tabelle `dashboard_state` modular vorbereitet für die spätere 2-Wege-Synchronisation mit Founder OS & Handy.
+- **🔄 2-Wege Supabase Cloud-Sync:** Das Desktop-Widget synchronisiert automatisch mit der Supabase-Tabelle `dashboard_state`. Alle Notizen sind in Echtzeit zwischen Windows Desktop, Handy (Android Widget) und Web-Dashboard synchron.
+- **⭐ In-App Web-Popout („Auf Desktop lösen“):** Über den neuen Button am Notizzettel im Dashboard löst sich der Zettel mit einem Klick in ein eigenes, schlankes Windows-Fenster (`/?mode=sticky`) oder schwebt dank Document Picture-in-Picture dauerhaft über allen Arbeitsfenstern.
 
 ### 2. Inbox & Tasks (Posteingang)
 - **WhatsApp-Gateway & Webhook-Simulation:** Teste den Empfang strukturierter WhatsApp-Nachrichten samt HTTP-Post-Weiterleitung.

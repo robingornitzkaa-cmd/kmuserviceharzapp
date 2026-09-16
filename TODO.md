@@ -18,12 +18,16 @@
   - *Doppelklick-Start & Desktop-Shortcut:* `Start-Notizzettel.cmd` (ohne Konsole) & `Create-Desktop-Shortcut.ps1` (Icon auf Windows-Desktop).
   - *Schnittstelle für Cloud-Sync vorbereitet:* Datenstruktur 100% kompatibel zu `dash_notes_list`.
 
-- [ ] **🔄 [Desktop Widget Phase 2] Supabase Cloud-Synchronisation für Desktop-Notizzettel:**
-  - Anbindung von `Sync-NotesWithCloud` an die Supabase-Tabelle `dashboard_state`.
-  - Polling im Hintergrund für Änderungen vom Smartphone/Handy-Widget.
+- [x] **🔄 [Desktop Widget Phase 2] Supabase Cloud-Synchronisation für Desktop-Notizzettel:**
+  - *2-Wege Live-Sync (`desktop-widget/FounderOS-StickyNote.ps1`):* Anbindung von `Sync-FromCloud` und `Save-ToCloud` an die Supabase-Tabelle `dashboard_state`.
+  - *Autosave & Cloud-Upload:* Getippte Notizen werden nach 850ms Debounce automatisch in Supabase gesichert.
+  - *Hintergrund-Polling:* Alle 25 Sekunden automatischer Abgleich mit Änderungen von Smartphone und Dashboard.
+  - *Manuelle Synchronisation:* 1-Klick Aktualisierung per Sync-Button `🔄` und Klick auf die Fußzeile.
 
-- [ ] **⭐ [Desktop Widget Phase 3] Option A: Web-Popout / Picture-in-Picture im Dashboard:**
-  - Pop-out Button am Dashboard-Notizzettel zum Ausdocken direkt aus dem Browser.
+- [x] **⭐ [Desktop Widget Phase 3] Option A: Web-Popout / Picture-in-Picture im Dashboard:**
+  - *Button „Auf Desktop lösen“ (`DashboardView.jsx`):* Sowohl in der einfachen Notizen-Kachel (`simpleNotes`) als auch in der detaillierten Notizen-Ansicht (`notes`) integriert.
+  - *Dedizierte Pop-out Ansicht (`StickyNotePopoutView.jsx`, `App.jsx`):* Schlankes, fokussiertes Mini-Fenster (`/?mode=sticky`) mit Post-It Design, Farbwahl, Multi-Notizen, Zeichenzähler und Cloud-Sync.
+  - *Always-on-Top:* Unterstützung für Browser Document Picture-in-Picture.
 
   - *Hardcoded Credentials entfernt:* Fallback-Keys aus `src/services/supabase.js` und `src/App.jsx` entfernt.
   - *DSGVO Git-Bereinigung:* `leads_master_harz.csv` und Backup sicher aus Git-Index entfernt (`git rm --cached`) und in `.gitignore` verankert.

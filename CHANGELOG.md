@@ -13,6 +13,19 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
   - **Row Level Security (RLS) & Policies aktiviert (Supabase Cloud):** RLS auf allen 8 Kern-Tabellen (`leads`, `contacts`, `dashboard_state`, `prompts`, `client_tickets`, `tasks`, `inbox`, `docs`) aktiviert. Anonymer Zugriff ist gesperrt, nur die Rolle `authenticated` hat Zugriff.
 
 ### Added
+- **🔄 Windows Desktop Notizzettel Cloud-Sync (Phase 2 & Option A Web-Popout):**
+  - **Live Supabase 2-Wege Synchronisation (`desktop-widget/FounderOS-StickyNote.ps1`):**
+    - Der native Windows Desktop Notizzettel synchronisiert sich jetzt vollautomatisch mit deiner Supabase-Datenbank (`dashboard_state`).
+    - **Initialer Cloud-Sync:** Beim Starten holt das Widget sofort deine bestehenden Notizen aus der Cloud ab.
+    - **Autosave in die Cloud:** Jede getippte Notiz wird nach 850 ms Pufferung (Debounce) in Millisekunden nach Supabase hochgeladen und aktualisiert `dash_notes`, `dash_notes_list` und `updated_at`.
+    - **Hintergrund-Polling (Handy ↔ PC):** Alle 25 Sekunden prüft das Desktop-Widget im Hintergrund, ob Notizen auf dem Smartphone oder im Web-Dashboard geändert wurden, und aktualisiert sich nahtlos, wenn der Nutzer gerade nicht selbst tippt.
+    - **Manuelle Synchronisation:** 1-Klick Aktualisieren über das Refresh-Icon `🔄` oben oder Klick auf die Fußzeile.
+  - **⭐ Option A: Web-Popout & Picture-in-Picture Modus (`StickyNotePopoutView.jsx`, `App.jsx`, `DashboardView.jsx`):**
+    - Neuer Button **„🗗 Auf Desktop lösen“** direkt am Notizzettel im Founder OS Dashboard (sowohl in der Kompakt- als auch in der Detailansicht).
+    - Öffnet mit einem Klick ein schlankes, fokussiertes Pop-out-Fenster (`/?mode=sticky`), das losgelöst vom Hauptbrowser auf dem Windows-Desktop positioniert werden kann.
+    - **Always-on-Top:** Unterstützt moderne *Document Picture-in-Picture*-Technologie (Chrome/Edge), um den Notizzettel über allen Arbeitsfenstern schweben zu lassen.
+    - Vollständiges Feature-Set: Farbwahl, Multi-Notizen, Notiz-Titel, Wort- und Zeichenzähler sowie Live Cloud-Sync.
+
 - **🚀 GoClean Harz Pilotprojekt & Onboarding-Zentrale im Founder OS Dashboard (`src/components/DashboardView.jsx`, `src/App.jsx`):**
   - **VIP-Banner auf dem Haupt-Dashboard:** Vollständig integrierte Steuerzentrale für Robins Pilotprojekt mit Bruder Marcel direkt im Founder OS.
   - **1-Klick Onboarding-Chatbot Start:** Wechselt sofort in die GoClean-Suite und öffnet direkt Tab 6 (`onboardingBot`).

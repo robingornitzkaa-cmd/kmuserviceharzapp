@@ -1,10 +1,10 @@
 # ==============================================================================
 # Founder OS - Windows Desktop Notizzettel (Sticky Note Widget)
 # ==============================================================================
-# Ein leichtgewichtiger, nativer Windows-Desktop-Notizzettel.
-# - Speichert automatisch lokal in 'notes-data.json'
-# - Unterstuetzt mehrere Notizen, Farben, Pin-to-Top (Immer im Vordergrund)
-# - Enthaelt eine vorbereitete Schnittstelle fuer die spaetere Supabase-Cloud-Sync
+# - 100% nativer Windows-WPF Notizzettel (Zero-Dependency)
+# - Lokale Persistenz in 'notes-data.json'
+# - Vollautomatische 2-Wege Cloud-Synchronisation mit Founder OS & Supabase
+# - Background-Polling: Änderungen vom Handy/Dashboard erscheinen automatisch
 # ==============================================================================
 
 param(
@@ -17,21 +17,37 @@ Add-Type -AssemblyName WindowsBase
 Add-Type -AssemblyName System.Windows.Forms
 
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-$DataFile = Join-Path $ScriptDir "notes-data.json"
-$EnvFile  = Join-Path (Split-Path -Parent $ScriptDir) ".env"
+$DataFile  = Join-Path $ScriptDir "notes-data.json"
+$EnvFile   = Join-Path (Split-Path -Parent $ScriptDir) ".env"
 
-# Unicode Symbole sicher definieren
+# Unicode Symbole
 $SymPinActive   = [char]::ConvertFromUtf32(0x1F4CC) # Pushpin
 $SymPinInactive = [char]::ConvertFromUtf32(0x1F4CD) # Round pushpin
 $SymTrash       = [char]::ConvertFromUtf32(0x1F5D1) # Wastebasket
 
 # ------------------------------------------------------------------------------
-# 1. Standard-Datenstruktur (Kompatibel mit Founder OS 'dash_notes_list')
+# 1. Supabase Konfiguration einlesen (.env)
+# ------------------------------------------------------------------------------
+function Get-SupabaseConfig {
+    $url = ""
+    $key = ""
+    if (Test-Path $EnvFile) {
+        Get-Content -Path $EnvFile | ForEach-Object {
+            if ($_ -match '^\s*VITE_SUPABASE_URL\s*=\s*(.+)$') { $url = $matches[1].Trim() }
+            if ($_ -match '^\s*VITE_SUPABASE_ANON_KEY\s*=\s*(.+)$') { $key = $matches[1].Trim() }
+        }
+    }
+    return @{ Url = $url; Key = $key }
+}
+
+# ------------------------------------------------------------------------------
+# 2. Standard-Datenstruktur (Kompatibel mit Founder OS 'dash_notes_list')
 # ------------------------------------------------------------------------------
 $DefaultState = @{
     version      = "1.0"
     activeNoteId = "note_1"
     isPinned     = $true
+    lastCloudSync = ""
     window       = @{
         left   = 120
         top    = 120
@@ -45,35 +61,29 @@ $DefaultState = @{
             content   = "Willkommen zu deinem Founder OS Desktop-Notizzettel!`n`n- Tippe hier deine Gedanken ein`n- Wechsel oben die Farbe`n- Klicke auf '+' fuer weitere Zettel`n- Pinne den Zettel mit der Nadel fest"
             color     = "#fef08a"
             updatedAt = (Get-Date).ToString("o")
-        },
-        @{
-            id        = "note_2"
-            title     = "Notiz 2: Tages-Fokus"
-            content   = "Top 3 Prioritaeten heute:`n1. `n2. `n3. "
-            color     = "#bfdbfe"
-            updatedAt = (Get-Date).ToString("o")
         }
     )
 }
 
 # ------------------------------------------------------------------------------
-# 2. Lokale Lade- und Speicherfunktionen (JSON)
+# 3. Lokale Speicherung (JSON)
 # ------------------------------------------------------------------------------
 function Load-LocalNotes {
     if (Test-Path $DataFile) {
         try {
             $json = Get-Content -Path $DataFile -Raw -Encoding UTF8 | ConvertFrom-Json
             $state = @{
-                version      = $json.version
-                activeNoteId = $json.activeNoteId
-                isPinned     = if ($null -ne $json.isPinned) { [bool]$json.isPinned } else { $true }
-                window       = @{
+                version       = $json.version
+                activeNoteId  = $json.activeNoteId
+                isPinned      = if ($null -ne $json.isPinned) { [bool]$json.isPinned } else { $true }
+                lastCloudSync = if ($json.lastCloudSync) { [string]$json.lastCloudSync } else { "" }
+                window        = @{
                     left   = if ($json.window.left) { [double]$json.window.left } else { 120 }
                     top    = if ($json.window.top) { [double]$json.window.top } else { 120 }
                     width  = if ($json.window.width) { [double]$json.window.width } else { 360 }
                     height = if ($json.window.height) { [double]$json.window.height } else { 430 }
                 }
-                notes        = [System.Collections.ArrayList]@()
+                notes         = [System.Collections.ArrayList]@()
             }
 
             foreach ($n in $json.notes) {
@@ -92,16 +102,17 @@ function Load-LocalNotes {
             }
             return $state
         } catch {
-            Write-Warning "Fehler beim Laden von notes-data.json. Verwende Standard-Werte."
+            Write-Warning "Fehler beim Laden von notes-data.json: $_"
         }
     }
     
     $state = @{
-        version      = $DefaultState.version
-        activeNoteId = $DefaultState.activeNoteId
-        isPinned     = $DefaultState.isPinned
-        window       = $DefaultState.window
-        notes        = [System.Collections.ArrayList]@($DefaultState.notes)
+        version       = $DefaultState.version
+        activeNoteId  = $DefaultState.activeNoteId
+        isPinned      = $DefaultState.isPinned
+        lastCloudSync = ""
+        window        = $DefaultState.window
+        notes         = [System.Collections.ArrayList]@($DefaultState.notes)
     }
     Save-LocalNotes $state
     return $state
@@ -119,22 +130,88 @@ function Save-LocalNotes ($stateToSave) {
 }
 
 # ------------------------------------------------------------------------------
-# 3. Vorbereitete Cloud-Sync-Schnittstelle (Phase 2 - Supabase Hook)
+# 4. Supabase Cloud-Synchronisation (2-Wege Sync)
 # ------------------------------------------------------------------------------
-function Sync-NotesWithCloud {
-    param(
-        [hashtable]$AppState,
-        [switch]$Force
-    )
-    return @{
-        Success = $true
-        Status  = "LocalReady"
-        Message = "Lokal gespeichert"
+function Sync-FromCloud {
+    param([bool]$Silent = $false)
+    $cfg = Get-SupabaseConfig
+    if (-not $cfg.Url -or -not $cfg.Key) { return $false }
+
+    try {
+        $headers = @{
+            'apikey'        = $cfg.Key
+            'Authorization' = "Bearer $($cfg.Key)"
+        }
+        $res = Invoke-RestMethod -Uri "$($cfg.Url)/rest/v1/dashboard_state?id=eq.main&select=id,updated_at,dash_notes_list,dash_notes,sticky_note_color" -Headers $headers -Method GET -TimeoutSec 6
+        if ($res -and $res.Count -gt 0) {
+            $cloudData = $res[0]
+            if ($cloudData.dash_notes_list -and $cloudData.dash_notes_list.Count -gt 0) {
+                $cloudList = [System.Collections.ArrayList]@()
+                foreach ($n in $cloudData.dash_notes_list) {
+                    [void]$cloudList.Add(@{
+                        id        = [string]$n.id
+                        title     = [string]$n.title
+                        content   = [string]$n.content
+                        color     = if ($n.color) { [string]$n.color } else { "#fef08a" }
+                        updatedAt = if ($n.updatedAt) { [string]$n.updatedAt } else { [string]$cloudData.updated_at }
+                    })
+                }
+
+                $script:AppState.notes = $cloudList
+                $script:AppState.lastCloudSync = (Get-Date).ToUniversalTime().ToString("o")
+                
+                # Prüfe aktive Notiz
+                $stillExists = $script:AppState.notes | Where-Object { $_.id -eq $script:AppState.activeNoteId }
+                if (-not $stillExists) {
+                    $script:AppState.activeNoteId = $script:AppState.notes[0].id
+                }
+
+                Save-LocalNotes $script:AppState
+                return $true
+            }
+        }
+    } catch {
+        if (-not $Silent) { Write-Warning "Fehler bei Sync-FromCloud: $_" }
+    }
+    return $false
+}
+
+function Save-ToCloud {
+    $cfg = Get-SupabaseConfig
+    if (-not $cfg.Url -or -not $cfg.Key) { return $false }
+
+    try {
+        $headers = @{
+            'apikey'        = $cfg.Key
+            'Authorization' = "Bearer $($cfg.Key)"
+            'Content-Type'  = 'application/json'
+            'Prefer'        = 'return=minimal'
+        }
+
+        $activeNote = Get-ActiveNote
+        $activeContent = if ($activeNote) { $activeNote.content } else { "" }
+        $activeColor   = if ($activeNote) { $activeNote.color } else { "#fef08a" }
+        $nowIso = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
+
+        $bodyObj = @{
+            dash_notes        = $activeContent
+            sticky_note_color = $activeColor
+            dash_notes_list   = $script:AppState.notes
+            updated_at        = $nowIso
+        }
+        $bodyJson = $bodyObj | ConvertTo-Json -Depth 6
+
+        [void](Invoke-RestMethod -Uri "$($cfg.Url)/rest/v1/dashboard_state?id=eq.main" -Headers $headers -Method PATCH -Body $bodyJson -TimeoutSec 8)
+        $script:AppState.lastCloudSync = $nowIso
+        return $true
+    } catch {
+        Write-Warning "Fehler bei Save-ToCloud: $_"
+        return $false
     }
 }
 
 # ------------------------------------------------------------------------------
-# 4. Farb-Definitionen (Post-it Palette)
+# 5. Farb-Definitionen (Post-it Palette)
 # ------------------------------------------------------------------------------
 $ColorMap = @{
     "#fef08a" = @{ Name = "Sonnengelb";   Bg = "#FEF08A"; Border = "#EAB308"; Text = "#1E293B" }
@@ -147,7 +224,7 @@ $ColorMap = @{
 }
 
 # ------------------------------------------------------------------------------
-# 5. XAML Benutzeroberflaeche (WPF)
+# 6. XAML Benutzeroberflaeche (WPF)
 # ------------------------------------------------------------------------------
 [xml]$xaml = @"
 <Window
@@ -231,9 +308,9 @@ $ColorMap = @{
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <!-- Brand Label -->
+                        <!-- Brand Label & Sync Icon -->
                         <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                            <TextBlock Text="&#x1F4CC;" FontSize="14" Margin="0,0,6,0"/>
+                            <TextBlock Text="&#x1F4CC;" FontSize="14" Margin="0,0,5,0"/>
                             <TextBlock Text="Founder OS" FontWeight="Bold" FontSize="13" Foreground="#1E293B" VerticalAlignment="Center"/>
                         </StackPanel>
 
@@ -249,6 +326,7 @@ $ColorMap = @{
 
                         <!-- Fenster-Steuerung -->
                         <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                            <Button x:Name="BtnSync" Style="{StaticResource HeaderBtn}" Content="🔄" FontSize="11" ToolTip="Jetzt mit Founder OS synchronisieren"/>
                             <Button x:Name="BtnPin" Style="{StaticResource HeaderBtn}" Content="&#x1F4CC;" ToolTip="Immer im Vordergrund (Pin)"/>
                             <Button x:Name="BtnMinimize" Style="{StaticResource HeaderBtn}" Content="&#x2014;" ToolTip="Minimieren"/>
                             <Button x:Name="BtnClose" Style="{StaticResource HeaderBtn}" Content="&#x2715;" ToolTip="Schliessen"/>
@@ -271,7 +349,7 @@ $ColorMap = @{
                         <!-- Notiz-Navigation & Aktionen -->
                         <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                             <Button x:Name="BtnPrevNote" Style="{StaticResource HeaderBtn}" Content="&#x25C0;" Width="22" Height="22" FontSize="10" ToolTip="Vorherige Notiz"/>
-                            <TextBlock x:Name="TxtNoteCounter" Text="1 / 2" FontSize="11" Foreground="#475569" VerticalAlignment="Center" Margin="4,0"/>
+                            <TextBlock x:Name="TxtNoteCounter" Text="1 / 1" FontSize="11" Foreground="#475569" VerticalAlignment="Center" Margin="4,0"/>
                             <Button x:Name="BtnNextNote" Style="{StaticResource HeaderBtn}" Content="&#x25B6;" Width="22" Height="22" FontSize="10" ToolTip="Naechste Notiz"/>
                             <Button x:Name="BtnAddNote" Style="{StaticResource HeaderBtn}" Content="+" Width="22" Height="22" FontSize="14" Margin="6,0,2,0" ToolTip="Neue Notiz hinzufuegen"/>
                             <Button x:Name="BtnDeleteNote" Style="{StaticResource HeaderBtn}" Content="&#x1F5D1;" Width="22" Height="22" FontSize="11" ToolTip="Diese Notiz loeschen"/>
@@ -293,7 +371,7 @@ $ColorMap = @{
                          Foreground="#1E293B"/>
 
                 <!-- 3. Footer Bar -->
-                <Border Grid.Row="3" Background="#10000000" CornerRadius="0,0,14,14" Padding="10,0">
+                <Border Grid.Row="3" Background="#10000000" CornerRadius="0,0,14,14" Padding="10,0" Cursor="Hand" x:Name="FooterBar" ToolTip="Klicken zum manuellen Synchronisieren">
                     <Grid VerticalAlignment="Center">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -303,7 +381,7 @@ $ColorMap = @{
                         <!-- Statusanzeige -->
                         <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
                             <Ellipse x:Name="StatusDot" Width="7" Height="7" Fill="#22C55E" Margin="0,0,5,0"/>
-                            <TextBlock x:Name="TxtStatus" Text="Lokal gespeichert" FontSize="11" Foreground="#475569"/>
+                            <TextBlock x:Name="TxtStatus" Text="☁️ Cloud synchron" FontSize="11" Foreground="#475569"/>
                         </StackPanel>
 
                         <!-- Wort- & Zeichenzaehler -->
@@ -317,7 +395,7 @@ $ColorMap = @{
 "@
 
 # ------------------------------------------------------------------------------
-# 6. Initialisierung und Event-Handling
+# 7. Initialisierung und Event-Handling
 # ------------------------------------------------------------------------------
 $reader = New-Object System.Xml.XmlNodeReader $xaml
 $window = [System.Windows.Markup.XamlReader]::Load($reader)
@@ -325,6 +403,7 @@ $window = [System.Windows.Markup.XamlReader]::Load($reader)
 # Elemente abrufen
 $mainBorder    = $window.FindName("MainBorder")
 $headerBar     = $window.FindName("HeaderBar")
+$footerBar     = $window.FindName("FooterBar")
 $txtTitle      = $window.FindName("TxtTitle")
 $txtContent    = $window.FindName("TxtContent")
 $txtCounter    = $window.FindName("TxtNoteCounter")
@@ -334,6 +413,7 @@ $txtCharCount  = $window.FindName("TxtCharCount")
 $btnPin        = $window.FindName("BtnPin")
 $btnMin        = $window.FindName("BtnMinimize")
 $btnClose      = $window.FindName("BtnClose")
+$btnSync       = $window.FindName("BtnSync")
 $btnPrev       = $window.FindName("BtnPrevNote")
 $btnNext       = $window.FindName("BtnNextNote")
 $btnAdd        = $window.FindName("BtnAddNote")
@@ -350,8 +430,15 @@ $btnDark   = $window.FindName("BtnColorDark")
 # Globaler Status
 $script:AppState = Load-LocalNotes
 $script:IsUpdatingUi = $false
+$script:LastUserKeystroke = [DateTime]::MinValue
+
+# Autosave-Timer (Debounce beim Tippen)
 $script:AutoSaveTimer = New-Object System.Windows.Threading.DispatcherTimer
-$script:AutoSaveTimer.Interval = [TimeSpan]::FromMilliseconds(750)
+$script:AutoSaveTimer.Interval = [TimeSpan]::FromMilliseconds(850)
+
+# Cloud-Polling-Timer (Hintergrund-Abgleich alle 25 Sekunden)
+$script:CloudPollTimer = New-Object System.Windows.Threading.DispatcherTimer
+$script:CloudPollTimer.Interval = [TimeSpan]::FromSeconds(25)
 
 # Funktion: Aktive Notiz ermitteln
 function Get-ActiveNote {
@@ -409,8 +496,9 @@ function Update-CharCount {
 # Autosave-Trigger (Debounce)
 function Trigger-AutoSave {
     if ($script:IsUpdatingUi) { return }
+    $script:LastUserKeystroke = [DateTime]::Now
     $statusDot.Fill = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#EAB308") # Gelb
-    $txtStatus.Text = "Speichert..."
+    $txtStatus.Text = "☁️ Synchronisiere..."
     $script:AutoSaveTimer.Stop()
     $script:AutoSaveTimer.Start()
 }
@@ -424,30 +512,67 @@ $script:AutoSaveTimer.Add_Tick({
         $note.updatedAt = (Get-Date).ToString("o")
     }
     
-    # Fensterposition mitmerken
+    # Fensterposition & Status merken
     $script:AppState.window.left = $window.Left
     $script:AppState.window.top = $window.Top
     $script:AppState.window.width = $window.Width
     $script:AppState.window.height = $window.Height
     $script:AppState.isPinned = $window.Topmost
 
-    $ok = Save-LocalNotes $script:AppState
-    if ($ok) {
+    # 1. Lokal speichern
+    Save-LocalNotes $script:AppState
+
+    # 2. In Supabase Cloud sichern
+    $cloudOk = Save-ToCloud
+    if ($cloudOk) {
         $statusDot.Fill = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#22C55E") # Gruen
-        $txtStatus.Text = "Lokal gespeichert " + (Get-Date).ToString("HH:mm:ss")
+        $txtStatus.Text = "Cloud synchron " + (Get-Date).ToString("HH:mm:ss")
     } else {
-        $statusDot.Fill = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#EF4444") # Rot
-        $txtStatus.Text = "Fehler beim Speichern"
+        $statusDot.Fill = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#F97316") # Orange
+        $txtStatus.Text = "Lokal (Cloud offline)"
+    }
+})
+
+# Polling Timer: Prüft ob in Founder OS oder auf dem Smartphone Änderungen vorliegen
+$script:CloudPollTimer.Add_Tick({
+    # Wenn der Nutzer gerade selbst tippt (letzter Tastenanschlag < 4 Sekunden), kein Auto-Refresh!
+    if (([DateTime]::Now - $script:LastUserKeystroke).TotalSeconds -lt 4) { return }
+    if ($txtContent.IsFocused) { return }
+
+    $cloudUpdated = Sync-FromCloud -Silent $true
+    if ($cloudUpdated) {
+        Render-ActiveNote
+        $statusDot.Fill = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#22C55E")
+        $txtStatus.Text = "Cloud aktualisiert " + (Get-Date).ToString("HH:mm:ss")
     }
 })
 
 # ------------------------------------------------------------------------------
-# 7. Event-Registrierungen
+# 8. Event-Registrierungen
 # ------------------------------------------------------------------------------
 
 # Verschieben des Fensters (Drag & Drop am Header)
 $headerBar.Add_MouseLeftButtonDown({
     $window.DragMove()
+})
+
+# Manuelle Synchronisation
+$btnSync.Add_Click({
+    $statusDot.Fill = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#EAB308")
+    $txtStatus.Text = "Pruefe Cloud..."
+    $ok = Sync-FromCloud
+    if ($ok) {
+        Render-ActiveNote
+        $statusDot.Fill = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#22C55E")
+        $txtStatus.Text = "Cloud synchron " + (Get-Date).ToString("HH:mm:ss")
+    } else {
+        $statusDot.Fill = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#F97316")
+        $txtStatus.Text = "Lokal (Cloud nicht erreichbar)"
+    }
+})
+
+$footerBar.Add_MouseLeftButtonDown({
+    $btnSync.RaiseEvent((New-Object System.Windows.RoutedEventArgs ([System.Windows.Controls.Button]::ClickEvent)))
 })
 
 # Pin / Always on Top umschalten
@@ -470,7 +595,6 @@ $btnMin.Add_Click({
 })
 
 $btnClose.Add_Click({
-    # Sofortiger letzter Save beim Schliessen
     $note = Get-ActiveNote
     if ($note) {
         $note.title = $txtTitle.Text
@@ -483,6 +607,7 @@ $btnClose.Add_Click({
     $script:AppState.window.height = $window.Height
     $script:AppState.isPinned = $window.Topmost
     Save-LocalNotes $script:AppState
+    Save-ToCloud
     $window.Close()
 })
 
@@ -570,7 +695,7 @@ $btnOrange.Add_Click({ Set-StickyColor "#fed7aa" })
 $btnDark.Add_Click({   Set-StickyColor "#1e293b" })
 
 # ------------------------------------------------------------------------------
-# 8. Start & Fenster-Wiederherstellung
+# 9. Start, Initial Cloud-Sync & Fenster-Wiederherstellung
 # ------------------------------------------------------------------------------
 if ($script:AppState.window) {
     $window.Left   = $script:AppState.window.left
@@ -588,7 +713,20 @@ if ($window.Topmost) {
     $btnPin.ToolTip = "Normales Fenster (Deaktiviert)"
 }
 
+# Initialer Sync-Versuch mit der Cloud
+$initialSyncOk = Sync-FromCloud -Silent $true
 Render-ActiveNote
+
+if ($initialSyncOk) {
+    $statusDot.Fill = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#22C55E")
+    $txtStatus.Text = "Mit Founder OS synchron"
+} else {
+    $statusDot.Fill = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#22C55E")
+    $txtStatus.Text = "Lokal gespeichert"
+}
+
+# Starte Hintergrund-Abgleich
+$script:CloudPollTimer.Start()
 
 # Fenster anzeigen
 [void]$window.ShowDialog()

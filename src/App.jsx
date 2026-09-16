@@ -116,6 +116,7 @@ import { PenaltyModal } from './components/PenaltyModal';
 import { BackupManagerModal } from './components/BackupManagerModal';
 import { NotificationCenterModal } from './components/NotificationCenterModal';
 import { DiagnosticLogModal } from './components/DiagnosticLogModal';
+import StickyNotePopoutView from './components/StickyNotePopoutView';
 import { 
   checkAndNotifyFollowUps, 
   checkAndNotifyDueTodos, 
@@ -4063,6 +4064,29 @@ Hier ist die Frage des Nutzers:
     sessionStorage.removeItem('f_app_authenticated');
     setIsAuthenticated(false);
   };
+
+  const isStickyPopout = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('mode') === 'sticky';
+
+  if (isStickyPopout) {
+    return (
+      <StickyNotePopoutView
+        dashNotes={dashNotes}
+        setDashNotes={setDashNotes}
+        dashNotesList={dashNotesList}
+        setDashNotesList={setDashNotesList}
+        stickyNoteColor={stickyNoteColor}
+        setStickyNoteColor={setStickyNoteColor}
+        activeNoteId={activeNoteId}
+        setActiveNoteId={setActiveNoteId}
+        handleCreateNote={handleCreateNote}
+        handleSelectNote={handleSelectNote}
+        handleUpdateActiveNote={handleUpdateActiveNote}
+        handleDeleteNote={handleDeleteNote}
+        supabaseSyncStatus={supabaseSyncStatus}
+        saveDashboardNow={saveDashboardNow}
+      />
+    );
+  }
 
   if (!isAuthenticated) {
     return (
