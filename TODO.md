@@ -1,5 +1,11 @@
 # TODO - Founder OS
 
+- [x] **🌐 [Website Preview Relaunch] Marken-Feinschliff & Handschlag-Versprechen (`WebsiteView.jsx`, `websiteContent.js`):**
+  - *Farbwahl entfernt:* Design-Umschalter und Dark-Mode-Toggle entfernt, Preview fest auf Hellgrün (`preset-harz mode-light`) fixiert.
+  - *Wording geschärft:* Konsistente Umstellung von „Büro-Sonntag“ auf „Büro-Wochenende“ (inkl. ROI-Rechner und freie Wochenenden).
+  - *Neuer Slogan:* „Harzer Handschlag-Versprechen“ (kein IT-Chinesisch, keine unberechenbaren Stundenhonorare, kein Software-Zwang) mit sauberem Zeilenumbruch.
+  - *Build & Tests:* 280 Tests bestanden, Vite-Build fehlerfrei.
+
 - [x] **⭐ [GoClean Pilotprojekt] Interaktive Vorschau-App für Marcel (`public/goclean_pilot_preview.html`):**
   - *Persönliche Botschaft:* Gründungsvision von KMU Service Harz, 100% kostenloses Pilotangebot & Hospitations-Wunsch („Über die Schulter schauen“).
   - *5 Interaktive Prototypen-Module:* 🤖 Onboarding-Chatbot (6-Fragen Express-Audit mit Score), 💬 WhatsApp-Assistent mit Live-Templates, 📱 Kundenportal mit Vorher/Nachher-Fotos, ⚡ 1-Klick-Rechnung mit Druckvorschau, 📅 Harz-Tagesplaner.

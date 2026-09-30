@@ -2,8 +2,6 @@ import React, { useState, useRef } from 'react';
 import { WEBSITE_CONTENT } from '../constants/websiteContent';
 import { 
   Globe, 
-  Sun, 
-  Moon, 
   CheckCircle2, 
   ArrowRight, 
   Calculator, 
@@ -38,7 +36,6 @@ import {
   RefreshCw,
   FolderSync,
   Compass,
-  Palette,
   Download,
   Copy,
   ExternalLink,
@@ -48,10 +45,9 @@ import {
 } from 'lucide-react';
 
 export const WebsiteView = () => {
-  // Theme Presets: 'harz' (Waldgrün & Bernstein), 'tech' (Schieferblau & Smaragd), 'industry' (Anthrazit & Orange)
-  const [themePreset, setThemePreset] = useState('harz');
-  // Contrast Mode: 'light' | 'dark'
-  const [contrastMode, setContrastMode] = useState('light');
+  // Theme fest verankert: 'harz' (Hellgrün) im Light-Modus
+  const themePreset = 'harz';
+  const contrastMode = 'light';
   
   // Subpage state: 'home' | 'services' | 'workflow' | 'roi' | 'about' | 'contact' | 'impressum' | 'privacy'
   const [activePage, setActivePage] = useState('home');
@@ -341,6 +337,7 @@ export const WebsiteView = () => {
     .hero-p {
       font-size: 1.15rem; color: var(--text-muted); max-width: 720px;
       margin: 0 auto 2rem; line-height: 1.6;
+      white-space: pre-line;
     }
     .hero-btn-group {
       display: flex; align-items: center; justify-content: center;
@@ -555,12 +552,6 @@ export const WebsiteView = () => {
       </nav>
 
       <div class="header-actions">
-        <div class="theme-picker">
-          <button class="theme-btn active" onclick="setTheme('harz')">🌲 Harz</button>
-          <button class="theme-btn" onclick="setTheme('tech')">⚡ Tech</button>
-          <button class="theme-btn" onclick="setTheme('industry')">🛠️ Industrie</button>
-        </div>
-        <button class="mode-toggle" onclick="toggleContrast()" title="Hell/Dunkel umschalten">🌓</button>
         <a href="#contact" class="btn-header-cta">Erstgespräch</a>
       </div>
     </div>
@@ -571,7 +562,7 @@ export const WebsiteView = () => {
     <div class="container">
       <span class="hero-pill">🛠️ ${WEBSITE_CONTENT.hero.badge}</span>
       <h1 class="hero-h1">
-        Schluss mit dem <span class="highlight-text">Büro-Sonntag.</span><br />
+        Schluss mit dem <span class="highlight-text">Büro-Wochenende.</span><br />
         Lautlose Belegerfassung für Handwerk & Mittelstand im Harz.
       </h1>
       <p class="hero-p">${WEBSITE_CONTENT.hero.subheadline}</p>
@@ -599,7 +590,7 @@ export const WebsiteView = () => {
       <div class="pain-grid">
         <div class="pain-card">
           <div class="pain-icon">📅</div>
-          <h3 class="pain-h3">Der zähe Büro-Sonntag</h3>
+          <h3 class="pain-h3">Das zähe Büro-Wochenende</h3>
           <p class="pain-p">Nach 50h Baustelleneinsatz verbringen Meister und Familie das Wochenende mit Quittungen, Belegen und Excel-Tabellen.</p>
         </div>
         <div class="pain-card">
@@ -729,7 +720,7 @@ export const WebsiteView = () => {
       <div class="sec-header">
         <span class="sec-badge">${WEBSITE_CONTENT.roiCalculator.badge}</span>
         <h2 class="sec-title">${WEBSITE_CONTENT.roiCalculator.title}</h2>
-        <p class="sec-subtitle">Berechnen Sie in 10 Sekunden, wie viele freie Sonntage Ihr Betrieb zurückgewinnt.</p>
+        <p class="sec-subtitle">Berechnen Sie in 10 Sekunden, wie viele freie Wochenenden Ihr Betrieb zurückgewinnt.</p>
       </div>
       <div class="roi-card">
         <div>
@@ -757,7 +748,7 @@ export const WebsiteView = () => {
         </div>
         <div class="roi-results-box">
           <span style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted);">IHRE GESCHÄTZTE ENTLASSUNG:</span>
-          <div class="sundays-big" id="res-sundays">ca. 24 freie Sonntage</div>
+          <div class="sundays-big" id="res-sundays">ca. 24 freie Wochenenden</div>
           <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">pro Jahr ohne Beleg-Chaos & Büroarbeit am Wochenende.</p>
           <div style="font-size: 0.95rem; font-weight: 700; margin-bottom: 1.2rem;">
             Monatlich eingespart: <span style="color: var(--primary);" id="res-hours">~16 Std.</span> | Wert: <span style="color: var(--accent);" id="res-euros">~10.560 € / Jahr</span>
@@ -936,7 +927,7 @@ export const WebsiteView = () => {
       const savedSundays = Math.min(48, Math.round((savedHours * 12) / 5));
       const savedEuros = Math.round(savedHours * 12 * wage);
 
-      document.getElementById('res-sundays').innerText = 'ca. ' + savedSundays + ' freie Sonntage';
+      document.getElementById('res-sundays').innerText = 'ca. ' + savedSundays + ' freie Wochenenden';
       document.getElementById('res-hours').innerText = '~' + savedHours + ' Std.';
       document.getElementById('res-euros').innerText = '~' + savedEuros.toLocaleString('de-DE') + ' € / Jahr';
     }
@@ -997,51 +988,8 @@ export const WebsiteView = () => {
             ))}
           </nav>
 
-          {/* Actions & 3-Theme Presets Switcher */}
+          {/* Actions & Export */}
           <div className="web-header-actions">
-            
-            {/* 3-Theme Preset Selector */}
-            <div className="theme-preset-pills" title="Farb- & Designwelt wechseln">
-              <span className="preset-label">
-                <Palette size={13} />
-                <span className="preset-label-text">Design:</span>
-              </span>
-              <button
-                type="button"
-                className={`preset-btn ${themePreset === 'harz' ? 'active' : ''}`}
-                onClick={() => setThemePreset('harz')}
-                title="Harz & Handwerk (Waldgrün & Bernstein)"
-              >
-                🌲 Harz
-              </button>
-              <button
-                type="button"
-                className={`preset-btn ${themePreset === 'tech' ? 'active' : ''}`}
-                onClick={() => setThemePreset('tech')}
-                title="Modernes Tech-Handwerk (Schieferblau & Smaragd)"
-              >
-                ⚡ Tech
-              </button>
-              <button
-                type="button"
-                className={`preset-btn ${themePreset === 'industry' ? 'active' : ''}`}
-                onClick={() => setThemePreset('industry')}
-                title="Industrie & Klarheit (Anthrazit & Orange)"
-              >
-                🛠️ Industrie
-              </button>
-            </div>
-
-            {/* Light / Dark Mode Toggle */}
-            <button 
-              type="button" 
-              className="theme-mode-btn"
-              onClick={() => setContrastMode(contrastMode === 'light' ? 'dark' : 'light')}
-              title={contrastMode === 'light' ? 'Dunklen Modus aktivieren' : 'Hellen Modus aktivieren'}
-            >
-              {contrastMode === 'light' ? <Moon size={16} /> : <Sun size={16} />}
-            </button>
-
             {/* 🚀 EXPORT & LIVE-SCHALTUNG BUTTON */}
             <button
               type="button"
@@ -1091,7 +1039,7 @@ export const WebsiteView = () => {
                 </div>
 
                 <h1 className="hero-headline">
-                  Schluss mit dem <span className="highlight-text">Büro-Sonntag.</span><br />
+                  Schluss mit dem <span className="highlight-text">Büro-Wochenende.</span><br />
                   Lautlose digitale Workflows für Handwerk & Mittelstand im Harz.
                 </h1>
 
@@ -1382,7 +1330,7 @@ export const WebsiteView = () => {
               </div>
             </section>
 
-            {/* 6. INTERAKTIVER BÜRO-SONNTAG-RECHNER */}
+            {/* 6. INTERAKTIVER BÜRO-WOCHENENDE-RECHNER */}
             <section className="section-padding roi-section" id="roi-section">
               <div className="section-header text-center">
                 <span className="sec-badge">{WEBSITE_CONTENT.roiCalculator.badge}</span>
@@ -1475,7 +1423,7 @@ export const WebsiteView = () => {
                       <Calendar size={28} />
                     </div>
                     <div>
-                      <div className="sundays-number">ca. {savedSundaysPerYear} freie Sonntage</div>
+                      <div className="sundays-number">ca. {savedSundaysPerYear} freie Wochenenden</div>
                       <div className="sundays-desc">pro Jahr ohne Büro-Arbeit & Zettelstapel</div>
                     </div>
                   </div>
@@ -1499,7 +1447,7 @@ export const WebsiteView = () => {
                   <button 
                     type="button" 
                     className="btn-primary-glow w-full"
-                    onClick={() => selectPackageForContact(`Potenzial berechnet (${savedSundaysPerYear} Sonntage, ~${yearlyEuroSaved.toLocaleString('de-DE')} €/Jahr)`)}
+                    onClick={() => selectPackageForContact(`Potenzial berechnet (${savedSundaysPerYear} Wochenenden, ~${yearlyEuroSaved.toLocaleString('de-DE')} €/Jahr)`)}
                   >
                     <span>Ergebnis im Erstgespräch besprechen</span>
                     <ArrowRight size={16} />
@@ -1909,13 +1857,13 @@ export const WebsiteView = () => {
         )}
 
         {/* ========================================================================= */}
-        {/* 🧮 SUBPAGE: BÜRO-SONNTAG-RECHNER */}
+        {/* 🧮 SUBPAGE: BÜRO-WOCHENENDE-RECHNER */}
         {/* ========================================================================= */}
         {activePage === 'roi' && (
           <div className="page-fade-in subpage-container">
             <div className="subpage-header text-center">
               <span className="sec-badge">INTERAKTIVER RECHNER</span>
-              <h1>Büro-Sonntag- & Zeitersparnis-Rechner</h1>
+              <h1>Büro-Wochenende- & Zeitersparnis-Rechner</h1>
               <p className="subpage-lead">{WEBSITE_CONTENT.roiCalculator.subtitle}</p>
             </div>
 
@@ -1977,7 +1925,7 @@ export const WebsiteView = () => {
                 <div className="sundays-highlight-card">
                   <div className="sundays-icon"><Calendar size={28} /></div>
                   <div>
-                    <div className="sundays-number">ca. {savedSundaysPerYear} freie Sonntage</div>
+                    <div className="sundays-number">ca. {savedSundaysPerYear} freie Wochenenden</div>
                     <div className="sundays-desc">pro Jahr ohne Büroarbeit</div>
                   </div>
                 </div>
@@ -1996,7 +1944,7 @@ export const WebsiteView = () => {
                 <button 
                   type="button" 
                   className="btn-primary-glow w-full"
-                  onClick={() => selectPackageForContact(`Potenzial berechnet (${savedSundaysPerYear} Sonntage)`)}
+                  onClick={() => selectPackageForContact(`Potenzial berechnet (${savedSundaysPerYear} Wochenenden)`)}
                 >
                   <span>Ergebnis im Erstgespräch besprechen</span>
                   <ArrowRight size={16} />
@@ -2868,6 +2816,7 @@ export const WebsiteView = () => {
           max-width: 780px;
           margin: 0 auto 2.25rem;
           line-height: 1.6;
+          white-space: pre-line;
         }
 
         .hero-cta-group {

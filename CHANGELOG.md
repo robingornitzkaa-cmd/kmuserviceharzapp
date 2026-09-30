@@ -4,6 +4,14 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 
 ## [Unreleased]
 
+### Changed & Refined
+- **🌐 Website Preview & Branding-Feinschliff (`WebsiteView.jsx`, `websiteContent.js`, `public/website-export/index.html`):**
+  - **Farbwahl-Option entfernt & auf Hellgrün fixiert:** Die interaktiven Design-Umschalter (Pills für Harz, Tech, Industrie sowie der Hell/Dunkel-Modus-Toggle) wurden aus der Kopfzeile entfernt. Die Website ist nun fest und einheitlich im hellgrünen Natur-Design (`preset-harz mode-light`) verankert.
+  - **Begriffsanpassung „Büro-Sonntag“ ➔ „Büro-Wochenende“:** An sämtlichen Stellen (Navigation, Hero-Überschrift, Pain-Points, ROI- und Zeitersparnis-Rechner, Kennzahlen, Fließtexte) wurde die Formulierung konsistent auf „Büro-Wochenende“ bzw. „freie Wochenenden“ umgestellt.
+  - **Neuer regionaler Leit-Slogan (Das Harzer Handschlag-Versprechen):** Der Hero-Slogan wurde um das vertrauensstiftende Handschlag-Versprechen geschärft:
+    > *„Wir befreien Betriebe von manueller Zettelwirtschaft, Beleg-Chaos und doppelter Datenerfassung. 🤝 Das Harzer Handschlag-Versprechen: Wir sprechen kein IT-Chinesisch, verlangen keine unberechenbaren Stundenhonorare und zwingen Ihnen keine neue Software auf.“*
+  - **Typografie & Umbrüche optimiert:** `white-space: pre-line` sorgt in der Hero-Subline für einen sauberen, lesefreundlichen Zeilenumbruch direkt vor den Versprechenspunkten.
+
 ### Fixed & Security
 - **🛡️ AppSec-Härtung (Secrets Management & DSGVO-Schutz):**
   - **Hardcoded Credentials entfernt (`src/services/supabase.js`, `src/App.jsx`):** Statische Supabase URL- und JWT-Anon-Key-Fallbacks aus dem JavaScript-Quellcode entfernt. Die Anwendung lädt Verbindungsdaten nun ausschließlich aus Umgebungsvariablen (`.env`).

@@ -2,7 +2,7 @@ export const WEBSITE_CONTENT = {
   brand: {
     name: "KMU Service Harz UG (haftungsbeschränkt) i.G.",
     shortName: "KMU Service Harz",
-    claim: "Schluss mit dem Büro-Sonntag. Lautlose Belegerfassung & DATEV-Übergabe für Handwerk & Mittelstand im Harz.",
+    claim: "Schluss mit dem Büro-Wochenende. Lautlose Belegerfassung & DATEV-Übergabe für Handwerk & Mittelstand im Harz.",
     positioning: "Der Handwerker für digitale Infrastruktur",
     subtitle: "Wir befreien kleine Betriebe von Zettelwirtschaft, Beleg-Chaos und doppelter Buchhaltungsarbeit.",
     owner: "Robin Gornitzka",
@@ -17,7 +17,7 @@ export const WEBSITE_CONTENT = {
     { id: "home", label: "Startseite" },
     { id: "services", label: "Preise & Angebote" },
     { id: "workflow", label: "So funktioniert's" },
-    { id: "roi", label: "Büro-Sonntag-Rechner" },
+    { id: "roi", label: "Büro-Wochenende-Rechner" },
     { id: "about", label: "Über uns" },
     { id: "contact", label: "Erstgespräch buchen" },
     { id: "impressum", label: "Impressum" },
@@ -25,10 +25,10 @@ export const WEBSITE_CONTENT = {
   ],
   hero: {
     badge: "🛠️ Der Handwerker für digitale Infrastruktur",
-    headline: "Schluss mit dem Büro-Sonntag: Lautlose Belegerfassung für Handwerk & Mittelstand im Harz.",
-    subheadline: "Wir befreien Betriebe von manueller Zettelwirtschaft, Beleg-Chaos und doppelter Datenerfassung. Ihre bestehenden Programme bleiben – wir verbinden WhatsApp, E-Mail, Lexoffice und DATEV nahtlos.",
+    headline: "Schluss mit dem Büro-Wochenende: Lautlose Belegerfassung für Handwerk & Mittelstand im Harz.",
+    subheadline: "Wir befreien Betriebe von manueller Zettelwirtschaft, Beleg-Chaos und doppelter Datenerfassung. 🤝 Das Harzer Handschlag-Versprechen:\nWir sprechen kein IT-Chinesisch, verlangen keine unberechenbaren Stundenhonorare und zwingen Ihnen keine neue Software auf.",
     ctaPrimary: "Kostenloses 15-Min. Erstgespräch sichern",
-    ctaSecondary: "Einsparpotenzial & Sonntage berechnen",
+    ctaSecondary: "Einsparpotenzial & Wochenenden berechnen",
     trustBadges: [
       "🛡️ 100 % DSGVO & EU-Server",
       "📍 Vor Ort im Landkreis Goslar & Harz",
@@ -44,7 +44,7 @@ export const WEBSITE_CONTENT = {
     items: [
       {
         icon: "calendar-x",
-        problem: "Der zähe „Büro-Sonntag“",
+        problem: "Das zähe „Büro-Wochenende“",
         description: "Nach 50 Stunden Einsatz auf der Baustelle verbringen Meister und Familie das Wochenende mit Rechnungen, Stundenzetteln und Ablage."
       },
       {
@@ -202,7 +202,7 @@ export const WEBSITE_CONTENT = {
       { value: "6+ Std.", label: "Zeitersparnis pro Woche", sub: "Gewonnene Feierabende" },
       { value: "0", label: "Zettelstapel am Monatsende", sub: "100 % digitalisiert" },
       { value: "100 %", label: "GoBD- & DATEV-konform", sub: "Revisionssicher" },
-      { value: "100 %", label: "Freie Wochenenden", sub: "Kein Büro-Sonntag mehr" }
+      { value: "100 %", label: "Freie Wochenenden", sub: "Kein Büro-Wochenende mehr" }
     ],
     beforeAfter: {
       before: {
@@ -248,8 +248,8 @@ export const WEBSITE_CONTENT = {
   },
   roiCalculator: {
     badge: "INTERAKTIVER WIRTSCHAFTLICHKEITS-CHECK",
-    title: "Büro-Sonntag- & Zeitersparnis-Rechner",
-    subtitle: "Berechnen Sie in 10 Sekunden, wie viele freie Sonntage und Arbeitsstunden Ihr Betrieb zurückgewinnt.",
+    title: "Büro-Wochenende- & Zeitersparnis-Rechner",
+    subtitle: "Berechnen Sie in 10 Sekunden, wie viele freie Wochenenden und Arbeitsstunden Ihr Betrieb zurückgewinnt.",
     defaults: {
       employees: 5,
       receiptsPerWeek: 35,
@@ -283,7 +283,7 @@ export const WEBSITE_CONTENT = {
     badge: "REGIONAL & BODENSTÄNDIG",
     title: "Über KMU Service Harz",
     subtitle: "Der Handwerker für digitale Infrastruktur aus Langelsheim",
-    story: "Als regionaler Partner mit Sitz in Langelsheim kenne ich die Herausforderungen des Mittelstands und Handwerks im Harz ganz genau. Wir verkaufen Ihnen keine teuren Luftschlösser oder unverständliches IT-Berater-Chinesisch. Stattdessen bauen wir stabile, verlässliche Brücken zwischen Ihren bestehenden Programmen – damit Sie sonntags frei haben und sich auf Ihr Handwerk konzentrieren können.",
+    story: "Als regionaler Partner mit Sitz in Langelsheim kenne ich die Herausforderungen des Mittelstands und Handwerks im Harz ganz genau. Wir verkaufen Ihnen keine teuren Luftschlösser oder unverständliches IT-Berater-Chinesisch. Stattdessen bauen wir stabile, verlässliche Brücken zwischen Ihren bestehenden Programmen – damit Sie am Wochenende frei haben und sich auf Ihr Handwerk konzentrieren können.",
     ownerName: "Robin Gornitzka",
     ownerRole: "Gründer & Geschäftsführer",
     location: "38685 Langelsheim / Wirtschaftsregion Harz",
@@ -334,7 +334,7 @@ export const WEBSITE_CONTENT = {
   ],
   contact: {
     badge: "UNVERBINDLICHES ERSTGESPRÄCH",
-    title: "Lassen Sie uns gemeinsam den Büro-Sonntag abschaffen",
+    title: "Lassen Sie uns gemeinsam das Büro-Wochenende abschaffen",
     subtitle: "Vereinbaren Sie jetzt ein unverbindliches 15-Minuten-Telefonat oder wählen Sie direkt Ihr Wunschpaket.",
     formHeading: "Erstgespräch anfragen",
     fields: {

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>KMU Service Harz – Digitale Belegerfassung & Schnittstellen für Handwerk & Mittelstand</title>
-  <meta name="description" content="Schluss mit dem Büro-Sonntag: Wir digitalisieren Ihre Belegerfassung und Buchhaltungsvorbereitung (DATEV, Lexoffice) für Handwerksbetriebe im Harz." />
+  <meta name="description" content="Schluss mit dem Büro-Wochenende: Wir digitalisieren Ihre Belegerfassung und Buchhaltungsvorbereitung (DATEV, Lexoffice) für Handwerksbetriebe im Harz." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -204,6 +204,7 @@
     .hero-p {
       font-size: 1.15rem; color: var(--text-muted); max-width: 720px;
       margin: 0 auto 2rem; line-height: 1.6;
+      white-space: pre-line;
     }
     .hero-btn-group {
       display: flex; align-items: center; justify-content: center;
@@ -400,12 +401,6 @@
       </nav>
 
       <div class="header-actions">
-        <div class="theme-picker">
-          <button class="theme-btn active" onclick="setTheme('harz')">🌲 Harz</button>
-          <button class="theme-btn" onclick="setTheme('tech')">⚡ Tech</button>
-          <button class="theme-btn" onclick="setTheme('industry')">🛠️ Industrie</button>
-        </div>
-        <button class="mode-toggle" onclick="toggleContrast()" title="Hell/Dunkel umschalten">🌓</button>
         <a href="#contact" class="btn-header-cta">Erstgespräch</a>
       </div>
     </div>
@@ -416,10 +411,11 @@
     <div class="container">
       <span class="hero-pill">🛠️ REGIONAL IM HARZ & LANDKREIS GOSLAR</span>
       <h1 class="hero-h1">
-        Schluss mit dem <span class="highlight-text">Büro-Sonntag.</span><br />
+        Schluss mit dem <span class="highlight-text">Büro-Wochenende.</span><br />
         Lautlose Belegerfassung für Handwerk & Mittelstand im Harz.
       </h1>
-      <p class="hero-p">Wir digitalisieren und automatisieren Ihre Belegerfassung, Rechnungsverarbeitung und DATEV-Vorkontierung. Keine Software-Schulungen, keine Zettelwirtschaft – Ihre Mitarbeiter fotografieren Belege einfach mobil, der Rest läuft vollautomatisch.</p>
+      <p class="hero-p">Wir befreien Betriebe von manueller Zettelwirtschaft, Beleg-Chaos und doppelter Datenerfassung. 🤝 Das Harzer Handschlag-Versprechen:
+Wir sprechen kein IT-Chinesisch, verlangen keine unberechenbaren Stundenhonorare und zwingen Ihnen keine neue Software auf.</p>
       <div class="hero-btn-group">
         <a href="#contact" class="btn-primary-glow">Kostenloses Erstgespräch anfragen →</a>
         <a href="#roi" class="btn-secondary-outline">🧮 Zeitersparnis berechnen</a>
@@ -444,7 +440,7 @@
       <div class="pain-grid">
         <div class="pain-card">
           <div class="pain-icon">📅</div>
-          <h3 class="pain-h3">Der zähe Büro-Sonntag</h3>
+          <h3 class="pain-h3">Das zähe Büro-Wochenende</h3>
           <p class="pain-p">Nach 50h Baustelleneinsatz verbringen Meister und Familie das Wochenende mit Quittungen, Belegen und Excel-Tabellen.</p>
         </div>
         <div class="pain-card">
@@ -574,7 +570,7 @@
       <div class="sec-header">
         <span class="sec-badge">ZEITERSPARNIS RECHNER</span>
         <h2 class="sec-title">Was kostet Sie der Papierkram wirklich?</h2>
-        <p class="sec-subtitle">Berechnen Sie in 10 Sekunden, wie viele freie Sonntage Ihr Betrieb zurückgewinnt.</p>
+        <p class="sec-subtitle">Berechnen Sie in 10 Sekunden, wie viele freie Wochenenden Ihr Betrieb zurückgewinnt.</p>
       </div>
       <div class="roi-card">
         <div>
@@ -602,7 +598,7 @@
         </div>
         <div class="roi-results-box">
           <span style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted);">IHRE GESCHÄTZTE ENTLASSUNG:</span>
-          <div class="sundays-big" id="res-sundays">ca. 24 freie Sonntage</div>
+          <div class="sundays-big" id="res-sundays">ca. 24 freie Wochenenden</div>
           <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">pro Jahr ohne Beleg-Chaos & Büroarbeit am Wochenende.</p>
           <div style="font-size: 0.95rem; font-weight: 700; margin-bottom: 1.2rem;">
             Monatlich eingespart: <span style="color: var(--primary);" id="res-hours">~16 Std.</span> | Wert: <span style="color: var(--accent);" id="res-euros">~10.560 € / Jahr</span>
@@ -781,7 +777,7 @@
       const savedSundays = Math.min(48, Math.round((savedHours * 12) / 5));
       const savedEuros = Math.round(savedHours * 12 * wage);
 
-      document.getElementById('res-sundays').innerText = 'ca. ' + savedSundays + ' freie Sonntage';
+      document.getElementById('res-sundays').innerText = 'ca. ' + savedSundays + ' freie Wochenenden';
       document.getElementById('res-hours').innerText = '~' + savedHours + ' Std.';
       document.getElementById('res-euros').innerText = '~' + savedEuros.toLocaleString('de-DE') + ' € / Jahr';
     }
