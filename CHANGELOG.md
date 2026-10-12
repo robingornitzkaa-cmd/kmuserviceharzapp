@@ -21,6 +21,13 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
   - **Row Level Security (RLS) & Policies aktiviert (Supabase Cloud):** RLS auf allen 8 Kern-Tabellen (`leads`, `contacts`, `dashboard_state`, `prompts`, `client_tickets`, `tasks`, `inbox`, `docs`) aktiviert. Anonymer Zugriff ist gesperrt, nur die Rolle `authenticated` hat Zugriff.
 
 ### Added
+- **🏷️ Schablonenfreie Top-10-Markennamen-Strategie für Handwerk & KMU (`DOCS/Markennamen_Strategie_Schablonenfrei_Top10.md`):**
+  - **4-Stufen Naming-Architektur ohne starre Begriffs-Schablonen:** Vollständig frei von erzwungenen Metaphern (`Werk`, `Schmiede`, `Lotse`, `Bank`) und strikter Ausschluss aller 10 Namen aus Runde 1.
+  - **Schritt 1 (Strategische Reflexion) & Schritt 2 (Freies Brainstorming):** Psychologische Analyse der Zielgruppe (Meister im Handwerk & operative Büroleitung bei 1–20 MA), Vermeidung sprachlicher Fallen (Handwerks-Nostalgie, IT-Anglizismen, Amtsdeutsch) und Exploration über vier Denk- und Klangrichtungen (A: Nutzen/Ergebnis, B: Funktion/Sachlichkeit, C: Neologismen, D: Alltagsbildhafte Begriffe).
+  - **Schritt 3 (Auslese & Härtetest-Filter):** Dokumentierte Ausschlussprüfung mit Negativbeispielen (Meister-Test, Telefon-Test bei 80 dB Baustellenlärm, Rechnungs-/Kanzlei-Test für Einzelunternehmen `[Marke] – Inh. Robin Gornitzka`, Negativ-Filter für IT-Buzzwords und Schablonen).
+  - **Schritt 4 (Top-10-Tableau & Verteilung):** Ausgewogene Auswahl (3x Richtung A: **Klarstand**, **Freikopf**, **Bürofrieden**; 2x Richtung B: **Bürologik**, **Kernprozess**; 3x Richtung C: **Praxos**, **Ordonis**, **Valido**; 2x Richtung D: **Hebelpunkt**, **Gleichlauf**). Alle Claims <= 5 Wörter, vollständige markenpsychologische Begründungen und modulare Varianten mit Harz.
+  - **Automatisierte Qualitätssicherung:** Vollständige Test-Abdeckung durch `verify_schablonenfrei_top10.py` und `verify_competitor_collisions_schablonenfrei.py` (0 verbotene Schablonen, 0 IT-Anglizismen, alle Claims <= 5 Wörter, 0 Wiederholungen aus Runde 1, 0 Kollisionen mit 23+ regionalen und DACH-Wettbewerbern).
+
 - **🏷️ Top-10-Markennamen-Strategie & B2B-Positionierung (Iteration 2 – Bereinigtes Tableau) (`DOCS/Markennamen_Strategie_Top10.md`):**
   - **4-Stufen Naming-Architektur für Handwerk & KMU im Harz:**
     - *Schritt 1 (Kontext-Extraktion):* 3 prägnante Kernsätze zu Geschäftsmodell (No-Code Automatisierung & GoBD/E-Rechnung zum Festpreis), Zielgruppe (Meister & operative Koordinatorinnen 1–20 MA) und Tonalität (Augenhöhe, hemdsärmelig, 0% IT-Chinesisch) exakt beibehalten.

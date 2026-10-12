@@ -1,5 +1,12 @@
 # TODO - Founder OS
 
+- [x] **🏷️ [Markenstrategie & Naming] Schablonenfreie Top-10-Markennamen-Strategie (`DOCS/Markennamen_Strategie_Schablonenfrei_Top10.md`):**
+  - *Vierstufiger Naming-Prozess ohne Schablonen:* Vollständig befreit von starren Metaphern (`Werk`, `Schmiede`, `Lotse`, `Bank`) und unter striktem Ausschluss aller 10 Namen aus Runde 1.
+  - *Schritt 1 (Strategische Reflexion) & Schritt 2 (Brainstorming in 4 Richtungen):* Analyse psychologischer Wirkung und sprachlicher Fallen; breites Spektrum über Nutzen-Klarheit, funktionale Namen, Neologismen und alltagsbildhafte Begriffe.
+  - *Schritt 3 (4 Härtetest-Filter) & Schritt 4 (Top-10-Tableau):* Dokumentierte Auslese mit Negativbeispielen (Meister-, Telefon-, Rechnungs- und Buzzword-Filter).
+  - *Top-10-Tableau (Ausgewogene Verteilung):* 3x Richtung A (**Klarstand**, **Freikopf**, **Bürofrieden**), 2x Richtung B (**Bürologik**, **Kernprozess**), 3x Richtung C (**Praxos**, **Ordonis**, **Valido**), 2x Richtung D (**Hebelpunkt**, **Gleichlauf**). Alle Claims <= 5 Wörter, modulare Harz-Varianten und sinnvolle .de-Domainansätze.
+  - *Qualitätssicherung (`verify_schablonenfrei_top10.py` & `verify_competitor_collisions_schablonenfrei.py`):* 100% bestanden (0 verbotene Schablonen, 0 IT-Anglizismen, 0 Wiederholungen aus Runde 1, 0 Kollisionen mit 23+ regionalen und Benchmark-Wettbewerbern).
+
 - [x] **🏷️ [Markenstrategie & Naming] Top-10-Markennamen-Strategie (Iteration 2 – Bereinigtes Tableau) (`DOCS/Markennamen_Strategie_Top10.md`):**
   - *4-Stufige Naming-Entwicklung:* Kontext-Extraktion (3 Sätze), Semantische Exploration (30 Begriffe in 4 Feldern), 4-Stufen-Härtetest mit detaillierter Negativ-Dokumentation (Ausschluss von Klarwerk, Taktos, Ablaufwerk, Bürofreiraum, Taktgewinn, Werkablauf).
   - *Top 10 Matrix (Bereinigt & Kollisionsfrei):* Exakte Verteilung (3x Handwerk/Pragmatismus, 3x Nutzen/Ergebnis, 2x Kunstwort/Abstraktion, 2x Hybride Modelle): Prozesswerk, Büroschmiede, Flusswerk; Klarzeit, Ruhetakt, Freitakt; Klaros, Struktus; Taktwerk, Ruhewerk. Alle Claims <= 5 Wörter, vollständige markenpsychologische Begründungen.
