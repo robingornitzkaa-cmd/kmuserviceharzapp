@@ -132,6 +132,22 @@ Die Anwendung zeichnet sich durch ein futuristisches "Glassmorphic Dark Theme" a
 - **Kunden-Akte (Drawer):** Drawer mit kundenbezogenen Notizen, verlinkten Dokumenten und lückenloser Aktivitätshistorie.
 - **Projekt-Tracker & Time-Tracking:** Live-Stoppuhr zur Rentabilitätsberechnung (effektiver Stundensatz) mit Farbindikatoren (Rot/Gelb/Grün).
 
+### 3b. 🎙️ Customer-Discovery & Positionierungs-Validierung (15–20 Min Interviews) -- *NEU!*
+- **Eigene Discovery-Kontaktliste & Multi-Upload (`src/components/CustomerDiscoveryView.jsx`):**
+  - Datei-Upload für `.csv`, `.json` und `.txt` Dateien, schneller Copy-Paste-Import, manuelle Einzelanlage sowie 1-Klick-Übernahme der bestehenden 90 Kaltakquise-Leads.
+- **Geführtes 6-Phasen Telefon- & Interview-Cockpit (inkl. 15–20 Min Stoppuhr):**
+  - **Phase 1 (Der Telefon-Türöffner):** Personalisiertes Skript („Gründer-Bonus“) mit 3 klickbaren Ausweichrouten (*„Schießen Sie los im Auto“*, *„Keine Zeit“* mit 07:15/Freitag-13:00-Konter, *„Worum geht’s denn?“*).
+  - **Phase 2 (Framing & Betriebskontext):** Schnelleingabe von Gewerk, Mitarbeiterzahl (Feld/Büro), Büro-Zuständigkeit und bestehender Software.
+  - **Phase 3 (Die Diagnose-Weiche – Pfade A bis E & Reframing):** Interaktive Weiche für alle 5 Erkundungs-Pfade (*Pfad A: Rechnungen/DATEV*, *Pfad B: Kundenfront/Termine*, *Pfad C: Kundenportal/Status*, *Pfad D: Baustellendoku/Fotos*, *Pfad E: Zeiterfassung/Lohn*), Ausweichroute bei „Rechnungen laufen schon in 5 Min“, wörtliches Zitat-Feld und Zauberstab-Abschlussfrage.
+  - **Phase 4 (Zielgerichteter Lösungs-Pitch):** Hebt automatisch den exakt passenden Lösungs-Pitch zum gewählten Engpass-Pfad hervor + Brückenschlag zum 60–90-minütigen Büro-Audit.
+  - **Phase 5 (Kritisches Feedback, Einwände & 500-€-Audit-Preistest):** Realitäts-Check, Einwand-Schnell-Tags und Preistest-Erfassung (`500 € problemlos`, `200–300 € Schmerzgrenze`, `Nur kostenfrei` + exakter Euro-Betrag).
+  - **Phase 6 (Verbindlicher Abschluss & Multiplikator):** Warm-Lead Wiedervorlage nach Gewerbeanmeldung sichern + 1-Klick-Button, um genannte Empfehlungs-Betriebe direkt als neuen Kontakt anzulegen.
+- **📅 Integrierter Kalender-Terminplaner:**
+  - Schnellwahl-Buttons (*„Morgen 07:15 Uhr vor Baustelle“*, *„Freitag 13:00 Uhr“*) + freie Datums-/Uhrzeitwahl.
+  - Speichert Interview-Termine direkt im **Founder-OS-Kalender** (inkl. 15-Min-Vorab-Push & Android-Widget), öffnet auf Wunsch eine fertige **Google-Kalender-Vorlage** oder lädt eine **`.ics`-Kalenderdatei** herunter.
+- **📊 Validierungs-Radar & CRM-Protokollbogen:**
+  - Live-Statistik über alle Interviews (Engpass-Ranking Pfad A–E, 500-€-Audit-Zuspruch, vereinbarte Termine & Warm-Leads) sowie 1-Klick Export als Markdown in den Wissens-Hub, Übernahme ins Haupt-CRM und CSV-Gesamtexport für den Gründungscoach.
+
 ### 4. Kunden-Onboarding (Gesprächsleitfäden) -- *NEU!*
 - **Wizard-Ansicht:** Schritt-für-Schritt Abarbeitung des KMU-Service Harz Master Playbooks (10 Phasen) oder des Pilot-Bruder-Onboardings (5 Phasen).
 - **Unterstützende Infos:** Live-Einblendung von Fragestellungs-Hintergründen, Folgefragen und Warnsignalen direkt im Workflow.

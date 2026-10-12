@@ -1,5 +1,11 @@
 # TODO - Founder OS
 
+- [x] **🎙️ [Customer-Discovery & Validierung] Interaktives Interview- & Termin-Cockpit (`src/components/CustomerDiscoveryView.jsx`, `Sidebar.jsx`, `App.jsx`):**
+  - *Eigene Discovery-Kontaktliste & Upload:* Datei-Upload (`.csv`, `.json`, `.txt`), Copy-Paste-Import, Einzelanlage und 1-Klick-Import aus den 90 Kaltakquise-Leads.
+  - *Interaktiver 6-Phasen-Leitfaden:* Phasen 1–6 aus `customer_discovery_validierungs_leitfaden.md` mit allen Ausweichrouten, Reframing-Box, Diagnose-Weiche (Pfade A–E), automatischem Lösungs-Pitch, 500-€-Audit-Preistest und 15–20-Minuten-Stoppuhr.
+  - *Kalender-Integration:* Direktes Speichern vereinbarter Interview-Termine im Founder-OS-Kalender (inkl. 15-Min-Push & Android-Widget), Schnell-Buttons (*07:15 Uhr vor Baustelle*, *Freitag 13:00 Uhr*), Google-Kalender-Link und `.ics`-Export.
+  - *Protokollbogen & Validierungs-Radar:* Live-Auswertung der Engpässe (Pfad A–E), 1-Klick Empfehlungs-Kontakt-Anlage, Wissens-Hub-Export, Haupt-CRM-Übernahme und CSV-Export für den Gründungscoach.
+
 - [x] **🏷️ [Markenstrategie & Naming] Schablonenfreie Top-10-Markennamen-Strategie (`DOCS/Markennamen_Strategie_Schablonenfrei_Top10.md`):**
   - *Vierstufiger Naming-Prozess ohne Schablonen:* Vollständig befreit von starren Metaphern (`Werk`, `Schmiede`, `Lotse`, `Bank`) und unter striktem Ausschluss aller 10 Namen aus Runde 1.
   - *Schritt 1 (Strategische Reflexion) & Schritt 2 (Brainstorming in 4 Richtungen):* Analyse psychologischer Wirkung und sprachlicher Fallen; breites Spektrum über Nutzen-Klarheit, funktionale Namen, Neologismen und alltagsbildhafte Begriffe.

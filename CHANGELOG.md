@@ -21,6 +21,20 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
   - **Row Level Security (RLS) & Policies aktiviert (Supabase Cloud):** RLS auf allen 8 Kern-Tabellen (`leads`, `contacts`, `dashboard_state`, `prompts`, `client_tickets`, `tasks`, `inbox`, `docs`) aktiviert. Anonymer Zugriff ist gesperrt, nur die Rolle `authenticated` hat Zugriff.
 
 ### Added
+- **🎙️ Customer-Discovery & Positionierungs-Validierungs-Cockpit (`src/components/CustomerDiscoveryView.jsx`, `src/components/Sidebar.jsx`, `src/App.jsx`):**
+  - **Neuer Tab `🎙️ Discovery-Interviews`:** Eigene Arbeitsumgebung für 15–20-minütige Gründer-Validierungsgespräche auf Basis von `customer_discovery_validierungs_leitfaden.md`.
+  - **Kontakt-Upload & Import:** Unterstützt Datei-Upload (`.csv`, `.json`, `.txt`), schnellen Copy-Paste-Listenimport, manuelle Einzel-Anlage sowie die 1-Klick-Übernahme aus den bestehenden 90 Kaltakquise-Leads.
+  - **Interaktives 6-Phasen-Cockpit mit Ausweichrouten:**
+    - *Phase 1 (Türöffner):* Personalisierte Anrede (`[Nachname]`, `[Firmenname]`) und 3 klickbare Reaktionspfade (*Direktstart im Auto*, *Keine Zeit* inkl. 07:15/Freitag-13:00-Konter, *Worum geht’s denn?*).
+    - *Phase 2 (Betriebskontext):* Erfassung von Gewerk, Mitarbeiterzahl (Gesellen/Büro), Büro-Organisation und genutzter Software.
+    - *Phase 3 (Diagnose-Weiche A–E):* Interaktive Auswahl und Vertiefungsfragen für alle 5 Pfade (*A: Rechnungen/DATEV*, *B: Kundenfront/Termine*, *C: Kundenportal/Transparenz*, *D: Baustellendoku/Fotos*, *E: Zeiterfassung/Lohn*), Reframing-Hilfe (*„Rechnungen in 5 Min kein Problem“*), wörtliches Zitat-Feld und Zauberstab-Abschlussfrage.
+    - *Phase 4 (Zielgerichteter Lösungs-Pitch):* Automatische Hervorhebung des passenden Lösungs-Pitches zu den in Phase 3 gewählten Pfaden plus Brückenschlag zum 60–90-minütigen Büro-Audit.
+    - *Phase 5 (Kritisches Feedback & Preistest):* Realitäts-Check, Einwand-Chips (*Monteure streiken*, *Technik fällt aus* etc.) und 500-€-Audit-Preistest inkl. Schmerzgrenze in Euro.
+    - *Phase 6 (Abschluss & Multiplikator):* Warm-Lead-Wiedervorlage nach Gewerbeanmeldung sowie 1-Klick-Button, um empfohlene Kollegenbetriebe sofort als neuen Kontakt in die Discovery-Liste einzutragen.
+  - **📅 Integrierter Kalender-Terminplaner:** Schnellwahl-Buttons (*„Morgen 07:15 Uhr (Vor Baustelle)“*, *„Kommenden Freitag 13:00 Uhr“*) + direktes Speichern im Founder-OS-Kalender (`calendarEvents` inkl. 15-Min-Vorab-Push & Android-Widget), 1-Klick Google-Kalender-Link und `.ics`-Download.
+  - **📊 Validierungs-Radar & CRM-Protokollbogen:** Live-Statistik über alle geführten Interviews (Engpass-Verteilung Pfad A–E, 500-€-Zuspruch, vereinbarte Termine), vollständiger CRM-Protokollbogen mit 1-Klick Wissens-Hub-Speicherung, Haupt-CRM-Übernahme und CSV-Gesamtexport für den Gründungscoach.
+  - **Backup-Integration (`src/services/backupService.js`):** Vollständige Einbindung von `f_discovery_leads` in den Data Hub & Backup Manager.
+
 - **🏷️ Schablonenfreie Top-10-Markennamen-Strategie für Handwerk & KMU (`DOCS/Markennamen_Strategie_Schablonenfrei_Top10.md`):**
   - **4-Stufen Naming-Architektur ohne starre Begriffs-Schablonen:** Vollständig frei von erzwungenen Metaphern (`Werk`, `Schmiede`, `Lotse`, `Bank`) und strikter Ausschluss aller 10 Namen aus Runde 1.
   - **Schritt 1 (Strategische Reflexion) & Schritt 2 (Freies Brainstorming):** Psychologische Analyse der Zielgruppe (Meister im Handwerk & operative Büroleitung bei 1–20 MA), Vermeidung sprachlicher Fallen (Handwerks-Nostalgie, IT-Anglizismen, Amtsdeutsch) und Exploration über vier Denk- und Klangrichtungen (A: Nutzen/Ergebnis, B: Funktion/Sachlichkeit, C: Neologismen, D: Alltagsbildhafte Begriffe).

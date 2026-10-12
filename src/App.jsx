@@ -65,7 +65,8 @@ import {
   INITIAL_DOCS, 
   INITIAL_SOP_TEMPLATES, 
   PROCESSES, 
-  ONBOARDING_PLAYBOOKS 
+  ONBOARDING_PLAYBOOKS,
+  INITIAL_DISCOVERY_LEADS
 } from './constants/initialData';
 import { KMU_HARZ_PROMPTS } from './constants/kmuPrompts';
 import { GOD_OF_PROMPT_LIBRARY } from './constants/godOfPromptLibrary';
@@ -138,6 +139,7 @@ const CommandCenter = lazy(() => import('./components/CommandCenter').then(m => 
 const KanbanBoard = lazy(() => import('./components/KanbanBoard').then(m => ({ default: m.KanbanBoard })));
 const CrmPipeline = lazy(() => import('./components/CrmPipeline').then(m => ({ default: m.CrmPipeline })));
 const LeadsView = lazy(() => import('./components/LeadsView').then(m => ({ default: m.LeadsView })));
+const CustomerDiscoveryView = lazy(() => import('./components/CustomerDiscoveryView').then(m => ({ default: m.CustomerDiscoveryView })));
 const OnboardingView = lazy(() => import('./components/OnboardingView').then(m => ({ default: m.OnboardingView })));
 const PromptVault = lazy(() => import('./components/PromptVault').then(m => ({ default: m.PromptVault })));
 const DocsHub = lazy(() => import('./components/DocsHub').then(m => ({ default: m.DocsHub })));
@@ -648,6 +650,15 @@ function App() {
       return INITIAL_LEADS;
     }
   });
+  // Customer-Discovery & Validierungs-Interview Kontakte
+  const [discoveryLeads, setDiscoveryLeads] = useState(() => {
+    try {
+      const saved = localStorage.getItem('f_discovery_leads');
+      return saved ? JSON.parse(saved) : INITIAL_DISCOVERY_LEADS;
+    } catch {
+      return INITIAL_DISCOVERY_LEADS;
+    }
+  });
   const [activeLeadId, setActiveLeadId] = useState(() => {
     return localStorage.getItem('f_active_lead_id') || null;
   });
@@ -1019,6 +1030,9 @@ function App() {
   useEffect(() => {
     localStorage.setItem('f_leads', JSON.stringify(leads));
   }, [leads]);
+  useEffect(() => {
+    localStorage.setItem('f_discovery_leads', JSON.stringify(discoveryLeads));
+  }, [discoveryLeads]);
   useEffect(() => {
     if (activeLeadId) {
       localStorage.setItem('f_active_lead_id', activeLeadId);
@@ -5008,6 +5022,24 @@ Hier ist die Frage des Nutzers:
           />
         )}
 
+        {activeTab === 'discovery' && (
+          <CustomerDiscoveryView
+            discoveryLeads={discoveryLeads}
+            setDiscoveryLeads={setDiscoveryLeads}
+            leads={leads}
+            contacts={contacts}
+            setContacts={setContacts}
+            calendarEvents={calendarEvents}
+            setCalendarEvents={setCalendarEvents}
+            docs={docs}
+            setDocs={setDocs}
+            showcaseMode={showcaseMode}
+            mask={mask}
+            isMobile={isMobile}
+            showToast={showToast}
+          />
+        )}
+
         {activeTab === 'onboarding' && (
           <OnboardingView
             contacts={contacts}
@@ -5162,6 +5194,7 @@ Hier ist die Frage des Nutzers:
           f_rewards: rewards,
           f_penalty_mode: penaltyMode,
           f_leads: leads,
+          f_discovery_leads: discoveryLeads,
           f_contacts: contacts,
           f_projects: projects,
           f_prompts: prompts,

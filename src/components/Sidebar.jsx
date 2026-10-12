@@ -17,7 +17,8 @@ import {
   ShieldCheck,
   Sparkles,
   Bell,
-  Terminal
+  Terminal,
+  Compass
 } from 'lucide-react';
 
 export const Sidebar = ({
@@ -101,6 +102,19 @@ export const Sidebar = ({
             >
               <PhoneCall size={18} />
               <span className="sidebar-nav-label">Lead-Tracker</span>
+            </button>
+            <button 
+              className={`sidebar-nav-item ${activeTab === 'discovery' ? 'active' : ''}`}
+              onClick={() => setActiveTab('discovery')}
+              title="🎙️ Customer-Discovery & Validierungs-Interviews"
+              style={{
+                background: activeTab === 'discovery' ? 'linear-gradient(135deg, #0891b2, #06b6d4)' : 'rgba(6, 182, 212, 0.14)',
+                color: '#ffffff',
+                border: '1px solid rgba(34, 211, 238, 0.35)'
+              }}
+            >
+              <Compass size={18} color="#22d3ee" />
+              <span className="sidebar-nav-label" style={{ fontWeight: 700, color: '#67e8f9' }}>🎙️ Discovery-Interviews</span>
             </button>
             <button 
               className={`sidebar-nav-item ${activeTab === 'onboarding' ? 'active' : ''}`}
@@ -260,6 +274,14 @@ export const Sidebar = ({
               >
                 <PhoneCall size={18} />
                 <span>Lead-Tracker</span>
+              </button>
+              <button 
+                className={`sidebar-nav-item ${activeTab === 'discovery' ? 'active' : ''}`} 
+                onClick={() => { setActiveTab('discovery'); setMobileMenuOpen(false); }}
+                style={{ background: 'rgba(6, 182, 212, 0.2)', color: '#ffffff', border: '1px solid rgba(34, 211, 238, 0.4)' }}
+              >
+                <Compass size={18} color="#22d3ee" />
+                <span style={{ fontWeight: 700, color: '#67e8f9' }}>🎙️ Discovery-Interviews</span>
               </button>
               <button 
                 className={`sidebar-nav-item ${activeTab === 'onboarding' ? 'active' : ''}`} 

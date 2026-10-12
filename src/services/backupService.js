@@ -42,6 +42,7 @@ const LOCAL_STORAGE_KEY_MAP = {
   ],
   crm: [
     'f_leads',
+    'f_discovery_leads',
     'f_contacts',
     'f_projects'
   ],
