@@ -21,13 +21,13 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
   - **Row Level Security (RLS) & Policies aktiviert (Supabase Cloud):** RLS auf allen 8 Kern-Tabellen (`leads`, `contacts`, `dashboard_state`, `prompts`, `client_tickets`, `tasks`, `inbox`, `docs`) aktiviert. Anonymer Zugriff ist gesperrt, nur die Rolle `authenticated` hat Zugriff.
 
 ### Added
-- **🏷️ Top-10-Markennamen-Strategie & B2B-Positionierung (`DOCS/Markennamen_Strategie_Top10.md`):**
+- **🏷️ Top-10-Markennamen-Strategie & B2B-Positionierung (Iteration 2 – Bereinigtes Tableau) (`DOCS/Markennamen_Strategie_Top10.md`):**
   - **4-Stufen Naming-Architektur für Handwerk & KMU im Harz:**
-    - *Schritt 1 (Kontext-Extraktion):* 3 prägnante Kernsätze zu Geschäftsmodell (No-Code Automatisierung & GoBD/E-Rechnung zum Festpreis), Zielgruppe (Meister & operative Koordinatorinnen 1–20 MA) und Tonalität (Augenhöhe, hemdsärmelig, 0% IT-Chinesisch).
-    - *Schritt 2 (Semantische Exploration):* 30 Begriffe und Wortstämme über 4 Felder (Nutzen/Entlastung, Handwerk/Substanz, Neologismen/Abstraktion, Modulare Regionalelemente).
-    - *Schritt 3 (4-Stufen-Härtetest):* Meister-Test, Telefon-Test, Rechnungs-Test („[Marke] – Inh. Robin Gornitzka“) und Negativ-Filter (Ausschluss von 7 Buzzwords).
-    - *Schritt 4 (Top 10 Matrix & DNS-Validierung):* Exakt 10 tragfähige Namen (3x Handwerk/Pragmatismus, 3x Nutzen/Ergebnis, 2x Kunstwort/Abstraktion, 2x Hybride Modelle) mit Claims (max. 5 Wörter) und verifizierten `.de`-Domainempfehlungen.
-  - **Automatisierte Qualitätssicherung & Testskript (`.agents/teamwork/worker_naming_1/validate_naming.ps1`):** PowerShell-Validierung für 0 Buzzwords, Claim-Längen <= 5 Wörter, echte Live-DNS-Prüfung (`Resolve-DnsName`) ohne aktive A-Records und Kollisionsfreiheit gegen 23 regionale Wettbewerber.
+    - *Schritt 1 (Kontext-Extraktion):* 3 prägnante Kernsätze zu Geschäftsmodell (No-Code Automatisierung & GoBD/E-Rechnung zum Festpreis), Zielgruppe (Meister & operative Koordinatorinnen 1–20 MA) und Tonalität (Augenhöhe, hemdsärmelig, 0% IT-Chinesisch) exakt beibehalten.
+    - *Schritt 2 (Semantische Exploration):* Alle 30 Begriffe und Wortstämme über 4 Felder (A: Nutzen/Entlastung, B: Handwerk/Substanz, C: Neologismen/Abstraktion, D: Modulare Regionalelemente) vollständig bewahrt.
+    - *Schritt 3 (Härtetest-Filter & Ausschluss-Dokumentation):* Explizite Dokumentation der verworfenen Kandidaten inklusive detaillierter Begründungen: *Klarwerk* (Phonetik *Klärwerk* & Hornbach-Armaturen), *Taktos* (Identitätskollision mit taktos.one Field-Worker-SaaS), *Ablaufwerk* (Tiefbau *Ablaufbauwerk*), *Bürofreiraum* (§ 8 MarkenG Beschreibungsgefahr), *Taktgewinn* (Wettbewerber Patrick Klug) und *Werkablauf* (Handwerker-Vergleichsportal).
+    - *Schritt 4 (Bereinigtes Top-10-Tableau):* Vollständig kollisionsfreies Tableau (3x Handwerk, 3x Nutzen, 2x Kunstwort, 2x Hybrid): **Prozesswerk**, **Büroschmiede**, **Flusswerk**; **Klarzeit**, **Ruhetakt**, **Freitakt**; **Klaros**, **Struktus**; **Taktwerk**, **Ruhewerk**. Alle Claims <= 5 Wörter, vollständige markenpsychologische Begründungen.
+  - **Automatisierte Qualitätssicherung (`.agents/teamwork/worker_iter2_1/validate_top10.ps1`):** PowerShell-Live-Validierung mit 100% Erfolgsquote (10/10 .de-Domains frei auf NXDOMAIN, 0 verbotene Buzzwords, alle Claims <= 5 Wörter, 0 Kollisionen mit 26 regionalen Wettbewerbern).
 - **🔄 Windows Desktop Notizzettel Cloud-Sync (Phase 2 & Option A Web-Popout):**
   - **Live Supabase 2-Wege Synchronisation (`desktop-widget/FounderOS-StickyNote.ps1`):**
     - Der native Windows Desktop Notizzettel synchronisiert sich jetzt vollautomatisch mit deiner Supabase-Datenbank (`dashboard_state`).

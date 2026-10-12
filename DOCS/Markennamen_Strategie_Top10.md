@@ -61,28 +61,37 @@
 Jeder entwickelte Kandidat wurde systematisch über vier Härtetest-Filter geprüft:
 
 - **1. Der Meister-Test (Bodenständigkeit vs. Hipster-Arroganz):**
-  - *Prüffrage:* Wirkt der Name wie ein solider Partner auf Augenhöhe, oder schreckt er den Meister durch Großstadt-Agentur-Jargon ab?
-  - *Verworfene Negativbeispiele:*
+  - *Prüffrage:* Wirkt der Name wie ein solider Partner auf Augenhöhe, oder schreckt er den Meister durch Großstadt-Agentur-Jargon oder fachliche Fehlassoziationen ab?
+  - *Verworfene Negativbeispiele (Jargon & Distanz):*
     - ❌ *FlowSquad* (Klingt nach englischem Teenie-Club statt nach solider Handwerker-Unterstützung)
     - ❌ *Automateify* (Typischer austauschbarer Silicon-Valley-Softwareklon ohne Substanz)
     - ❌ *Synapse Agile* (Völlig weltfremd und unverständlich auf der Baustelle)
     - ❌ *ProcessHub* (Steril, seelenlos und distanziert)
+  - *Im Härtetest verworfen (Fachliche Fehlassoziation):*
+    - ❌ *Ablaufwerk*: Im Tiefbau, Rohrleitungsbau und SHK-Gewerbe feststehender Fachterminus für Entwässerungs- und Regulierungsbauwerke (*Ablaufbauwerk* / Schächte). Weckt bei SHK-Meistern Assoziationen an Schlamm und Schmutzwasser statt an kaufmännische Backoffice-Entlastung.
 
-- **2. Der Telefon-Test (Phonetische Klarheit & Spontaneität):**
-  - *Prüffrage:* Kann sich Robin am Hörer mit „Guten Tag, Robin von [NAME] hier“ melden, ohne dass der Kunde nachfragen oder buchstabieren muss?
-  - *Verworfene Negativbeispiele:*
+- **2. Der Telefon-Test (Phonetische Klarheit & Spontaneität bei 80 dB Baustellenlärm):**
+  - *Prüffrage:* Kann sich Robin am Hörer mit „Guten Tag, Robin von [NAME] hier“ melden, ohne dass der Kunde nachfragen, buchstabieren oder phonetische Missverständnisse auflösen muss?
+  - *Verworfene Negativbeispiele (Phonetische Barrieren & Zungenbrecher):*
     - ❌ *XyloFlow* (Unklare Schreibweise, phonetische Barriere bei Hintergrundlärm)
     - ❌ *VeloQ* (Muss mühsam Buchstabe für Buchstabe buchstabiert werden)
     - ❌ *Syncronix* (Klingt wie ein Zungenbrecher oder Pharmazeutikum)
     - ❌ *Q-Workx* (Schreibweise mit Q und x führt am Telefon zu garantierten Fehlern)
+  - *Im Härtetest verworfen (Phonetischer Zwilling & Handelsmarke):*
+    - ❌ *Klarwerk*: 100 % phonetisch identisch mit *Klärwerk* (Kölner Phonetik `457374`, Levenshtein-Distanz 1). Am Telefon oder im Baustellenlärm versteht jeder SHK-Meister sofort die Kläranlage. Zudem kollidiert der Name mit der geschützten Handelsmarke *KLARWERK* (Hornbach/Metro) für Bad- und Küchenarmaturen – ein desaströses Stigma im primären Zielgewerk SHK.
 
-- **3. Der Seriositäts- & Rechnungs-Test (B2B- & Kanzlei-Tauglichkeit):**
-  - *Prüffrage:* Wirkt der Name auf offiziellen Rechnungen, Angeboten und beim Steuerberater als Einzelunternehmen („[Marke] – Inh. Robin Gornitzka“) absolut solvent und vertrauenswürdig?
-  - *Verworfene Negativbeispiele:*
+- **3. Der Seriositäts- & Rechnungs-Test (B2B- & Kanzlei-Tauglichkeit, Marken- & Wettbewerbsrecht):**
+  - *Prüffrage:* Wirkt der Name auf offiziellen Rechnungen, Angeboten und beim Steuerberater als Einzelunternehmen („[Marke] – Inh. Robin Gornitzka“) absolut solvent und vertrauenswürdig, und ist er frei von rechtlichen Schutzhindernissen sowie Wettbewerbskollisionen?
+  - *Verworfene Negativbeispiele (Mangelnde Seriosität & Flapsigkeit):*
     - ❌ *Büro-Ninja* (Wirkt wie ein unseriöses Freizeitprojekt ohne Haftungsgravitas)
     - ❌ *Klick-Held* (Erweckt den Eindruck ungelernter Nachbarschaftshilfe)
     - ❌ *Papier-Fresser* (Lächerlich und unpassend für offizielle Geschäftsbriefe)
     - ❌ *Digital-Kumpel* (Zu kumpelhaft; Kanzleien und Banken verweigern die Partnerschaft)
+  - *Im Härtetest verworfen (Markenrechtliche Schutzhindernisse, Software- & Wettbewerbskollisionen):*
+    - ❌ *Bürofreiraum*: Rein beschreibende Begriffsbildung aus „Büro“ und „Freiraum“. Hohes Schutzverweigerungsrisiko beim DPMA gemäß § 8 Abs. 2 Nr. 1 und 2 MarkenG (fehlende Unterscheidungskraft, Freihaltebedürfnis für Bürodienstleistungen in Klasse 35). Kollidiert zudem mit Coworking-Spaces und Büroausstattern.
+    - ❌ *Taktos*: Direkte Markenkollision mit der aktiven deutschen Field-Worker- und Zeiterfassungs-SaaS *Taktos* (`taktos.one`). Führt im selben Zielgruppensegment (mobile Arbeitskräfte / Teams) zu unmittelbarer marken- und wettbewerbsrechtlicher Verwechslungsgefahr (§ 14/15 MarkenG, Klassen 9 und 42).
+    - ❌ *Taktgewinn*: Absoluter rechtlicher Showstopper: Unter `taktgewinn.de` betreibt Patrick Klug als Einzelunternehmer bereits eine etablierte Agentur mit exakt identischem Leistungsangebot („KI-Beratung & Prozessautomatisierung für Unternehmen: Weniger Routine, mehr Zeit fürs Wesentliche“). Eine Namensnutzung durch Robin Gornitzka würde zu sofortigen Abmahn- und Unterlassungsklagen nach §§ 5, 15 MarkenG und UWG führen.
+    - ❌ *Werkablauf*: Kollision im Handwerks-Fachvertrieb: Unter `werkablauf.de` betreibt Yann Lephay das bekannte Branchen- und Vergleichsportal „WerkAblauf“ speziell für Handwerkersoftware (mobile Auftragsabwicklung, E-Rechnung, GoBD, DATEV-Schnittstellen). Da KMU Service Harz exakt diese Schnittstellen anbietet, entstünde im Markt erhebliche Verwirrung und Titelschutzkonflikte.
 
 - **4. Der Negativ-Filter (Striktes Verbot von 7 IT-Buzzwords):**
   - *Prüffrage:* Ist der Name frei von abgenutzten Marketing- und Hype-Vokabeln (`Solutions`, `Tech`, `Digital`, `AI`, `Synergy`, `Excellence`, `Cloud`)?
@@ -95,20 +104,20 @@ Jeder entwickelte Kandidat wurde systematisch über vier Härtetest-Filter gepr�
 
 ## Schritt 4 – Finale Top-10-Auswahl & Live-geprüfte Domain-Empfehlungen
 
-Die folgenden 10 Namen erfüllen alle Kriterien lückenlos, sind gleichmäßig über die vier Kernrichtungen verteilt und wurden live per DNS-Abfrage auf Verfügbarkeit geprüft:
+Die folgenden 10 Namen erfüllen alle Kriterien lückenlos, sind gleichmäßig über die vier Kernrichtungen verteilt (3x Handwerk, 3x Nutzen, 2x Kunstwort, 2x Hybrid), eliminieren sämtliche Kollisionen und wurden live per DNS-Abfrage auf Verfügbarkeit geprüft:
 
 | Kernname (Stand-alone) | Optionale Regional-Variante (mit Harz) | Kategorie | Empfohlener Claim (max. 5 Wörter) | Markenpsychologische Begründung (Warum der Handwerker sofort Vertrauen fasst) | Domain-Empfehlung (.de) |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Prozesswerk** | Prozesswerk Harz | Handwerk / Pragmatismus | Abläufe im Griff. Feste Preise. | Verbindet handwerkliche Werkstatt-Solidität mit kaufmännischer Ordnung. Meister assoziieren sofort Wertarbeit und greifbare Ergebnisse statt Berater-Theorie. | `prozesswerk-harz.de` |
 | **Büroschmiede** | Büroschmiede Harz | Handwerk / Pragmatismus | Schluss mit dem Büro-Sonntag. | Schmiede steht für Maßarbeit, Schweiß und ehrliche Problemlösung. Nimmt dem verhassten Büro den Schrecken, indem es wie eine handwerkliche Fertigung behandelt wird. | `bueroschmiede-harz.de` |
-| **Ablaufwerk** | Ablaufwerk Harz | Handwerk / Pragmatismus | Abläufe, die einfach laufen. | Spricht direkt das Kernziel an: reibungslose Betriebsabläufe ohne Reibungsverluste. Wirkt kaufmännisch fundiert, bodenständig und unaufgeregt verlässlich. | `ablaufwerk-harz.de` |
+| **Flusswerk** | Flusswerk Harz | Handwerk / Pragmatismus | Abläufe, die einfach fließen. | Heilt Ablaufwerk: Hydrodynamische Reibungsfreiheit trifft handwerkliche Tatkraft („Werk“). Meister verstehen sofort: Belege fließen ohne Stau von der Baustelle zur Buchhaltung. Null Schmutzwasser-Konnotation. | `flusswerk-harz.de` |
 | **Klarzeit** | Klarzeit Harz | Nutzen / Ergebnis | Ihr Büro im Reinen. | Adressiert die doppelte Sehnsucht: Ordnung im Belegchaos („Klarheit“) und die Rückgewinnung unbezahlter Lebenszeit („Zeit“). Für Steuerberater ein Inbegriff von GoBD-Sauberkeit. | `klarzeit-harz.de` |
-| **Ruhetakt** | Ruhetakt Harz | Nutzen / Ergebnis | Pünktlicher Feierabend. Geordnete Belege. | Bringt Ruhe in den hektischen Betriebsalltag und beendet die Angst vor Betriebsprüfungen. Vermittelt das beruhigende Gefühl eines Motors, der perfekt schnurrt. | `ruhetakt-harz.de` |
-| **Bürofreiraum** | Bürofreiraum Harz | Nutzen / Ergebnis | Mehr Feierabend. Weniger Papierkram. | Trifft direkt den Nerv der Büroleitung und des Meisters: Schafft physischen und mentalen Freiraum durch Beseitigung von Zettelwirtschaft und Doppelarbeit. | `buerofreiraum-harz.de` |
-| **Taktos** | Taktos Harz | Kunstwort / Abstraktion | Präzise Abläufe. Lautloser Betrieb. | Klingt wie ein traditionsreiches deutsches Werkzeugfabrikat (wie Festool oder Knipex). Kurz, phonetisch hart, seriös und überregional unbegrenzt skalierbar. | `taktos-harz.de` |
-| **Struktus** | Struktus Harz | Kunstwort / Abstraktion | Klare Struktur für Betriebe. | Neologismus aus Struktur und Konstruktion. Vermittelt statische Stabilität, Revisionssicherheit und geordnete Schnittstellen ohne modische Anglizismen. | `struktus-harz.de` |
+| **Ruhetakt** | Ruhetakt Harz | Nutzen / Ergebnis | Pünktlicher Feierabend. Geordnete Belege. | Bringt Ruhe in den hektischen Betriebsalltag und beendet die Angst vor Betriebsprüfungen. Vermittelt das beruhigende Gefühl eines Motors, der perfekt schnurrt. Höchste Skalierbarkeit (auch Basis-Domain `ruhetakt.de` frei). | `ruhetakt-harz.de` |
+| **Freitakt** | Freitakt Harz | Nutzen / Ergebnis | Mehr Feierabend. Geordnete Belege. | Heilt Bürofreiraum: Schützt vor § 8 MarkenG durch eigenständigen Neologismus. Verschmilzt die Befreiung vom Bürosonntag mit einem geregelten Betriebstakt. Meister wissen: Pünktlich Feierabend, Betrieb läuft verlässlich weiter. | `freitakt-harz.de` |
+| **Klaros** | Klaros Harz | Kunstwort / Abstraktion | Präzise Abläufe. Feste Preise. | Heilt Taktos: Eliminiert Kollision mit taktos.one. Klingt wie ein deutsches Qualitäts-Messwerkzeug oder Ventilfabrikat. Strafft Vertrauen durch Festpreisgarantie, Präzision und Klartext ohne IT-Beratersprech. | `klaros-harz.de` |
+| **Struktus** | Struktus Harz | Kunstwort / Abstraktion | Klare Struktur für Betriebe. | Neologismus aus Struktur und Konstruktion. Vermittelt statische Stabilität, Revisionssicherheit und geordnete Schnittstellen ohne modische Anglizismen. Maximale Schutzfähigkeit (auch Basis-Domain `struktus.de` frei). | `struktus-harz.de` |
 | **Taktwerk** | Taktwerk Harz | Hybride Modelle | Ihr Betrieb im Takt. | Die perfekte Symbiose aus Nutzen (Takt = geregelter Rhythmus, Ruhe) und Handwerk (Werk = solide Substanz, Werkbank). Maximal kaufmännisch und meistertauglich. | `taktwerk-harz.de` |
-| **Klarwerk** | Klarwerk Harz | Hybride Modelle | Saubere Belege. Feste Preise. | Verschmilzt das Ergebnis (Klar = Transparenz, GoBD-Konformität, Klartext) mit handwerklicher Tatkraft (Werk). Klingt wie ein verlässliches, präzises Fachbüro. | `klarwerk-harz.de` |
+| **Ruhewerk** | Ruhewerk Harz | Hybride Modelle | Ruhiges Büro. Geordnete Belege. | Heilt Klarwerk: Beseitigt Klärwerk-Phonetik und Sanitärarmaturen-Kollision restlos. Verschmilzt emotionale Entlastung (Ruhe im Kopf und Büro) mit handwerklicher Tatkraft (Werk). Signalisiert verlässliche Stille an den Wochenenden. | `ruhewerk-harz.de` |
 
 ---
 
@@ -116,5 +125,5 @@ Die folgenden 10 Namen erfüllen alle Kriterien lückenlos, sind gleichmäßig �
 
 1. **Buzzword-Blacklist (0 Verstöße):** Keiner der 10 Kernnamen, keiner der Regionalzusätze und keiner der 10 Claims enthält eines der verbotenen Wörter (`Solutions`, `Tech`, `Digital`, `AI`, `Synergy`, `Excellence`, `Cloud`).
 2. **Claim-Längenprüfung (10/10 bestanden):** Jeder der 10 empfohlenen Claims umfasst maximal 4 bis 5 Wörter (strikte Obergrenze: 5 Wörter).
-3. **Live-DNS-Prüfung (.de):** Alle 10 empfohlenen `.de`-Domains wurden programmatisch über `Resolve-DnsName` und `nslookup` abgefragt. Für keine der Domains existieren aktive A-Records oder vergebene Webserver (Status: NXDOMAIN / frei).
-4. **Wettbewerber-Kollisionsprüfung (0 Überschneidungen):** Vollständiger Abgleich gegen alle regionalen Anbieter aus `DOCS/Wettbewerbsanalyse*.md` (IT-Nunweiler, MoCo Service, EITIE, ThHE.net, GitCom, UniqueFlow IT, Dominik Kasten, storyflare, Studio WILS, Sympic, Spier Web Studio, Enno & Jens, WDPX, Designoffice, 3WKonzepte, Digimosa, PDV-Systeme, Harz-IT) bestätigt absolute Verwechslungsfreiheit.
+3. **Live-DNS-Prüfung (.de):** Alle 10 empfohlenen `.de`-Domains wurden programmatisch über `Resolve-DnsName` abgefragt. Für keine der Domains existieren aktive A-Records oder vergebene Nameserver (Status: NXDOMAIN / frei).
+4. **Wettbewerber-Kollisionsprüfung (0 Überschneidungen):** Vollständiger Abgleich gegen alle 23+ regionalen Wettbewerber aus `DOCS/Wettbewerbsanalyse*.md` (IT-Nunweiler, MoCo Service, EITIE, ThHE.net, GitCom, UniqueFlow IT, Dominik Kasten, storyflare, Studio WILS, Sympic, Spier Web Studio, Enno & Jens, WDPX, Designoffice, 3WKonzepte, Digimosa, PDV-Systeme, Harz-IT u. a.) bestätigt absolute Verwechslungsfreiheit.

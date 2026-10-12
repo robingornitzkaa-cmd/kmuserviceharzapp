@@ -52,10 +52,17 @@ Die Anwendung zeichnet sich durch ein futuristisches "Glassmorphic Dark Theme" a
   - Speziell für Einzelunternehmen im Handwerks- und B2B-Umfeld im Harz entwickelt („[Marke] – Inh. Robin Gornitzka“).
   - **Schritt 1 (Kontext-Extraktion):** 3 prägnante Kernsätze zu Geschäftsmodell (No-Code, E-Rechnung, Festpreise), spitzester Zielgruppe (SHK-, Elektro-Meister, Gebäudereinigung & Steuerberater) und Tonalität (Augenhöhe, 0% IT-Chinesisch).
   - **Schritt 2 (Semantische Wortfelder):** Systematische Aufbereitung von 30 Begriffen in 4 Feldern (Nutzen/Entlastung, Handwerk/Substanz, Moderne Abstraktion, Modulare Regionalelemente).
-  - **Schritt 3 (4-Stufen-Härtetest):** Meister-Test (Werkstatt-Resonanz), Telefon-Test (sofort verständlich), Rechnungs-Test (Kanzlei-Gravitas) und Negativ-Filter (0 Buzzwords).
-  - **Schritt 4 (Top 10 Matrix & DNS-Validierung):** Exakt 10 tragfähige Namen (3x Handwerk/Pragmatismus, 3x Nutzen/Ergebnis, 2x Kunstwort/Abstraktion, 2x Hybride Modelle) mit Claims (max. 5 Wörter) und live per DNS überprüften `.de`-Domains.
-- **🧪 Automatisierte Validierungs-Suite (`.agents/teamwork/worker_naming_1/validate_naming.ps1`):**
-  - Prüft Buzzword-Freiheit (0 Treffer für Solutions, Tech, Digital, AI, Synergy, Excellence, Cloud), Claim-Längen (<= 5 Wörter), Live-DNS-Verfügbarkeit aller Domains und Kollisionsfreiheit gegen 23 regionale Wettbewerber.
+  - **Schritt 3 (4-Stufen-Härtetest mit Negativ-Dokumentation):** Meister-Test, Telefon-Test (80 dB Baustellenlärm), Rechnungs-Test und 0-Buzzword-Filter. Explizit dokumentierte Ausschlussbegründungen für *Klarwerk* (Phonetik Klärwerk & Hornbach-Armaturen), *Taktos* (Kollision mit taktos.one SaaS), *Ablaufwerk* (Tiefbau-Ablaufbauwerk), *Bürofreiraum* (§ 8 MarkenG Beschreibungsgefahr), *Taktgewinn* (Wettbewerber Patrick Klug) und *Werkablauf* (Handwerker-Vergleichsportal).
+  - **Schritt 4 (Bereinigtes Top-10-Tableau):** Exakt 10 kollisionsfreie Namen mit maximal 5-Wort-Claims und live geprüften `.de`-Domains:
+    1. *Handwerk:* **Prozesswerk** (`prozesswerk-harz.de`), **Büroschmiede** (`bueroschmiede-harz.de`), **Flusswerk** (`flusswerk-harz.de`).
+    2. *Nutzen:* **Klarzeit** (`klarzeit-harz.de`), **Ruhetakt** (`ruhetakt-harz.de`), **Freitakt** (`freitakt-harz.de`).
+    3. *Kunstwort:* **Klaros** (`klaros-harz.de`), **Struktus** (`struktus-harz.de`).
+    4. *Hybrid:* **Taktwerk** (`taktwerk-harz.de`), **Ruhewerk** (`ruhewerk-harz.de`).
+- **🧪 Automatisierte Validierungs-Suite (`.agents/teamwork/worker_iter2_1/validate_top10.ps1`):**
+  - Live-DNS-Prüfung aller 10 empfohlenen `.de`-Domains (10/10 frei auf NXDOMAIN).
+  - Buzzword-Check: 0 Treffer für Solutions, Tech, Digital, AI, Synergy, Excellence, Cloud.
+  - Wortzähler: Alle 10 Claims <= 5 Wörter.
+  - Kollisionsprüfung: 0 Treffer gegen alle 26 regionalen Wettbewerber im Harz.
 
 ### 1. Dashboard & Life OS Gamification -- *NEU UPGRADED!*
 - **🎙️ Voice Quick-Capture Studio:** 1-Tap Sprach- und Diktierstudio mit Web Audio API Synthesizer-Feedback, Live Wave-Puls, Tag-Pills (`#Wichtig`, `#Kunde`, `#Idee`...) und 1-Klick Multi-Routing direkt in *To-Do*, *Notiz*, *Tages-Fokus*, *CRM-Lead* oder *Termin*.

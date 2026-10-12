@@ -1,10 +1,10 @@
 # TODO - Founder OS
 
-- [x] **🏷️ [Markenstrategie & Naming] Top-10-Markennamen-Strategie & Live-DNS-Validierung (`DOCS/Markennamen_Strategie_Top10.md`):**
-  - *4-Stufige Naming-Entwicklung:* Kontext-Extraktion (3 Sätze), Semantische Exploration (30 Begriffe in 4 Feldern), 4-Stufen-Härtetest (Meister-, Telefon-, Rechnungs-Test, 0 Buzzwords).
-  - *Top 10 Matrix:* Gleichmäßige Verteilung (3x Handwerk/Pragmatismus, 3x Nutzen/Ergebnis, 2x Kunstwort/Abstraktion, 2x Hybride Modelle) mit Claims (max. 5 Wörter) und markenpsychologischer Begründung.
-  - *Live-DNS-Prüfung:* Alle 10 empfohlenen `.de`-Domains per DNS (`Resolve-DnsName` & `nslookup`) live auf Nicht-Vergabe / Freiheit verifiziert (NXDOMAIN, keine aktiven A-Records).
-  - *Automatisierte Validierung (`validate_naming.ps1`):* 100% grün für Buzzword-Filter, Claim-Längen, DNS-Status und Kollisionsfreiheit gegen 23 regionale Wettbewerber.
+- [x] **🏷️ [Markenstrategie & Naming] Top-10-Markennamen-Strategie (Iteration 2 – Bereinigtes Tableau) (`DOCS/Markennamen_Strategie_Top10.md`):**
+  - *4-Stufige Naming-Entwicklung:* Kontext-Extraktion (3 Sätze), Semantische Exploration (30 Begriffe in 4 Feldern), 4-Stufen-Härtetest mit detaillierter Negativ-Dokumentation (Ausschluss von Klarwerk, Taktos, Ablaufwerk, Bürofreiraum, Taktgewinn, Werkablauf).
+  - *Top 10 Matrix (Bereinigt & Kollisionsfrei):* Exakte Verteilung (3x Handwerk/Pragmatismus, 3x Nutzen/Ergebnis, 2x Kunstwort/Abstraktion, 2x Hybride Modelle): Prozesswerk, Büroschmiede, Flusswerk; Klarzeit, Ruhetakt, Freitakt; Klaros, Struktus; Taktwerk, Ruhewerk. Alle Claims <= 5 Wörter, vollständige markenpsychologische Begründungen.
+  - *Live-DNS-Prüfung:* Alle 10 empfohlenen `.de`-Domains per DNS (`Resolve-DnsName`) live auf Nicht-Vergabe / Freiheit verifiziert (10/10 NXDOMAIN).
+  - *Automatisierte Validierung (`.agents/teamwork/worker_iter2_1/validate_top10.ps1`):* 100% bestanden für Buzzword-Filter (0/7), Claim-Längen (alle <= 5), DNS-Status (10/10 frei) und Kollisionsfreiheit gegen 26 regionale Wettbewerber.
 
 - [x] **🌐 [Website Preview Relaunch] Marken-Feinschliff & Handschlag-Versprechen (`WebsiteView.jsx`, `websiteContent.js`):**
   - *Farbwahl entfernt:* Design-Umschalter und Dark-Mode-Toggle entfernt, Preview fest auf Hellgrün (`preset-harz mode-light`) fixiert.
