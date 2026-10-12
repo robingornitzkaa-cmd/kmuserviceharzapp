@@ -47,6 +47,16 @@ Die Anwendung zeichnet sich durch ein futuristisches "Glassmorphic Dark Theme" a
   - Client-seitige PDF/A-3-Extraktion, Ampel-Prüfprotokoll für Pflichtangaben (Leistungsdatum, USt-IdNr, Kreditor/Debitor, Leitweg-ID) und mathematische Konsistenzprüfung (BR-CO-10 bis BR-CO-18).
   - Drag & Drop Upload, Beispielrechnungen und PDF/JSON Prüfbericht-Export.
 
+### 0c. 🏷️ Top-10-Markennamen-Strategie & B2B-Positionierung -- *NEU!*
+- **🎯 4-Stufige Naming-Architektur (`DOCS/Markennamen_Strategie_Top10.md`):**
+  - Speziell für Einzelunternehmen im Handwerks- und B2B-Umfeld im Harz entwickelt („[Marke] – Inh. Robin Gornitzka“).
+  - **Schritt 1 (Kontext-Extraktion):** 3 prägnante Kernsätze zu Geschäftsmodell (No-Code, E-Rechnung, Festpreise), spitzester Zielgruppe (SHK-, Elektro-Meister, Gebäudereinigung & Steuerberater) und Tonalität (Augenhöhe, 0% IT-Chinesisch).
+  - **Schritt 2 (Semantische Wortfelder):** Systematische Aufbereitung von 30 Begriffen in 4 Feldern (Nutzen/Entlastung, Handwerk/Substanz, Moderne Abstraktion, Modulare Regionalelemente).
+  - **Schritt 3 (4-Stufen-Härtetest):** Meister-Test (Werkstatt-Resonanz), Telefon-Test (sofort verständlich), Rechnungs-Test (Kanzlei-Gravitas) und Negativ-Filter (0 Buzzwords).
+  - **Schritt 4 (Top 10 Matrix & DNS-Validierung):** Exakt 10 tragfähige Namen (3x Handwerk/Pragmatismus, 3x Nutzen/Ergebnis, 2x Kunstwort/Abstraktion, 2x Hybride Modelle) mit Claims (max. 5 Wörter) und live per DNS überprüften `.de`-Domains.
+- **🧪 Automatisierte Validierungs-Suite (`.agents/teamwork/worker_naming_1/validate_naming.ps1`):**
+  - Prüft Buzzword-Freiheit (0 Treffer für Solutions, Tech, Digital, AI, Synergy, Excellence, Cloud), Claim-Längen (<= 5 Wörter), Live-DNS-Verfügbarkeit aller Domains und Kollisionsfreiheit gegen 23 regionale Wettbewerber.
+
 ### 1. Dashboard & Life OS Gamification -- *NEU UPGRADED!*
 - **🎙️ Voice Quick-Capture Studio:** 1-Tap Sprach- und Diktierstudio mit Web Audio API Synthesizer-Feedback, Live Wave-Puls, Tag-Pills (`#Wichtig`, `#Kunde`, `#Idee`...) und 1-Klick Multi-Routing direkt in *To-Do*, *Notiz*, *Tages-Fokus*, *CRM-Lead* oder *Termin*.
 - **📦 1-Klick Data Hub & Backup Manager:** Vollständiges Export- und Import-Center für alle 7 OS-Datenmodule (CRM, Prompts, Notizen, Gamification, Tasks, Roadmap, Settings) mit Drag & Drop, Schema-Inspektor und automatischem Notfall-Snapshot vor jedem Restore.
@@ -221,6 +231,10 @@ Das Projekt verfügt über eine vollständige, modulare **Test-Abteilung** mit 8
 - **Gesamter Integrations-Test:**
   ```bash
   npm run test:all
+  ```
+- **Naming-Strategie & Live-DNS-Validierung (PowerShell):**
+  ```powershell
+  powershell -ExecutionPolicy Bypass -File .agents/teamwork/worker_naming_1/validate_naming.ps1
   ```
 
 

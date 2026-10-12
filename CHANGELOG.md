@@ -21,6 +21,13 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
   - **Row Level Security (RLS) & Policies aktiviert (Supabase Cloud):** RLS auf allen 8 Kern-Tabellen (`leads`, `contacts`, `dashboard_state`, `prompts`, `client_tickets`, `tasks`, `inbox`, `docs`) aktiviert. Anonymer Zugriff ist gesperrt, nur die Rolle `authenticated` hat Zugriff.
 
 ### Added
+- **🏷️ Top-10-Markennamen-Strategie & B2B-Positionierung (`DOCS/Markennamen_Strategie_Top10.md`):**
+  - **4-Stufen Naming-Architektur für Handwerk & KMU im Harz:**
+    - *Schritt 1 (Kontext-Extraktion):* 3 prägnante Kernsätze zu Geschäftsmodell (No-Code Automatisierung & GoBD/E-Rechnung zum Festpreis), Zielgruppe (Meister & operative Koordinatorinnen 1–20 MA) und Tonalität (Augenhöhe, hemdsärmelig, 0% IT-Chinesisch).
+    - *Schritt 2 (Semantische Exploration):* 30 Begriffe und Wortstämme über 4 Felder (Nutzen/Entlastung, Handwerk/Substanz, Neologismen/Abstraktion, Modulare Regionalelemente).
+    - *Schritt 3 (4-Stufen-Härtetest):* Meister-Test, Telefon-Test, Rechnungs-Test („[Marke] – Inh. Robin Gornitzka“) und Negativ-Filter (Ausschluss von 7 Buzzwords).
+    - *Schritt 4 (Top 10 Matrix & DNS-Validierung):* Exakt 10 tragfähige Namen (3x Handwerk/Pragmatismus, 3x Nutzen/Ergebnis, 2x Kunstwort/Abstraktion, 2x Hybride Modelle) mit Claims (max. 5 Wörter) und verifizierten `.de`-Domainempfehlungen.
+  - **Automatisierte Qualitätssicherung & Testskript (`.agents/teamwork/worker_naming_1/validate_naming.ps1`):** PowerShell-Validierung für 0 Buzzwords, Claim-Längen <= 5 Wörter, echte Live-DNS-Prüfung (`Resolve-DnsName`) ohne aktive A-Records und Kollisionsfreiheit gegen 23 regionale Wettbewerber.
 - **🔄 Windows Desktop Notizzettel Cloud-Sync (Phase 2 & Option A Web-Popout):**
   - **Live Supabase 2-Wege Synchronisation (`desktop-widget/FounderOS-StickyNote.ps1`):**
     - Der native Windows Desktop Notizzettel synchronisiert sich jetzt vollautomatisch mit deiner Supabase-Datenbank (`dashboard_state`).

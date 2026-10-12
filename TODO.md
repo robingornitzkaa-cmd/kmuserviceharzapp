@@ -1,5 +1,11 @@
 # TODO - Founder OS
 
+- [x] **🏷️ [Markenstrategie & Naming] Top-10-Markennamen-Strategie & Live-DNS-Validierung (`DOCS/Markennamen_Strategie_Top10.md`):**
+  - *4-Stufige Naming-Entwicklung:* Kontext-Extraktion (3 Sätze), Semantische Exploration (30 Begriffe in 4 Feldern), 4-Stufen-Härtetest (Meister-, Telefon-, Rechnungs-Test, 0 Buzzwords).
+  - *Top 10 Matrix:* Gleichmäßige Verteilung (3x Handwerk/Pragmatismus, 3x Nutzen/Ergebnis, 2x Kunstwort/Abstraktion, 2x Hybride Modelle) mit Claims (max. 5 Wörter) und markenpsychologischer Begründung.
+  - *Live-DNS-Prüfung:* Alle 10 empfohlenen `.de`-Domains per DNS (`Resolve-DnsName` & `nslookup`) live auf Nicht-Vergabe / Freiheit verifiziert (NXDOMAIN, keine aktiven A-Records).
+  - *Automatisierte Validierung (`validate_naming.ps1`):* 100% grün für Buzzword-Filter, Claim-Längen, DNS-Status und Kollisionsfreiheit gegen 23 regionale Wettbewerber.
+
 - [x] **🌐 [Website Preview Relaunch] Marken-Feinschliff & Handschlag-Versprechen (`WebsiteView.jsx`, `websiteContent.js`):**
   - *Farbwahl entfernt:* Design-Umschalter und Dark-Mode-Toggle entfernt, Preview fest auf Hellgrün (`preset-harz mode-light`) fixiert.
   - *Wording geschärft:* Konsistente Umstellung von „Büro-Sonntag“ auf „Büro-Wochenende“ (inkl. ROI-Rechner und freie Wochenenden).
