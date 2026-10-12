@@ -64,6 +64,21 @@ Die Anwendung zeichnet sich durch ein futuristisches "Glassmorphic Dark Theme" a
   - Wortzähler: Alle 10 Claims <= 5 Wörter.
   - Kollisionsprüfung: 0 Treffer gegen alle 26 regionalen Wettbewerber im Harz.
 
+### 0d. 🏷️ Schablonenfreie Top-10-Markennamen-Strategie für Handwerk & KMU -- *NEU!*
+- **🎯 4-Stufiger schablonenfreier Naming-Prozess (`DOCS/Markennamen_Strategie_Schablonenfrei_Top10.md`):**
+  - Vollständige Befreiung von starren Metaphern (`Werk`, `Schmiede`, `Lotse`, `Bank`) und strikter Ausschluss aller 10 Namen aus Runde 1.
+  - Entwickelt für ein überregional skalierbares Einzelunternehmen mit optionaler regionaler Harz-Verankerung (`[Marke] – Inh. Robin Gornitzka`).
+  - **Schritt 1 (Strategische Reflexion & Wirkungsanalyse):** Psychologische Resonanz beim Handwerksmeister (Entlastung, Ruhe, Augenhöhe, Festpreise) und 5 Sprachfallen (Handwerks-Kitsch, IT-Buzzwords, Amtsdeutsch, Kumpelhaftigkeit, Buchstabier-Hürden).
+  - **Schritt 2 (Freies Brainstorming in 4 Richtungen):** 25 unvoreingenommene Namensansätze aus dem Alltag der Zielgruppe.
+  - **Schritt 3 (Auslese & 4 Härtetest-Filter):** Meister-Test, Telefon-Test (Baustellenlärm), Rechnungs-/Kanzlei-Test und 0-Buzzword-Filter mit konkreten Negativbeispielen.
+  - **Schritt 4 (Die schablonenfreie Spitzenklasse):** Ausgewogene Top-10-Matrix mit maximal 5-Wort-Claims und sinnvollen `.de`-Domainansätzen:
+    1. *Richtung A (Ergebnis- & Nutzen-Klarheit):* **Klarstand** (`klarstand-harz.de`), **Freikopf** (`freikopf-harz.de`), **Bürofrieden** (`buerofrieden-harz.de`).
+    2. *Richtung B (Funktionale / Sachliche Namen):* **Bürologik** (`buerologik-harz.de`), **Kernprozess** (`kernprozess-harz.de`).
+    3. *Richtung C (Moderne Neologismen / Kunstwörter):* **Praxos** (`praxos-harz.de`), **Ordonis** (`ordonis-harz.de`), **Valido** (`valido-harz.de`).
+    4. *Richtung D (Bildhafte / Assoziative Namen):* **Hebelpunkt** (`hebelpunkt-harz.de`), **Gleichlauf** (`gleichlauf-harz.de`).
+- **🧪 Automatisierte Test-Suiten (`verify_schablonenfrei_top10.py` & `verify_competitor_collisions_schablonenfrei.py`):**
+  - 100%ige Einhaltung aller Vorgaben: 0 verbotene Schablonen, 0 IT-Anglizismen, 0 Wiederholungen aus Runde 1, alle Claims <= 5 Wörter, 0 phonetische Kollisionen mit 23+ regionalen und Benchmark-Wettbewerbern.
+
 ### 1. Dashboard & Life OS Gamification -- *NEU UPGRADED!*
 - **🎙️ Voice Quick-Capture Studio:** 1-Tap Sprach- und Diktierstudio mit Web Audio API Synthesizer-Feedback, Live Wave-Puls, Tag-Pills (`#Wichtig`, `#Kunde`, `#Idee`...) und 1-Klick Multi-Routing direkt in *To-Do*, *Notiz*, *Tages-Fokus*, *CRM-Lead* oder *Termin*.
 - **📦 1-Klick Data Hub & Backup Manager:** Vollständiges Export- und Import-Center für alle 7 OS-Datenmodule (CRM, Prompts, Notizen, Gamification, Tasks, Roadmap, Settings) mit Drag & Drop, Schema-Inspektor und automatischem Notfall-Snapshot vor jedem Restore.
