@@ -1,5 +1,9 @@
 # TODO - Founder OS
 
+- [x] **⏰ [Scheduled Automations] Wöchentliche KI-Hintergrund-Scouts eingerichtet (`DOCS/Harzer_Lead_Scout_Wochenreport.md`, `DOCS/Foerdermittel_ERechnung_Radar.md`):**
+  - *🕵️‍♂️ Harzer Handwerks-Lead- & Schmerzpunkt-Scout (Jeden Montag, 09:00 Uhr):* Identifiziert Handwerksbetriebe im Harz mit Büro-Engpässen und liefert fertige Telefon-Einstiege.
+  - *💰 Fördermittel- & E-Rechnungs-Radar (Jeden Dienstag, 08:00 Uhr):* Prüft aktuelle Fristen zur E-Rechnungspflicht (01.01.2027), DATEV/Lexoffice und Förderprogramme (*Sachsen-Anhalt DIGITAL INNOVATION* & *BAFA*).
+
 - [x] **🎙️ [Customer-Discovery & Validierung] Interaktives Interview- & Termin-Cockpit (`src/components/CustomerDiscoveryView.jsx`, `Sidebar.jsx`, `App.jsx`):**
   - *Eigene Discovery-Kontaktliste & Upload:* Datei-Upload (`.csv`, `.json`, `.txt`), Copy-Paste-Import, Einzelanlage und 1-Klick-Import aus den 90 Kaltakquise-Leads.
   - *Interaktiver 6-Phasen-Leitfaden:* Phasen 1–6 aus `customer_discovery_validierungs_leitfaden.md` mit allen Ausweichrouten, Reframing-Box, Diagnose-Weiche (Pfade A–E), automatischem Lösungs-Pitch, 500-€-Audit-Preistest und 15–20-Minuten-Stoppuhr.

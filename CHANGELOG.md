@@ -21,6 +21,9 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
   - **Row Level Security (RLS) & Policies aktiviert (Supabase Cloud):** RLS auf allen 8 Kern-Tabellen (`leads`, `contacts`, `dashboard_state`, `prompts`, `client_tickets`, `tasks`, `inbox`, `docs`) aktiviert. Anonymer Zugriff ist gesperrt, nur die Rolle `authenticated` hat Zugriff.
 
 ### Added
+- **⏰ Automatisierte Wochen-Scouts & Markt-Radare (`DOCS/Harzer_Lead_Scout_Wochenreport.md`, `DOCS/Foerdermittel_ERechnung_Radar.md`):**
+  - **🕵️‍♂️ Harzer Handwerks-Lead- & Schmerzpunkt-Scout (Montags, 09:00 Uhr):** Wöchentliche Hintergrund-Automatisierung zur Identifikation von Handwerksbetrieben (SHK, Elektro, Dach/Bau) im Raum Goslar, Wernigerode, Halberstadt und Quedlinburg mit Büro-Engpässen inkl. direkter Gesprächseinstiege für das 500-€-Potenzial-Audit.
+  - **💰 Fördermittel- & E-Rechnungs-Radar (Dienstags, 08:00 Uhr):** Wöchentliches Briefing zu E-Rechnungspflicht (800.000-€-Umsatzgrenze ab 01.01.2027, ZUGFeRD 2.x), DATEV/Lexoffice-Schnittstellen und regionalen Förderprogrammen (*Sachsen-Anhalt DIGITAL INNOVATION* mit Stichtag 16.11.2026 vs. *BAFA-Beratungsförderung* in Niedersachsen nach Auslaufen des Digitalbonus).
 - **🎙️ Customer-Discovery & Positionierungs-Validierungs-Cockpit (`src/components/CustomerDiscoveryView.jsx`, `src/components/Sidebar.jsx`, `src/App.jsx`):**
   - **Neuer Tab `🎙️ Discovery-Interviews`:** Eigene Arbeitsumgebung für 15–20-minütige Gründer-Validierungsgespräche auf Basis von `customer_discovery_validierungs_leitfaden.md`.
   - **Kontakt-Upload & Import:** Unterstützt Datei-Upload (`.csv`, `.json`, `.txt`), schnellen Copy-Paste-Listenimport, manuelle Einzel-Anlage sowie die 1-Klick-Übernahme aus den bestehenden 90 Kaltakquise-Leads.
