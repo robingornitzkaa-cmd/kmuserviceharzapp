@@ -192,16 +192,63 @@ export const INITIAL_PROJECTS = [
 export const INITIAL_PROMPTS = [
   { id: 'pr1', title: 'Kaltakquise E-Mail (Handwerk)', category: 'Sales', text: 'Du bist ein erfahrener Copywriter. Schreibe eine kurze, pragmatische E-Mail an einen Handwerksmeister (Dachdecker/Elektro), der unter Zettelwirtschaft leidet. Keine Marketing-Floskeln, sondern Fokus auf den Kern: Wie er durch Automatisierung pro Woche 5 Stunden Bürozeit spart und das Bürosonntags-Problem löst. Nenne den Digitalbonus als Hebel.' },
   { id: 'pr2', title: 'DATEV Beleg-Extraktor (JSON)', category: 'Code', text: 'Analysiere den folgenden Beleg-Text und extrahiere die Daten in eine saubere JSON-Struktur mit folgenden Feldern: invoice_number, date, net_amount, tax_rate, gross_amount, vendor, iban. Wenn ein Feld nicht eindeutig ist, setze null.' },
-  { id: 'pr3', title: 'Social-Media Hook-Generator', category: 'Marketing', text: 'Generiere 5 aufmerksamkeitsstarke Hooks für LinkedIn-Posts, die sich an Solo-Gründer und KMUs richten. Das Thema des Posts lautet: [THEMA]. Der Stil soll direkt, ehrlich und ohne Bullshit sein.' }
+  { id: 'pr3', title: 'Social-Media Hook-Generator', category: 'Marketing', text: 'Generiere 5 aufmerksamkeitsstarke Hooks für LinkedIn-Posts, die sich an Solo-Gründer und KMUs richten. Das Thema des Posts lautet: [THEMA]. Der Stil soll direkt, ehrlich und ohne Bullshit sein.' },
+  { id: 'pr4', title: 'Himmel-Hölle-Kontrast Generator (Coaching Kauss)', category: 'Sales', text: 'Erstelle für das Handwerksgewerk [GEWERK, z.B. SHK / Dachdecker] eine konkrete Gegenüberstellung nach dem Himmel-Hölle-Prinzip (4 Ketten: 1. Abend-Bürostress vs. Freier Kopf, 2. Anruf-Chaos vs. Proaktive Kunden-Info, 3. Zettel-Chaos vs. Revisionssicherheit, 4. Hohe Bürokosten vs. Schneller Jahresabschluss). Nutze bodenständige Handwerker-Sprache ohne Berater-Floskeln.' },
+  { id: 'pr5', title: 'FAB-Statement Einwandbehandlung (Blau/Lila/Grün)', category: 'Sales', text: 'Beantworte den Handwerker-Einwand "[EINWAND, z.B. Meine Monteure nutzen keine neuen Apps]" exakt nach der 3-stufigen FAB-Formel aus dem Coaching: 1. Besonderes Produkt-Merkmal (Blau: System-Brücken / Standard-Setup / Handwerks-Fokus / GoBD / DATEV), 2. Vorteil Produkt (Lila: Keine Schulungen / Schnelle Umsetzung / Kein Fachchinesisch), 3. Vorteil Kunde (Grün: Alte Systeme bleiben / Vertrauen ab Minute 1 / Kostenersparnis & schneller Jahresabschluss).' }
 ];
 
 export const INITIAL_CONTENT = [
   { id: 'co1', title: 'Die E-Rechnungspflicht 2025: Was Handwerker jetzt tun müssen', date: '2026-06-28', status: 'draft' },
   { id: 'co2', title: 'Case Study: Wie GoClean Harz 12 Stunden Zettelwirtschaft im Monat eliminierte', date: '2026-07-02', status: 'idea' },
-  { id: 'co3', title: 'Warum IT-Systemhäuser deine Prozessprobleme im Büro nicht lösen', date: '2026-06-25', status: 'ready' }
+  { id: 'co3', title: 'Warum IT-Systemhäuser deine Prozessprobleme im Büro nicht lösen', date: '2026-06-25', status: 'ready' },
+  { id: 'co4', title: 'Himmel-Hölle im Handwerksbüro: Warum 80% der Meister abends noch tippen', date: '2026-10-20', status: 'ready' }
 ];
 
 export const INITIAL_DOCS = [
+  {
+    id: 'd_coaching_himmel_hoelle_fab',
+    title: 'Coaching_Strategie_Himmel_Hoelle_und_FAB_Statements.md',
+    tags: ['coaching', 'strategie', 'vertrieb', 'website', 'fab', 'kauss'],
+    category: 'strategie',
+    status: 'synced',
+    url: '#',
+    content: `# Coaching-Ausarbeitung (Dennis Kauss): Himmel-Hölle-Prinzip & 5 FAB-Statements
+
+## 1. Das Himmel-Hölle-Prinzip (4 Kausalketten)
+
+| # | Dimension | 🔥 Hölle (Schmerz-Kette im Ist-Zustand) | 🌤️ Himmel (Wunsch-Zustand nach Umsetzung) |
+|---|---|---|---|
+| **1** | **Chef-Alltag & Feierabend** | Fehlende Zeit für eigentliche Arbeit (Baustelle) ➔ Büroarbeit abends / Wochenende ➔ Überlastung ➔ Krankheitsbedingter Ausfall / Burnout | Mehr Freizeit ➔ Freier Kopf ➔ Selbstbestimmung im eigenen Betrieb |
+| **2** | **Kundenkommunikation & Ruf** | Schlechte Kundenkommunikation ➔ Unzufriedene Kunden ➔ Schlechte Bewertungen ➔ Weniger Aufträge | Proaktive, automatisierte Kundeninfo ➔ Zufriedene Kunden ➔ Weniger Anrufe im Büro |
+| **3** | **Verwaltung & Prüfsicherheit** | Unstrukturierte Verwaltung ➔ Fehlende Dokumente & Rechnungen ➔ Ärger mit Behörden & Ämtern ➔ Stress bei Prüfungen | Revisionssichere Verwaltung ➔ Geordnete Abläufe ➔ Ruhe vor dem Finanzamt |
+| **4** | **Wirtschaftlichkeit & Steuerberater** | Hohe Bürokosten ➔ Ineffiziente Abläufe ➔ Fehlende Wettbewerbsfähigkeit | Vereinfachte Geschäftsprozesse ➔ Schneller Jahresabschluss & volle Wettbewerbsfähigkeit |
+
+---
+
+## 2. Die 5 FAB-Statements (Blau ➔ Lila ➔ Grün)
+
+1. **KI-Anbindung (System-Brücken):**
+   - 🔵 **Merkmal:** KI-Anbindung / Automatische Brücken zwischen WhatsApp, E-Mail & Bürosoftware
+   - 🟣 **Vorteil Produkt:** Keine Schulungen für das Team notwendig
+   - 🟢 **Vorteil Kunde:** Bestehende Systeme bleiben einfach erhalten (kein Software-Wechsel!)
+2. **Standardisiertes System:**
+   - 🔵 **Merkmal:** Standardisiertes System (bewährte Prozess-Bausteine)
+   - 🟣 **Vorteil Produkt:** Schnell umsetzbar (in Tagen statt Monaten)
+   - 🟢 **Vorteil Kunde:** Individuelles Ergebnis, exakt passend für den eigenen Betrieb
+3. **Spezialisierung auf Handwerksbetriebe:**
+   - 🔵 **Merkmal:** 100 % Spezialisierung auf Handwerksbetriebe im Harz
+   - 🟣 **Vorteil Produkt:** Klare Sprache – kein IT-Fachchinesisch
+   - 🟢 **Vorteil Kunde:** Vertrauen und Verständnis ab der ersten Minute
+4. **GoBD- & DSGVO-konform:**
+   - 🔵 **Merkmal:** GoBD- und DSGVO-konforme Einrichtung inkl. Verfahrensdokumentation
+   - 🟣 **Vorteil Produkt:** Geprüfte rechtliche & technische Leitplanken
+   - 🟢 **Vorteil Kunde:** 100 % Sicherheit bei sensiblen Kundendaten und Betriebsprüfungen
+5. **DATEV-Konvertierung:**
+   - 🔵 **Merkmal:** Automatische DATEV-Konvertierung (Belegbild + strukturierte Daten)
+   - 🟣 **Vorteil Produkt:** Direkt für den Steuerberater nutzbar – ohne Rückfragen
+   - 🟢 **Vorteil Kunde:** Spürbare Kostenersparnis beim Steuerberater + schnelle Jahresabschlüsse
+`
+  },
   { 
     id: 'master-logbuch', 
     title: 'masterLogbuch.txt', 

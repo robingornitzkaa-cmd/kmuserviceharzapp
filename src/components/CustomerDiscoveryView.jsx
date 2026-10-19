@@ -2413,12 +2413,34 @@ ${c.generalNotes || 'Keine weiteren Notizen.'}
                       </div>
 
                       {/* Brückenschlag zum 60-90 Min Büro-Audit */}
-                      <div style={{ padding: '0.8rem 1rem', background: 'rgba(6, 182, 212, 0.14)', border: '1px solid #06b6d4', borderRadius: '0.5rem' }}>
+                      <div style={{ padding: '0.8rem 1rem', background: 'rgba(6, 182, 212, 0.14)', border: '1px solid #06b6d4', borderRadius: '0.5rem', marginBottom: '0.85rem' }}>
                         <div style={{ fontSize: '0.74rem', fontWeight: 700, color: '#22d3ee', marginBottom: '0.25rem' }}>
                           🌉 Der Brückenschlag zum Audit:
                         </div>
                         <div style={{ fontSize: '0.9rem', color: 'white', fontStyle: 'italic' }}>
                           „Bevor man da aber irgendetwas umsetzt, plane ich als festen ersten Schritt ein <strong>60- bis 90-minütiges Büro-Audit vor Ort</strong> an. Wir schauen uns die Abläufe an, decken die Zeitfresser auf und berechnen schwarz auf weiß, wie viele Stunden Sie pro Woche sparen können.“
+                        </div>
+                      </div>
+
+                      {/* NEU: Coaching-Spickzettel: 5 FAB-Statements & Himmel-Hölle-Hebel (Dennis Kauss) */}
+                      <div style={{ padding: '0.85rem 1rem', background: 'rgba(139, 92, 246, 0.1)', border: '1px solid rgba(139, 92, 246, 0.4)', borderRadius: '0.55rem' }}>
+                        <div style={{ fontSize: '0.75rem', fontWeight: 800, color: '#c4b5fd', textTransform: 'uppercase', marginBottom: '0.45rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.4rem' }}>
+                          <span>💎 Coaching-Spickzettel (Kauss): Die 5 FAB-Nutzen-Ketten (Blau ➔ Lila ➔ Grün)</span>
+                          <span style={{ fontSize: '0.68rem', color: '#86efac', fontWeight: 700 }}>Für Pitch & Einwände in Phase 4/5</span>
+                        </div>
+                        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)', gap: '0.45rem', fontSize: '0.76rem' }}>
+                          <div style={{ padding: '0.45rem 0.6rem', background: 'rgba(15, 23, 42, 0.7)', borderRadius: '0.4rem', borderLeft: '3px solid #3b82f6' }}>
+                            <strong style={{ color: '#93c5fd' }}>1. System-Brücken (KI):</strong> <span style={{ color: '#d8b4fe' }}>Keine Schulung nötig</span> ➔ <strong style={{ color: '#86efac' }}>Bestehende Systeme bleiben erhalten!</strong>
+                          </div>
+                          <div style={{ padding: '0.45rem 0.6rem', background: 'rgba(15, 23, 42, 0.7)', borderRadius: '0.4rem', borderLeft: '3px solid #a855f7' }}>
+                            <strong style={{ color: '#93c5fd' }}>2. Standard-System:</strong> <span style={{ color: '#d8b4fe' }}>Schnell umsetzbar</span> ➔ <strong style={{ color: '#86efac' }}>Individuelles Ergebnis für den Betrieb!</strong>
+                          </div>
+                          <div style={{ padding: '0.45rem 0.6rem', background: 'rgba(15, 23, 42, 0.7)', borderRadius: '0.4rem', borderLeft: '3px solid #10b981' }}>
+                            <strong style={{ color: '#93c5fd' }}>3. Handwerks-Spezialisierung:</strong> <span style={{ color: '#d8b4fe' }}>Kein Fachchinesisch</span> ➔ <strong style={{ color: '#86efac' }}>Vertrauen ab Minute 1!</strong>
+                          </div>
+                          <div style={{ padding: '0.45rem 0.6rem', background: 'rgba(15, 23, 42, 0.7)', borderRadius: '0.4rem', borderLeft: '3px solid #f59e0b' }}>
+                            <strong style={{ color: '#93c5fd' }}>4. GoBD/DSGVO & 5. DATEV:</strong> <span style={{ color: '#d8b4fe' }}>Ohne StB-Rückfragen</span> ➔ <strong style={{ color: '#86efac' }}>Kostenersparnis & schneller Jahresabschluss!</strong>
+                          </div>
                         </div>
                       </div>
                     </div>

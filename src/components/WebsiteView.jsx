@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { WEBSITE_CONTENT } from '../constants/websiteContent';
+import { WEBSITE_CONTENT, WEBSITE_VERSIONS } from '../constants/websiteContent';
 import { 
   Globe, 
   CheckCircle2, 
@@ -48,6 +48,14 @@ export const WebsiteView = () => {
   // Theme fest verankert: 'harz' (Hellgrün) im Light-Modus
   const themePreset = 'harz';
   const contrastMode = 'light';
+
+  // Website-Versions-Umschalter: 'v1' (Original) | 'v2' (Beleg-Fokus + Coaching) | 'v3' (3-Säulen Komplett)
+  const [activeVersion, setActiveVersion] = useState('v3');
+  // Umschalter innerhalb der Himmel-Hölle-Sektion: 'optimized' (Handwerker-Klartext) | 'coaching_raw' (Original Whiteboard)
+  const [hhDisplayMode, setHhDisplayMode] = useState('optimized');
+
+  const activeVersionMeta = WEBSITE_VERSIONS.find(v => v.id === activeVersion) || WEBSITE_VERSIONS[0];
+  const currentContent = activeVersionMeta.content || WEBSITE_CONTENT;
   
   // Subpage state: 'home' | 'services' | 'workflow' | 'roi' | 'about' | 'contact' | 'impressum' | 'privacy'
   const [activePage, setActivePage] = useState('home');
@@ -62,6 +70,7 @@ export const WebsiteView = () => {
   // Export Modal State
   const [showExportModal, setShowExportModal] = useState(false);
   const [exportEmail, setExportEmail] = useState(WEBSITE_CONTENT.brand.email);
+  const [exportVersionId, setExportVersionId] = useState('v3');
   const [activeExportTab, setActiveExportTab] = useState('quick');
   const [copiedCode, setCopiedCode] = useState(false);
 
@@ -99,6 +108,11 @@ export const WebsiteView = () => {
     }
   };
 
+  const handleVersionChange = (verId) => {
+    setActiveVersion(verId);
+    setExportVersionId(verId);
+  };
+
   // Scroll to section on home page
   const scrollToSection = (sectionId) => {
     if (activePage !== 'home') {
@@ -126,18 +140,82 @@ export const WebsiteView = () => {
     navigateTo('contact');
   };
 
-  // Standalone HTML Generator Function
-  const generateStandaloneHtml = (targetEmail) => {
-    const emailToUse = targetEmail || WEBSITE_CONTENT.brand.email;
-    const whatsappNum = (WEBSITE_CONTENT.brand.whatsapp || '4915112345678').replace(/[^0-9]/g, '');
+  // Standalone HTML Generator Function (supports all 3 versions!)
+  const generateStandaloneHtml = (targetEmail, versionKey = activeVersion) => {
+    const verObj = WEBSITE_VERSIONS.find(v => v.id === versionKey) || activeVersionMeta;
+    const contentToExport = verObj.content || currentContent;
+    const emailToUse = targetEmail || contentToExport.brand.email;
+    const whatsappNum = (contentToExport.brand.whatsapp || '4915112345678').replace(/[^0-9]/g, '');
+
+    const hhHtmlSection = contentToExport.heavenHell ? `
+  <!-- HIMMEL & HÖLLE PRINZIP -->
+  <section class="section-padding" id="himmel-hoelle" style="background: var(--bg-subtle);">
+    <div class="container">
+      <div class="sec-header">
+        <span class="sec-badge">${contentToExport.heavenHell.badge}</span>
+        <h2 class="sec-title">${contentToExport.heavenHell.title}</h2>
+        <p class="sec-subtitle">${contentToExport.heavenHell.subtitle}</p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; max-width: 1150px; margin: 0 auto;">
+        <div style="background: #fff1f2; border: 2px solid #fecdd3; border-radius: 16px; padding: 1.8rem;">
+          <div style="font-size: 0.8rem; font-weight: 800; color: #be123c; text-transform: uppercase; margin-bottom: 1rem;">🔥 ${contentToExport.heavenHell.hellTitle}</div>
+          ${contentToExport.heavenHell.pairs.map(p => `
+            <div style="background: #ffffff; border: 1px solid #fecdd3; border-radius: 12px; padding: 1rem; margin-bottom: 0.9rem;">
+              <div style="font-weight: 800; color: #9f1239; font-size: 0.95rem; margin-bottom: 0.3rem;">✕ ${p.websiteHellTitle}</div>
+              <div style="font-size: 0.86rem; color: #475569; line-height: 1.5;">${p.websiteHellChain}</div>
+            </div>
+          `).join('')}
+        </div>
+        <div style="background: #ecfdf5; border: 2px solid #a7f3d0; border-radius: 16px; padding: 1.8rem;">
+          <div style="font-size: 0.8rem; font-weight: 800; color: #047857; text-transform: uppercase; margin-bottom: 1rem;">✨ ${contentToExport.heavenHell.heavenTitle}</div>
+          ${contentToExport.heavenHell.pairs.map(p => `
+            <div style="background: #ffffff; border: 1px solid #a7f3d0; border-radius: 12px; padding: 1rem; margin-bottom: 0.9rem;">
+              <div style="font-weight: 800; color: #065f46; font-size: 0.95rem; margin-bottom: 0.3rem;">✓ ${p.websiteHeavenTitle}</div>
+              <div style="font-size: 0.86rem; color: #0f172a; line-height: 1.5;">${p.websiteHeavenChain}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  </section>` : '';
+
+    const fabHtmlSection = contentToExport.fabStatements ? `
+  <!-- FAB-STATEMENTS (MERKMAL + PRODUKTVORTEIL + KUNDENNUTZEN) -->
+  <section class="section-padding" id="fab-statements">
+    <div class="container">
+      <div class="sec-header">
+        <span class="sec-badge">${contentToExport.fabStatements.badge}</span>
+        <h2 class="sec-title">${contentToExport.fabStatements.title}</h2>
+        <p class="sec-subtitle">${contentToExport.fabStatements.subtitle}</p>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 1rem; max-width: 1100px; margin: 0 auto;">
+        ${contentToExport.fabStatements.items.map(fab => `
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 1.3rem; box-shadow: var(--card-shadow);">
+            <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 1rem;">
+              <div style="font-size: 0.7rem; font-weight: 800; color: #1d4ed8; text-transform: uppercase; margin-bottom: 0.25rem;">1. Besonderes Produkt-Merkmal</div>
+              <div style="font-weight: 800; color: #1e3a8a; font-size: 0.98rem;">${fab.feature}</div>
+            </div>
+            <div style="background: #f5f3ff; border: 1px solid #ddd6fe; border-radius: 10px; padding: 1rem;">
+              <div style="font-size: 0.7rem; font-weight: 800; color: #6d28d9; text-transform: uppercase; margin-bottom: 0.25rem;">+ 2. Vorteil Produkt</div>
+              <div style="font-weight: 700; color: #4c1d95; font-size: 0.92rem;">${fab.advantage}</div>
+            </div>
+            <div style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 10px; padding: 1rem;">
+              <div style="font-size: 0.7rem; font-weight: 800; color: #047857; text-transform: uppercase; margin-bottom: 0.25rem;">= 3. Vorteil für Sie als Kunde</div>
+              <div style="font-weight: 700; color: #064e3b; font-size: 0.92rem;">${fab.benefit}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  </section>` : '';
 
     return `<!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>${WEBSITE_CONTENT.brand.name} – ${WEBSITE_CONTENT.brand.positioning}</title>
-  <meta name="description" content="${WEBSITE_CONTENT.brand.claim}" />
+  <title>${contentToExport.brand.name} – ${contentToExport.brand.positioning}</title>
+  <meta name="description" content="${contentToExport.brand.claim}" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -539,8 +617,8 @@ export const WebsiteView = () => {
       <div class="brand">
         <div class="logo-box">⚙</div>
         <div>
-          <div class="brand-title">${WEBSITE_CONTENT.brand.shortName}</div>
-          <div class="brand-sub">${WEBSITE_CONTENT.brand.positioning}</div>
+          <div class="brand-title">${contentToExport.brand.shortName}</div>
+          <div class="brand-sub">${contentToExport.brand.positioning}</div>
         </div>
       </div>
 
@@ -560,21 +638,17 @@ export const WebsiteView = () => {
   <!-- HERO -->
   <section class="hero-section">
     <div class="container">
-      <span class="hero-pill">🛠️ ${WEBSITE_CONTENT.hero.badge}</span>
+      <span class="hero-pill">${contentToExport.hero.badge}</span>
       <h1 class="hero-h1">
-        Schluss mit dem <span class="highlight-text">Büro-Wochenende.</span><br />
-        Lautlose Belegerfassung für Handwerk & Mittelstand im Harz.
+        ${contentToExport.hero.headline}
       </h1>
-      <p class="hero-p">${WEBSITE_CONTENT.hero.subheadline}</p>
+      <p class="hero-p">${contentToExport.hero.subheadline}</p>
       <div class="hero-btn-group">
-        <a href="#contact" class="btn-primary-glow">${WEBSITE_CONTENT.hero.ctaPrimary} →</a>
-        <a href="#roi" class="btn-secondary-outline">🧮 ${WEBSITE_CONTENT.hero.ctaSecondary}</a>
+        <a href="#contact" class="btn-primary-glow">${contentToExport.hero.ctaPrimary} →</a>
+        <a href="#roi" class="btn-secondary-outline">🧮 ${contentToExport.hero.ctaSecondary}</a>
       </div>
       <div class="trust-badges-row">
-        <div class="trust-item">🛡️ 100 % DSGVO & EU-Server</div>
-        <div class="trust-item">📍 Vor Ort im Landkreis Goslar & Harz</div>
-        <div class="trust-item">🤝 Feste Paketpreise</div>
-        <div class="trust-item">⚡ Lexoffice & DATEV</div>
+        ${contentToExport.hero.trustBadges.map(tb => `<div class="trust-item">${tb}</div>`).join('')}
       </div>
     </div>
   </section>
@@ -583,60 +657,39 @@ export const WebsiteView = () => {
   <section class="section-padding">
     <div class="container">
       <div class="sec-header">
-        <span class="sec-badge">${WEBSITE_CONTENT.painPoints.badge}</span>
-        <h2 class="sec-title">${WEBSITE_CONTENT.painPoints.title}</h2>
-        <p class="sec-subtitle">${WEBSITE_CONTENT.painPoints.subtitle}</p>
+        <span class="sec-badge">${contentToExport.painPoints.badge}</span>
+        <h2 class="sec-title">${contentToExport.painPoints.title}</h2>
+        <p class="sec-subtitle">${contentToExport.painPoints.subtitle}</p>
       </div>
       <div class="pain-grid">
+        ${contentToExport.painPoints.items.map((it, idx) => `
         <div class="pain-card">
-          <div class="pain-icon">📅</div>
-          <h3 class="pain-h3">Das zähe Büro-Wochenende</h3>
-          <p class="pain-p">Nach 50h Baustelleneinsatz verbringen Meister und Familie das Wochenende mit Quittungen, Belegen und Excel-Tabellen.</p>
-        </div>
-        <div class="pain-card">
-          <div class="pain-icon">⏱️</div>
-          <h3 class="pain-h3">32 verlorene Stunden</h3>
-          <p class="pain-p">Zettel mühsam am PC abtippen. Wertvolle Meisterstunden versickern in doppelter Datenerfassung.</p>
-        </div>
-        <div class="pain-card">
-          <div class="pain-icon">📄</div>
-          <h3 class="pain-h3">Steuerberater-Rückfragen</h3>
-          <p class="pain-p">Fehlende Quittungen führen zu zeitraubenden Rückfragen und teuren Extragebühren bei der DATEV-Vorkontierung.</p>
-        </div>
-        <div class="pain-card">
-          <div class="pain-icon">⚖️</div>
-          <h3 class="pain-h3">Gesetzlicher Druck</h3>
-          <p class="pain-p">E-Rechnungspflicht (ZUGFeRD/XRechnung) und GoBD-Anforderungen fordern rechtssichere digitale Ablage.</p>
-        </div>
+          <div class="pain-icon">${idx === 0 ? '📅' : idx === 1 ? '⏱️' : idx === 2 ? '📄' : '⚖️'}</div>
+          <h3 class="pain-h3">${it.problem}</h3>
+          <p class="pain-p">${it.description}</p>
+        </div>`).join('')}
       </div>
     </div>
   </section>
+  ${hhHtmlSection}
+  ${fabHtmlSection}
 
   <!-- WORKFLOW -->
   <section class="section-padding" id="workflow" style="background: var(--bg-subtle);">
     <div class="container">
       <div class="sec-header">
-        <span class="sec-badge">${WEBSITE_CONTENT.workflow.badge}</span>
-        <h2 class="sec-title">${WEBSITE_CONTENT.workflow.title}</h2>
-        <p class="sec-subtitle">${WEBSITE_CONTENT.workflow.subtitle}</p>
+        <span class="sec-badge">${contentToExport.workflow.badge}</span>
+        <h2 class="sec-title">${contentToExport.workflow.title}</h2>
+        <p class="sec-subtitle">${contentToExport.workflow.subtitle}</p>
       </div>
       <div class="workflow-card">
         <div class="workflow-steps-grid">
+          ${contentToExport.workflow.workflowSteps.map(ws => `
           <div class="step-card">
-            <div class="step-num">01</div>
-            <h4 class="step-title">1. Foto vor Ort</h4>
-            <p class="step-desc">Mitarbeiter fotografiert Quittung per Smartphone oder leitet PDF/E-Mail weiter.</p>
-          </div>
-          <div class="step-card">
-            <div class="step-num">02</div>
-            <h4 class="step-title">2. Lautlose Erfassung</h4>
-            <p class="step-desc">Automatische Textextraktion, Vorkontierung und GoBD-Ablage in Lexoffice.</p>
-          </div>
-          <div class="step-card">
-            <div class="step-num">03</div>
-            <h4 class="step-title">3. DATEV-Kanzlei</h4>
-            <p class="step-desc">Revisionssichere Übergabe an den Steuerberater – monatlich ohne Rückfragen.</p>
-          </div>
+            <div class="step-num">${ws.num}</div>
+            <h4 class="step-title">${ws.title}</h4>
+            <p class="step-desc">${ws.desc}</p>
+          </div>`).join('')}
         </div>
       </div>
     </div>
@@ -651,65 +704,22 @@ export const WebsiteView = () => {
         <p class="sec-subtitle">Garantierte Ergebnisse, transparente Festpreise und keine versteckten IT-Zusatzkosten.</p>
       </div>
       <div class="pricing-grid">
-        <!-- Tier 1 -->
-        <div class="pricing-card">
-          <div class="pricing-level">Stufe 1</div>
-          <h3 class="pricing-title">Büro-Potenzial-Audit</h3>
-          <p class="pricing-tagline">Niedrigschwelliger Einstieg zum Kennenlernen</p>
+        ${contentToExport.pricingTiers.map(tier => `
+        <div class="pricing-card ${tier.highlight ? 'highlighted' : ''}">
+          ${tier.badge ? `<div class="pricing-badge-pill">${tier.badge}</div>` : ''}
+          <div class="pricing-level">${tier.level}</div>
+          <h3 class="pricing-title">${tier.title}</h3>
+          <p class="pricing-tagline">${tier.tagline}</p>
           <div class="price-box">
-            <span class="price-amount">500 €</span>
-            <span class="price-suff">Festpreis (zzgl. MwSt.)</span>
+            <span class="price-amount">${tier.price}</span>
+            <span class="price-suff">${tier.priceSuffix}</span>
           </div>
-          <div class="funding-tag">100 % risikofreie Analyse</div>
+          ${tier.fundingNote ? `<div class="funding-tag">${tier.fundingNote}</div>` : ''}
           <ul class="pricing-features">
-            <li>90 Min. 1:1-Prozessanalyse vor Ort oder per Video</li>
-            <li>Schriftlicher ROI-Fahrplan mit konkreten Zahlen</li>
-            <li>Aufdeckung der 3 größten Zeitfresser</li>
-            <li>Sofort umsetzbare Quick-Win-Empfehlungen</li>
+            ${tier.features.map(f => `<li>${f}</li>`).join('')}
           </ul>
-          <a href="#contact" class="btn-pricing">Audit anfragen</a>
-        </div>
-
-        <!-- Tier 2 -->
-        <div class="pricing-card highlighted">
-          <div class="pricing-badge-pill">⭐ BESTSELLER</div>
-          <div class="pricing-level">Stufe 2</div>
-          <h3 class="pricing-title">Das Standard-Setup</h3>
-          <p class="pricing-tagline">Schlüsselfertige Belegerfassungs-Einrichtung</p>
-          <div class="price-box">
-            <span class="price-amount">2.000 €</span>
-            <span class="price-suff">Festpreis (netto)</span>
-          </div>
-          <div class="funding-tag">⚡ Amortisiert in ca. 8 Wochen (spart ~16 Std./Mo)</div>
-          <ul class="pricing-features">
-            <li>Automatisierter Belegeingang (WhatsApp, Mail ➔ Lexoffice)</li>
-            <li>Revisionssichere Übergabe an DATEV-Kanzlei</li>
-            <li>100 % E-Rechnungs- und GoBD-Konformität</li>
-            <li>14 Tage intensive Einführungsbegleitung</li>
-            <li>Garantierter Festpreis – keine offenen Stundenzettel</li>
-            <li>Sofort einsatzbereit – keine Förder-Wartezeit</li>
-          </ul>
-          <a href="#contact" class="btn-pricing">Standard-Setup sichern</a>
-        </div>
-
-        <!-- Tier 3 -->
-        <div class="pricing-card">
-          <div class="pricing-level">Stufe 3</div>
-          <h3 class="pricing-title">Digitaler Hausmeister</h3>
-          <p class="pricing-tagline">Laufende Betreuung & Schnittstellen-Pflege</p>
-          <div class="price-box">
-            <span class="price-amount">200 €</span>
-            <span class="price-suff">pro Monat (netto)</span>
-          </div>
-          <div class="funding-tag">Monatlich kündbar</div>
-          <ul class="pricing-features">
-            <li>Laufendes Monitoring aller Schnittstellen</li>
-            <li>Sofortige Fehlerbehebung bei API-Updates</li>
-            <li>Inkl. 1 Stunde monatliches Anpassungskontingent</li>
-            <li>Persönlicher Ansprechpartner für Fragen & Notfälle</li>
-          </ul>
-          <a href="#contact" class="btn-pricing">Hausmeister buchen</a>
-        </div>
+          <a href="#contact" class="btn-pricing">${tier.ctaText}</a>
+        </div>`).join('')}
       </div>
     </div>
   </section>
@@ -718,8 +728,8 @@ export const WebsiteView = () => {
   <section class="section-padding" id="roi" style="background: var(--bg-subtle);">
     <div class="container">
       <div class="sec-header">
-        <span class="sec-badge">${WEBSITE_CONTENT.roiCalculator.badge}</span>
-        <h2 class="sec-title">${WEBSITE_CONTENT.roiCalculator.title}</h2>
+        <span class="sec-badge">${contentToExport.roiCalculator.badge}</span>
+        <h2 class="sec-title">${contentToExport.roiCalculator.title}</h2>
         <p class="sec-subtitle">Berechnen Sie in 10 Sekunden, wie viele freie Wochenenden Ihr Betrieb zurückgewinnt.</p>
       </div>
       <div class="roi-card">
@@ -747,7 +757,7 @@ export const WebsiteView = () => {
           </div>
         </div>
         <div class="roi-results-box">
-          <span style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted);">IHRE GESCHÄTZTE ENTLASSUNG:</span>
+          <span style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted);">IHRE GESCHÄTZTE ENTLASTUNG:</span>
           <div class="sundays-big" id="res-sundays">ca. 24 freie Wochenenden</div>
           <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">pro Jahr ohne Beleg-Chaos & Büroarbeit am Wochenende.</p>
           <div style="font-size: 0.95rem; font-weight: 700; margin-bottom: 1.2rem;">
@@ -802,16 +812,16 @@ export const WebsiteView = () => {
   <section class="section-padding" id="contact" style="background: var(--bg-subtle);">
     <div class="container">
       <div class="sec-header">
-        <span class="sec-badge">${WEBSITE_CONTENT.contact.badge}</span>
-        <h2 class="sec-title">${WEBSITE_CONTENT.contact.title}</h2>
-        <p class="sec-subtitle">${WEBSITE_CONTENT.contact.subtitle}</p>
+        <span class="sec-badge">${contentToExport.contact.badge}</span>
+        <h2 class="sec-title">${contentToExport.contact.title}</h2>
+        <p class="sec-subtitle">${contentToExport.contact.subtitle}</p>
       </div>
 
       <div class="contact-grid">
         <!-- FORM -->
         <div class="contact-form-box">
           <form action="https://formsubmit.co/${emailToUse}" method="POST">
-            <input type="hidden" name="_subject" value="Neue Anfrage via KMU Service Harz Website" />
+            <input type="hidden" name="_subject" value="Neue Anfrage via KMU Service Harz Website (${verObj.shortLabel})" />
             <input type="hidden" name="_captcha" value="false" />
             <input type="hidden" name="_template" value="table" />
 
@@ -860,10 +870,10 @@ export const WebsiteView = () => {
           <span class="sec-badge">PERSÖNLICH VOR ORT</span>
           <h3 style="font-size: 1.3rem; margin: 0.5rem 0 1rem;">KMU Service Harz</h3>
           <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 1.5rem;">
-            Ansprechpartner: <strong>${WEBSITE_CONTENT.brand.owner}</strong><br>
-            Standort: <strong>${WEBSITE_CONTENT.brand.location}</strong><br>
-            E-Mail: <strong>${WEBSITE_CONTENT.brand.email}</strong><br>
-            Telefon: <strong>${WEBSITE_CONTENT.brand.phone}</strong>
+            Ansprechpartner: <strong>${contentToExport.brand.owner}</strong><br>
+            Standort: <strong>${contentToExport.brand.location}</strong><br>
+            E-Mail: <strong>${contentToExport.brand.email}</strong><br>
+            Telefon: <strong>${contentToExport.brand.phone}</strong>
           </p>
           <div style="background: var(--bg-subtle); border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem; font-size: 0.88rem;">
             <strong>🤝 Das Harzer Handschlag-Versprechen:</strong><br>
@@ -878,9 +888,9 @@ export const WebsiteView = () => {
   <footer>
     <div class="footer-inner">
       <div>
-        <strong>${WEBSITE_CONTENT.brand.name}</strong>
-        <p style="font-size: 0.82rem; color: var(--text-muted);">${WEBSITE_CONTENT.brand.claim}</p>
-        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.4rem;">© ${new Date().getFullYear()} ${WEBSITE_CONTENT.brand.owner}. ${WEBSITE_CONTENT.brand.location}</p>
+        <strong>${contentToExport.brand.name}</strong>
+        <p style="font-size: 0.82rem; color: var(--text-muted);">${contentToExport.brand.claim}</p>
+        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.4rem;">© ${new Date().getFullYear()} ${contentToExport.brand.owner}. ${contentToExport.brand.location}</p>
       </div>
       <div style="display: flex; gap: 1rem; font-size: 0.85rem; color: var(--text-muted);">
         <a href="#services">Preise</a>
@@ -936,21 +946,21 @@ export const WebsiteView = () => {
 </html>`;
   };
 
-  const downloadStandaloneHtml = () => {
-    const html = generateStandaloneHtml(exportEmail);
+  const downloadStandaloneHtml = (verKey = exportVersionId) => {
+    const html = generateStandaloneHtml(exportEmail, verKey);
     const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'index.html';
+    a.download = verKey === 'v1' ? 'index-v1-original.html' : verKey === 'v2' ? 'index-v2-beleg-coaching.html' : 'index.html';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   };
 
-  const copyStandaloneHtml = () => {
-    const html = generateStandaloneHtml(exportEmail);
+  const copyStandaloneHtml = (verKey = exportVersionId) => {
+    const html = generateStandaloneHtml(exportEmail, verKey);
     navigator.clipboard.writeText(html);
     setCopiedCode(true);
     setTimeout(() => setCopiedCode(false), 3000);
@@ -959,6 +969,63 @@ export const WebsiteView = () => {
   return (
     <div className={`website-wrapper preset-${themePreset} mode-${contrastMode}`} ref={mainContainerRef}>
       
+      {/* 🎛️ 3-VERSIONEN-UMSCHALTLEISTE (V1 ORIGINAL vs. V2 BELEG+COACHING vs. V3 3-SÄULEN KOMPLETT) */}
+      <div style={{
+        background: '#064e3b',
+        color: '#ffffff',
+        padding: '0.65rem 1.25rem',
+        borderBottom: '2px solid #047857',
+        display: 'flex',
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: '0.75rem',
+        fontSize: '0.82rem'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+          <span style={{
+            background: '#d97706',
+            color: '#fff',
+            fontWeight: 800,
+            padding: '0.2rem 0.55rem',
+            borderRadius: '6px',
+            fontSize: '0.72rem',
+            letterSpacing: '0.03em'
+          }}>
+            🔄 WEBSITE-VERSIONEN (ALLELREIHEN-VERGLEICH)
+          </span>
+          <span style={{ color: '#a7f3d0', fontWeight: 600 }}>
+            {activeVersionMeta.description}
+          </span>
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
+          {WEBSITE_VERSIONS.map(ver => {
+            const isSelected = activeVersion === ver.id;
+            return (
+              <button
+                key={ver.id}
+                type="button"
+                onClick={() => handleVersionChange(ver.id)}
+                style={{
+                  background: isSelected ? '#ffffff' : 'rgba(255,255,255,0.12)',
+                  color: isSelected ? '#064e3b' : '#ecfdf5',
+                  border: isSelected ? '2px solid #fbbf24' : '1px solid rgba(255,255,255,0.25)',
+                  borderRadius: '8px',
+                  padding: '0.35rem 0.75rem',
+                  fontWeight: 800,
+                  fontSize: '0.78rem',
+                  cursor: 'pointer',
+                  transition: 'all 0.15s ease'
+                }}
+              >
+                {ver.shortLabel}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       {/* 🧭 TOP BRAND HEADER & CONTROL BAR */}
       <header className="web-header">
         <div className="web-header-inner">
@@ -969,14 +1036,14 @@ export const WebsiteView = () => {
               <Workflow size={22} />
             </div>
             <div className="web-brand-text">
-              <span className="web-brand-title">{WEBSITE_CONTENT.brand.shortName}</span>
-              <span className="web-brand-sub">{WEBSITE_CONTENT.brand.positioning}</span>
+              <span className="web-brand-title">{currentContent.brand.shortName}</span>
+              <span className="web-brand-sub">{currentContent.brand.positioning}</span>
             </div>
           </div>
 
           {/* Navigation Links */}
           <nav className="web-nav">
-            {WEBSITE_CONTENT.nav.map(item => (
+            {currentContent.nav.map(item => (
               <button 
                 key={item.id}
                 type="button"
@@ -994,11 +1061,14 @@ export const WebsiteView = () => {
             <button
               type="button"
               className="export-site-btn"
-              onClick={() => setShowExportModal(true)}
+              onClick={() => {
+                setExportVersionId(activeVersion);
+                setShowExportModal(true);
+              }}
               title="Website als eigenständige HTML exportieren & Live schalten"
             >
               <Download size={14} />
-              <span>Website Exportieren</span>
+              <span>Website Exportieren ({activeVersion.toUpperCase()})</span>
             </button>
 
             {/* Direct CTA Header Button */}
@@ -1030,21 +1100,27 @@ export const WebsiteView = () => {
                 <div className="hero-badge-container">
                   <span className="hero-pill">
                     <Sparkles size={14} className="hero-sparkle" />
-                    {WEBSITE_CONTENT.hero.badge}
+                    {currentContent.hero.badge}
                   </span>
                   <span className="hero-location-tag">
                     <MapPin size={13} />
-                    {WEBSITE_CONTENT.brand.location}
+                    {currentContent.brand.location}
                   </span>
                 </div>
 
-                <h1 className="hero-headline">
-                  Schluss mit dem <span className="highlight-text">Büro-Wochenende.</span><br />
-                  Lautlose digitale Workflows für Handwerk & Mittelstand im Harz.
-                </h1>
+                {activeVersion === 'v1' ? (
+                  <h1 className="hero-headline">
+                    Schluss mit dem <span className="highlight-text">Büro-Wochenende.</span><br />
+                    Lautlose digitale Workflows für Handwerk & Mittelstand im Harz.
+                  </h1>
+                ) : (
+                  <h1 className="hero-headline">
+                    {currentContent.hero.headline}
+                  </h1>
+                )}
 
                 <p className="hero-subheadline">
-                  {WEBSITE_CONTENT.hero.subheadline}
+                  {currentContent.hero.subheadline}
                 </p>
 
                 {/* Primary & Secondary Call to Actions */}
@@ -1054,23 +1130,23 @@ export const WebsiteView = () => {
                     className="btn-primary-glow"
                     onClick={() => navigateTo('contact')}
                   >
-                    <span>{WEBSITE_CONTENT.hero.ctaPrimary}</span>
+                    <span>{currentContent.hero.ctaPrimary}</span>
                     <ArrowRight size={18} />
                   </button>
 
                   <button 
                     type="button" 
                     className="btn-secondary-outline"
-                    onClick={() => scrollToSection('roi-section')}
+                    onClick={() => scrollToSection(currentContent.heavenHell ? 'himmel-hoelle-section' : 'roi-section')}
                   >
                     <Calculator size={17} />
-                    <span>{WEBSITE_CONTENT.hero.ctaSecondary}</span>
+                    <span>{currentContent.hero.ctaSecondary}</span>
                   </button>
                 </div>
 
                 {/* Trust Badges */}
                 <div className="hero-trust-row">
-                  {WEBSITE_CONTENT.hero.trustBadges.map((badge, idx) => (
+                  {currentContent.hero.trustBadges.map((badge, idx) => (
                     <div key={idx} className="hero-trust-item">
                       <CheckCircle2 size={15} className="trust-check-icon" />
                       <span>{badge}</span>
@@ -1083,13 +1159,13 @@ export const WebsiteView = () => {
             {/* 2. PAIN POINTS / SCHMERZPUNKTE DES HANDWERKS */}
             <section className="section-padding pain-section" id="pain-section">
               <div className="section-header text-center">
-                <span className="sec-badge alert-badge">{WEBSITE_CONTENT.painPoints.badge}</span>
-                <h2 className="sec-title">{WEBSITE_CONTENT.painPoints.title}</h2>
-                <p className="sec-subtitle">{WEBSITE_CONTENT.painPoints.subtitle}</p>
+                <span className="sec-badge alert-badge">{currentContent.painPoints.badge}</span>
+                <h2 className="sec-title">{currentContent.painPoints.title}</h2>
+                <p className="sec-subtitle">{currentContent.painPoints.subtitle}</p>
               </div>
 
               <div className="pain-grid">
-                {WEBSITE_CONTENT.painPoints.items.map((item, idx) => (
+                {currentContent.painPoints.items.map((item, idx) => (
                   <div key={idx} className="pain-card">
                     <div className="pain-icon-box">
                       {idx === 0 && <Calendar size={24} />}
@@ -1104,16 +1180,310 @@ export const WebsiteView = () => {
               </div>
             </section>
 
+            {/* 🔥 2b. HIMMEL-HÖLLE-PRINZIP SEKTION (NUR IN VERSION 2 & VERSION 3) */}
+            {currentContent.heavenHell && (
+              <section className="section-padding" id="himmel-hoelle-section">
+                <div className="section-header text-center">
+                  <span className="sec-badge">{currentContent.heavenHell.badge}</span>
+                  <h2 className="sec-title">{currentContent.heavenHell.title}</h2>
+                  <p className="sec-subtitle">{currentContent.heavenHell.subtitle}</p>
+
+                  {/* Umschalter zwischen Handwerker-Klartext & Original Coaching-Notizen */}
+                  <div style={{ display: 'inline-flex', gap: '0.4rem', background: 'var(--bg-subtle)', padding: '0.3rem', borderRadius: '999px', border: '1px solid var(--border)', marginTop: '1.1rem' }}>
+                    <button
+                      type="button"
+                      onClick={() => setHhDisplayMode('optimized')}
+                      style={{
+                        border: 'none',
+                        padding: '0.4rem 0.9rem',
+                        borderRadius: '999px',
+                        fontSize: '0.78rem',
+                        fontWeight: 800,
+                        cursor: 'pointer',
+                        background: hhDisplayMode === 'optimized' ? 'var(--primary)' : 'transparent',
+                        color: hhDisplayMode === 'optimized' ? '#ffffff' : 'var(--text-muted)'
+                      }}
+                    >
+                      🎯 Handwerker-Klartext (Website-Fassung)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setHhDisplayMode('coaching_raw')}
+                      style={{
+                        border: 'none',
+                        padding: '0.4rem 0.9rem',
+                        borderRadius: '999px',
+                        fontSize: '0.78rem',
+                        fontWeight: 800,
+                        cursor: 'pointer',
+                        background: hhDisplayMode === 'coaching_raw' ? '#d97706' : 'transparent',
+                        color: hhDisplayMode === 'coaching_raw' ? '#ffffff' : 'var(--text-muted)'
+                      }}
+                    >
+                      📋 Original Coaching-Kausalketten (Whiteboard)
+                    </button>
+                  </div>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '1.75rem' }}>
+                  {/* HÖLLE LINKS */}
+                  <div style={{
+                    background: '#fff1f2',
+                    border: '2px solid #fecdd3',
+                    borderRadius: '18px',
+                    padding: '1.85rem',
+                    boxShadow: '0 6px 24px rgba(190, 18, 60, 0.08)'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#be123c', fontWeight: 900, fontSize: '0.92rem', textTransform: 'uppercase', marginBottom: '1.25rem' }}>
+                      <Flame size={20} />
+                      <span>{currentContent.heavenHell.hellTitle}</span>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                      {currentContent.heavenHell.pairs.map((pair) => (
+                        <div key={pair.id} style={{
+                          background: '#ffffff',
+                          border: '1px solid #fecdd3',
+                          borderRadius: '12px',
+                          padding: '1.1rem 1.25rem'
+                        }}>
+                          <div style={{ fontSize: '0.72rem', fontWeight: 800, color: '#e11d48', textTransform: 'uppercase', marginBottom: '0.25rem' }}>
+                            {pair.dimension}
+                          </div>
+                          <div style={{ fontWeight: 800, color: '#881337', fontSize: '1rem', marginBottom: '0.35rem' }}>
+                            ✕ {pair.websiteHellTitle}
+                          </div>
+                          <div style={{ fontSize: '0.88rem', color: '#475569', lineHeight: 1.55 }}>
+                            {hhDisplayMode === 'coaching_raw' ? pair.coachingHellRaw : pair.websiteHellChain}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* HIMMEL RECHTS */}
+                  <div style={{
+                    background: '#ecfdf5',
+                    border: '2px solid #6ee7b7',
+                    borderRadius: '18px',
+                    padding: '1.85rem',
+                    boxShadow: '0 6px 24px rgba(4, 120, 87, 0.1)'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#047857', fontWeight: 900, fontSize: '0.92rem', textTransform: 'uppercase', marginBottom: '1.25rem' }}>
+                      <Sparkles size={20} />
+                      <span>{currentContent.heavenHell.heavenTitle}</span>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                      {currentContent.heavenHell.pairs.map((pair) => (
+                        <div key={pair.id} style={{
+                          background: '#ffffff',
+                          border: '1px solid #a7f3d0',
+                          borderRadius: '12px',
+                          padding: '1.1rem 1.25rem'
+                        }}>
+                          <div style={{ fontSize: '0.72rem', fontWeight: 800, color: '#059669', textTransform: 'uppercase', marginBottom: '0.25rem' }}>
+                            {pair.dimension}
+                          </div>
+                          <div style={{ fontWeight: 800, color: '#064e3b', fontSize: '1rem', marginBottom: '0.35rem' }}>
+                            ✓ {pair.websiteHeavenTitle}
+                          </div>
+                          <div style={{ fontSize: '0.88rem', color: '#0f172a', lineHeight: 1.55 }}>
+                            {hhDisplayMode === 'coaching_raw' ? pair.coachingHeavenRaw : pair.websiteHeavenChain}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* 🏆 2c. DIE 3 KERN-SÄULEN (NUR IN VERSION 3) */}
+            {currentContent.threePillars && (
+              <section className="section-padding" style={{ background: 'var(--bg-subtle)', borderRadius: '18px', marginBottom: '2rem' }}>
+                <div className="section-header text-center">
+                  <span className="sec-badge">{currentContent.threePillars.badge}</span>
+                  <h2 className="sec-title">{currentContent.threePillars.title}</h2>
+                  <p className="sec-subtitle">{currentContent.threePillars.subtitle}</p>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(310px, 1fr))', gap: '1.5rem' }}>
+                  {currentContent.threePillars.pillars.map((pillar, pIdx) => (
+                    <div key={pIdx} style={{
+                      background: 'var(--bg-card)',
+                      border: '1.5px solid var(--border)',
+                      borderRadius: '16px',
+                      padding: '1.85rem',
+                      boxShadow: 'var(--card-shadow)',
+                      display: 'flex',
+                      flexDirection: 'column'
+                    }}>
+                      <span style={{
+                        alignSelf: 'flex-start',
+                        background: 'var(--badge-bg)',
+                        color: 'var(--badge-text)',
+                        border: '1px solid var(--badge-border)',
+                        fontSize: '0.74rem',
+                        fontWeight: 800,
+                        padding: '0.25rem 0.65rem',
+                        borderRadius: '999px',
+                        marginBottom: '0.85rem'
+                      }}>
+                        {pillar.num}
+                      </span>
+                      <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-main)', marginBottom: '0.35rem' }}>
+                        {pillar.title}
+                      </h3>
+                      <p style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--accent)', marginBottom: '1.15rem' }}>
+                        {pillar.subtitle}
+                      </p>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', flexGrow: 1 }}>
+                        {pillar.points.map((pt, ptIdx) => (
+                          <div key={ptIdx} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', fontSize: '0.88rem', color: 'var(--text-muted)' }}>
+                            <Check size={16} style={{ color: 'var(--primary)', flexShrink: 0, marginTop: '3px' }} />
+                            <span>{pt}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* 💎 2d. DIE 5 FAB-STATEMENTS (BESONDERES MERKMAL + PRODUKTVORTEIL = KUNDENNUTZEN) (IN V2 & V3) */}
+            {currentContent.fabStatements && (
+              <section className="section-padding" id="fab-statements-section">
+                <div className="section-header text-center">
+                  <span className="sec-badge">{currentContent.fabStatements.badge}</span>
+                  <h2 className="sec-title">{currentContent.fabStatements.title}</h2>
+                  <p className="sec-subtitle">{currentContent.fabStatements.subtitle}</p>
+                </div>
+
+                {/* Farb-Legende wie im Coaching-Whiteboard */}
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  gap: '0.75rem',
+                  flexWrap: 'wrap',
+                  marginBottom: '1.75rem',
+                  fontSize: '0.85rem',
+                  fontWeight: 800
+                }}>
+                  <span style={{ background: '#eff6ff', color: '#1d4ed8', border: '1px solid #bfdbfe', padding: '0.35rem 0.85rem', borderRadius: '8px' }}>
+                    1. Besonderes Produkt-Merkmal
+                  </span>
+                  <span style={{ fontWeight: 900, color: 'var(--text-muted)' }}>+</span>
+                  <span style={{ background: '#f5f3ff', color: '#6d28d9', border: '1px solid #ddd6fe', padding: '0.35rem 0.85rem', borderRadius: '8px' }}>
+                    2. Vorteil Produkt
+                  </span>
+                  <span style={{ fontWeight: 900, color: 'var(--text-muted)' }}>=</span>
+                  <span style={{ background: '#ecfdf5', color: '#047857', border: '1px solid #a7f3d0', padding: '0.35rem 0.85rem', borderRadius: '8px' }}>
+                    3. Konkreter Vorteil für Sie als Kunde
+                  </span>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
+                  {currentContent.fabStatements.items.map((fab) => (
+                    <div key={fab.id} style={{
+                      background: 'var(--bg-card)',
+                      border: '1px solid var(--border)',
+                      borderRadius: '16px',
+                      padding: '1.35rem',
+                      boxShadow: 'var(--card-shadow)',
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+                      gap: '1rem',
+                      alignItems: 'stretch'
+                    }}>
+                      {/* 1. Feature (Blau) */}
+                      <div style={{ background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '12px', padding: '1.1rem' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                          <span style={{ fontSize: '0.7rem', fontWeight: 800, color: '#1d4ed8', textTransform: 'uppercase' }}>
+                            Besonderes Merkmal
+                          </span>
+                          <span style={{ fontSize: '0.68rem', fontWeight: 800, background: '#dbeafe', color: '#1e40af', padding: '0.15rem 0.5rem', borderRadius: '999px' }}>
+                            {fab.badge}
+                          </span>
+                        </div>
+                        <div style={{ fontWeight: 800, color: '#1e3a8a', fontSize: '1.02rem' }}>
+                          {hhDisplayMode === 'coaching_raw' ? fab.coachingFeatureRaw : fab.feature}
+                        </div>
+                      </div>
+
+                      {/* 2. Advantage (Lila) */}
+                      <div style={{ background: '#f5f3ff', border: '1px solid #ddd6fe', borderRadius: '12px', padding: '1.1rem' }}>
+                        <div style={{ fontSize: '0.7rem', fontWeight: 800, color: '#6d28d9', textTransform: 'uppercase', marginBottom: '0.35rem' }}>
+                          + Vorteil Produkt (Was es tut)
+                        </div>
+                        <div style={{ fontWeight: 700, color: '#4c1d95', fontSize: '0.94rem', lineHeight: 1.45 }}>
+                          {fab.advantage}
+                        </div>
+                      </div>
+
+                      {/* 3. Benefit (Grün) */}
+                      <div style={{ background: '#ecfdf5', border: '1px solid #a7f3d0', borderRadius: '12px', padding: '1.1rem' }}>
+                        <div style={{ fontSize: '0.7rem', fontWeight: 800, color: '#047857', textTransform: 'uppercase', marginBottom: '0.35rem' }}>
+                          = Vorteil Kunde (Ihr Ergebnis)
+                        </div>
+                        <div style={{ fontWeight: 700, color: '#064e3b', fontSize: '0.94rem', lineHeight: 1.45 }}>
+                          {fab.benefit}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* 🧩 2e. OPTIONALE AUSBAU-MODULE (NUR IN VERSION 2: BELEG-FOKUS + ZUSATZMODULE) */}
+            {currentContent.expansionModules && (
+              <section className="section-padding" style={{ background: 'var(--bg-subtle)', borderRadius: '18px', marginBottom: '2rem' }}>
+                <div className="section-header text-center">
+                  <span className="sec-badge">{currentContent.expansionModules.badge}</span>
+                  <h2 className="sec-title">{currentContent.expansionModules.title}</h2>
+                  <p className="sec-subtitle">{currentContent.expansionModules.subtitle}</p>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '1.5rem' }}>
+                  {currentContent.expansionModules.modules.map((mod, mIdx) => (
+                    <div key={mIdx} style={{
+                      background: 'var(--bg-card)',
+                      border: '1px solid var(--border)',
+                      borderRadius: '14px',
+                      padding: '1.65rem',
+                      boxShadow: 'var(--card-shadow)'
+                    }}>
+                      <span style={{ fontSize: '0.72rem', fontWeight: 800, color: 'var(--accent)', textTransform: 'uppercase' }}>
+                        {mod.tag}
+                      </span>
+                      <h3 style={{ fontSize: '1.18rem', fontWeight: 800, margin: '0.3rem 0 0.75rem', color: 'var(--text-main)' }}>
+                        {mod.title}
+                      </h3>
+                      <div style={{ fontSize: '0.86rem', color: '#be123c', background: '#fff1f2', padding: '0.65rem 0.85rem', borderRadius: '8px', marginBottom: '0.75rem' }}>
+                        <strong>Verhindert:</strong> {mod.problem}
+                      </div>
+                      <div style={{ fontSize: '0.88rem', color: '#065f46', background: '#ecfdf5', padding: '0.75rem 0.85rem', borderRadius: '8px' }}>
+                        <strong>Ihr Gewinn:</strong> {mod.solution}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
             {/* 3. TOOL-GRID: "IHRE SYSTEME BLEIBEN" */}
             <section className="section-padding tools-section">
               <div className="section-header text-center">
-                <span className="sec-badge">{WEBSITE_CONTENT.integrations.badge}</span>
-                <h2 className="sec-title">{WEBSITE_CONTENT.integrations.title}</h2>
-                <p className="sec-subtitle">{WEBSITE_CONTENT.integrations.subtitle}</p>
+                <span className="sec-badge">{currentContent.integrations.badge}</span>
+                <h2 className="sec-title">{currentContent.integrations.title}</h2>
+                <p className="sec-subtitle">{currentContent.integrations.subtitle}</p>
               </div>
 
               <div className="tools-grid">
-                {WEBSITE_CONTENT.integrations.tools.map((tool, idx) => (
+                {currentContent.integrations.tools.map((tool, idx) => (
                   <div key={idx} className="tool-card">
                     <div className="tool-header">
                       <div className="tool-indicator-dot"></div>
@@ -1146,7 +1516,7 @@ export const WebsiteView = () => {
               </div>
 
               <div className="pricing-grid">
-                {WEBSITE_CONTENT.pricingTiers.map((tier) => (
+                {currentContent.pricingTiers.map((tier) => (
                   <div 
                     key={tier.id} 
                     className={`pricing-card ${tier.highlight ? 'highlighted' : ''}`}
@@ -1204,10 +1574,10 @@ export const WebsiteView = () => {
                     <Euro size={32} />
                   </div>
                   <div>
-                    <h4 className="funding-h4">{WEBSITE_CONTENT.funding.title}</h4>
-                    <p className="funding-p">{WEBSITE_CONTENT.funding.desc}</p>
+                    <h4 className="funding-h4">{currentContent.funding.title}</h4>
+                    <p className="funding-p">{currentContent.funding.desc}</p>
                     <div className="funding-badges-row">
-                      {WEBSITE_CONTENT.funding.programs.map((p, pIdx) => (
+                      {currentContent.funding.programs.map((p, pIdx) => (
                         <span key={pIdx} className="funding-program-badge">
                           🏛️ {p.name}: <strong>{p.quota}</strong>
                         </span>
@@ -1228,9 +1598,9 @@ export const WebsiteView = () => {
             {/* 5. 3-SCHRITTE WORKFLOW DER BELEGERFASSUNG */}
             <section className="section-padding workflow-section" id="workflow-section">
               <div className="section-header text-center">
-                <span className="sec-badge">{WEBSITE_CONTENT.workflow.badge}</span>
-                <h2 className="sec-title">{WEBSITE_CONTENT.workflow.title}</h2>
-                <p className="sec-subtitle">{WEBSITE_CONTENT.workflow.subtitle}</p>
+                <span className="sec-badge">{currentContent.workflow.badge}</span>
+                <h2 className="sec-title">{currentContent.workflow.title}</h2>
+                <p className="sec-subtitle">{currentContent.workflow.subtitle}</p>
               </div>
 
               <div className="showcase-card">
@@ -1238,7 +1608,7 @@ export const WebsiteView = () => {
                 {/* Header & Zielgruppe */}
                 <div className="showcase-top">
                   <div>
-                    <span className="client-industry">{WEBSITE_CONTENT.workflow.targetAudience}</span>
+                    <span className="client-industry">{currentContent.workflow.targetAudience}</span>
                     <h3 className="client-name">Vom Smartphone-Foto zur DATEV-Kanzlei</h3>
                   </div>
 
@@ -1263,7 +1633,7 @@ export const WebsiteView = () => {
 
                 {/* Key Metrics Grid */}
                 <div className="showcase-metrics-grid">
-                  {WEBSITE_CONTENT.workflow.metrics.map((m, mIdx) => (
+                  {currentContent.workflow.metrics.map((m, mIdx) => (
                     <div key={mIdx} className="metric-box">
                       <div className="metric-val">{m.value}</div>
                       <div className="metric-lbl">{m.label}</div>
@@ -1278,10 +1648,10 @@ export const WebsiteView = () => {
                     <div className="comparison-pane pane-before">
                       <div className="pane-title text-danger">
                         <XCircle size={20} />
-                        <span>{WEBSITE_CONTENT.workflow.beforeAfter.before.title}</span>
+                        <span>{currentContent.workflow.beforeAfter.before.title}</span>
                       </div>
                       <ul className="comparison-list">
-                        {WEBSITE_CONTENT.workflow.beforeAfter.before.items.map((it, itIdx) => (
+                        {currentContent.workflow.beforeAfter.before.items.map((it, itIdx) => (
                           <li key={itIdx}>
                             <span className="bullet-cross">✕</span>
                             <span>{it}</span>
@@ -1293,10 +1663,10 @@ export const WebsiteView = () => {
                     <div className="comparison-pane pane-after">
                       <div className="pane-title text-success">
                         <CheckCircle size={20} />
-                        <span>{WEBSITE_CONTENT.workflow.beforeAfter.after.title}</span>
+                        <span>{currentContent.workflow.beforeAfter.after.title}</span>
                       </div>
                       <ul className="comparison-list">
-                        {WEBSITE_CONTENT.workflow.beforeAfter.after.items.map((it, itIdx) => (
+                        {currentContent.workflow.beforeAfter.after.items.map((it, itIdx) => (
                           <li key={itIdx}>
                             <span className="bullet-check">✓</span>
                             <span>{it}</span>
@@ -1309,15 +1679,15 @@ export const WebsiteView = () => {
 
                 {/* Quote Box */}
                 <div className="showcase-quote">
-                  <p>{WEBSITE_CONTENT.workflow.quote}</p>
-                  <cite>— {WEBSITE_CONTENT.workflow.quoteAuthor}</cite>
+                  <p>{currentContent.workflow.quote}</p>
+                  <cite>— {currentContent.workflow.quoteAuthor}</cite>
                 </div>
 
                 {/* 3-Schritte Workflow */}
                 <div className="workflow-steps-container">
                   <div className="workflow-title">Der lautlose Beleg-Ablauf im Alltag:</div>
                   <div className="workflow-steps-row">
-                    {WEBSITE_CONTENT.workflow.workflowSteps.map((ws, wsIdx) => (
+                    {currentContent.workflow.workflowSteps.map((ws, wsIdx) => (
                       <div key={wsIdx} className="workflow-step-card">
                         <div className="ws-num">{ws.num}</div>
                         <div className="ws-title">{ws.title}</div>
@@ -1333,9 +1703,9 @@ export const WebsiteView = () => {
             {/* 6. INTERAKTIVER BÜRO-WOCHENENDE-RECHNER */}
             <section className="section-padding roi-section" id="roi-section">
               <div className="section-header text-center">
-                <span className="sec-badge">{WEBSITE_CONTENT.roiCalculator.badge}</span>
-                <h2 className="sec-title">{WEBSITE_CONTENT.roiCalculator.title}</h2>
-                <p className="sec-subtitle">{WEBSITE_CONTENT.roiCalculator.subtitle}</p>
+                <span className="sec-badge">{currentContent.roiCalculator.badge}</span>
+                <h2 className="sec-title">{currentContent.roiCalculator.title}</h2>
+                <p className="sec-subtitle">{currentContent.roiCalculator.subtitle}</p>
               </div>
 
               <div className="roi-calculator-card">
@@ -1466,7 +1836,7 @@ export const WebsiteView = () => {
               </div>
 
               <div className="faq-list">
-                {WEBSITE_CONTENT.faq.map((item, idx) => (
+                {currentContent.faq.map((item, idx) => (
                   <div 
                     key={idx} 
                     className={`faq-item ${openFaqIndex === idx ? 'open' : ''}`}
@@ -1491,9 +1861,9 @@ export const WebsiteView = () => {
             {/* 8. KONTAKT & ERSTGESPRÄCH ANFRAGEN */}
             <section className="section-padding contact-section" id="contact-section">
               <div className="section-header text-center">
-                <span className="sec-badge">{WEBSITE_CONTENT.contact.badge}</span>
-                <h2 className="sec-title">{WEBSITE_CONTENT.contact.title}</h2>
-                <p className="sec-subtitle">{WEBSITE_CONTENT.contact.subtitle}</p>
+                <span className="sec-badge">{currentContent.contact.badge}</span>
+                <h2 className="sec-title">{currentContent.contact.title}</h2>
+                <p className="sec-subtitle">{currentContent.contact.subtitle}</p>
               </div>
 
               <div className="contact-card-grid">
@@ -1518,7 +1888,7 @@ export const WebsiteView = () => {
                   ) : (
                     <form onSubmit={handleContactSubmit} className="contact-form">
                       <div className="form-group">
-                        <label htmlFor="form-name">{WEBSITE_CONTENT.contact.fields.name} *</label>
+                        <label htmlFor="form-name">{currentContent.contact.fields.name} *</label>
                         <input 
                           id="form-name"
                           type="text" 
@@ -1532,7 +1902,7 @@ export const WebsiteView = () => {
 
                       <div className="form-row-2">
                         <div className="form-group">
-                          <label htmlFor="form-company">{WEBSITE_CONTENT.contact.fields.company}</label>
+                          <label htmlFor="form-company">{currentContent.contact.fields.company}</label>
                           <input 
                             id="form-company"
                             type="text" 
@@ -1543,7 +1913,7 @@ export const WebsiteView = () => {
                           />
                         </div>
                         <div className="form-group">
-                          <label htmlFor="form-phone">{WEBSITE_CONTENT.contact.fields.phone} *</label>
+                          <label htmlFor="form-phone">{currentContent.contact.fields.phone} *</label>
                           <input 
                             id="form-phone"
                             type="tel" 
@@ -1557,7 +1927,7 @@ export const WebsiteView = () => {
                       </div>
 
                       <div className="form-group">
-                        <label htmlFor="form-email">{WEBSITE_CONTENT.contact.fields.email} *</label>
+                        <label htmlFor="form-email">{currentContent.contact.fields.email} *</label>
                         <input 
                           id="form-email"
                           type="email" 
@@ -1570,21 +1940,21 @@ export const WebsiteView = () => {
                       </div>
 
                       <div className="form-group">
-                        <label htmlFor="form-topic">{WEBSITE_CONTENT.contact.fields.topic}</label>
+                        <label htmlFor="form-topic">{currentContent.contact.fields.topic}</label>
                         <select 
                           id="form-topic"
                           value={contactData.topic}
                           onChange={e => setContactData({...contactData, topic: e.target.value})}
                           className="form-select"
                         >
-                          {WEBSITE_CONTENT.contact.topicOptions.map((opt, idx) => (
+                          {currentContent.contact.topicOptions.map((opt, idx) => (
                             <option key={idx} value={opt}>{opt}</option>
                           ))}
                         </select>
                       </div>
 
                       <div className="form-group">
-                        <label htmlFor="form-msg">{WEBSITE_CONTENT.contact.fields.message}</label>
+                        <label htmlFor="form-msg">{currentContent.contact.fields.message}</label>
                         <textarea 
                           id="form-msg"
                           rows="3"
@@ -1602,7 +1972,7 @@ export const WebsiteView = () => {
 
                       {/* WhatsApp Direct Action */}
                       <a 
-                        href={`https://wa.me/${(WEBSITE_CONTENT.brand.whatsapp || '4915112345678').replace(/[^0-9]/g, '')}?text=${encodeURIComponent('Hallo Robin, ich interessiere mich für die digitale Belegerfassung für meinen Betrieb.')}`}
+                        href={`https://wa.me/${(currentContent.brand.whatsapp || '4915112345678').replace(/[^0-9]/g, '')}?text=${encodeURIComponent('Hallo Robin, ich interessiere mich für die digitale Belegerfassung für meinen Betrieb.')}`}
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="btn-whatsapp-direct"
@@ -1623,7 +1993,7 @@ export const WebsiteView = () => {
                   <div className="contact-info-top">
                     <span className="sec-badge">PERSÖNLICH VOR ORT</span>
                     <h3>KMU Service Harz</h3>
-                    <p className="contact-role-sub">Ihr Ansprechpartner: <strong>{WEBSITE_CONTENT.brand.owner}</strong></p>
+                    <p className="contact-role-sub">Ihr Ansprechpartner: <strong>{currentContent.brand.owner}</strong></p>
                   </div>
 
                   <div className="contact-details-stack">
@@ -1631,8 +2001,8 @@ export const WebsiteView = () => {
                       <div className="cd-icon"><MapPin size={18} /></div>
                       <div>
                         <div className="cd-label">Standort & Region:</div>
-                        <div className="cd-val">{WEBSITE_CONTENT.brand.location}</div>
-                        <div className="cd-sub">{WEBSITE_CONTENT.brand.regionDetail}</div>
+                        <div className="cd-val">{currentContent.brand.location}</div>
+                        <div className="cd-sub">{currentContent.brand.regionDetail}</div>
                       </div>
                     </div>
 
@@ -1640,7 +2010,7 @@ export const WebsiteView = () => {
                       <div className="cd-icon"><Mail size={18} /></div>
                       <div>
                         <div className="cd-label">E-Mail:</div>
-                        <div className="cd-val">{WEBSITE_CONTENT.brand.email}</div>
+                        <div className="cd-val">{currentContent.brand.email}</div>
                       </div>
                     </div>
 
@@ -1648,7 +2018,7 @@ export const WebsiteView = () => {
                       <div className="cd-icon"><Phone size={18} /></div>
                       <div>
                         <div className="cd-label">Telefon / Rückruf:</div>
-                        <div className="cd-val">{WEBSITE_CONTENT.brand.phone}</div>
+                        <div className="cd-val">{currentContent.brand.phone}</div>
                       </div>
                     </div>
                   </div>
@@ -1681,7 +2051,7 @@ export const WebsiteView = () => {
             </div>
 
             <div className="pricing-grid">
-              {WEBSITE_CONTENT.pricingTiers.map((tier) => (
+              {currentContent.pricingTiers.map((tier) => (
                 <div 
                   key={tier.id} 
                   className={`pricing-card ${tier.highlight ? 'highlighted' : ''}`}
@@ -1737,8 +2107,8 @@ export const WebsiteView = () => {
               <div className="funding-content">
                 <div className="funding-icon-wrap"><Euro size={32} /></div>
                 <div>
-                  <h4 className="funding-h4">{WEBSITE_CONTENT.funding.title}</h4>
-                  <p className="funding-p">{WEBSITE_CONTENT.funding.desc}</p>
+                  <h4 className="funding-h4">{currentContent.funding.title}</h4>
+                  <p className="funding-p">{currentContent.funding.desc}</p>
                 </div>
               </div>
             </div>
@@ -1752,14 +2122,14 @@ export const WebsiteView = () => {
           <div className="page-fade-in subpage-container">
             <div className="subpage-header text-center">
               <span className="sec-badge">PRAXIS-ABLAUF</span>
-              <h1>{WEBSITE_CONTENT.workflow.title}</h1>
-              <p className="subpage-lead">{WEBSITE_CONTENT.workflow.subtitle}</p>
+              <h1>{currentContent.workflow.title}</h1>
+              <p className="subpage-lead">{currentContent.workflow.subtitle}</p>
             </div>
 
             <div className="showcase-card">
               <div className="showcase-top">
                 <div>
-                  <span className="client-industry">{WEBSITE_CONTENT.workflow.targetAudience}</span>
+                  <span className="client-industry">{currentContent.workflow.targetAudience}</span>
                   <h3 className="client-name">Vom Foto vor Ort direkt in die Kanzlei</h3>
                 </div>
                 <div className="toggle-pill-group">
@@ -1781,7 +2151,7 @@ export const WebsiteView = () => {
               </div>
 
               <div className="showcase-metrics-grid">
-                {WEBSITE_CONTENT.workflow.metrics.map((m, mIdx) => (
+                {currentContent.workflow.metrics.map((m, mIdx) => (
                   <div key={mIdx} className="metric-box">
                     <div className="metric-val">{m.value}</div>
                     <div className="metric-lbl">{m.label}</div>
@@ -1795,10 +2165,10 @@ export const WebsiteView = () => {
                   <div className="comparison-pane pane-before">
                     <div className="pane-title text-danger">
                       <XCircle size={20} />
-                      <span>{WEBSITE_CONTENT.workflow.beforeAfter.before.title}</span>
+                      <span>{currentContent.workflow.beforeAfter.before.title}</span>
                     </div>
                     <ul className="comparison-list">
-                      {WEBSITE_CONTENT.workflow.beforeAfter.before.items.map((it, itIdx) => (
+                      {currentContent.workflow.beforeAfter.before.items.map((it, itIdx) => (
                         <li key={itIdx}>
                           <span className="bullet-cross">✕</span>
                           <span>{it}</span>
@@ -1810,10 +2180,10 @@ export const WebsiteView = () => {
                   <div className="comparison-pane pane-after">
                     <div className="pane-title text-success">
                       <CheckCircle size={20} />
-                      <span>{WEBSITE_CONTENT.workflow.beforeAfter.after.title}</span>
+                      <span>{currentContent.workflow.beforeAfter.after.title}</span>
                     </div>
                     <ul className="comparison-list">
-                      {WEBSITE_CONTENT.workflow.beforeAfter.after.items.map((it, itIdx) => (
+                      {currentContent.workflow.beforeAfter.after.items.map((it, itIdx) => (
                         <li key={itIdx}>
                           <span className="bullet-check">✓</span>
                           <span>{it}</span>
@@ -1825,14 +2195,14 @@ export const WebsiteView = () => {
               </div>
 
               <div className="showcase-quote">
-                <p>{WEBSITE_CONTENT.workflow.quote}</p>
-                <cite>— {WEBSITE_CONTENT.workflow.quoteAuthor}</cite>
+                <p>{currentContent.workflow.quote}</p>
+                <cite>— {currentContent.workflow.quoteAuthor}</cite>
               </div>
 
               <div className="workflow-steps-container mt-6">
                 <div className="workflow-title">Die 3 Schritte im Alltag:</div>
                 <div className="workflow-steps-row">
-                  {WEBSITE_CONTENT.workflow.workflowSteps.map((ws, wsIdx) => (
+                  {currentContent.workflow.workflowSteps.map((ws, wsIdx) => (
                     <div key={wsIdx} className="workflow-step-card">
                       <div className="ws-num">{ws.num}</div>
                       <div className="ws-title">{ws.title}</div>
@@ -1864,7 +2234,7 @@ export const WebsiteView = () => {
             <div className="subpage-header text-center">
               <span className="sec-badge">INTERAKTIVER RECHNER</span>
               <h1>Büro-Wochenende- & Zeitersparnis-Rechner</h1>
-              <p className="subpage-lead">{WEBSITE_CONTENT.roiCalculator.subtitle}</p>
+              <p className="subpage-lead">{currentContent.roiCalculator.subtitle}</p>
             </div>
 
             <div className="roi-calculator-card">
@@ -1960,29 +2330,29 @@ export const WebsiteView = () => {
         {activePage === 'about' && (
           <div className="page-fade-in subpage-container">
             <div className="subpage-header text-center">
-              <span className="sec-badge">{WEBSITE_CONTENT.about.badge}</span>
-              <h1>{WEBSITE_CONTENT.about.title}</h1>
-              <p className="subpage-lead">{WEBSITE_CONTENT.about.subtitle}</p>
+              <span className="sec-badge">{currentContent.about.badge}</span>
+              <h1>{currentContent.about.title}</h1>
+              <p className="subpage-lead">{currentContent.about.subtitle}</p>
             </div>
 
             <div className="about-grid">
               <div className="about-story-card">
                 <h3>Unsere Mission im Harz</h3>
-                <p className="about-story-p">{WEBSITE_CONTENT.about.story}</p>
+                <p className="about-story-p">{currentContent.about.story}</p>
                 <div className="about-owner-box">
                   <div className="owner-avatar">
                     <UserCheck size={28} />
                   </div>
                   <div>
-                    <strong>{WEBSITE_CONTENT.about.ownerName}</strong>
-                    <p>{WEBSITE_CONTENT.about.ownerRole}</p>
-                    <span className="owner-loc">📍 {WEBSITE_CONTENT.about.location}</span>
+                    <strong>{currentContent.about.ownerName}</strong>
+                    <p>{currentContent.about.ownerRole}</p>
+                    <span className="owner-loc">📍 {currentContent.about.location}</span>
                   </div>
                 </div>
               </div>
 
               <div className="about-values-stack">
-                {WEBSITE_CONTENT.about.values.map((val, vIdx) => (
+                {currentContent.about.values.map((val, vIdx) => (
                   <div key={vIdx} className="value-card">
                     <h4>{val.title}</h4>
                     <p>{val.desc}</p>
@@ -1999,9 +2369,9 @@ export const WebsiteView = () => {
         {activePage === 'contact' && (
           <div className="page-fade-in subpage-container">
             <div className="subpage-header text-center">
-              <span className="sec-badge">{WEBSITE_CONTENT.contact.badge}</span>
-              <h1>{WEBSITE_CONTENT.contact.title}</h1>
-              <p className="subpage-lead">{WEBSITE_CONTENT.contact.subtitle}</p>
+              <span className="sec-badge">{currentContent.contact.badge}</span>
+              <h1>{currentContent.contact.title}</h1>
+              <p className="subpage-lead">{currentContent.contact.subtitle}</p>
             </div>
 
             <div className="contact-card-grid">
@@ -2018,7 +2388,7 @@ export const WebsiteView = () => {
                 ) : (
                   <form onSubmit={handleContactSubmit} className="contact-form">
                     <div className="form-group">
-                      <label htmlFor="sub-name">{WEBSITE_CONTENT.contact.fields.name} *</label>
+                      <label htmlFor="sub-name">{currentContent.contact.fields.name} *</label>
                       <input 
                         id="sub-name"
                         type="text" 
@@ -2030,7 +2400,7 @@ export const WebsiteView = () => {
                     </div>
                     <div className="form-row-2">
                       <div className="form-group">
-                        <label htmlFor="sub-comp">{WEBSITE_CONTENT.contact.fields.company}</label>
+                        <label htmlFor="sub-comp">{currentContent.contact.fields.company}</label>
                         <input 
                           id="sub-comp"
                           type="text" 
@@ -2040,7 +2410,7 @@ export const WebsiteView = () => {
                         />
                       </div>
                       <div className="form-group">
-                        <label htmlFor="sub-phone">{WEBSITE_CONTENT.contact.fields.phone} *</label>
+                        <label htmlFor="sub-phone">{currentContent.contact.fields.phone} *</label>
                         <input 
                           id="sub-phone"
                           type="tel" 
@@ -2052,7 +2422,7 @@ export const WebsiteView = () => {
                       </div>
                     </div>
                     <div className="form-group">
-                      <label htmlFor="sub-email">{WEBSITE_CONTENT.contact.fields.email} *</label>
+                      <label htmlFor="sub-email">{currentContent.contact.fields.email} *</label>
                       <input 
                         id="sub-email"
                         type="email" 
@@ -2063,20 +2433,20 @@ export const WebsiteView = () => {
                       />
                     </div>
                     <div className="form-group">
-                      <label htmlFor="sub-topic">{WEBSITE_CONTENT.contact.fields.topic}</label>
+                      <label htmlFor="sub-topic">{currentContent.contact.fields.topic}</label>
                       <select 
                         id="sub-topic"
                         value={contactData.topic}
                         onChange={e => setContactData({...contactData, topic: e.target.value})}
                         className="form-select"
                       >
-                        {WEBSITE_CONTENT.contact.topicOptions.map((opt, idx) => (
+                        {currentContent.contact.topicOptions.map((opt, idx) => (
                           <option key={idx} value={opt}>{opt}</option>
                         ))}
                       </select>
                     </div>
                     <div className="form-group">
-                      <label htmlFor="sub-msg">{WEBSITE_CONTENT.contact.fields.message}</label>
+                      <label htmlFor="sub-msg">{currentContent.contact.fields.message}</label>
                       <textarea 
                         id="sub-msg"
                         rows="3"
@@ -2091,7 +2461,7 @@ export const WebsiteView = () => {
                     </button>
 
                     <a 
-                      href={`https://wa.me/${(WEBSITE_CONTENT.brand.whatsapp || '4915112345678').replace(/[^0-9]/g, '')}?text=${encodeURIComponent('Hallo Robin, ich interessiere mich für die digitale Belegerfassung für meinen Betrieb.')}`}
+                      href={`https://wa.me/${(currentContent.brand.whatsapp || '4915112345678').replace(/[^0-9]/g, '')}?text=${encodeURIComponent('Hallo Robin, ich interessiere mich für die digitale Belegerfassung für meinen Betrieb.')}`}
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="btn-whatsapp-direct"
@@ -2107,29 +2477,29 @@ export const WebsiteView = () => {
                 <div className="contact-info-top">
                   <span className="sec-badge">REGIONALER PARTNER</span>
                   <h3>KMU Service Harz</h3>
-                  <p className="contact-role-sub">Inhaber: <strong>{WEBSITE_CONTENT.brand.owner}</strong></p>
+                  <p className="contact-role-sub">Inhaber: <strong>{currentContent.brand.owner}</strong></p>
                 </div>
                 <div className="contact-details-stack">
                   <div className="contact-detail-row">
                     <div className="cd-icon"><MapPin size={18} /></div>
                     <div>
                       <div className="cd-label">Standort:</div>
-                      <div className="cd-val">{WEBSITE_CONTENT.brand.location}</div>
-                      <div className="cd-sub">{WEBSITE_CONTENT.brand.regionDetail}</div>
+                      <div className="cd-val">{currentContent.brand.location}</div>
+                      <div className="cd-sub">{currentContent.brand.regionDetail}</div>
                     </div>
                   </div>
                   <div className="contact-detail-row">
                     <div className="cd-icon"><Mail size={18} /></div>
                     <div>
                       <div className="cd-label">E-Mail:</div>
-                      <div className="cd-val">{WEBSITE_CONTENT.brand.email}</div>
+                      <div className="cd-val">{currentContent.brand.email}</div>
                     </div>
                   </div>
                   <div className="contact-detail-row">
                     <div className="cd-icon"><Phone size={18} /></div>
                     <div>
                       <div className="cd-label">Telefon:</div>
-                      <div className="cd-val">{WEBSITE_CONTENT.brand.phone}</div>
+                      <div className="cd-val">{currentContent.brand.phone}</div>
                     </div>
                   </div>
                 </div>
@@ -2144,18 +2514,18 @@ export const WebsiteView = () => {
         {activePage === 'impressum' && (
           <div className="page-fade-in legal-container">
             <span className="sec-badge">RECHTLICHE ANGABEN</span>
-            <h1>{WEBSITE_CONTENT.impressum.title}</h1>
-            <p className="legal-lead">{WEBSITE_CONTENT.impressum.legalNotice}</p>
+            <h1>{currentContent.impressum.title}</h1>
+            <p className="legal-lead">{currentContent.impressum.legalNotice}</p>
 
             <div className="legal-card">
-              {WEBSITE_CONTENT.impressum.details.map((item, idx) => (
+              {currentContent.impressum.details.map((item, idx) => (
                 <div key={idx} className="legal-item-row">
                   <strong className="legal-label">{item.label}:</strong>
                   <span className="legal-val">{item.value}</span>
                 </div>
               ))}
               <div className="legal-disclaimer-box">
-                <p>{WEBSITE_CONTENT.impressum.disclaimer}</p>
+                <p>{currentContent.impressum.disclaimer}</p>
               </div>
             </div>
           </div>
@@ -2167,11 +2537,11 @@ export const WebsiteView = () => {
         {activePage === 'privacy' && (
           <div className="page-fade-in legal-container">
             <span className="sec-badge">DATENSCHUTZ</span>
-            <h1>{WEBSITE_CONTENT.privacy.title}</h1>
-            <p className="legal-lead">{WEBSITE_CONTENT.privacy.intro}</p>
+            <h1>{currentContent.privacy.title}</h1>
+            <p className="legal-lead">{currentContent.privacy.intro}</p>
 
             <div className="legal-sections-stack">
-              {WEBSITE_CONTENT.privacy.sections.map((sec, idx) => (
+              {currentContent.privacy.sections.map((sec, idx) => (
                 <div key={idx} className="legal-card mb-4">
                   <h3 className="card-h3">{sec.heading}</h3>
                   <p className="card-p">{sec.content}</p>
@@ -2191,16 +2561,16 @@ export const WebsiteView = () => {
               <div className="footer-logo-icon">
                 <Workflow size={18} />
               </div>
-              <strong className="footer-brand-name">{WEBSITE_CONTENT.brand.name}</strong>
+              <strong className="footer-brand-name">{currentContent.brand.name}</strong>
             </div>
-            <p className="footer-brand-claim">{WEBSITE_CONTENT.brand.claim}</p>
+            <p className="footer-brand-claim">{currentContent.brand.claim}</p>
             <span className="footer-copyright">
-              © {new Date().getFullYear()} {WEBSITE_CONTENT.brand.owner}. {WEBSITE_CONTENT.brand.location}.
+              © {new Date().getFullYear()} {currentContent.brand.owner}. {currentContent.brand.location}.
             </span>
           </div>
 
           <div className="footer-nav-links">
-            {WEBSITE_CONTENT.nav.map(item => (
+            {currentContent.nav.map(item => (
               <button 
                 key={item.id}
                 type="button"
@@ -2225,8 +2595,8 @@ export const WebsiteView = () => {
                   <CloudUpload size={22} />
                 </div>
                 <div>
-                  <h3>Website Export & Live-Schaltung</h3>
-                  <p>Lade deine schlüsselfertige Website als HTML-Datei herunter und schalte sie online.</p>
+                  <h3>Website Export & Live-Schaltung (Alle 3 Versionen)</h3>
+                  <p>Wähle aus, welche der 3 Website-Versionen du als schlüsselfertige HTML-Datei herunterladen möchtest.</p>
                 </div>
               </div>
               <button 
@@ -2236,6 +2606,25 @@ export const WebsiteView = () => {
               >
                 <X size={20} />
               </button>
+            </div>
+
+            {/* Version Selection inside Export Modal */}
+            <div className="export-config-box" style={{ paddingBottom: '0.5rem' }}>
+              <label htmlFor="export-version-select">
+                <Layers size={14} />
+                <span>Zu exportierende Website-Version wählen:</span>
+              </label>
+              <select
+                id="export-version-select"
+                value={exportVersionId}
+                onChange={e => setExportVersionId(e.target.value)}
+                className="export-email-field"
+                style={{ marginBottom: '0.5rem', fontWeight: 700 }}
+              >
+                {WEBSITE_VERSIONS.map(v => (
+                  <option key={v.id} value={v.id}>{v.label}</option>
+                ))}
+              </select>
             </div>
 
             {/* Email Configuration Field */}
@@ -2262,16 +2651,16 @@ export const WebsiteView = () => {
               <button 
                 type="button" 
                 className="export-download-btn"
-                onClick={downloadStandaloneHtml}
+                onClick={() => downloadStandaloneHtml(exportVersionId)}
               >
                 <Download size={18} />
-                <span>HTML-Datei herunterladen (index.html)</span>
+                <span>HTML herunterladen ({exportVersionId.toUpperCase()})</span>
               </button>
 
               <button 
                 type="button" 
                 className="export-copy-btn"
-                onClick={copyStandaloneHtml}
+                onClick={() => copyStandaloneHtml(exportVersionId)}
               >
                 {copiedCode ? <Check size={18} className="text-emerald" /> : <Copy size={18} />}
                 <span>{copiedCode ? 'In Zwischenablage kopiert!' : 'HTML-Code kopieren'}</span>
@@ -2310,7 +2699,7 @@ export const WebsiteView = () => {
                     <div className="guide-step">
                       <span className="step-badge">1</span>
                       <div>
-                        <strong>HTML-Datei herunterladen:</strong> Klicke oben auf den grünen Download-Button. Die Datei heißt <code>index.html</code>.
+                        <strong>HTML-Datei herunterladen:</strong> Klicke oben auf den grünen Download-Button.
                       </div>
                     </div>
                     <div className="guide-step">
@@ -2322,7 +2711,7 @@ export const WebsiteView = () => {
                     <div className="guide-step">
                       <span className="step-badge">3</span>
                       <div>
-                        <strong>Drag & Drop:</strong> Ziehe die heruntergeladene <code>index.html</code> (oder den Ordner) einfach in das Netlify-Fenster.
+                        <strong>Drag & Drop:</strong> Ziehe die heruntergeladene HTML-Datei einfach in das Netlify-Fenster.
                       </div>
                     </div>
                     <div className="guide-step">
@@ -2351,7 +2740,7 @@ export const WebsiteView = () => {
                     <div className="guide-step">
                       <span className="step-badge">3</span>
                       <div>
-                        <strong>index.html hochladen:</strong> Lade die heruntergeladene <code>index.html</code> hoch. Sie überschreibt alte Testdateien.
+                        <strong>index.html hochladen:</strong> Lade die heruntergeladene Datei als <code>index.html</code> hoch.
                       </div>
                     </div>
                     <div className="guide-step">
@@ -2392,7 +2781,7 @@ export const WebsiteView = () => {
 
             <div className="export-modal-footer">
               <span className="footer-hint">
-                🔒 Enthält alle 3 Designwelten (Harz/Tech/Industrie), Rechner-Logik und Kontaktfunktion in einer einzigen Datei.
+                🔒 Alle 3 Website-Versionen bleiben dauerhaft gespeichert und können jederzeit einzeln exportiert werden.
               </span>
               <button 
                 type="button" 

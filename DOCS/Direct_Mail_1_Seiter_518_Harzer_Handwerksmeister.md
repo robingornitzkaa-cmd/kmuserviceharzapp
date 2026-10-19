@@ -36,14 +36,16 @@ Wir haben uns als regionaler Automatisierungspartner im Harz auf genau eine Aufg
 
 ---
 
-### **Ihre 3 handfesten Vorteile im Betriebsalltag:**
+### **Ihre handfesten Vorteile im Betriebsalltag (Unser FAB-Versprechen):**
 
-1. **Keine neue Software lernen:**  
-   Ihre Mitarbeiter auf der Baustelle nutzen einfach WhatsApp oder die Handykamera. Quittung an der Kasse fotografieren – in 3 Sekunden fertig.
-2. **100 % E-Rechnungs- und GoBD-Sicherheit:**  
-   Alle Eingangs- und Ausgangsbelege fließen revisionssicher und automatisch vorkontiert in das System Ihres Steuerberaters (z. B. DATEV / Lexware Office).
-3. **Bis zu 50 % staatlicher Zuschuss:**  
-   Über Förderprogramme wie den *Digitalbonus Niedersachsen* oder *Digital Innovation Sachsen-Anhalt* übernimmt der Staat bis zur Hälfte der gesamten Umsetzungskosten.
+1. **Bestehende Systeme kombinieren – 0 % Schulungsaufwand:**  
+   Ihre Mitarbeiter auf der Baustelle nutzen einfach WhatsApp oder die Handykamera wie gewohnt. Unsere intelligenten Brücken verbinden Ihre bestehenden Programme nahtlos im Hintergrund.
+2. **Saubere DATEV-Konvertierung & 100 % GoBD-/DSGVO-Sicherheit:**  
+   Alle Belege fließen automatisch vorkontiert an Ihre Steuerkanzlei – für **null Rückfragen, geringere Steuerberater-Kosten und schnelle Jahresabschlüsse**.
+3. **Präventive Kunden-Info & lückenlose Verwaltung:**  
+   Auf Wunsch fangen wir Kunden-Rückfragen durch automatische Status-Infos präventiv ab, sodass keine Aufträge mehr untergehen und auf der Baustelle Ruhe herrscht.
+4. **Standardisiertes System + bis zu 50 % staatlicher Zuschuss:**  
+   Sie erhalten in 1–2 Wochen ein schnelles, aber individuelles Ergebnis ohne IT-Fachchinesisch. Größere Ausbaustufen werden über *Digitalbonus Niedersachsen* bzw. *Digital Innovation Sachsen-Anhalt* mit bis zu 50 % bezuschusst.
 
 ---
 

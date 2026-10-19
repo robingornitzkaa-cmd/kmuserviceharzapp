@@ -1,5 +1,11 @@
 # TODO - Founder OS
 
+- [x] **🔥 [Coaching-Rollout Dennis Kauss] Himmel-Hölle-Prinzip, 5 FAB-Statements & 3 Website-Versionen (`WebsiteView.jsx`, `websiteContent.js`, `CoachingLivePortal.jsx`, `CustomerDiscoveryView.jsx`, `DOCS/`):**
+  - *3-Versionen-Architektur ohne Datenverlust:* **Version 1 (Original)** bleibt zu 100 % unverändert; **Version 2 (Beleg-Fokus + Himmel/Hölle & FAB)** kombiniert den spitzen Beleg-Einstieg mit den 4 Himmel-Hölle-Ketten, den 5 FAB-Statements und Ausbau-Modulen; **Version 3 (3-Säulen Coaching-Edition)** präsentiert alle 3 Säulen (Proaktive Kundenkommunikation, Revisionssichere Verwaltung, DATEV-Konvertierung & schneller Jahresabschluss) gleichberechtigt.
+  - *Interaktiver Wortlaut-Umschalter:* In der Himmel-Hölle-Sektion kann mit 1 Klick zwischen *🎯 Handwerker-Klartext (Website-Fassung)* und *📋 Original Coaching-Kausalketten (Whiteboard)* umgeschaltet werden.
+  - *Coaching Live-Portal:* Neuer Reiter `🔥 Himmel/Hölle & FAB-Strategie (Kauss)` mit beiden Original-Whiteboard-Screenshots (`/coaching/himmel_hoelle_coaching_kauss.png` & `/coaching/fab_statements_coaching_kauss.png`) und kritischer Bewertung.
+  - *Gesamtes Vorhaben aktualisiert:* Telefonleitfaden (`DOCS/Telefon_und_Kaltakquise_Leitfaden_Handwerk.md`), 518er Direct-Mail-Brief (`DOCS/Direct_Mail_1_Seiter_518_Harzer_Handwerksmeister.md`), Discovery-Cockpit Phase 4 (`CustomerDiscoveryView.jsx`) sowie KI-Prompts & Wissens-Hub (`initialData.js`) erweitert.
+
 - [x] **⏰ [Scheduled Automations] Wöchentliche KI-Hintergrund-Scouts eingerichtet (`DOCS/Harzer_Lead_Scout_Wochenreport.md`, `DOCS/Foerdermittel_ERechnung_Radar.md`):**
   - *🕵️‍♂️ Harzer Handwerks-Lead- & Schmerzpunkt-Scout (Jeden Montag, 09:00 Uhr):* Identifiziert Handwerksbetriebe im Harz mit Büro-Engpässen und liefert fertige Telefon-Einstiege.
   - *💰 Fördermittel- & E-Rechnungs-Radar (Jeden Dienstag, 08:00 Uhr):* Prüft aktuelle Fristen zur E-Rechnungspflicht (01.01.2027), DATEV/Lexoffice und Förderprogramme (*Sachsen-Anhalt DIGITAL INNOVATION* & *BAFA*).

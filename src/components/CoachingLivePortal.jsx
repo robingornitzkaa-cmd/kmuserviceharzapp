@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { COACHING_HIMMEL_HOELLE, COACHING_FAB_STATEMENTS } from '../constants/websiteContent';
 import { 
   ShieldCheck, 
   Lock, 
@@ -14,7 +15,9 @@ import {
   Award, 
   ExternalLink,
   ChevronRight,
-  Eye
+  Eye,
+  Flame,
+  Sparkles
 } from 'lucide-react';
 
 export const CoachingLivePortal = ({
@@ -32,7 +35,7 @@ export const CoachingLivePortal = ({
 }) => {
   const [pinInput, setPinInput] = useState('');
   const [pinError, setPinError] = useState('');
-  const [activeTab, setActiveTab] = useState('overview'); // 'overview' | 'personas' | 'tasks' | 'meetings'
+  const [activeTab, setActiveTab] = useState('overview'); // 'overview' | 'strategy' | 'personas' | 'tasks' | 'meetings'
 
   const handleUnlock = (e) => {
     e.preventDefault();
@@ -45,8 +48,23 @@ export const CoachingLivePortal = ({
     }
   };
 
-  // Collect all image attachments from tasks, docs, and coaching meetings
-  const allImageAttachments = [];
+  // Collect all image attachments from tasks, docs, and coaching meetings + default Dennis Kauss Whiteboard Screenshots
+  const allImageAttachments = [
+    {
+      id: 'coaching_kauss_hh',
+      title: 'Himmel-Hölle-Prinzip (Coaching Dennis Kauss)',
+      source: 'Coaching-Whiteboard (Dennis Kauss)',
+      dataUrl: '/coaching/himmel_hoelle_coaching_kauss.png',
+      date: '19.10.2026'
+    },
+    {
+      id: 'coaching_kauss_fab',
+      title: 'FAB-Statements (Coaching Dennis Kauss)',
+      source: 'Coaching-Whiteboard (Dennis Kauss)',
+      dataUrl: '/coaching/fab_statements_coaching_kauss.png',
+      date: '19.10.2026'
+    }
+  ];
 
   // From docs
   docs.forEach(doc => {
@@ -273,6 +291,13 @@ export const CoachingLivePortal = ({
           style={{ fontSize: '0.85rem', padding: '0.5rem 1rem' }}
         >
           <TrendingUp size={16} /> Übersicht ("Wo wir stehen")
+        </button>
+        <button 
+          onClick={() => setActiveTab('strategy')}
+          className={`btn ${activeTab === 'strategy' ? 'btn-primary' : 'btn-secondary'}`}
+          style={{ fontSize: '0.85rem', padding: '0.5rem 1rem' }}
+        >
+          <Flame size={16} /> Himmel/Hölle & FAB-Strategie (Kauss)
         </button>
         <button 
           onClick={() => setActiveTab('personas')}
@@ -631,6 +656,118 @@ export const CoachingLivePortal = ({
                 Bisher keine vergangenen Coaching-Termine protokolliert.
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* TAB 5: HIMMEL/HÖLLE & FAB-STRATEGIE (COACHING DENNIS KAUSS) */}
+      {activeTab === 'strategy' && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+          {/* Whiteboard Screenshots Card */}
+          <div className="card">
+            <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
+              <h3 className="card-title">
+                <ImageIcon size={20} className="text-cyan-400" /> Original Coaching-Whiteboards (Dennis Kauss)
+              </h3>
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+                Klicke auf ein Whiteboard für die Vollbild-Ansicht im Zoom-Call
+              </span>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', marginTop: '0.75rem' }}>
+              {allImageAttachments.slice(0, 2).map(img => (
+                <div
+                  key={img.id}
+                  onClick={() => onOpenLightbox && onOpenLightbox(img.dataUrl, img.title)}
+                  style={{
+                    borderRadius: '0.75rem',
+                    overflow: 'hidden',
+                    border: '1px solid rgba(6, 182, 212, 0.3)',
+                    cursor: 'pointer',
+                    background: '#090d16'
+                  }}
+                >
+                  <div style={{ height: '210px', overflow: 'hidden', position: 'relative' }}>
+                    <img src={img.dataUrl} alt={img.title} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                  </div>
+                  <div style={{ padding: '0.85rem', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+                    <div style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--text-primary)' }}>{img.title}</div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--accent-cyan)', marginTop: '0.2rem' }}>{img.source} • {img.date}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Himmel vs. Hölle Matrix */}
+          <div className="card">
+            <div className="card-header">
+              <h3 className="card-title">
+                <Flame size={20} style={{ color: '#f43f5e' }} /> 1. Das Himmel-Hölle-Prinzip (Coaching-Rohfassung vs. Handwerker-Übersetzung)
+              </h3>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.25rem', marginTop: '0.75rem' }}>
+              {COACHING_HIMMEL_HOELLE.pairs.map(pair => (
+                <div key={pair.id} style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '0.75rem', padding: '1.1rem' }}>
+                  <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--accent-cyan)', textTransform: 'uppercase', marginBottom: '0.6rem' }}>
+                    Dimension: {pair.dimension}
+                  </div>
+                  <div style={{ background: 'rgba(244, 63, 94, 0.08)', border: '1px solid rgba(244, 63, 94, 0.25)', borderRadius: '0.5rem', padding: '0.75rem', marginBottom: '0.75rem' }}>
+                    <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#fb7185', marginBottom: '0.25rem' }}>🔥 HÖLLE (Coaching-Notiz):</div>
+                    <div style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: '0.4rem' }}>{pair.coachingHellRaw}</div>
+                    <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#fda4af', marginBottom: '0.15rem' }}>🎯 Website-Klartext:</div>
+                    <div style={{ fontSize: '0.84rem', color: 'var(--text-primary)', fontWeight: 600 }}>{pair.websiteHellChain}</div>
+                  </div>
+                  <div style={{ background: 'rgba(16, 185, 129, 0.08)', border: '1px solid rgba(16, 185, 129, 0.25)', borderRadius: '0.5rem', padding: '0.75rem' }}>
+                    <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#34d399', marginBottom: '0.25rem' }}>✨ HIMMEL (Coaching-Notiz):</div>
+                    <div style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: '0.4rem' }}>{pair.coachingHeavenRaw}</div>
+                    <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#6ee7b7', marginBottom: '0.15rem' }}>🎯 Website-Klartext:</div>
+                    <div style={{ fontSize: '0.84rem', color: 'var(--text-primary)', fontWeight: 600 }}>{pair.websiteHeavenChain}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 5 FAB-Statements Matrix */}
+          <div className="card">
+            <div className="card-header">
+              <h3 className="card-title">
+                <Sparkles size={20} style={{ color: '#a78bfa' }} /> 2. Deine 5 FAB-Statements (Besonderes Produkt-Merkmal + Vorteil Produkt + Vorteil Kunde)
+              </h3>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', marginTop: '0.75rem' }}>
+              {COACHING_FAB_STATEMENTS.items.map(fab => (
+                <div key={fab.id} style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+                  gap: '0.85rem',
+                  background: 'rgba(255,255,255,0.02)',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  borderRadius: '0.75rem',
+                  padding: '1rem'
+                }}>
+                  <div style={{ background: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.3)', borderRadius: '0.5rem', padding: '0.75rem' }}>
+                    <div style={{ fontSize: '0.7rem', fontWeight: 800, color: '#60a5fa', textTransform: 'uppercase', marginBottom: '0.25rem' }}>
+                      1. Besonderes Produkt-Merkmal
+                    </div>
+                    <div style={{ fontWeight: 700, fontSize: '0.9rem', color: '#eff6ff' }}>{fab.feature}</div>
+                    <div style={{ fontSize: '0.72rem', color: '#93c5fd', marginTop: '0.2rem' }}>Coaching-Stichwort: „{fab.coachingFeatureRaw}“</div>
+                  </div>
+                  <div style={{ background: 'rgba(139, 92, 246, 0.1)', border: '1px solid rgba(139, 92, 246, 0.3)', borderRadius: '0.5rem', padding: '0.75rem' }}>
+                    <div style={{ fontSize: '0.7rem', fontWeight: 800, color: '#c4b5fd', textTransform: 'uppercase', marginBottom: '0.25rem' }}>
+                      + 2. Vorteil Produkt
+                    </div>
+                    <div style={{ fontWeight: 600, fontSize: '0.88rem', color: '#f5f3ff' }}>{fab.advantage}</div>
+                  </div>
+                  <div style={{ background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)', borderRadius: '0.5rem', padding: '0.75rem' }}>
+                    <div style={{ fontSize: '0.7rem', fontWeight: 800, color: '#34d399', textTransform: 'uppercase', marginBottom: '0.25rem' }}>
+                      = 3. Vorteil Kunde
+                    </div>
+                    <div style={{ fontWeight: 600, fontSize: '0.88rem', color: '#ecfdf5' }}>{fab.benefit}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       )}

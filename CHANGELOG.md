@@ -4,6 +4,22 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 
 ## [Unreleased]
 
+### Added & Strategic Rollout
+- **🔥 Coaching-Strategie (Dennis Kauss): Himmel-Hölle-Prinzip, 5 FAB-Statements & 3 Website-Versionen (`src/constants/websiteContent.js`, `src/components/WebsiteView.jsx`, `src/components/CoachingLivePortal.jsx`, `src/components/CustomerDiscoveryView.jsx`, `DOCS/`):**
+  - **🌐 3 parallele Website-Versionen mit 1-Klick-Umschalter (ohne Überschreiben des Originals!):**
+    - **🛡️ Version 1 (`v1` – Original):** Die bisherige Website (`WEBSITE_CONTENT_V1` / `WEBSITE_CONTENT`) bleibt zu 100 % unangetastet erhalten.
+    - **⚡ Version 2 (`v2` – Beleg-Fokus + Himmel/Hölle & FAB):** Behält den messerscharfen Beleg-/DATEV-Einstieg im Hero, integriert das **Himmel-Hölle-Prinzip** (4 Kausalketten mit Umschalter zwischen *🎯 Handwerker-Klartext* und *📋 Original Coaching-Kausalketten*), die **5 FAB-Statements** (*Blau: Besonderes Produkt-Merkmal ➔ Lila: Vorteil Produkt ➔ Grün: Vorteil Kunde*) sowie die Ausbau-Module (Kundenkommunikation & strukturierte Verwaltung).
+    - **🏛️ Version 3 (`v3` – 3-Säulen Coaching-Edition):** Ganzheitliche Positionierung über alle 3 Coaching-Bereiche (*Säule 1: Proaktive Kundenkommunikation & Auftrags-Sicherung*, *Säule 2: Revisionssichere Verwaltung & Behörden-Ruhe*, *Säule 3: Lautlose Beleg- & DATEV-Konvertierung für schnelle Jahresabschlüsse*) inklusive Himmel-Hölle-Vergleich und 5 FAB-Nutzenketten.
+    - **📦 Multi-Versionen HTML-Export:** Das Export-Modal erlaubt den direkten HTML-Export für jede der 3 Versionen (`v1`, `v2`, `v3`) inklusive eingebetteter Himmel-Hölle- und FAB-Sektionen.
+  - **🎓 Coaching Live-Portal (`src/components/CoachingLivePortal.jsx`):**
+    - Beide hochgeladenen Original-Tafelbilder aus dem Coaching (`public/coaching/himmel_hoelle_coaching_kauss.png` und `public/coaching/fab_statements_coaching_kauss.png`) dauerhaft im Projekt verankert.
+    - Neuer Tab **`🔥 Himmel/Hölle & FAB-Strategie (Kauss)`** mit Original-Screenshots (klickbar für Vollbild-Lightbox), den 4 Himmel-Hölle-Kausalketten, den 5 FAB-Statements in Original-Farbcodierung (Blau/Lila/Grün) und der kritischen Positionierungs-Analyse.
+  - **📞 Gesamtes Vorhaben & Vertrieb (`DOCS/`, `CustomerDiscoveryView.jsx`, `initialData.js`):**
+    - `DOCS/Telefon_und_Kaltakquise_Leitfaden_Handwerk.md`: Teil 5 mit den 4 Himmel-Hölle-Diagnosefragen und den 5 FAB-Einwand-Kontern erweitert.
+    - `DOCS/Direct_Mail_1_Seiter_518_Harzer_Handwerksmeister.md`: Die 4 stärksten FAB-Nutzenversprechen direkt in den Brief an die 518 Handwerksmeister eingebaut.
+    - `src/components/CustomerDiscoveryView.jsx`: Neuer Coaching-Spickzettel mit den 5 FAB-Ketten in Phase 4 des Interview-Leitfadens.
+    - `src/constants/initialData.js`: Neue KI-Prompts (`Himmel-Hölle-Kontrast Generator`, `FAB-Statement Einwandbehandlung`) und Strategie-Dokument im Wissens-Hub hinterlegt.
+
 ### Changed & Refined
 - **🌐 Website Preview & Branding-Feinschliff (`WebsiteView.jsx`, `websiteContent.js`, `public/website-export/index.html`):**
   - **Farbwahl-Option entfernt & auf Hellgrün fixiert:** Die interaktiven Design-Umschalter (Pills für Harz, Tech, Industrie sowie der Hell/Dunkel-Modus-Toggle) wurden aus der Kopfzeile entfernt. Die Website ist nun fest und einheitlich im hellgrünen Natur-Design (`preset-harz mode-light`) verankert.

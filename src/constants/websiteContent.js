@@ -1,4 +1,4 @@
-export const WEBSITE_CONTENT = {
+export const WEBSITE_CONTENT_V1 = {
   brand: {
     name: "KMU Service Harz UG (haftungsbeschränkt) i.G.",
     shortName: "KMU Service Harz",
@@ -242,7 +242,6 @@ export const WEBSITE_CONTENT = {
       }
     ]
   },
-  // Alias for backward compatibility
   get showcase() {
     return this.workflow;
   },
@@ -390,3 +389,421 @@ export const WEBSITE_CONTENT = {
     ]
   }
 };
+
+// ============================================================================
+// 🎯 COACHING-STRATEGIE-BAUSTEINE (HIMMEL-HÖLLE-PRINZIP & FAB-STATEMENTS)
+// Ausgearbeitet im Coaching (Dennis Kauss) + Handwerker-optimierte Übersetzung
+// ============================================================================
+
+export const COACHING_HIMMEL_HOELLE = {
+  badge: "DER ENTSCHEIDENDE UNTERSCHIED IM BETRIEBSALLTAG",
+  title: "Warum haben Sie sich selbstständig gemacht – für Freiheit oder für das Abend-Büro?",
+  subtitle: "Der direkte Vergleich zwischen dem schleichenden Verwaltungs-Hamsterrad und einem sauber automatisierten Handwerksbetrieb.",
+  hellTitle: "OHNE SYSTEM: Die tägliche Büro-Falle („Hölle“)",
+  heavenTitle: "MIT KMU SERVICE HARZ: Ihr Zielzustand („Himmel“)",
+  pairs: [
+    {
+      id: "hh_1",
+      dimension: "Feierabend & Lebensqualität",
+      coachingHellRaw: "Viel Büroarbeit nach dem Feierabend ➔ Burnout durch Überlastung ➔ Aufgabe der Selbstständigkeit ➔ geplatzte Träume",
+      coachingHeavenRaw: "Weniger/keine Büroarbeit nach Feierabend ➔ mehr Zeit für Familie/Hobbies ➔ Viel ausgewogeneres Leben ➔ Die Erfüllung des ursprünglichen Wunsches nach Freiheit und Selbstbestimmtheit",
+      websiteHellTitle: "Feierabend-Büro bis zur Erschöpfung",
+      websiteHellChain: "Jeden Abend und Sonntag noch Belege, Zettel und Angebote abarbeiten ➔ Dauer-Überlastung von Chef & Familie ➔ Der ursprüngliche Traum vom freien Meisterbetrieb fühlt sich wie ein goldener Käfig an.",
+      websiteHeavenTitle: "Echter Feierabend & zurückgewonnene Freiheit",
+      websiteHeavenChain: "Kaum noch Büroarbeit nach Baustellen-Schluss ➔ Freie Abende & Wochenenden für Familie, Kinder und Hobbys ➔ Endlich genau die Freiheit und Selbstbestimmtheit leben, für die Sie gegründet haben."
+    },
+    {
+      id: "hh_2",
+      dimension: "Kundenkommunikation & Ruf",
+      coachingHellRaw: "Schlechte Kundenkommunikation ➔ schlechte Rezensionen ➔ keine neuen Kunden ➔ kein Geld ➔ Existenzängste",
+      coachingHeavenRaw: "Vollautomatisierte Kundenbetreuung (viele Informationen zur richtigen Zeit), Anrufe von Kunden präventiv abhandeln ➔ Weniger Stress & Ärger mit Kunden und gleichzeitige Zufriedenheit auf beiden Seiten",
+      websiteHellTitle: "Dauer-Klingeln auf der Baustelle & verärgerte Kunden",
+      websiteHellChain: "Rückrufe gehen im Baustellen-Alltag unter ➔ Kunden fühlen sich ignoriert, schreiben schlechte Bewertungen oder springen ab ➔ Lukrative Folgeaufträge und Umsatz brechen weg.",
+      websiteHeavenTitle: "Präventive Kunden-Infos ohne Baustellen-Telefonstress",
+      websiteHeavenChain: "Kunden erhalten automatisch die richtige Status-Info zur richtigen Zeit (Termin, Anfahrt, Nachweis) ➔ Anrufe werden präventiv abgefangen ➔ Weniger Ärger, 5-Sterne-Zufriedenheit und volle Auftragsbücher."
+    },
+    {
+      id: "hh_3",
+      dimension: "Übersicht & Prüfungs-Sicherheit",
+      coachingHellRaw: "Aufträge die verloren gehen ➔ keine Übersicht mehr ➔ Maximales Chaos in der Verwaltung",
+      coachingHeavenRaw: "Vollautomatisierte Verwaltung, sodass nichts untergeht und zur Prüfung kein Stress entsteht",
+      websiteHellTitle: "Verlorene Zettel, vergessene Aufträge & Prüfungsdruck",
+      websiteHellChain: "Anfragen auf Notizzetteln, Fotos in privaten WhatsApp-Chats und fehlende Quittungen ➔ Keine Übersicht mehr im Büro ➔ Maximaler Stress bei Rückfragen vom Steuerberater oder Betriebsprüfungen.",
+      websiteHeavenTitle: "Lückenlose Verwaltung & ruhiger Schlaf vor jeder Prüfung",
+      websiteHeavenChain: "Jeder Beleg, jedes Baustellen-Foto und jede Anfrage landet automatisch am richtigen Ort ➔ Nichts geht mehr unter ➔ 100 % Übersicht und null Stress bei Steuerkanzlei, GoBD oder Zoll."
+    },
+    {
+      id: "hh_4",
+      dimension: "Kosten & Wettbewerbsfähigkeit",
+      coachingHellRaw: "Kosten (Bürokraft/eigene Arbeit) ➔ Mehr Ausgaben/Zeit fehlinvestiert ➔ nicht konkurrenzfähig",
+      coachingHeavenRaw: "Vereinfachte Businessprozesse, die endlich Zeit für die wichtigen und geldbringenden Dinge schaffen ➔ der Konkurrenz voraus",
+      websiteHellTitle: "Teure Meisterstunden im Büro verbrannt",
+      websiteHellChain: "Hohe Kosten für zusätzliche Bürokräfte oder unbezahlte Chef-Stunden am PC ➔ Wertvolle Arbeitszeit wird in unproduktives Abtippen fehlinvestiert ➔ Sie verlieren Tempo gegenüber modernen Mitbewerbern.",
+      websiteHeavenTitle: "Voller Fokus auf geldbringende Handwerksarbeit",
+      websiteHeavenChain: "Vereinfachte, schlanke Abläufe im Hintergrund ➔ Endlich wieder Zeit für Baustelle, gute Angebote und Ihr Team ➔ Wirtschaftlich hochprofitabel und der regionalen Konkurrenz klar voraus."
+    }
+  ]
+};
+
+export const COACHING_FAB_STATEMENTS = {
+  badge: "UNSER SYSTEM NACH DEM FAB-PRINZIP (MERKMAL ➔ VORTEIL ➔ KUNDENNUTZEN)",
+  title: "5 handfeste Gründe, warum unsere Lösung im Handwerksalltag sofort funktioniert",
+  subtitle: "Wir verkaufen keine Technik zum Selbstzweck. Jedes Merkmal unseres Systems hat genau ein Ziel: Ihren Betrieb spürbar zu entlasten.",
+  items: [
+    {
+      id: "fab_1",
+      feature: "Intelligente System-Brücken & unsichtbare KI-Anbindung",
+      coachingFeatureRaw: "KI-Anbindung",
+      advantage: "Verschiedene bestehende Programme nahtlos miteinander kombinieren",
+      benefit: "Spürbar einfachere Arbeitsabläufe, null Schulungsaufwand für Ihr Team – WhatsApp, E-Mail & Lexoffice bleiben genau wie gewohnt.",
+      badge: "Keine Schulung nötig"
+    },
+    {
+      id: "fab_2",
+      feature: "Standardisiertes Handwerker-Baukastensystem",
+      coachingFeatureRaw: "Standardisiertes System",
+      advantage: "Extrem schnell und ohne monatelange IT-Baustelle umsetzbar",
+      benefit: "Sie erhalten in nur 1–2 Wochen ein schnelles, aber exakt auf Ihren Betrieb zugeschnittenes Ergebnis, das sich sofort rechnet.",
+      badge: "In 1–2 Wochen live"
+    },
+    {
+      id: "fab_3",
+      feature: "100 % Spezialisierung auf Handwerksbetriebe & KMU",
+      coachingFeatureRaw: "Spezialisierung auf Handwerksbetriebe",
+      advantage: "Klare Handwerker-Sprache auf Augenhöhe statt IT-Fachchinesisch",
+      benefit: "Blindes Verständnis für Ihren Baustellen-Alltag, volle Transparenz und echtes Vertrauen ab der allerersten Minute.",
+      badge: "0 % Fachchinesisch"
+    },
+    {
+      id: "fab_4",
+      feature: "100 % GoBD- & DSGVO-konforme Architektur",
+      coachingFeatureRaw: "GoBD Konform / DSGVO Konform",
+      advantage: "Feste Etablierung geprüfter Branchen- und Sicherheitsstandards",
+      benefit: "Maximale Rechtssicherheit im Alltag und sorgenfreies Handling sensibler Kunden-, Personal- und Rechnungsdaten auf EU-Servern.",
+      badge: "Prüfungssicher"
+    },
+    {
+      id: "fab_5",
+      feature: "Automatische DATEV-Konvertierung & Vorkontierung",
+      coachingFeatureRaw: "DATEV Konvertierung",
+      advantage: "Saubere, lückenlose Direkt-Anbindung an Ihre Steuerkanzlei",
+      benefit: "Keine nervigen Rückfragen mehr vom Steuerberater, spürbare Gebühren-Ersparnis und schnelle Jahresabschlüsse (ideal für Bank & Planung).",
+      badge: "Schneller Jahresabschluss"
+    }
+  ]
+};
+
+// ============================================================================
+// 🚀 VERSION 2: SPITZER BELEG-FOKUS + HIMMEL/HÖLLE & FAB-OPTIMIERUNG
+// Hero bleibt spitz auf Belegerfassung & DATEV, aber psychologisch geschärft
+// mit Himmel/Hölle, FAB-Nutzenketten + optionalen Ausbau-Modulen (Kunden & Aufträge)
+// ============================================================================
+
+export const WEBSITE_CONTENT_V2 = {
+  ...WEBSITE_CONTENT_V1,
+  versionId: "v2",
+  versionName: "Version 2: Beleg-Fokus + Himmel/Hölle & FAB",
+  brand: {
+    ...WEBSITE_CONTENT_V1.brand,
+    claim: "Vom Feierabend-Büro zurück in die Freiheit: Lautlose Belegerfassung, DATEV-Übergabe & schlanke Prozesse für Handwerksbetriebe im Harz."
+  },
+  hero: {
+    badge: "🛠️ Spezialisiert auf Handwerksbetriebe im Harz – 0 % Fachchinesisch",
+    headline: "Schluss mit dem Büro-Wochenende: Lautlose Belegerfassung & DATEV-Übergabe für echte Freiheit nach Feierabend.",
+    subheadline: "Sie haben sich selbstständig gemacht, um frei und selbstbestimmt zu arbeiten – nicht um abends nach der Baustelle im Büro auszubrennen. Wir verbinden Ihre bestehenden Systeme (WhatsApp, Mail, Lexoffice & DATEV) ohne Schulungsaufwand für Ihr Team: Für null Rückfragen vom Steuerberater, schnelle Jahresabschlüsse und freie Wochenenden mit der Familie.",
+    ctaPrimary: "Kostenloses 15-Min. Erstgespräch sichern",
+    ctaSecondary: "Himmel-Hölle-Check & Ersparnis berechnen",
+    trustBadges: [
+      "⚡ Keine Schulung – Bestehende Systeme bleiben",
+      "📊 DATEV-Anbindung für schnelle Jahresabschlüsse",
+      "🛡️ 100 % GoBD- & DSGVO-konform",
+      "🤝 Feste Paketpreise statt IT-Stundensätze",
+      "📍 Persönlich vor Ort im Landkreis Goslar & Harz"
+    ]
+  },
+  painPoints: {
+    badge: "WARUM VIELE MEISTER ABENDS IM BÜRO AUSBRENNEN",
+    title: "Erkennen Sie diesen Schleudersitz nach Feierabend?",
+    subtitle: "Wenn unproduktive Büroarbeit Ihre Abende frisst, leidet nicht nur das Privatleben – sondern die Wettbewerbsfähigkeit Ihres gesamten Betriebs.",
+    items: [
+      {
+        icon: "calendar-x",
+        problem: "Feierabend-Büro statt Familienzeit",
+        description: "Nach 50 Stunden Baustelle warten abends noch Belege, Quittungen und Büroarbeit. Aus dem Traum von Freiheit und Selbstbestimmtheit wird Dauer-Überlastung."
+      },
+      {
+        icon: "receipt-tax",
+        problem: "Steuerberater-Rückfragen & späte Abschlüsse",
+        description: "Fehlende Belege kosten teure Nachbearbeitungsgebühren in der Kanzlei und verzögern wichtige Jahresabschlüsse um Monate."
+      },
+      {
+        icon: "clock-alert",
+        problem: "Verlorene Aufträge & Verwaltungs-Chaos",
+        description: "Wenn im Trubel zwischen Baustelle, Telefon und Zettelwirtschaft Informationen untergehen, entsteht maximaler Stress vor jeder Prüfung."
+      },
+      {
+        icon: "shield-alert",
+        problem: "Teure Meisterzeit falsch investiert",
+        description: "Jede Stunde, die Sie oder eine teure Bürokraft mit Abtippen verbringen, fehlt für lukrative Aufträge und bringt die Konkurrenz in Vorhand."
+      }
+    ]
+  },
+  heavenHell: COACHING_HIMMEL_HOELLE,
+  fabStatements: COACHING_FAB_STATEMENTS,
+  expansionModules: {
+    badge: "OPTIONALE AUSBAU-MODULE NACH DEM BELEG-START",
+    title: "Wenn die Buchhaltung lautlos läuft: Unsere Zusatz-Bausteine gegen Telefon- & Auftrags-Chaos",
+    subtitle: "Viele Betriebe starten mit der lautlosen Belegerfassung (Stufe 2) und erweitern ihr System danach um zwei weitere Gewinnbringer:",
+    modules: [
+      {
+        tag: "Ausbau-Modul A",
+        title: "Präventive Kundenkommunikation & Auftrags-Sicherung",
+        problem: "Schlechte Erreichbarkeit auf der Baustelle ➔ verpasste Anrufe ➔ schlechte Rezensionen & verlorene Neukunden.",
+        solution: "Automatische Status-Informationen zur richtigen Zeit (Anfrage-Bestätigung, Termin-Erinnerung, Baustellen-Update). Kunden fühlen sich erstklassig betreut, ohne dass Ihr Handy auf dem Gerüst klingelt."
+      },
+      {
+        tag: "Ausbau-Modul B",
+        title: "Vollautomatisierte Baustellen- & Auftrags-Verwaltung",
+        problem: "Aufträge und Fotos gehen in privaten WhatsApp-Gruppen unter ➔ keine Übersicht ➔ Stress bei Reklamationen und Prüfungen.",
+        solution: "Fotos, Stundenzettel und Abnahmen landen vom Smartphone der Monteure in 3 Sekunden automatisch in der richtigen digitalen Kundenakte."
+      }
+    ]
+  },
+  usps: {
+    badge: "WARUM UNSER SYSTEM SOFORT GREIFT (FAB-PRINZIP)",
+    title: "5 handfeste Vorteile für Ihren Handwerksbetrieb",
+    items: COACHING_FAB_STATEMENTS.items.map(item => ({
+      title: `${item.feature} ➔ ${item.badge}`,
+      desc: `${item.advantage}: ${item.benefit}`
+    }))
+  }
+};
+
+// ============================================================================
+// 🌟 VERSION 3: GANZHEITLICHE 3-SÄULEN-COACHING-EDITION
+// Alle 3 Coaching-Säulen (Kundenkommunikation, Chaosfreie Verwaltung, DATEV/Belege)
+// gleichberechtigt im Zentrum + komplettes Himmel-Hölle-Prinzip & FAB-Statements
+// ============================================================================
+
+export const WEBSITE_CONTENT_V3 = {
+  ...WEBSITE_CONTENT_V1,
+  versionId: "v3",
+  versionName: "Version 3: Ganzheitliche 3-Säulen-Edition (Coaching Komplett)",
+  brand: {
+    ...WEBSITE_CONTENT_V1.brand,
+    claim: "Weniger Büro nach Feierabend, null verlorene Aufträge & zufriedene Kunden: Ihr Partner für vereinfachte Handwerksprozesse im Harz.",
+    positioning: "Der Prozess-Partner für Handwerksbetriebe im Harz",
+    subtitle: "Wir befreien Handwerksmeister von Feierabend-Büroarbeit, Verwaltungs-Chaos und ständigem Telefonstress – für echte Freiheit, glückliche Kunden und spürbaren Vorsprung vor der Konkurrenz."
+  },
+  hero: {
+    badge: "🛠️ Spezialisiert auf Handwerksbetriebe im Harz – Klartext statt Fachchinesisch",
+    headline: "Holen Sie sich Ihren Feierabend und Ihre Freiheit zurück: Automatisierte Verwaltung, Kunden-Info & DATEV-Übergabe fürs Handwerk.",
+    subheadline: "Schluss mit Überlastung nach Feierabend, verlorenen Aufträgen und nervigen Kunden-Rückfragen auf der Baustelle. Mit unserem standardisierten System verbinden wir Ihre bestehenden Programme nahtlos im Hintergrund – ohne Schulungen, 100 % GoBD-/DSGVO-sicher und zum festen Paketpreis.",
+    ctaPrimary: "Kostenloses 15-Min. Erstgespräch sichern",
+    ctaSecondary: "Himmel-Hölle-Vergleich & Rechner ansehen",
+    trustBadges: [
+      "🏆 3-in-1: Belege/DATEV + Kunden-Info + Verwaltung",
+      "⚡ Bestehende Systeme bleiben – 0 % Schulungsaufwand",
+      "📊 Schnelle Jahresabschlüsse ohne Kanzlei-Rückfragen",
+      "🛡️ 100 % GoBD- & DSGVO-konform auf EU-Servern",
+      "📍 Vor Ort im Landkreis Goslar & Harz"
+    ]
+  },
+  painPoints: {
+    badge: "DIE 4 GRÖSSTEN BREMSKLÖTZE IM HANDWERKSALLTAG",
+    title: "Warum viele gute Betriebe trotz voller Auftragsbücher nicht zur Ruhe kommen",
+    subtitle: "Wenn die Verwaltung nicht mitwächst, zahlen Sie als Inhaber den Preis mit Ihrer Freizeit, Ihren Nerven und Ihrer Rendite.",
+    items: [
+      {
+        icon: "calendar-x",
+        problem: "1. Feierabend-Büro & Überlastungs-Falle",
+        description: "Abends nach der Baustelle noch stundenlang Büroarbeit erledigen. Die Zeit für Familie und Hobbys fehlt – der Wunsch nach Freiheit und Selbstbestimmtheit bleibt auf der Strecke."
+      },
+      {
+        icon: "clock-alert",
+        problem: "2. Telefonstress & verlorene Kundenanfragen",
+        description: "Auf der Baustelle klingelt ständig das Telefon. Wer nicht sofort reagiert, riskiert Unmut, schlechte Rezensionen und verliert lukrative Aufträge an Mitbewerber."
+      },
+      {
+        icon: "receipt-tax",
+        problem: "3. Auftrags- & Beleg-Chaos in der Verwaltung",
+        description: "Zettel im Transporter, Fotos in WhatsApp und Rückfragen vom Steuerberater sorgen für Unübersichtlichkeit und unnötigen Stress vor jeder Prüfung."
+      },
+      {
+        icon: "shield-alert",
+        problem: "4. Fehlinvestierte Zeit & steigende Bürokosten",
+        description: "Wertvolle Meisterstunden oder teure Bürokräfte werden für manuelles Abtippen verbrannt, statt Zeit für die wirklich geldbringenden Dinge im Betrieb zu schaffen."
+      }
+    ]
+  },
+  heavenHell: COACHING_HIMMEL_HOELLE,
+  fabStatements: COACHING_FAB_STATEMENTS,
+  threePillars: {
+    badge: "DIE 3 SÄULEN FÜR EINEN ENTSPANNTEN MEISTERBETRIEB",
+    title: "Vereinfachte Businessprozesse, die Ihnen den Rücken komplett freihalten",
+    subtitle: "Unser standardisiertes System löst genau die drei Engpässe, die Handwerksbetriebe im Alltag am meisten Zeit, Geld und Nerven kosten:",
+    pillars: [
+      {
+        num: "Säule 01",
+        title: "Präventive Kundenbetreuung & Auftrags-Sicherung",
+        subtitle: "Weniger Stress am Telefon – begeisterte Kunden auf beiden Seiten",
+        points: [
+          "Automatische Eingangsbestätigung & Vorqualifizierung neuer Kundenanfragen",
+          "Rechtzeitige Status-Informationen an Kunden (Termin, Anfahrt, Fertigstellung), bevor sie zum Hörer greifen",
+          "Keine verlorenen Aufträge mehr und 5-Sterne-Bewertungen durch verlässliche Kommunikation"
+        ]
+      },
+      {
+        num: "Säule 02",
+        title: "Lückenlose Verwaltung ohne Prüfungsstress",
+        subtitle: "Maximale Übersicht vom Auftrag bis zur Baustellen-Dokumentation",
+        points: [
+          "Fotos, Lieferscheine und Stundenzettel per Smartphone direkt in die richtige Projektakte",
+          "Intelligente KI-Brücken verbinden WhatsApp, E-Mail, Kalender und Bürosoftware ohne Umschulung",
+          "100 % GoBD- & DSGVO-konforme Ablage – jederzeit entspannt bei Finanzamt- oder Zollprüfungen"
+        ]
+      },
+      {
+        num: "Säule 03",
+        title: "Lautlose Belegerfassung & DATEV-Konvertierung",
+        subtitle: "Schnelle Jahresabschlüsse & echte Kostenersparnis beim Steuerberater",
+        points: [
+          "Ein-Klick-Erfassung von Tankquittungen, Materialrechnungen und E-Rechnungen (ZUGFeRD / XRechnung)",
+          "Saubere, vorkontierte DATEV-Übergabe direkt an Ihre Steuerkanzlei",
+          "Null Rückfragen am Monatsende, geringere Kanzleigebühren und blitzschnelle Jahresabschlüsse"
+        ]
+      }
+    ]
+  },
+  pricingTiers: [
+    {
+      id: "audit",
+      level: "Stufe 1",
+      title: "Das 360° Prozess- & Büro-Audit",
+      tagline: "Ihr klarer Fahrplan aus dem Büro-Chaos (vor Ort im Harz)",
+      price: "500 €",
+      priceSuffix: "Festpreis (zzgl. MwSt.)",
+      fundingNote: "100 % risikofrei – wird bei Umsetzung angerechnet",
+      description: "90-minütige 1:1-Analyse Ihrer Büro-, Kunden- und Belegprozesse direkt bei Ihnen im Betrieb.",
+      highlight: false,
+      features: [
+        "90 Min. persönliche Bestandsaufnahme in klarer Handwerker-Sprache",
+        "Aufdeckung Ihrer 3 größten Zeit- und Geldfresser (Kunden, Verwaltung, DATEV)",
+        "Exakte Berechnung Ihrer gewinnbaren Feierabende & Steuerberater-Ersparnis",
+        "Individueller Maßanzug-Fahrplan mit unserem standardisierten Baukastensystem",
+        "Prüfung Ihrer Förderfähigkeit (bis zu 50 % – 80 % Zuschuss)",
+        "Keine Folgeverpflichtung – volle Transparenz ab Minute 1"
+      ],
+      ctaText: "360° Audit anfragen (500 €)",
+      targetTopic: "Stufe 1: 360° Prozess- & Büro-Audit (500 €)"
+    },
+    {
+      id: "setup",
+      level: "Stufe 2",
+      badge: "⭐ MEISTGEWÄHLT / SCHNELLES ERGEBNIS",
+      title: "Das Handwerker-Freiraum-Setup",
+      tagline: "Schlüsselfertige Automatisierung Ihrer wichtigsten Prozesse",
+      price: "2.000 €",
+      priceSuffix: "Festpreis (Start-Paket netto)",
+      fundingNote: "⚡ In 1–2 Wochen live – ohne Schulungsaufwand fürs Team",
+      description: "Nahtlose Verknüpfung Ihrer bestehenden Systeme für automatisierte Belege, DATEV-Konvertierung & geordnete Auftrags-Verwaltung.",
+      highlight: true,
+      features: [
+        "Intelligente System-Brücken (WhatsApp, Mail, Lexoffice & DATEV kombiniert)",
+        "Saubere DATEV-Konvertierung für schnelle Jahresabschlüsse ohne Kanzlei-Rückfragen",
+        "Präventiver Kunden- & Auftrags-Workflow, damit keine Anfrage mehr untergeht",
+        "100 % GoBD-, E-Rechnungs- & DSGVO-konform nach höchsten Branchenstandards",
+        "Null Schulungsaufwand: Sie und Ihre Mitarbeiter arbeiten gewohnt weiter",
+        "Garantierter Festpreis – keine unberechenbaren IT-Stundenzettel"
+      ],
+      ctaText: "Freiraum-Setup sichern",
+      targetTopic: "Stufe 2: Handwerker-Freiraum-Setup (2.000 €)"
+    },
+    {
+      id: "care",
+      level: "Stufe 3",
+      badge: "AaaS (Automation as a Service)",
+      title: "Digitaler Hausmeister",
+      tagline: "Sorgenfreier Dauerbetrieb & laufende Prozess-Begleitung",
+      price: "200 €",
+      priceSuffix: "pro Monat (netto)",
+      fundingNote: "Monatlich flexibel kündbar",
+      description: "Wir halten Ihre gesamten Hintergrund-Prozesse dauerhaft stabil, sicher und auf dem neuesten Stand.",
+      highlight: false,
+      features: [
+        "Laufendes 24/7-Monitoring aller KI- und System-Schnittstellen",
+        "Sofortige Wartung bei Updates von DATEV, Lexoffice, WhatsApp oder Google",
+        "Laufende GoBD- & DSGVO-Sicherheits-Checks für sensible Kundendaten",
+        "Inkl. 1 Stunde monatliches Kontingent für neue Prozess-Wünsche",
+        "Direkter Ansprechpartner im Harz – kein anonymes Ticket-System",
+        "Damit Sie sich zu 100 % auf die geldbringenden Dinge konzentrieren können"
+      ],
+      ctaText: "Hausmeister buchen",
+      targetTopic: "Stufe 3: Digitaler Hausmeister (200 €/Mo)"
+    }
+  ],
+  workflow: {
+    ...WEBSITE_CONTENT_V1.workflow,
+    badge: "SO EINFACH LÄUFT IHR BETRIEB MIT SYSTEM",
+    title: "In 3 Schritten vom Verwaltungs-Chaos zur entspannten Chefsache",
+    subtitle: "Dank unseres standardisierten Systems kombinieren wir schnelle Umsetzung mit einem individuellen Ergebnis für Ihren Betrieb.",
+    beforeAfter: {
+      before: {
+        title: "HÖLLE (Ohne System: Chaos & Überlastung)",
+        items: [
+          "Abends und am Wochenende noch stundenlang Belege, Rechnungen und Zettel abarbeiten",
+          "Kunden rufen ständig auf der Baustelle an – verpasste Anfragen führen zu Umsatzverlust & schlechten Rezensionen",
+          "Unübersichtliche Ablage sorgt für Dauerstress bei Steuerberater-Rückfragen und Betriebsprüfungen",
+          "Hohe Kosten und fehlinvestierte Meisterzeit bremsen Ihr Wachstum gegenüber der Konkurrenz"
+        ]
+      },
+      after: {
+        title: "HIMMEL (Mit System: Freiheit & Vorsprung)",
+        items: [
+          "Pünktlicher Feierabend und freie Wochenenden für Familie, Hobbys und echte Erholung",
+          "Präventive Kunden-Infos zur richtigen Zeit sorgen für Ruhe am Baustellen-Telefon und Top-Bewertungen",
+          "Lückenlose, GoBD-konforme Verwaltung und saubere DATEV-Konvertierung für schnelle Jahresabschlüsse",
+          "Vereinfachte Businessprozesse schaffen endlich Zeit für die wichtigen, geldbringenden Aufträge"
+        ]
+      }
+    }
+  },
+  usps: {
+    badge: "WARUM BETRIEBE IM HARZ AUF UNS SETZEN (FAB-STATEMENTS)",
+    title: "Besonderes Merkmal + Produktvorteil = Ihr konkreter Gewinn",
+    items: COACHING_FAB_STATEMENTS.items.map(item => ({
+      title: `${item.feature}`,
+      desc: `${item.advantage} ➔ ${item.benefit}`
+    }))
+  }
+};
+
+export const WEBSITE_VERSIONS = [
+  {
+    id: "v1",
+    shortLabel: "V1: Klassisch (Original)",
+    label: "Version 1: Aktuelle Website (Unverändertes Original – Reiner Beleg-Fokus)",
+    badge: "Original bewahrt",
+    description: "Deine bisherige Website zu 100 % unverändert als Referenz.",
+    content: WEBSITE_CONTENT_V1
+  },
+  {
+    id: "v2",
+    shortLabel: "V2: Beleg-Fokus + Coaching",
+    label: "Version 2: Spitzer Beleg-Fokus + Himmel/Hölle & FAB + Zusatz-Module",
+    badge: "Beleg-Fokus + Psychologie",
+    description: "Behält Belegerfassung & DATEV als Hauptthema, ergänzt um das Himmel-Hölle-Prinzip, die 5 FAB-Nutzenketten und Kundenkommunikation/Verwaltung als Ausbau-Module.",
+    content: WEBSITE_CONTENT_V2
+  },
+  {
+    id: "v3",
+    shortLabel: "V3: 3-Säulen Komplett (Empfohlen)",
+    label: "Version 3: Ganzheitliche 3-Säulen-Coaching-Edition (Belege + Kunden-Info + Verwaltung)",
+    badge: "⭐ Coaching Komplett-Edition",
+    description: "Positioniert dich ganzheitlich mit allen Coaching-Ergebnissen: 1. Präventive Kundenkommunikation, 2. Chaosfreie Verwaltung, 3. DATEV-Konvertierung & schnelle Jahresabschlüsse.",
+    content: WEBSITE_CONTENT_V3
+  }
+];
+
+// Default export alias remains V1 so all existing imports keep working untouched
+export const WEBSITE_CONTENT = WEBSITE_CONTENT_V1;

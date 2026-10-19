@@ -27,6 +27,18 @@ Die Anwendung zeichnet sich durch ein futuristisches "Glassmorphic Dark Theme" a
 - **🖨️ Druckfertige VIP-Präsentationsmappe & Hub:** Standalone HTML-Mappe (`public/goclean_wachstumsmappe.html`), Präsentations-Center (`public/goclean_praesentationen_hub.html`) und Manus Cockpit (`manus_power_cockpit.html`).
 
 ### 0b. 💼 B2B-Vertriebs- & Auslieferungs-Suite (KMU Service Harz)
+- **🔥 Coaching-Integration (Dennis Kauss): Himmel-Hölle-Prinzip, 5 FAB-Statements & 3 Website-Versionen -- *NEU!***
+  - **🌐 3-Versionen Website-Umschalter (`src/components/WebsiteView.jsx`, `src/constants/websiteContent.js`):**
+    - **🛡️ Version 1 (Original – 100 % unverändert bewahrt):** Deine bisherige Website bleibt unangetastet erhalten.
+    - **⚡ Version 2 (Beleg-Fokus + Himmel/Hölle & 5 FAB-Statements):** Scharfer Beleg-/DATEV-Fokus im Einstieg, ergänzt um den interaktiven **Himmel-Hölle-Vergleich** (mit Umschalter zwischen *🎯 Handwerker-Klartext* und *📋 Original Coaching-Kausalketten*), die **5 FAB-Statements** (*Blau: Besonderes Produkt-Merkmal ➔ Lila: Vorteil Produkt ➔ Grün: Vorteil Kunde*) und optionale Ausbau-Module (Kundenkommunikation & Verwaltung).
+    - **🏛️ Version 3 (3-Säulen Coaching-Edition):** Ganzheitliche Ausrichtung auf alle 3 Coaching-Säulen (*Säule 1: Proaktive Kundenkommunikation & Auftragssicherung*, *Säule 2: Revisionssichere Verwaltung & Ordnung*, *Säule 3: Lautlose Beleg- & DATEV-Konvertierung für schnelle Jahresabschlüsse*) inklusive Himmel-Hölle-Matrix und 5 FAB-Karten.
+    - **📦 Multi-Versionen HTML-Export:** Beim Exportieren der Standalone-Website kann exakt gewählt werden, ob V1, V2 oder V3 exportiert wird.
+  - **🎓 Coaching Live-Portal Erweiterung (`src/components/CoachingLivePortal.jsx`):**
+    - Neuer Strategie-Reiter **`🔥 Himmel/Hölle & FAB-Strategie (Kauss)`** mit beiden hochgeladenen Original-Whiteboard-Tafelbildern (`/coaching/himmel_hoelle_coaching_kauss.png` & `/coaching/fab_statements_coaching_kauss.png`), kritischer Positionierungs-Bewertung, den 4 Kausalketten und der 5er FAB-Matrix.
+  - **📞 Vertriebs-, Brief- & Interview-Integration:**
+    - `DOCS/Telefon_und_Kaltakquise_Leitfaden_Handwerk.md`: Teil 5 mit Himmel-Hölle-Telefonfragen und FAB-Einwand-Kontern ergänzt.
+    - `DOCS/Direct_Mail_1_Seiter_518_Harzer_Handwerksmeister.md`: Die 4 stärksten FAB-Versprechen (*Bestehende Systeme bleiben erhalten*, *Kein Fachchinesisch*, *100 % GoBD/DSGVO*, *Schneller Jahresabschluss*) integriert.
+    - `src/components/CustomerDiscoveryView.jsx`: Kompaktes FAB- & Himmel-Hölle-Spickzettel-Modul direkt in Phase 4 des Interview-Cockpits eingebaut.
 - **🤝 Steuerberater-Multiplikatoren-Kit & Direct-Mail (R1):**
   - Kanzlei-Pitch-Deck & Leitfaden (`DOCS/Steuerberater_Kanzlei_Pitch_Deck_und_Leitfaden.md`) mit DATEV RDS 1.0 vs BDS Gegenüberstellung, GoBD-Verfahrensdokumentation und 0-Euro-Partnermodell.
   - Ausdruckbare Mandanten-Flyer-Vorlage (`DOCS/Mandanten_Flyer_Vorlage_Handwerk.md`) mit 500 € Kanzlei-Gutschein (`KANZLEI-HARZ-500`).
