@@ -187,4 +187,24 @@ Während `foerdermittel_leitfaden_kmu_service_harz.md` (Zeile 20 & 56) völlig k
    - Veraltete Förderstrings (*Digitalbonus Niedersachsen/Thüringen/go-digital*) im PDF-Audit-Generator der App durch rechtssichere NI/ST/INQA-Optionen ersetzt.
    - Kontaktdaten im PDF auf `Inh. Robin Gornitzka • 38685 Langelsheim • kontakt@kmu-service-harz.de` aktualisiert und Doppelte Sicherheits-Garantie verankert.
    - Altlasten in `initialData.js` (`INITIAL_DOCS`, `INITIAL_INBOX`, `INITIAL_CONTACTS`, `INITIAL_LEADS`) bereinigt und zugehörige Testsuiten synchronisiert.
-- **Status Modul 8:** Datei `08_Sales_Assets_Sandbox_und_Rechtliche_Fallstricke.md` vollständig erstellt und Code/Tests bereinigt. Weiter mit Phase A für **Modul 9**.
+- **Status Modul 8:** Datei `08_Sales_Assets_Sandbox_und_Rechtliche_Fallstricke.md` vollständig erstellt und Code/Tests bereinigt.
+
+### [20.10.2026] Strategische Entscheidungen & Fertigstellung von Modul 9 (`09_90_Tage_Roadmap_KPI_Dashboard_und_Risiko_Management.md`)
+1. **Fokussiertes Nebenberufs-Modell (10–15 Std./Woche Zeiteinsatz):**
+   - Mo/Mi/Do je 18:00–20:00 Uhr (Brief-Vorbereitung & Recherche) + Di/Do 07:00–08:00 Uhr (Frühaufsteher-Telefonate) + Freitag 13:00–17:30 Uhr (Vor-Ort-Audits & Hof-Einweisungen).
+2. **Die 3-Phasen 90-Tage-Roadmap:**
+   - **Monat 1 (Validierung & Cashflow):** 50 Adressen recherchieren, 50 Gründer-Bonus-Briefe versenden, 10–12 Interviews führen, 3x 500-€-Audit vor Ort umsetzen = **1.500 € Cashflow**, Gewerbe formalisieren.
+   - **Monat 2 (Erste Setups & MRR-Start):** 2x 2.000-€-Setup (je 1.500 € Restsumme) umsetzen = **3.000 € Cashflow**; beide Betriebe in den 200-€-Retainer wandeln = **400 € MRR**; 2 neue Audits = **1.000 € Cashflow** (Zwischenstand: **5.500 € Cashflow + 400 € MRR**).
+   - **Monat 3 (Multiplikatoren & 1.000-€-MRR-Plateau):** Kanzlei-Türöffner „3 Sorgenkinder“ zünden, 2 weitere Setups umsetzen = **3.000 € Cashflow**; 3 weitere Retainer abschließen = **5 feste Kunden à 200 € = 1.000,00 € planbarer MRR!**
+   - **Kumulierter 90-Tage-Cashflow:** ca. **9.500 € netto** bei über 90 % Reingewinn-Marge und fixen Tool-Kosten unter 55 €/Monat.
+3. **Wöchentliche 15-Minuten-Scorecard (Freitags-Check):**
+   - Klare Trennung zwischen Input-KPIs (15 Briefe, 20 Anrufe, 6–8 Gespräche, 2–3 Hof-Walk-ins, 1 Multiplikator/Woche) und Output-KPIs (2–3 Audits/Monat, 1–2 Setups/Monat, 80 % Retainer-Quote).
+4. **Vollständiger Notfall-Pivot-Katalog (5 Szenarien):**
+   - *Notfall 1:* Vorzimmer blockt ab -> Frühaufsteher-Angriff um 07:08 Uhr, Verbündeten-Dreh für die Bürokraft, C5-Umschlag-Einwurf.
+   - *Notfall 2:* Meister zögert nach dem Audit -> 30-Tage-Anrechnungs-Ablauf-Anker & monatlicher Schattenkosten-Verlust-Vergleich.
+   - *Notfall 3:* Kanzlei-Inhaber reagiert nicht -> Fibu-Teamleiterin 48 Std. vor dem 10. des Monats anrufen.
+   - *Notfall 4:* Sommerloch / Urlaubszeiten -> Fokus auf Bürokraft im ruhigen Büro + E-Rechnungs-Frühbucher-Kampagne.
+   - *Notfall 5:* Retainer-Kündigungsschutz -> Monatlicher Erfolgs- & Stabilitäts-Report (gerettete Belege & Stunden) + Airbag-/Versicherungs-Framing gegen API-Updates.
+5. **Skalierungs-Kompass & Vollzeit-Sprung:**
+   - Stufe 1: 1.000 € MRR (Monat 3, stabiler Nebenberuf) -> Stufe 2: 2.000 € MRR (erste 520-€-Minijob-Assistenz) -> Stufe 3: 3.000 € MRR (15 Kunden, sicherer Sprung in Vollzeit) -> Stufe 4: 5.000 €+ MRR (lokaler Marktführer).
+- **Status Masterplan:** **ALLE 9 MARKETING-MODULE (01 bis 09) SIND ZU 100 % VOLLSTÄNDIG, DRUCKFERTIG UND RECHTSSICHER ERSTELLT!**
