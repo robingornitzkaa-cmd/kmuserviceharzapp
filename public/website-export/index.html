@@ -5,9 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>KMU Service Harz – Digitale Belegerfassung & Schnittstellen für Handwerk & Mittelstand</title>
   <meta name="description" content="Schluss mit dem Büro-Wochenende: Wir digitalisieren Ihre Belegerfassung und Buchhaltungsvorbereitung (DATEV, Lexoffice) für Handwerksbetriebe im Harz." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- 100 % DSGVO-konform: Keine externen Google Fonts! Lokaler System-Font-Stack + Schema.org JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "ProfessionalService",
+        "name": "KMU Service Harz",
+        "description": "Schluss mit dem Büro-Wochenende: Lautlose Belegerfassung, E-Rechnung (ZUGFeRD/XRechnung) und DATEV-Übergabe für Handwerksbetriebe im Harz.",
+        "telephone": "+49-151-12345678",
+        "email": "kontakt@kmu-service-harz.de",
+        "priceRange": "500€ - 2.000€",
+        "founder": { "@type": "Person", "name": "Robin Gornitzka" },
+        "address": {
+          "@type": "PostalAddress",
+          "postalCode": "38685",
+          "addressLocality": "Langelsheim",
+          "addressRegion": "Niedersachsen",
+          "addressCountry": "DE"
+        },
+        "areaServed": ["Langelsheim", "Goslar", "Bad Harzburg", "Seesen", "Wernigerode", "Halberstadt", "Osterode am Harz"]
+      }
+    ]
+  }
+  </script>
   <style>
     :root {
       --primary: #064e3b;
@@ -510,14 +532,14 @@ Wir sprechen kein IT-Chinesisch, verlangen keine unberechenbaren Stundenhonorare
             <span class="price-amount">500 €</span>
             <span class="price-suff">Festpreis (zzgl. MwSt.)</span>
           </div>
-          <div class="funding-tag">100 % risikofreie Analyse</div>
+          <div class="funding-tag">🛡️ Doppel-Garantie: 100 % Anrechnung + 10-Std.-Garantie</div>
           <ul class="pricing-features">
-            <li>90 Min. 1:1-Prozessanalyse vor Ort oder per Video</li>
-            <li>Schriftlicher ROI-Fahrplan mit konkreten Zahlen</li>
-            <li>Aufdeckung der 3 größten Zeitfresser</li>
-            <li>Sofort umsetzbare Quick-Win-Empfehlungen</li>
+            <li>90 Min. 1:1-Prozessanalyse vor Ort im Harz oder per Video</li>
+            <li>Schriftlicher ROI-Fahrplan mit den 3 größten Zeitfressern</li>
+            <li>Garantie 1: 100 % Anrechnung (500 €) aufs Setup binnen 30 Tagen</li>
+            <li>Garantie 2: Mind. 10 Std./Mo. Ersparnis schwarz auf weiß – sonst 0 €</li>
           </ul>
-          <a href="#contact" class="btn-pricing">Audit anfragen</a>
+          <a href="#contact" class="btn-pricing">Audit risikofrei anfragen</a>
         </div>
 
         <!-- Tier 2 -->
@@ -554,7 +576,7 @@ Wir sprechen kein IT-Chinesisch, verlangen keine unberechenbaren Stundenhonorare
           <div class="funding-tag">Monatlich kündbar</div>
           <ul class="pricing-features">
             <li>Laufendes Monitoring aller Schnittstellen</li>
-            <li>Sofortige Fehlerbehebung bei API-Updates</li>
+            <li>Sofortige Fehlerbehebung bei System-Updates</li>
             <li>Inkl. 1 Stunde monatliches Anpassungskontingent</li>
             <li>Persönlicher Ansprechpartner für Fragen & Notfälle</li>
           </ul>
@@ -597,7 +619,7 @@ Wir sprechen kein IT-Chinesisch, verlangen keine unberechenbaren Stundenhonorare
           </div>
         </div>
         <div class="roi-results-box">
-          <span style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted);">IHRE GESCHÄTZTE ENTLASSUNG:</span>
+          <span style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted);">IHRE GESCHÄTZTE ENTLASTUNG:</span>
           <div class="sundays-big" id="res-sundays">ca. 24 freie Wochenenden</div>
           <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">pro Jahr ohne Beleg-Chaos & Büroarbeit am Wochenende.</p>
           <div style="font-size: 0.95rem; font-weight: 700; margin-bottom: 1.2rem;">
@@ -605,6 +627,25 @@ Wir sprechen kein IT-Chinesisch, verlangen keine unberechenbaren Stundenhonorare
           </div>
           <a href="#contact" class="btn-primary-glow" style="text-align:center; justify-content:center;">Ergebnis im Erstgespräch besprechen →</a>
         </div>
+      </div>
+
+      <!-- VALUE-FIRST E-MAIL-GATE (LEAD MAGNET: 5-MINUTEN BÜRO-STRESS-TEST PDF) -->
+      <div id="lead-magnet" style="max-width: 950px; margin: 2rem auto 0; background: var(--bg-card); border: 2px solid var(--primary); border-radius: 18px; padding: 2rem; box-shadow: var(--card-shadow);">
+        <span class="sec-badge">KOSTENLOSER PRAXIS-CHECK (PDF PER E-MAIL)</span>
+        <h3 style="font-size: 1.45rem; font-weight: 800; margin: 0.4rem 0 0.6rem;">Der 5-Minuten Büro-Stress-Test & E-Rechnungs-Check für Harzer Betriebe</h3>
+        <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 1.2rem;">Noch nicht bereit für ein Gespräch? Prüfen Sie in 5 Minuten mit unserer 10-Punkte-Checkliste, wo Ihr Betrieb unbemerkt Stunden verliert und ob Sie die E-Rechnungspflicht (EN 16931 / ZUGFeRD) rechtssicher erfüllen.</p>
+        <form action="https://formsubmit.co/kontakt@kmu-service-harz.de" method="POST" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.85rem; align-items: center;">
+          <input type="hidden" name="_subject" value="PDF-Lead-Magnet angefordert: 5-Minuten Büro-Stress-Test" />
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="hidden" name="lead_source" class="js-lead-source" value="direkt" />
+          <input type="hidden" name="calculated_roi" id="lead-roi-summary" value="ca. 24 freie Wochenenden (~16 Std./Mo.)" />
+          <input type="email" name="email" required placeholder="Ihre E-Mail-Adresse für den PDF-Versand *" class="form-input" />
+          <input type="text" name="company" placeholder="Optional: Betriebsname / Gewerk" class="form-input" />
+          <button type="submit" class="btn-primary-glow" style="justify-content: center; width: 100%;">
+            📄 PDF-Checkliste per E-Mail anfordern →
+          </button>
+        </form>
+        <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.75rem;">🔒 100 % kostenfrei & DSGVO-konform. Ihre oben berechnete Zeitersparnis wird automatisch in die Auswertung übernommen.</p>
       </div>
     </div>
   </section>
@@ -664,6 +705,7 @@ Wir sprechen kein IT-Chinesisch, verlangen keine unberechenbaren Stundenhonorare
             <input type="hidden" name="_subject" value="Neue Anfrage via KMU Service Harz Website" />
             <input type="hidden" name="_captcha" value="false" />
             <input type="hidden" name="_template" value="table" />
+            <input type="hidden" name="lead_source" class="js-lead-source" value="direkt" />
 
             <div class="form-group">
               <label>Ihr Name & Vorname *</label>
@@ -711,9 +753,9 @@ Wir sprechen kein IT-Chinesisch, verlangen keine unberechenbaren Stundenhonorare
           <h3 style="font-size: 1.3rem; margin: 0.5rem 0 1rem;">KMU Service Harz</h3>
           <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 1.5rem;">
             Ansprechpartner: <strong>Robin Gornitzka</strong><br>
-            Standort: <strong>Bad Harzburg / Landkreis Goslar</strong><br>
+            Standort: <strong>38685 Langelsheim (Landkreis Goslar & Harz)</strong><br>
             E-Mail: <strong>kontakt@kmu-service-harz.de</strong><br>
-            Telefon: <strong>+49 (0) 5322 / 123 456</strong>
+            Telefon: <strong>+49 (0) 151 / 123 456 78</strong>
           </p>
           <div style="background: var(--bg-subtle); border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem; font-size: 0.88rem;">
             <strong>🤝 Das Harzer Handschlag-Versprechen:</strong><br>
@@ -730,7 +772,7 @@ Wir sprechen kein IT-Chinesisch, verlangen keine unberechenbaren Stundenhonorare
       <div>
         <strong>KMU Service Harz</strong>
         <p style="font-size: 0.82rem; color: var(--text-muted);">Digitale Belegerfassung & Schnittstellen für Handwerk & KMU</p>
-        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.4rem;">© 2026 Robin Gornitzka. Bad Harzburg / Landkreis Goslar.</p>
+        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.4rem;">© 2026 Robin Gornitzka. 38685 Langelsheim (Landkreis Goslar & Harz).</p>
       </div>
       <div style="display: flex; gap: 1rem; font-size: 0.85rem; color: var(--text-muted);">
         <a href="#services">Preise</a>
@@ -742,6 +784,14 @@ Wir sprechen kein IT-Chinesisch, verlangen keine unberechenbaren Stundenhonorare
   </footer>
 
   <script>
+    (function initCookielessRefTracking() {
+      try {
+        var params = new URLSearchParams(window.location.search);
+        var ref = params.get('ref') || params.get('utm_source') || 'direkt';
+        document.querySelectorAll('.js-lead-source').forEach(function(el) { el.value = ref; });
+      } catch (e) {}
+    })();
+
     function setTheme(preset) {
       document.body.className = document.body.className.replace(/preset-\w+/g, '') + ' preset-' + preset;
       document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
@@ -780,6 +830,10 @@ Wir sprechen kein IT-Chinesisch, verlangen keine unberechenbaren Stundenhonorare
       document.getElementById('res-sundays').innerText = 'ca. ' + savedSundays + ' freie Wochenenden';
       document.getElementById('res-hours').innerText = '~' + savedHours + ' Std.';
       document.getElementById('res-euros').innerText = '~' + savedEuros.toLocaleString('de-DE') + ' € / Jahr';
+      const summaryEl = document.getElementById('lead-roi-summary');
+      if (summaryEl) {
+        summaryEl.value = 'ca. ' + savedSundays + ' freie Wochenenden (~' + savedHours + ' Std./Mo., ~' + savedEuros.toLocaleString('de-DE') + ' €/Jahr)';
+      }
     }
   </script>
 </body>

@@ -61,10 +61,10 @@ describe('Requirement 2: 500 € Büro-Stress-Test & ROI-Report PDF Suite', () =
     });
 
     it('unterstützt die Fördermittel-Matrix für alle Harz-Regionen (NDS, LSA, TH, BUND, NONE)', () => {
-      // 1. Niedersachsen (NBank)
+      // 1. Niedersachsen (NBank / Amortisation)
       const nds = calculateAuditMetrics({ setupFee: 2000, region: 'NDS' });
       expect(nds.subsidyRate).toBe(0.50);
-      expect(nds.subsidyProgramName).toContain('Digitalbonus Niedersachsen');
+      expect(nds.subsidyProgramName).toContain('Niedersachsen: 8-Wochen-Eigenamortisation');
 
       // 2. Sachsen-Anhalt (IB LSA)
       const lsa = calculateAuditMetrics({ setupFee: 2000, region: 'LSA' });
@@ -76,10 +76,10 @@ describe('Requirement 2: 500 € Büro-Stress-Test & ROI-Report PDF Suite', () =
       expect(th.subsidyRate).toBe(0.50);
       expect(th.subsidyProgramName).toContain('Thüringen');
 
-      // 4. Bund (go-digital)
+      // 4. Bund (INQA / BAFA)
       const bund = calculateAuditMetrics({ setupFee: 2000, region: 'BUND' });
       expect(bund.subsidyRate).toBe(0.50);
-      expect(bund.subsidyProgramName).toContain('go-digital');
+      expect(bund.subsidyProgramName).toContain('INQA-Coaching / BAFA');
 
       // 5. Keine Förderung (NONE)
       const none = calculateAuditMetrics({ setupFee: 2000, region: 'NONE' });
@@ -186,8 +186,8 @@ describe('Requirement 2: 500 € Büro-Stress-Test & ROI-Report PDF Suite', () =
       const mockContacts = [
         {
           id: 'c_test_1',
-          name: 'Christian Gornitzka',
-          company: 'GoClean Harz',
+          name: 'Klaus Mustermann',
+          company: 'Mustermann Haustechnik Harz',
           notes: '<!--ONBOARDING_DATA:{"playbook":"audit500","answers":{"q1":"Zettelwirtschaft"},"priorities":{"q1":"high"},"calc":{"hours":10,"rate":60,"ratio":90}}-->'
         }
       ];

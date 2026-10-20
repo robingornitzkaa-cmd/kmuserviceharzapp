@@ -1,5 +1,18 @@
 # TODO - Founder OS
 
+- [ ] **🚀 [9-Module B2B Marketing-Masterplan] Iterativer Co-Pilot-Ausbau (`marketing_masterplan/`):**
+  - [x] `00_MARKETING_LOGBUCH_UND_STATUS.md` (Workspace-Scan, Konflikt-Report & Live-Tracker)
+  - [x] **Modul 1:** `01_Kaufpsychologie_Positionierung_und_Messaging.md` (Entscheider-Dreieck, Wording-Bible „Büro-Wochenende“, Doppelte Sicherheits-Garantie, 10 Einwände)
+  - [x] **Modul 2:** `02_Website_CRO_LeadMagneten_und_Local_SEO.md` + Website-Code-Upgrade (DSGVO-Fix, Value-First E-Mail-Gate, PDF-Stress-Test, Schema.org JSON-LD, `?ref=`-Tracking)
+  - [x] **Modul 3:** `03_PreLaunch_Validation_und_Gruender_Bonus_Playbook.md` + Update `customer_discovery_validierungs_leitfaden.md` (Gründer-Bonus, 3 Outreach-Kanäle, Bürokraft-Türöffner, 7 Diagnosefragen, Praxis-Partner-Vorzugsticket)
+  - [x] **Modul 4:** `04_Outbound_Kaltakquise_und_Lead_Engine.md` + Bereinigung `Direct_Mail_1_Seiter_518...` & `Telefon_und_Kaltakquise_Leitfaden...` (11-Spalten-Pipeline, 2-Blatt Handwerker-Brief + Prozess-Röntgenbild, 3-Stufen-Kadenz)
+  - [x] **Modul 5:** `05_Multiplikatoren_und_Steuerberater_Infiltration.md` + Bereinigung `Steuerberater_Kanzlei_Pitch_Deck...` & `Mandanten_Flyer_Vorlage...` (§ 57 StBerG-Win-Win, Fibu-Leiterin-Infiltration, 250-€-GoBD-Mandantenbonus, Innungs-Vortrag & Großhandel/Banken)
+  - [x] **Modul 6:** `06_Social_Media_und_Faceless_Content_Maschine.md` + Bereinigung `INITIAL_CONTENT` & `INITIAL_PROMPTS` in `src/constants/initialData.js` (95 % Faceless Werkbank-POV / 5 % Regional-Anker, 1-zu-4 Recycling-Maschine, 16 Skripte & Posts, WhatsApp-Status-Konverter)
+  - [x] **Modul 7:** `07_Werbung_Paid_Ads_Offline_Guerilla_und_PR.md` + Bereinigung `B2B Vertriebsplan KMU Harz.md` & `B2B Automatisierungs Agentur Preistreppe.md` (A6 Bulli-Spickzettel-Karte, Hof-Briefkasten-Spaziergang, Lokalpresse-Mitteilung, 5 Faceless Ad-Creatives, 3-€/Tag-Retargeting, Hyper-Local Ads & Google Search Ads mit 45 Negativ-Keywords)
+  - [x] **Modul 8:** `08_Sales_Assets_Sandbox_und_Rechtliche_Fallstricke.md` + Bereinigung `pdfReportGenerator.js` & `initialData.js` (Mustermann Haustechnik Harz Live-Demo Sandbox, Tisch-One-Pager, 500-€-Audit-Ergebnisblatt, Altgesellen-Anti-Sabotage-Paket, § 7 UWG Ampel, Fördermittel-Falle gelöst & < 55 €/Monat Tech-Stack)
+  - [ ] **Modul 9:** `09_90_Tage_Roadmap_KPI_Dashboard_und_Risiko_Management.md` *(als Nächstes in Phase A)*
+  - [ ] **Modul 9:** `09_90_Tage_Roadmap_KPI_Dashboard_und_Risiko_Management.md`
+
 - [x] **🔥 [Coaching-Rollout Dennis Kauss] Himmel-Hölle-Prinzip, 5 FAB-Statements & 3 Website-Versionen (`WebsiteView.jsx`, `websiteContent.js`, `CoachingLivePortal.jsx`, `CustomerDiscoveryView.jsx`, `DOCS/`):**
   - *3-Versionen-Architektur ohne Datenverlust:* **Version 1 (Original)** bleibt zu 100 % unverändert; **Version 2 (Beleg-Fokus + Himmel/Hölle & FAB)** kombiniert den spitzen Beleg-Einstieg mit den 4 Himmel-Hölle-Ketten, den 5 FAB-Statements und Ausbau-Modulen; **Version 3 (3-Säulen Coaching-Edition)** präsentiert alle 3 Säulen (Proaktive Kundenkommunikation, Revisionssichere Verwaltung, DATEV-Konvertierung & schneller Jahresabschluss) gleichberechtigt.
   - *Interaktiver Wortlaut-Umschalter:* In der Himmel-Hölle-Sektion kann mit 1 Klick zwischen *🎯 Handwerker-Klartext (Website-Fassung)* und *📋 Original Coaching-Kausalketten (Whiteboard)* umgeschaltet werden.

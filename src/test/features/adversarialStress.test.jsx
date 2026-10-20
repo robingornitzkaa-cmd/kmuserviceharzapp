@@ -578,16 +578,16 @@ describe('Tier 5 Adversarial Stress & Hardening Test Suite (Challenger 1)', () =
   // =========================================================================
   describe('8. PDF Generator: Subsidy Regions & Playbook Combinations', () => {
     const testCases = [
-      { region: 'NDS', expectedRate: 0.50, expectedProgram: 'Digitalbonus Niedersachsen' },
+      { region: 'NDS', expectedRate: 0.50, expectedProgram: 'Niedersachsen' },
       { region: 'LSA', expectedRate: 0.50, expectedProgram: 'Sachsen-Anhalt' },
       { region: 'TH', expectedRate: 0.50, expectedProgram: 'Thüringen' },
-      { region: 'BUND', expectedRate: 0.50, expectedProgram: 'go-digital' },
-      { region: 'NONE', expectedRate: 0.0, expectedProgram: 'Keine staatliche Förderung' },
-      { region: 'nds', expectedRate: 0.50, expectedProgram: 'Digitalbonus Niedersachsen' }, // lowercase
+      { region: 'BUND', expectedRate: 0.50, expectedProgram: 'INQA' },
+      { region: 'NONE', expectedRate: 0.0, expectedProgram: 'ohne Förderbürokratie' },
+      { region: 'nds', expectedRate: 0.50, expectedProgram: 'Niedersachsen' }, // lowercase
       { region: 'lsa', expectedRate: 0.50, expectedProgram: 'Sachsen-Anhalt' },
       { region: 'th', expectedRate: 0.50, expectedProgram: 'Thüringen' },
-      { region: 'bund', expectedRate: 0.50, expectedProgram: 'go-digital' },
-      { region: 'none', expectedRate: 0.0, expectedProgram: 'Keine staatliche Förderung' },
+      { region: 'bund', expectedRate: 0.50, expectedProgram: 'INQA' },
+      { region: 'none', expectedRate: 0.0, expectedProgram: 'ohne Förderbürokratie' },
     ];
 
     testCases.forEach(({ region, expectedRate, expectedProgram }) => {

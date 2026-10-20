@@ -39,7 +39,7 @@ export const INITIAL_FOCUS_TASKS = [
 ];
 
 export const INITIAL_INBOX = [
-  { id: 'i1', text: 'Notiz: Fördermittel-Antrag für Digitalbonus Niedersachsen hat neue Richtlinien ab Juli. Unbedingt prüfen!', date: '2026-06-24' },
+  { id: 'i1', text: 'Notiz: Für Betriebe im Landkreis Harz (Sachsen-Anhalt) Richtlinien von Digital Innovation Sachsen-Anhalt (50% ab 6.000 €) im Blick behalten!', date: '2026-06-24' },
   { id: 'i2', text: 'Idee: Einen automatischen WhatsApp-Bot für Handwerker als Einstiegs-Produkt anbieten (z.B. für Terminbuchungen).', date: '2026-06-23' },
   { id: 'i3', text: 'Notiz: Steuerberater Klinke in Wernigerode kontaktieren. Eventuell Kooperation möglich.', date: '2026-06-22' }
 ];
@@ -77,7 +77,7 @@ export const INITIAL_CONTACTS = [
     system: 'Lexoffice', 
     stage: 'angebot', 
     lastContact: '2026-06-20',
-    notes: 'Angebot über WhatsApp-Schnittstelle zur Stundenzettel-Einreichung gesendet. Fördermittel Niedersachsen (Digitalbonus) eingeplant.',
+    notes: 'Angebot über WhatsApp-Schnittstelle zur Stundenzettel-Einreichung gesendet. 8-Wochen-Amortisation und Doppelte Sicherheits-Garantie vereinbart.',
     links: [
       { id: 'l2', title: 'Angebotsentwurf PDF', url: 'https://docs.google.com' }
     ],
@@ -109,10 +109,10 @@ export const INITIAL_LEADS = [
   {
     id: 'l_demo_1',
     company: 'Harzer Holzwerke GmbH',
-    name: 'Christian Gornitzka',
+    name: 'Andreas Hartmann',
     industry: 'Handwerk & Industrie',
     phone: '+49 176 1234567',
-    email: 'c.gornitzka@harz-holz.de',
+    email: 'a.hartmann@harz-holz.de',
     notes: 'Potenzieller Kunde für automatisierte Lieferscheinerfassung und DATEV-Export. Großer Hebel bei digitaler Rechnungsverarbeitung.',
     status: 'nicht kontaktiert',
     urgency: 3,
@@ -190,18 +190,18 @@ export const INITIAL_PROJECTS = [
 ];
 
 export const INITIAL_PROMPTS = [
-  { id: 'pr1', title: 'Kaltakquise E-Mail (Handwerk)', category: 'Sales', text: 'Du bist ein erfahrener Copywriter. Schreibe eine kurze, pragmatische E-Mail an einen Handwerksmeister (Dachdecker/Elektro), der unter Zettelwirtschaft leidet. Keine Marketing-Floskeln, sondern Fokus auf den Kern: Wie er durch Automatisierung pro Woche 5 Stunden Bürozeit spart und das Bürosonntags-Problem löst. Nenne den Digitalbonus als Hebel.' },
+  { id: 'pr1', title: 'Kaltakquise E-Mail (Handwerk)', category: 'Sales', text: 'Du bist ein erfahrener Copywriter. Schreibe eine kurze, pragmatische E-Mail an einen Handwerksmeister (Dachdecker/SHK/Elektro), der unter Zettelwirtschaft leidet. Keine Marketing-Floskeln, sondern Fokus auf den Kern: Wie er durch unseren 8-Sekunden-Belegweg pro Monat ~16 Stunden Bürozeit spart und das Büro-Wochenende abschafft. Nenne die 8-Wochen-Amortisation und unsere Doppelte Sicherheits-Garantie beim 500-€-Audit (mind. 10 Std./Monat Ersparnis oder 0 €) als Hebel.' },
   { id: 'pr2', title: 'DATEV Beleg-Extraktor (JSON)', category: 'Code', text: 'Analysiere den folgenden Beleg-Text und extrahiere die Daten in eine saubere JSON-Struktur mit folgenden Feldern: invoice_number, date, net_amount, tax_rate, gross_amount, vendor, iban. Wenn ein Feld nicht eindeutig ist, setze null.' },
-  { id: 'pr3', title: 'Social-Media Hook-Generator', category: 'Marketing', text: 'Generiere 5 aufmerksamkeitsstarke Hooks für LinkedIn-Posts, die sich an Solo-Gründer und KMUs richten. Das Thema des Posts lautet: [THEMA]. Der Stil soll direkt, ehrlich und ohne Bullshit sein.' },
+  { id: 'pr3', title: 'Social-Media Hook-Generator (Faceless POV)', category: 'Marketing', text: 'Generiere 5 aufmerksamkeitsstarke Hooks für Faceless-Reels, Facebook-Gruppen und LinkedIn-Posts, die sich an Handwerksmeister, Bürokräfte und Steuerberater im Harz richten. Das Thema des Posts lautet: [THEMA]. Der Stil soll bodenständig, ehrlich und frei von IT-Fachchinesisch sein.' },
   { id: 'pr4', title: 'Himmel-Hölle-Kontrast Generator (Coaching Kauss)', category: 'Sales', text: 'Erstelle für das Handwerksgewerk [GEWERK, z.B. SHK / Dachdecker] eine konkrete Gegenüberstellung nach dem Himmel-Hölle-Prinzip (4 Ketten: 1. Abend-Bürostress vs. Freier Kopf, 2. Anruf-Chaos vs. Proaktive Kunden-Info, 3. Zettel-Chaos vs. Revisionssicherheit, 4. Hohe Bürokosten vs. Schneller Jahresabschluss). Nutze bodenständige Handwerker-Sprache ohne Berater-Floskeln.' },
   { id: 'pr5', title: 'FAB-Statement Einwandbehandlung (Blau/Lila/Grün)', category: 'Sales', text: 'Beantworte den Handwerker-Einwand "[EINWAND, z.B. Meine Monteure nutzen keine neuen Apps]" exakt nach der 3-stufigen FAB-Formel aus dem Coaching: 1. Besonderes Produkt-Merkmal (Blau: System-Brücken / Standard-Setup / Handwerks-Fokus / GoBD / DATEV), 2. Vorteil Produkt (Lila: Keine Schulungen / Schnelle Umsetzung / Kein Fachchinesisch), 3. Vorteil Kunde (Grün: Alte Systeme bleiben / Vertrauen ab Minute 1 / Kostenersparnis & schneller Jahresabschluss).' }
 ];
 
 export const INITIAL_CONTENT = [
-  { id: 'co1', title: 'Die E-Rechnungspflicht 2025: Was Handwerker jetzt tun müssen', date: '2026-06-28', status: 'draft' },
-  { id: 'co2', title: 'Case Study: Wie GoClean Harz 12 Stunden Zettelwirtschaft im Monat eliminierte', date: '2026-07-02', status: 'idea' },
-  { id: 'co3', title: 'Warum IT-Systemhäuser deine Prozessprobleme im Büro nicht lösen', date: '2026-06-25', status: 'ready' },
-  { id: 'co4', title: 'Himmel-Hölle im Handwerksbüro: Warum 80% der Meister abends noch tippen', date: '2026-10-20', status: 'ready' }
+  { id: 'co1', title: 'Die E-Rechnungspflicht 2026/2027: Warum eine PDF per Mail im Handwerk nicht mehr reicht', date: '2026-10-20', status: 'ready' },
+  { id: 'co2', title: 'Live-Sandbox Mustermann Haustechnik Harz: Der 8-Sekunden-Belegweg vom Montage-Bulli nach DATEV', date: '2026-10-22', status: 'ready' },
+  { id: 'co3', title: 'Warum IT-Systemhäuser deine Prozessprobleme im Büro nicht lösen (Harzer Handschlag-Prinzip)', date: '2026-10-25', status: 'ready' },
+  { id: 'co4', title: 'Himmel-Hölle im Handwerksbüro: Warum 80% der Meister am Wochenende noch Quittungen sortieren', date: '2026-10-27', status: 'ready' }
 ];
 
 export const INITIAL_DOCS = [
@@ -290,7 +290,7 @@ Wir agieren als **externe IT-Werkbank und digitaler Vor-Ort-Hausmeister**. Wir f
 ### Slide 1: Titelblatt
 - **Headline:** Vom Pendelordner zur automatischen DATEV-Übergabe
 - **Subline:** Wie Ihre Steuerkanzlei 10+ Stunden monatlich pro Handwerker-Mandant gewinnt – ohne IT-Support leisten zu müssen.
-- **Presenter:** KMU Service Harz (Christian Gornitzka, Goslar)
+- **Presenter:** KMU Service Harz (Robin Gornitzka, 38685 Langelsheim / Landkreis Goslar & Harz)
 
 ### Slide 2: Das Kanzlei-Dilemma in der Finanzbuchhaltung
 - **Status Quo:** 68 % der Kanzlei-Arbeitszeit bei gewerblichen Mandanten entfällt auf manuelle Belegbeschaffung und Datenkorrektur.
@@ -323,7 +323,7 @@ Ein zentrales Anliegen jeder Kanzlei ist die Wahrung der Buchungshoheit und die 
 ### Slide 6: Das Null-Kosten- & Null-Risiko-Modell für Ihre Kanzlei
 - **Für die Kanzlei:** 0,00 € Kosten, 0 Stunden Einrichtungsaufwand.
 - **Abrechnung:** KMU Service Harz rechnet direkt und transparent mit dem Handwerksbetrieb ab (Festpreis 2.000 € Standard-Setup oder 500 € Potenzial-Audit).
-- **Fördermittel-Hebel:** Wir nutzen staatliche Förderprogramme für den Mandanten (Digitalbonus Niedersachsen: bis zu 50 % Zuschuss; Digital Innovation Sachsen-Anhalt: bis zu 50 % Zuschuss; INQA-Coaching: bis zu 80 % Zuschuss).
+- **Fördermittel- & Amortisations-Hebel:** 8-Wochen-Eigenamortisation in Niedersachsen; Digital Innovation Sachsen-Anhalt (bis zu 50 % Zuschuss ab 6.000 €); INQA-Coaching (bis zu 80 % Zuschuss).
 - **Kanzlei-Bonus:** Ihre Fibu-Kosten pro Mandant sinken um bis zu 40 %, die Mandantenzufriedenheit steigt dramatisch.
 
 ### Slide 7: Der 3-Schritte Pilot-Prozess
@@ -423,9 +423,9 @@ In enger Abstimmung mit Ihrer Steuerkanzlei richtet **KMU Service Harz** eine la
 |                                                                                                    |
 |  Kostenfreies 90-Minuten Büro-Potenzial-Audit & ROI-Check für Mandanten unserer Kanzlei.          |
 |                                                                                                    |
-|  Gutscheincode: KANZLEI-HARZ-500                                                                   |
-|  Einlösbar bei: KMU Service Harz | Christian Gornitzka                                            |
-|  Telefon: 05321 / 739 820 | Web: https://kmuserviceharz.de/stresstest                             |
+|  Gutscheincode: KANZLEI-HARZ-GOBD                                                                  |
+|  Einlösbar bei: KMU Service Harz | Robin Gornitzka                                                |
+|  Telefon: +49 (0) 151 / 123 456 78 | Web: https://kmu-service-harz.de/stresstest                  |
 +----------------------------------------------------------------------------------------------------+
 \`\`\`
 
@@ -433,10 +433,10 @@ In enger Abstimmung mit Ihrer Steuerkanzlei richtet **KMU Service Harz** eine la
 
 ### Jetzt Büro-Stress-Test in 2 Minuten online starten (QR-Code):
 
-👉 **https://kmuserviceharz.de/stresstest?ref=kanzlei**
+👉 **https://kmu-service-harz.de/stresstest?ref=kanzlei**
 
-**KMU Service Harz** | Christian Gornitzka  
-Marktstraße 12, 38640 Goslar | Tel: 05321 / 739 820 | info@kmuserviceharz.de  
+**KMU Service Harz** | Robin Gornitzka  
+38685 Langelsheim (Landkreis Goslar & Harz) | Tel: +49 (0) 151 / 123 456 78 | kontakt@kmu-service-harz.de  
 *In Kooperation mit Ihrer Steuerberatungskanzlei*`
   },
   { 
@@ -453,16 +453,16 @@ Marktstraße 12, 38640 Goslar | Tel: 05321 / 739 820 | info@kmuserviceharz.de
 
 ---
 
-KMU Service Harz | Christian Gornitzka | Marktstraße 12, 38640 Goslar
+KMU Service Harz | Robin Gornitzka | 38685 Langelsheim (Landkreis Goslar & Harz)
 
 [Firma des Handwerksmeisters]  
 z. Hd. der Geschäftsleitung / Herrn Meister [Nachname]  
 [Straße & Hausnummer]  
 [PLZ & Ort im Harz]  
 
-**Goslar, den [Aktuelles Datum]**
+**Langelsheim, den [Aktuelles Datum]**
 
-### **Betreff: Schluss mit dem Büro-Sonntag: Warum 518 Handwerksmeister im Harz ihre Wochenenden nicht mehr am Schreibtisch verbringen müssen.**
+### **Betreff: Schluss mit dem Büro-Sonntag & Büro-Wochenende: Warum 518 Handwerksmeister im Harz ihre Wochenenden nicht mehr am Schreibtisch verbringen müssen.**
 
 Sehr geehrter Herr [Nachname],
 
@@ -482,8 +482,8 @@ Wir haben uns als regionaler Automatisierungspartner im Harz auf genau eine Aufg
    Ihre Mitarbeiter auf der Baustelle nutzen einfach WhatsApp oder die Handykamera. Quittung an der Kasse fotografieren – in 3 Sekunden fertig.
 2. **100 % E-Rechnungs- und GoBD-Sicherheit:**  
    Alle Eingangs- und Ausgangsbelege fließen revisionssicher und automatisch vorkontiert in das System Ihres Steuerberaters (z. B. DATEV / Lexware Office).
-3. **Bis zu 50 % staatlicher Zuschuss:**  
-   Über Förderprogramme wie den *Digitalbonus Niedersachsen* oder *Digital Innovation Sachsen-Anhalt* übernimmt der Staat bis zur Hälfte der gesamten Umsetzungskosten.
+3. **8-Wochen-Eigenamortisation & Fördermittel-Option:**  
+   Unser System bezahlt sich durch ~16 Stunden Büro-Ersparnis pro Monat in unter 8 Wochen von selbst. Im Landkreis Harz (Sachsen-Anhalt) aktivieren wir bei Großprojekten ab 6.000 € zudem bis zu 50 % Zuschuss über *Digital Innovation Sachsen-Anhalt* (oder bundesweit bis 80 % über *INQA-Coaching* – kein abgelaufener *Digitalbonus Niedersachsen*).
 
 ---
 
@@ -492,23 +492,23 @@ Wir haben uns als regionaler Automatisierungspartner im Harz auf genau eine Aufg
 Finden Sie in 2 Minuten heraus, wie viele Stunden und Euro Sie in Ihrem Betrieb monatlich einsparen können.
 
 Scannen Sie den untenstehenden QR-Code mit der Smartphone-Kamera oder öffnen Sie:  
-👉 **https://kmuserviceharz.de/stresstest?ref=meister518**
+👉 **https://kmu-service-harz.de/stresstest?ref=meister518**
 
 \`\`\`
 +---------------------------------------------------------------------------------+
-|    [ QR-CODE ZUM LIVE-BÜRO-STRESSTEST: https://kmuserviceharz.de/stresstest ]   |
+|    [ QR-CODE ZUM LIVE-BÜRO-STRESSTEST: https://kmu-service-harz.de/stresstest ] |
 |    Gutschein-Code für 500 € Audit-Befreiung: MEISTER-HARZ-2026                 |
 +---------------------------------------------------------------------------------+
 \`\`\`
 
 Beantworten Sie 5 kurze Fragen zu Ihren aktuellen Büroabläufen. Sie erhalten sofort Ihr individuelles **Prozess-Röntgenbild** und eine exakte Amortisationsrechnung.
 
-Mit handwerklichen Grüßen aus Goslar,
+Mit handwerklichen Grüßen aus Langelsheim,
 
-**Christian Gornitzka**  
+**Robin Gornitzka**  
 Gründer & Automatisierungs-Partner für das Harzer Handwerk  
-**KMU Service Harz** | Marktstraße 12, 38640 Goslar  
-Telefon: 05321 / 739 820 | E-Mail: info@kmuserviceharz.de | Web: https://kmuserviceharz.de`
+**KMU Service Harz** | 38685 Langelsheim (Landkreis Goslar & Harz)  
+Telefon: +49 (0) 151 / 123 456 78 | E-Mail: kontakt@kmu-service-harz.de | Web: https://kmu-service-harz.de`
   },
   { 
     id: 'd_telefonleitfaden', 
@@ -540,7 +540,7 @@ Handwerksmeister sind vielbeschäftigte Praktiker auf Baustellen oder im Kundend
 **Ziel:** Kein Abwimmeln („Schicken Sie mal eine Broschüre“), sondern Weiterleitung zum Meister oder Vereinbarung eines festen 2-Minuten Telefontermins.
 
 ### Der sympathische Kanzlei- & E-Rechnungs-Opener
-> *„Guten Tag Frau [Name / z.B. Meyer], mein Name ist [Ihr Name] von KMU Service Harz aus Goslar. Ich rufe ganz kurz an bezüglich der Belegübergabe an Ihre Steuerkanzlei und der neuen E-Rechnungspflicht. Ist Herr [Meister] gerade im Büro oder auf der Baustelle erreichbar?“*
+> *„Guten Tag Frau [Name / z.B. Meyer], mein Name ist [Ihr Name] von KMU Service Harz aus Langelsheim (Landkreis Goslar & Harz). Ich rufe ganz kurz an bezüglich der Belegübergabe an Ihre Steuerkanzlei und der neuen E-Rechnungspflicht. Ist Herr [Meister] gerade im Büro oder auf der Baustelle erreichbar?“*
 
 ### Einwandbehandlung im Vorzimmer
 
@@ -560,18 +560,18 @@ Handwerksmeister sind vielbeschäftigte Praktiker auf Baustellen oder im Kundend
 **Ziel:** In 45 Sekunden Interesse wecken und das 500 € Büro-Potenzial-Audit vor Ort oder per 2-Minuten Stresstest vereinbaren.
 
 ### Der Direkteinstieg
-> *„Moin Herr [Meister], [Ihr Name] von KMU Service Harz hier aus Goslar. Störe ich Sie gerade mitten auf der Baustelle oder haben Sie 45 Sekunden Zeit?“*
+> *„Moin Herr [Meister], [Ihr Name] von KMU Service Harz hier aus Langelsheim (Landkreis Goslar & Harz). Störe ich Sie gerade mitten auf der Baustelle oder haben Sie 45 Sekunden Zeit?“*
 
 ### Die 3 Schmerz-Hooks (Je nach Gesprächssituation wählen):
 
 #### Hook 1: Regulatorisch (E-Rechnungspflicht 2025/2026)
 > *„Herr [Meister], ab 2025/2026 müssen alle B2B-Rechnungen digital als XML (ZUGFeRD/XRechnung) empfangen und verarbeitet werden. Wir sorgen dafür, dass Ihr Betrieb das lautlos im Hintergrund erfüllt – ohne dass Sie für tausende Euro neue Software anschaffen oder Schulungen besuchen müssen.“*
 
-#### Hook 2: Zeitlich (Der Büro-Sonntag & Zettelwirtschaft)
+#### Hook 2: Zeitlich (Der Büro-Sonntag & das Büro-Wochenende)
 > *„Herr [Meister], ich rufe an, damit Sie am Sonntag nicht mehr am Schreibtisch sitzen und Materialzettel oder Tankquittungen sortieren müssen. Wir haben einen 2-Minuten Stresstest entwickelt, der Ihnen zeigt, wie Ihre Monteure Belege in 3 Sekunden per WhatsApp erfassen und Sie 4 Stunden pro Woche sparen.“*
 
-#### Hook 3: Finanziell (Schattenkosten & 50 % Förderzuschuss)
-> *„Wussten Sie, dass das Land Niedersachsen / Sachsen-Anhalt über den Digitalbonus bis zu 50 % der Kosten übernimmt, wenn Handwerksbetriebe ihre Belegablage automatisieren? Wir prüfen in 2 Minuten, wie viel Förderung für Ihren Betrieb bereitsteht.“*
+#### Hook 3: Wirtschaftlich (8-Wochen-Amortisation & Doppelte Sicherheits-Garantie)
+> *„Herr [Meister], unser System bezahlt sich durch rund 16 Stunden Büro-Ersparnis im Monat in unter 8 Wochen von selbst. Beim 500-€-Audit gilt unsere Doppelte Sicherheits-Garantie: Mindestens 10 Stunden monatlich schwarz auf weiß eingespart oder 0 € – und die 500 € werden bei Umsetzung zu 100 % angerechnet. (Im Landkreis Harz/Sachsen-Anhalt nutzen wir ab 6.000 € zudem bis zu 50 % Zuschuss über Digital Innovation Sachsen-Anhalt).“*
 
 ---
 

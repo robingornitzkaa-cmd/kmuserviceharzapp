@@ -130,18 +130,18 @@ export const WEBSITE_CONTENT_V1 = {
       tagline: "Niedrigschwelliger Einstieg zum Kennenlernen",
       price: "500 €",
       priceSuffix: "Festpreis (zzgl. MwSt.)",
-      fundingNote: "100 % risikofreie Analyse",
-      description: "90-minütige 1:1-Analyse Ihrer Betriebsabläufe vor Ort im Harz oder per Video.",
+      fundingNote: "🛡️ Doppel-Garantie: 100 % Anrechnung + 10-Std.-Garantie",
+      description: "90-minütige 1:1-Analyse Ihrer Betriebsabläufe vor Ort im Harz oder per Video – mit Doppelter Sicherheits-Garantie.",
       highlight: false,
       features: [
-        "90 Minuten persönliche 1:1-Prozessanalyse",
-        "Schriftlicher ROI-Fahrplan mit konkreten Zahlen",
-        "Aufdeckung der 3 größten Zeitfresser schwarz auf weiß",
-        "Genaue Berechnung Ihrer monatlichen Zeitersparnis",
-        "Sofort umsetzbare Quick-Win-Empfehlungen",
-        "Keine Folgeverpflichtung – ideal zum Start"
+        "90 Minuten persönliche 1:1-Prozessanalyse (vor Ort im Harz)",
+        "Schriftlicher ROI-Fahrplan mit den 3 größten Zeitfressern",
+        "Garantie 1: 100 % Anrechnung (500 €) bei Setup-Buchung binnen 30 Tagen",
+        "Garantie 2: Mind. 10 Std./Monat Zeitersparnis schwarz auf weiß – sonst 0 €",
+        "Sofort umsetzbare Quick-Win-Empfehlungen & Förder-Check",
+        "Keine Folgeverpflichtung – 100 % risikofreier Start"
       ],
-      ctaText: "Audit anfragen (500 €)",
+      ctaText: "Audit risikofrei anfragen (500 €)",
       targetTopic: "Stufe 1: Büro-Potenzial-Audit (500 €)"
     },
     {
@@ -190,14 +190,14 @@ export const WEBSITE_CONTENT_V1 = {
     }
   ],
   workflow: {
-    badge: "SO EINFACH FUNKTIONIERT'S",
+    badge: "LIVE-MUSTERBETRIEB STATT LEERER VERSPRECHUNGEN",
     title: "Der 3-Schritte-Workflow: Vom Beleg zur Kanzlei",
-    subtitle: "Wie Handwerker im Harz Quittungen und Rechnungen direkt von der Baustelle ohne Abtippen übertragen.",
-    targetAudience: "Handwerksbetriebe & KMU im Harz (1–20 Mitarbeiter)",
+    subtitle: "Wie Handwerker im Harz Quittungen und E-Rechnungen direkt von der Baustelle ohne Abtippen übertragen.",
+    targetAudience: "Live-Vorführ-Umgebung: „Mustermann Haustechnik Harz“ (1–20 Mitarbeiter)",
     challenge: "Knitterige Quittungen im Handschuhfach, verlorene Belege, mühsames Vorkontieren am Sonntagabend und zeitraubende Rückfragen der Steuerkanzlei.",
     solution: "Ein durchgängiger, automatischer Belegfluss: Foto vor Ort ➔ automatische Texterkennung & Zuordnung in Lexoffice ➔ revisionssichere DATEV-Bereitstellung.",
-    quote: "„Früher haben wir sonntags Quittungen sortiert und Belege abgetippt. Heute macht jeder Mitarbeiter direkt ein Foto vor Ort – fertig. Wir haben pro Woche über 6 Stunden gewonnen und den Kopf am Wochenende komplett frei.“",
-    quoteAuthor: "Erfolgreicher Handwerksbetrieb aus der Region Harz",
+    quote: "„In unserer Live-Vorführ-Umgebung ‚Mustermann Haustechnik Harz‘ zeigen wir Ihnen am echten System, wie ein abfotografierter Baumarkt-Beleg oder eine XML-E-Rechnung in exakt 8 Sekunden vorkontiert in Lexoffice und DATEV landet – ohne eine einzige Minute Büroarbeit am Wochenende.“",
+    quoteAuthor: "Live-Musterbetrieb-Sandbox „Mustermann Haustechnik Harz“ (1:1 Vorführung im Erstgespräch)",
     metrics: [
       { value: "6+ Std.", label: "Zeitersparnis pro Woche", sub: "Gewonnene Feierabende" },
       { value: "0", label: "Zettelstapel am Monatsende", sub: "100 % digitalisiert" },
@@ -254,6 +254,20 @@ export const WEBSITE_CONTENT_V1 = {
       receiptsPerWeek: 35,
       hourlyRate: 55
     }
+  },
+  leadMagnet: {
+    badge: "KOSTENLOSER PRAXIS-CHECK (PDF PER E-MAIL)",
+    title: "Der 5-Minuten Büro-Stress-Test & E-Rechnungs-Check für Harzer Betriebe",
+    subtitle: "Noch nicht bereit für ein Gespräch? Prüfen Sie in 5 Minuten mit unserer 10-Punkte-Checkliste, wo Ihr Betrieb unbemerkt Stunden verliert und ob Sie die E-Rechnungspflicht (EN 16931 / ZUGFeRD) rechtssicher erfüllen.",
+    bullets: [
+      "10-Punkte-Selbsttest-Scorecard mit Ampel-Auswertung für Ihren Betrieb",
+      "Klartext zur E-Rechnungspflicht (ZUGFeRD & XRechnung) ohne teure Systemhaus-Software",
+      "Vorher-Nachher-Röntgenbild: In 8 Sekunden vom Baustellen-Foto bis zur DATEV-Kanzlei"
+    ],
+    emailPlaceholder: "Ihre E-Mail-Adresse (z. B. info@ihr-handwerksbetrieb.de)",
+    companyPlaceholder: "Optional: Betriebsname / Gewerk",
+    ctaText: "Jetzt PDF-Stress-Test kostenlos per E-Mail anfordern",
+    privacyHint: "100 % kostenfrei & DSGVO-konform. Ihre persönliche Rechner-Auswertung wird direkt mitgesendet."
   },
   funding: {
     badge: "STAATLICHE ZUSCHÜSSE & FÖRDERUNG",
@@ -683,18 +697,18 @@ export const WEBSITE_CONTENT_V3 = {
       tagline: "Ihr klarer Fahrplan aus dem Büro-Chaos (vor Ort im Harz)",
       price: "500 €",
       priceSuffix: "Festpreis (zzgl. MwSt.)",
-      fundingNote: "100 % risikofrei – wird bei Umsetzung angerechnet",
-      description: "90-minütige 1:1-Analyse Ihrer Büro-, Kunden- und Belegprozesse direkt bei Ihnen im Betrieb.",
+      fundingNote: "🛡️ Doppel-Garantie: 100 % Anrechnung + 10-Std.-Garantie",
+      description: "90-minütige 1:1-Analyse Ihrer Büro-, Kunden- und Belegprozesse direkt bei Ihnen im Betrieb – mit Doppelter Sicherheits-Garantie.",
       highlight: false,
       features: [
         "90 Min. persönliche Bestandsaufnahme in klarer Handwerker-Sprache",
         "Aufdeckung Ihrer 3 größten Zeit- und Geldfresser (Kunden, Verwaltung, DATEV)",
-        "Exakte Berechnung Ihrer gewinnbaren Feierabende & Steuerberater-Ersparnis",
-        "Individueller Maßanzug-Fahrplan mit unserem standardisierten Baukastensystem",
+        "Garantie 1: 100 % Anrechnung (500 €) bei Setup-Buchung binnen 30 Tagen",
+        "Garantie 2: Mind. 10 Std./Monat Zeitersparnis schwarz auf weiß – sonst 0 €",
         "Prüfung Ihrer Förderfähigkeit (bis zu 50 % – 80 % Zuschuss)",
         "Keine Folgeverpflichtung – volle Transparenz ab Minute 1"
       ],
-      ctaText: "360° Audit anfragen (500 €)",
+      ctaText: "360° Audit risikofrei anfragen (500 €)",
       targetTopic: "Stufe 1: 360° Prozess- & Büro-Audit (500 €)"
     },
     {

@@ -60,22 +60,22 @@ export function calculateAuditMetrics(input = {}) {
   const monthlySavings = Math.round(monthlyShadowCost * automationEfficiency);
   const yearlySavings = Math.round(yearlyShadowCost * automationEfficiency);
 
-  // 3. Fördermittel-Berechnung
-  let subsidyRate = 0.50; // Standard: 50% Zuschuss
-  let subsidyProgramName = 'Digitalbonus Niedersachsen (NBank 50% Zuschuss)';
+  // 3. Fördermittel- & Amortisations-Berechnung (Rechtssicher ohne abgelaufenen Digitalbonus NI/TH oder go-digital)
+  let subsidyRate = 0.50; // Kalkulatorischer Förder-/Anrechnungshebel
+  let subsidyProgramName = 'Niedersachsen: 8-Wochen-Eigenamortisation & INQA/BAFA-Option (bis 50–80%)';
 
   if (region === 'LSA') {
     subsidyRate = 0.50;
-    subsidyProgramName = 'Digital Innovation / Creativity Sachsen-Anhalt (IB LSA 50% Zuschuss)';
+    subsidyProgramName = 'Digital Innovation Sachsen-Anhalt (IB LSA 50% Zuschuss ab 6.000 €)';
   } else if (region === 'TH') {
     subsidyRate = 0.50;
-    subsidyProgramName = 'Digitalbonus Thüringen (TAB 50% Zuschuss)';
+    subsidyProgramName = 'Thüringen: Eigenamortisation & INQA/BAFA-Förderoption';
   } else if (region === 'BUND') {
     subsidyRate = 0.50;
-    subsidyProgramName = 'go-digital Bundesförderung (BMWE 50% Zuschuss)';
+    subsidyProgramName = 'INQA-Coaching / BAFA Bundesförderung (50–80% Zuschuss)';
   } else if (region === 'NONE') {
     subsidyRate = 0.0;
-    subsidyProgramName = 'Keine staatliche Förderung gewählt (0%)';
+    subsidyProgramName = 'Direkt-Start ohne Förderbürokratie (Amortisation in ~8 Wochen)';
   }
 
   const subsidyAmount = Math.round(setupFee * subsidyRate);
@@ -191,7 +191,7 @@ export async function generateStressTestPDF(auditData = {}, options = { saveToFi
     doc.setFontSize(8.5);
     doc.setTextColor(226, 232, 240);
     doc.text('B2B Prozess-Befreiung & Digitalisierung für das Harzer Handwerk', marginX, 18);
-    doc.text('Inh. Robin Gornitzka • Am Harz 1 • info@kmuserviceharz.de', marginX, 23);
+    doc.text('Inh. Robin Gornitzka • 38685 Langelsheim (Landkreis Goslar & Harz) • kontakt@kmu-service-harz.de', marginX, 23);
 
     // Meta Badge rechts oben
     doc.setFont('helvetica', 'bold');
@@ -213,7 +213,7 @@ export async function generateStressTestPDF(auditData = {}, options = { saveToFi
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7.5);
     doc.setTextColor(...COLOR_TEXT_MUTED);
-    doc.text('KMU Service Harz • www.kmuserviceharz.de • Tel: 03946 / 907 31 10 • 100% Anrechnung der Auditgebühr auf Stufe 2', marginX, footerY + 1);
+    doc.text('KMU Service Harz • www.kmu-service-harz.de • Tel: +49 (0) 151 / 123 456 78 • Doppelte Sicherheits-Garantie & 100% Anrechnung auf Stufe 2', marginX, footerY + 1);
     doc.text(`Seite ${pageNum} von ${totalPages}`, pageWidth - marginX, footerY + 1, { align: 'right' });
   };
 
@@ -617,13 +617,13 @@ export async function generateStressTestPDF(auditData = {}, options = { saveToFi
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(7.5);
   doc.setTextColor(...COLOR_PRIMARY);
-  doc.text('FÖRDERPROGRAMME IM HARZ & 100% ANRECHNUNGS-GARANTIE:', marginX + 3, curY + 4.5);
+  doc.text('AMORTISATION, FÖRDER-OPTIONEN & DOPPELTE SICHERHEITS-GARANTIE:', marginX + 3, curY + 4.5);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7);
   doc.setTextColor(...COLOR_TEXT_MAIN);
-  doc.text(`• ${metrics.subsidyProgramName} unterstützt die Digitalisierung mit bis zu 50% nicht rückzahlbarem Zuschuss.`, marginX + 3, curY + 8.5);
-  doc.text(`• 100% Audit-Garantie: Die 500 € Prüfgebühr wird bei Beauftragung von Stufe 2 vollständig angerechnet (Netto-Risiko = 0 €).`, marginX + 3, curY + 12.5);
+  doc.text(`• ${metrics.subsidyProgramName}.`, marginX + 3, curY + 8.5);
+  doc.text(`• Doppelte Garantie: Mind. 10 Std./Monat Ersparnis (sonst 0 €) + 100% Anrechnung der 500 € Prüfgebühr auf Stufe 2.`, marginX + 3, curY + 12.5);
 
   curY += 21;
 

@@ -38,18 +38,26 @@
 
 ### Phase 1: Der Telefon-Türöffner (Dauer: ca. 60–90 Sek.)
 
-**Ziel:** Gesprächserlaubnis sichern – ohne jede Abwehrhaltung.
+**Ziel:** Gesprächserlaubnis sichern – ohne jede Abwehrhaltung (sowohl bei der Bürokraft/Ehefrau als auch direkt beim Meister).
 
-> „Guten Tag Herr/Frau [Nachname], mein Name ist Robin Gornitzka aus [Heimatort/Harz].  
+#### 🅰️ Wenn die „Gute Seele im Büro“ (Ehefrau / Bürokraft) abnimmt:
+> „Schönen guten Tag! Hier ist Robin Gornitzka aus Langelsheim. Sagen Sie, bin ich bei Ihnen direkt in der Schaltzentrale im Büro von [Firmenname] gelandet?  
+> Perfekt, dann sind Sie wahrscheinlich sogar genau die Richtige – und direkt vorweg zur Beruhigung: **Ich verkaufe Ihnen heute absolut nichts, ich habe noch nicht mal mein Gewerbe offiziell gestartet.**  
+> 
+> Ich baue hier in Langelsheim gerade einen regionalen Service speziell für Handwerksbetriebe im Harz auf, um das leidige **Büro-Wochenende**, die Zettelwirtschaft aus den Transportern und das Abtippen für den Steuerberater abzuschaffen.  
+> Bevor ich an den Start gehe, spreche ich mit 50 Betrieben hier im Landkreis Goslar, um aus erster Hand zu hören, was im Handwerks-Büro wirklich nervt – und die Damen im Büro wissen das oft zehnmal besser als der Meister auf dem Gerüst. Hätten Sie jetzt kurz 4 Minuten Zeit für drei ehrliche Praxis-Fragen – oder wann passt es Ihnen und Ihrem Chef am besten für kurze 10 Minuten?“
+
+#### 🅱️ Wenn der Meister direkt ans Telefon geht:
+> „Guten Tag Herr/Frau [Nachname], mein Name ist Robin Gornitzka aus Langelsheim.  
 > Direkt vorab zur Beruhigung: **Das ist absolut kein Verkaufsanruf – ich habe noch nicht einmal ein Gewerbe angemeldet.**  
 > 
-> Ich bereite aktuell meine Existenzgründung hier im Landkreis Goslar vor. Mein Gründungscoach hat mir die klare Hausaufgabe gegeben, mit echten Praktikern aus den Betrieben zu sprechen, statt mir am Schreibtisch Theorien auszudenken.  
+> Ich bereite aktuell meine Existenzgründung (`KMU Service Harz`) hier im Landkreis Goslar vor. Mein Gründungscoach hat mir die klare Hausaufgabe gegeben, mit 50 echten Praktikern aus den Betrieben zu sprechen, statt mir am Schreibtisch Theorien auszudenken.  
 > 
 > Hätten Sie nächste Woche 15 Minuten Zeit für ein kurzes Feedback-Gespräch an einen regionalen Gründer?“
 
 * **Reaktion „Schießen Sie los, bin gerade im Auto“:** $\rightarrow$ Direkt zu Phase 2.
-* **Reaktion „Keine Zeit“:** $\rightarrow$ *„Verstehe ich vollkommen. Wann passt es für kurze 15 Minuten am besten – morgens um 07:15 Uhr vor der Baustelle oder freitags ab 13:00 Uhr?“*
-* **Reaktion „Worum geht’s denn?“:** $\rightarrow$ *„Um zeitraubende Reibungsverluste zwischen Baustelle, Kunden und Büro. Ich möchte verstehen, wo bei Betrieben Ihrer Größe am meisten Zeit verbrannt wird, um später nichts am Alltag vorbeizubauen.“*
+* **Reaktion „Keine Zeit“:** $\rightarrow$ *„Verstehe ich vollkommen. Wann passt es für kurze 10–15 Minuten am besten – morgens um 07:15 Uhr vor der Baustelle oder freitags ab 13:00 Uhr?“*
+* **Reaktion „Worum geht’s denn?“:** $\rightarrow$ *„Um zeitraubende Reibungsverluste zwischen Baustelle, Kunden und Büro (das klassische Büro-Wochenende). Ich möchte verstehen, wo bei Betrieben Ihrer Größe am meisten Zeit verbrannt wird, um später nichts am Alltag vorbeizubauen.“*
 
 ---
 
@@ -73,8 +81,8 @@ Starte immer mit der breiten Radar-Frage. Anhand der Antwort biegst du in den pa
 #### 🔀 Pfad A: Rechnungen, Buchhaltung & Steuerberater (Der Klassiker)
 *Nutzen, wenn der Inhaber über Papierberge, Belege oder den Steuerberater stöhnt.*
 * **Frage:** „Vom Moment, in dem die Baustelle fertig ist, bis das Geld auf dem Konto landet: Wie viele Tage vergehen da bei Ihnen im Schnitt, und wer tippt die Rechnungsdaten ab?“
-* **Vertiefung:** „Gibt es bei Ihnen den klassischen ‚Bürosonntag‘, an dem eigentlich Freizeit wäre, aber Belege und Ordner gewälzt werden müssen?“
-* **Gesetzesdruck:** „Haben Sie sich schon mit der B2B-E-Rechnungspflicht auseinandergesetzt, oder sorgt das eher für Stirnrunzeln?“
+* **Vertiefung:** „Gibt es bei Ihnen das klassische ‚Büro-Wochenende‘, an dem eigentlich Freizeit wäre, aber Belege, Quittungen und Ordner gewälzt werden müssen?“
+* **Gesetzesdruck:** „Haben Sie sich schon mit der B2B-E-Rechnungspflicht (ZUGFeRD / XRechnung) auseinandergesetzt, oder sorgt das eher für Stirnrunzeln?“
 
 ---
 
@@ -146,20 +154,21 @@ Wähle die Pitch-Variante, die exakt auf den stärksten Schmerz aus Phase 3 eing
 #### 2. Größte Befürchtung aufdecken
 * **Frage:** „Was wäre Ihre größte Skepsis gegenüber so einer Zusammenarbeit? Dass die Monteure streiken? Dass die Technik ausfällt? Oder dass es am Ende nur teuer wird und nichts bringt?“
 
-#### 3. Preistest für das Audit
-* **Frage:** „Angenommen, jemand analysiert diesen Engpass vor Ort im Detail und liefert Ihnen einen glasklaren Fahrplan inklusive Zeitersparnis: Wäre ein Betrieb wie Ihrer bereit, für so ein Diagnose-Audit **300 bis 500 Euro Festpreis** zu investieren – oder wo liegt im Handwerk die Schmerzgrenze?“
-* **Nachhaken:** „Ab welchem Betrag würden Sie sofort sagen: ‚Das ist mir ein reines Audit auf keinen Fall wert‘?“
+#### 3. Preistest für das Audit (inkl. Doppelter Sicherheits-Garantie)
+* **Frage:** „Wir wollen bewusst nicht nach offenen IT-Stundenzetteln abrechnen, sondern starten mit einem **90-minütigen Büro-Potenzial-Audit vor Ort für 500 Euro Festpreis** – mit einer **Doppelten Sicherheits-Garantie**: Erstens werden die 500 € bei Umsetzung zu 100 % auf das Setup angerechnet, und zweitens kostet das Audit **0 €**, wenn wir nicht schwarz auf weiß mindestens **10 Stunden Zeitersparnis pro Monat** aufdecken. Ist das aus Ihrer Sicht als Handwerksmeister ein fairer, handfester Deal?“
+* **Nachhaken:** „Was müsste in diesem Fahrplan unbedingt drinstehen, damit Sie sagen: ‚Das hat sich sofort gelohnt‘?“
 
 ---
 
-### Phase 6: Verbindlicher Abschluss (Dauer: ca. 1–2 Min.)
+### Phase 6: Verbindlicher Abschluss & „Praxis-Partner-Vorzugsticket“ (Dauer: ca. 1–2 Min.)
 
 1. **Dankbarkeit:**  
    > „Herr/Frau [Nachname], vielen Dank. Das waren genau die praxisnahen Einblicke, die mir unglaublich helfen.“
-2. **Follow-up vereinbaren (Warm-Lead sichern):**  
-   > „Wenn ich in ein paar Monaten mein Gewerbe angemeldet habe und die ersten Lösungen für die Region startklar sind: **Darf ich mich dann ganz kurz noch einmal bei Ihnen melden**, um Ihnen unverbindlich zu zeigen, was aus Ihrem Feedback geworden ist?“
+2. **Das „Praxis-Partner-Vorzugsticket“ (Waitlist-to-Audit-Brücke):**  
+   > „Weil Sie sich heute die 15 Minuten für mich genommen haben, möchte ich Ihnen gerne etwas zurückgeben: Wir vergeben zum offiziellen Start hier im Landkreis Goslar genau **10 ‚Praxis-Partner-Vorzugstickets‘** (100 % unverbindlich).  
+   > Ich schicke Ihnen heute schon kostenlos unseren **5-Minuten Büro-Stress-Test & E-Rechnungs-Check** zu und baue Ihren genannten Engpass in unserer Langelsheimer Test-Umgebung (*Mustermann Haustechnik Harz*) fertig nach. Sobald mein Startschuss gefallen ist, **darf ich Ihnen diesen fertigen Ablauf kurz für 15 Minuten an Ihrem Beispiel zeigen** – mit Vorrang auf unsere Doppelte Sicherheits-Garantie?“
 3. **Multiplikator:**  
-   > „Kennen Sie einen befreundeten Kollegenbetrieb hier in der Region, der mit ähnlichen Büro-Hürden kämpft und dem ich 2–3 dieser Fragen stellen könnte?“
+   > „Kennen Sie einen befreundeten Kollegenbetrieb hier in Goslar, Langelsheim oder Umgebung, der beim Bierchen am meisten über sein Büro-Wochenende oder den Steuerberater flucht und dem ich 2–3 dieser Fragen stellen könnte?“
 
 ---
 

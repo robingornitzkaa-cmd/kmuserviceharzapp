@@ -90,6 +90,11 @@ export const WebsiteView = () => {
   });
   const [contactSubmitted, setContactSubmitted] = useState(false);
 
+  // Lead-Magnet (5-Minuten Büro-Stress-Test PDF per E-Mail) State
+  const [leadMagnetEmail, setLeadMagnetEmail] = useState('');
+  const [leadMagnetCompany, setLeadMagnetCompany] = useState('');
+  const [leadMagnetSubmitted, setLeadMagnetSubmitted] = useState(false);
+
   // Calculation Logic for ROI & Saved Weekends
   const hoursPerReceiptMinutes = 12;
   const monthlyReceipts = roiReceiptsPerWeek * 4;
@@ -130,6 +135,12 @@ export const WebsiteView = () => {
   const handleContactSubmit = (e) => {
     e.preventDefault();
     setContactSubmitted(true);
+  };
+
+  const handleLeadMagnetSubmit = (e) => {
+    e.preventDefault();
+    if (!leadMagnetEmail.trim()) return;
+    setLeadMagnetSubmitted(true);
   };
 
   const selectPackageForContact = (packageName) => {
@@ -216,9 +227,31 @@ export const WebsiteView = () => {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>${contentToExport.brand.name} – ${contentToExport.brand.positioning}</title>
   <meta name="description" content="${contentToExport.brand.claim}" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- 100 % DSGVO-konform: Keine externen Google Fonts! Lokaler System-Font-Stack + Schema.org JSON-LD für Local SEO & KI-Suche (GEO) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "ProfessionalService",
+        "name": "${contentToExport.brand.name}",
+        "description": "${contentToExport.brand.claim}",
+        "telephone": "${contentToExport.brand.phone}",
+        "email": "${emailToUse}",
+        "priceRange": "500€ - 2.000€",
+        "founder": { "@type": "Person", "name": "${contentToExport.brand.owner}" },
+        "address": {
+          "@type": "PostalAddress",
+          "postalCode": "38685",
+          "addressLocality": "Langelsheim",
+          "addressRegion": "Niedersachsen",
+          "addressCountry": "DE"
+        },
+        "areaServed": ["Langelsheim", "Goslar", "Bad Harzburg", "Seesen", "Wernigerode", "Halberstadt", "Osterode am Harz"]
+      }
+    ]
+  }
+  </script>
   <style>
     :root {
       --primary: #064e3b;
@@ -766,6 +799,25 @@ export const WebsiteView = () => {
           <a href="#contact" class="btn-primary-glow" style="text-align:center; justify-content:center;">Ergebnis im Erstgespräch besprechen →</a>
         </div>
       </div>
+
+      <!-- VALUE-FIRST E-MAIL-GATE (LEAD MAGNET: 5-MINUTEN BÜRO-STRESS-TEST PDF) -->
+      <div id="lead-magnet" style="max-width: 950px; margin: 2rem auto 0; background: var(--bg-card); border: 2px solid var(--primary); border-radius: 18px; padding: 2rem; box-shadow: var(--card-shadow);">
+        <span class="sec-badge">${(contentToExport.leadMagnet && contentToExport.leadMagnet.badge) || 'KOSTENLOSER PRAXIS-CHECK (PDF PER E-MAIL)'}</span>
+        <h3 style="font-size: 1.45rem; font-weight: 800; margin: 0.4rem 0 0.6rem;">${(contentToExport.leadMagnet && contentToExport.leadMagnet.title) || 'Der 5-Minuten Büro-Stress-Test & E-Rechnungs-Check für Harzer Betriebe'}</h3>
+        <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 1.2rem;">${(contentToExport.leadMagnet && contentToExport.leadMagnet.subtitle) || ''}</p>
+        <form action="https://formsubmit.co/${emailToUse}" method="POST" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.85rem; align-items: center;">
+          <input type="hidden" name="_subject" value="PDF-Lead-Magnet angefordert: 5-Minuten Büro-Stress-Test" />
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="hidden" name="lead_source" class="js-lead-source" value="direkt" />
+          <input type="hidden" name="calculated_roi" id="lead-roi-summary" value="ca. 24 freie Wochenenden (~16 Std./Mo.)" />
+          <input type="email" name="email" required placeholder="Ihre E-Mail-Adresse für den PDF-Versand *" class="form-input" />
+          <input type="text" name="company" placeholder="Optional: Betriebsname / Gewerk" class="form-input" />
+          <button type="submit" class="btn-primary-glow" style="justify-content: center; width: 100%;">
+            📄 PDF-Checkliste per E-Mail anfordern →
+          </button>
+        </form>
+        <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.75rem;">🔒 100 % kostenfrei & DSGVO-konform. Ihre oben berechnete Zeitersparnis wird automatisch in die Auswertung übernommen.</p>
+      </div>
     </div>
   </section>
 
@@ -824,6 +876,7 @@ export const WebsiteView = () => {
             <input type="hidden" name="_subject" value="Neue Anfrage via KMU Service Harz Website (${verObj.shortLabel})" />
             <input type="hidden" name="_captcha" value="false" />
             <input type="hidden" name="_template" value="table" />
+            <input type="hidden" name="lead_source" class="js-lead-source" value="direkt" />
 
             <div class="form-group">
               <label>Ihr Name & Vorname *</label>
@@ -902,6 +955,14 @@ export const WebsiteView = () => {
   </footer>
 
   <script>
+    (function initCookielessRefTracking() {
+      try {
+        var params = new URLSearchParams(window.location.search);
+        var ref = params.get('ref') || params.get('utm_source') || 'direkt';
+        document.querySelectorAll('.js-lead-source').forEach(function(el) { el.value = ref; });
+      } catch (e) {}
+    })();
+
     function setTheme(preset) {
       document.body.className = document.body.className.replace(/preset-\\w+/g, '') + ' preset-' + preset;
       document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
@@ -940,6 +1001,10 @@ export const WebsiteView = () => {
       document.getElementById('res-sundays').innerText = 'ca. ' + savedSundays + ' freie Wochenenden';
       document.getElementById('res-hours').innerText = '~' + savedHours + ' Std.';
       document.getElementById('res-euros').innerText = '~' + savedEuros.toLocaleString('de-DE') + ' € / Jahr';
+      const summaryEl = document.getElementById('lead-roi-summary');
+      if (summaryEl) {
+        summaryEl.value = 'ca. ' + savedSundays + ' freie Wochenenden (~' + savedHours + ' Std./Mo., ~' + savedEuros.toLocaleString('de-DE') + ' €/Jahr)';
+      }
     }
   </script>
 </body>
@@ -1785,7 +1850,7 @@ export const WebsiteView = () => {
 
                 {/* Results Right */}
                 <div className="roi-results-panel">
-                  <div className="results-badge">IHRE GESCHÄTZTE ENTLASSUNG</div>
+                  <div className="results-badge">IHRE GESCHÄTZTE ENTLASTUNG</div>
 
                   {/* Saved Sundays Highlight */}
                   <div className="sundays-highlight-card">
@@ -1825,6 +1890,90 @@ export const WebsiteView = () => {
                 </div>
 
               </div>
+
+              {/* 6b. VALUE-FIRST E-MAIL-GATE: PDF LEAD-MAGNET (5-MINUTEN BÜRO-STRESS-TEST) */}
+              {currentContent.leadMagnet && (
+                <div style={{
+                  maxWidth: '980px',
+                  margin: '2rem auto 0',
+                  background: 'var(--bg-card)',
+                  border: '2px solid var(--primary)',
+                  borderRadius: '18px',
+                  padding: '2rem',
+                  boxShadow: 'var(--card-shadow)'
+                }}>
+                  <div style={{ marginBottom: '1rem' }}>
+                    <span className="sec-badge">{currentContent.leadMagnet.badge}</span>
+                    <h3 style={{ fontSize: '1.35rem', fontWeight: 800, margin: '0.4rem 0 0.5rem', color: 'var(--text-main)' }}>
+                      {currentContent.leadMagnet.title}
+                    </h3>
+                    <p style={{ fontSize: '0.93rem', color: 'var(--text-muted)', lineHeight: 1.55 }}>
+                      {currentContent.leadMagnet.subtitle}
+                    </p>
+                  </div>
+
+                  {currentContent.leadMagnet.bullets && (
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '0.65rem', marginBottom: '1.25rem' }}>
+                      {currentContent.leadMagnet.bullets.map((b, bIdx) => (
+                        <div key={bIdx} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.45rem', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-main)' }}>
+                          <Check size={16} className="feature-check" style={{ flexShrink: 0, marginTop: '2px' }} />
+                          <span>{b}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {leadMagnetSubmitted ? (
+                    <div style={{
+                      background: '#ecfdf5',
+                      border: '1px solid #a7f3d0',
+                      borderRadius: '12px',
+                      padding: '1.25rem',
+                      color: '#065f46'
+                    }}>
+                      <div style={{ fontWeight: 800, fontSize: '1rem', marginBottom: '0.35rem' }}>
+                        ✓ Perfekt! Ihr 5-Minuten Büro-Stress-Test & E-Rechnungs-Check ist für {leadMagnetEmail} reserviert!
+                      </div>
+                      <p style={{ fontSize: '0.88rem', marginBottom: '0.75rem' }}>
+                        Ihre persönliche Rechner-Auswertung (<strong>ca. {savedSundaysPerYear} freie Wochenenden / ~{monthlyHoursSaved} Std. pro Monat</strong>) wurde automatisch beigefügt.
+                      </p>
+                      <button
+                        type="button"
+                        className="btn-outline-sm"
+                        onClick={() => setLeadMagnetSubmitted(false)}
+                      >
+                        Andere E-Mail-Adresse eingeben
+                      </button>
+                    </div>
+                  ) : (
+                    <form onSubmit={handleLeadMagnetSubmit} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.8rem', alignItems: 'center' }}>
+                      <input
+                        type="email"
+                        required
+                        placeholder={currentContent.leadMagnet.emailPlaceholder}
+                        value={leadMagnetEmail}
+                        onChange={(e) => setLeadMagnetEmail(e.target.value)}
+                        className="form-input"
+                      />
+                      <input
+                        type="text"
+                        placeholder={currentContent.leadMagnet.companyPlaceholder}
+                        value={leadMagnetCompany}
+                        onChange={(e) => setLeadMagnetCompany(e.target.value)}
+                        className="form-input"
+                      />
+                      <button type="submit" className="btn-primary-glow" style={{ justifyContent: 'center' }}>
+                        <span>{currentContent.leadMagnet.ctaText}</span>
+                        <ArrowRight size={16} />
+                      </button>
+                    </form>
+                  )}
+
+                  <div style={{ fontSize: '0.76rem', color: 'var(--text-muted)', marginTop: '0.7rem' }}>
+                    🔒 {currentContent.leadMagnet.privacyHint}
+                  </div>
+                </div>
+              )}
             </section>
 
             {/* 7. FAQ AKKORDEON */}
@@ -2291,7 +2440,7 @@ export const WebsiteView = () => {
               </div>
 
               <div className="roi-results-panel">
-                <div className="results-badge">IHRE ENTLASSUNG</div>
+                <div className="results-badge">IHRE ENTLASTUNG</div>
                 <div className="sundays-highlight-card">
                   <div className="sundays-icon"><Calendar size={28} /></div>
                   <div>
