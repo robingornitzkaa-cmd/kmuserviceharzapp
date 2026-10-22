@@ -175,3 +175,55 @@ Unterziehe die Entwürfe aus Schritt 2 einer strengen, kompakt dokumentierten Au
 - [ ] Keiner der 10 Namen oder Claims enthält verbotene IT-Anglizismen (`Solutions`, `Tech`, `Digital`, `Cloud`, `AI`, `Hub`, `Smart`).
 - [ ] Keiner der 10 Namen wiederholt einen Kandidaten aus der ersten Liste (`Prozesswerk`, `Büroschmiede`, `Flusswerk`, `Klarzeit`, `Ruhetakt`, `Freitakt`, `Klaros`, `Struktus`, `Taktwerk`, `Ruhewerk`).
 - [ ] Jeder der 10 Claims / Untertitel besteht aus maximal 5 Wörtern.
+
+
+## Follow-up — 2026-10-22T18:44:44Z
+
+Recherchiere, systematisiere und bewerte fortschrittliche Prompt-Techniken, Workflows und linguistische Frameworks zur KI-gestützten Markennamensfindung und wende die stärksten Methoden an, um eine 360°-geprüfte Top-10-Namensauswahl für eine regionale B2B-Automatisierungsagentur (Handwerk & KMU im Harz / überregional) zu entwickeln.
+
+Working directory: c:\Users\gorni\Desktop\kmuserviceharzapp
+Integrity mode: development
+
+Referenzmaterial im Workspace:
+- `DOCS/Markennamen_Strategie_Top10.md` (Runde 1)
+- `DOCS/Markennamen_Strategie_Schablonenfrei_Top10.md` (Runde 2)
+- `DOCS/Businessplan_KMU_Service_Harz_2026_Final.md`
+- `DOCS/Wettbewerbsanalyse KMU Service Harz.md`
+- `run_collision_tests_iter2.py` (DIN 31634 Kölner Phonetik & DNS-Checks)
+
+## Requirements
+
+### R1. Fundierter KI-Naming-Methoden- & Prompt-Leitfaden
+Erstelle in `DOCS/KI_Naming_Methoden_und_Workflows.md` eine umfassende, laientaugliche Enzyklopädie mit mindestens 8 bis 10 eigenständigen KI-Prompting- und Naming-Techniken (z. B. Linguistische Morphem-Matrizen, Archetypen-Rollenspiel, Negativ-Constraint-Prompting, Few-Shot mit Anti-Mustern, Lateral-Thinking-Ketten, Semantische Dekonstruktion, Rekursive Bewertungs-Prompts). Jede Methode muss ein sofort einsatzbereites Prompt-Template enthalten.
+
+### R2. Systematische Stärken-/Schwächen-Bewertung & Fehlerursachen-Analyse
+Ergänze den Methoden-Leitfaden um eine vergleichende Bewertungsmatrix aller Techniken (Kreativpotenzial, Risiken, Eignung je nach Branche). Analysiere im Detail, warum intuitive Standard-Prompts („Gib mir 10 kreative Namen“) bei KI typischerweise zu Schablonen, albernen Kofferwörtern oder sterilen IT-Anglizismen führen und mit welchen konkreten Prompt-Hebeln man dieses Verhalten bricht.
+
+### R3. Generierung einer neuen Top-10 für KMU Service Harz
+Wende die stärksten erarbeiteten Prompt-Workflows auf das konkrete Geschäft an (B2B-Büroautomatisierung für Handwerker & Dienstleister, Einzelunternehmen Inh. Robin Gornitzka, Fokus Landkreis Goslar / Harz, überregional skalierbar). Entwickle in `DOCS/Markennamen_Strategie_Runde3_Final.md` eine komplett neue, schablonenfreie Top-10-Auswahl an Markennamen, aufgeteilt nach strategischen Stoßrichtungen (z. B. Nutzen-Klarheit, bildhafte Analogie, eigenständiger Neologismus, bodenständige Pragmatik).
+
+### R4. Empirische 360°-Validierungs-Pipeline
+Prüfe jeden der 10 Namenskandidaten objektiv anhand von 4 obligatorischen Teststufen:
+1. Psychologische Resonanz: Wirkt der Name auf Handwerksmeister (SHK, Elektro, Bau) seriös und partnerschaftlich oder elitär/belehrend?
+2. Baustellen- & Telefontauglichkeit: Phonetische Klarheit bei Umgebungslärm und unmissverständliche Buchstabierbarkeit (gestützt durch Kölner Phonetik DIN 31634 via Python-Prüfskript).
+3. Domain-Vorprüfung: Verfügbarkeits- und Konfliktprüfung für primäre `.de`-Domains via DNS-Prüfung.
+4. Markenrechtliche Erstprüfung: Kollisions- und Ähnlichkeitsprüfung in den Nizza-Klassen 35 (Büroarbeiten/Unternehmensberatung) und 42 (IT-Dienstleistungen) gegenüber bekannten Marken.
+
+## Verification Resources
+- Phonetisches und DNS-Prüfskript: `run_collision_tests_iter2.py`
+- Markdown-Integritätsprüfung der neu erstellten Dokumente im Verzeichnis `DOCS/`
+
+## Acceptance Criteria
+
+### Methoden-Leitfaden & Prompts
+- [ ] Die Datei `DOCS/KI_Naming_Methoden_und_Workflows.md` existiert und dokumentiert mindestens 8 klar unterscheidbare KI-Naming-Techniken inklusive vollständiger, kopierbarer Prompt-Vorlagen.
+- [ ] Jede Technik enthält eine objektive Bewertung (Vorteile, Nachteile, Best-for-Szenario).
+- [ ] Der Leitfaden erklärt verständlich die algorithmischen Ursachen von typischen KI-Namens-Klischees und zeigt konkrete Gegenmaßnahmen auf.
+
+### Konkrete Namensstrategie Runde 3
+- [ ] Die Datei `DOCS/Markennamen_Strategie_Runde3_Final.md` existiert und präsentiert genau 10 neue, ausformulierte Markennamen mit Claim, strategischer Begründung und Passung zum Geschäftsmodell.
+- [ ] Keiner der 10 Namen wiederholt die zuvor verworfenen Schablonen (`Werk`, `Schmiede`, `Lotse`, `Bank`) oder Namen aus den Vorrunden 1 und 2.
+
+### 360°-Validierung & Prüfung
+- [ ] Jeder der 10 Namen verfügt über einen dokumentierten 4-Stufen-Prüfbericht (Psychologie, Phonetischer Code / DIN 31634, Domain-DNS-Status, DPMA-Klassen-Check).
+- [ ] Ein Verifikations-Skript wurde ausgeführt und die Ergebnisse sind in der Dokumentation nachvollziehbar belegt.
