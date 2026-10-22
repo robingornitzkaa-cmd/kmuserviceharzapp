@@ -91,6 +91,30 @@ Die Anwendung zeichnet sich durch ein futuristisches "Glassmorphic Dark Theme" a
 - **🧪 Automatisierte Test-Suiten (`verify_schablonenfrei_top10.py` & `verify_competitor_collisions_schablonenfrei.py`):**
   - 100%ige Einhaltung aller Vorgaben: 0 verbotene Schablonen, 0 IT-Anglizismen, 0 Wiederholungen aus Runde 1, alle Claims <= 5 Wörter, 0 phonetische Kollisionen mit 23+ regionalen und Benchmark-Wettbewerbern.
 
+### 0e. 🏷️ Top-10-Markennamen-Strategie Runde 3 & KI-Prompting-Enzyklopädie -- *NEU!*
+- **📖 Umfassender Methoden- & Prompt-Leitfaden (`DOCS/KI_Naming_Methoden_und_Workflows.md`):**
+  - **10 praxiserprobte KI-Naming-Techniken:** 1. Linguistische Morphem-Matrizen, 2. Archetypen-Rollenspiel, 3. Negativ-Constraint-Prompting, 4. Few-Shot mit Anti-Mustern, 5. Lateral-Thinking-Ketten, 6. Semantische Dekonstruktion, 7. Rekursive Bewertungs-Prompts, 8. Phonetische Resonanz-Filterung, 9. Semiotische Quadranten, 10. Hyper-spezifische Szenario-Simulation.
+  - **Sofort einsatzbereite Prompt-Templates:** Alle 10 Methoden enthalten vollständig ausformulierte, kopierbare Prompts im deutschen B2B- & Handwerkskontext (Inh. Robin Gornitzka, Make/n8n, DATEV/Lexoffice, E-Rechnung).
+  - **Vergleichende Bewertungsmatrix:** Gegenüberstellung aller 10 Frameworks nach Kreativpotenzial (1–10), Marken-Präzision (1–10), Aufwand, Risiken und Best-Fit-Einsatzbereich.
+  - **Mathematische & algorithmische Transformer-Fehleranalyse:** Erklärung, warum Standard-Prompts scheitern (Next-Token-Wahrscheinlichkeitslandschaften, Softmax mit Temperatur $T$, Unigramm/Bigramm-Priors, Sampling-Dilemma $T \le 0.5$ vs. $T \ge 1.2$, RLHF/DPO Safe-Zone Mode Collapse, Attention Sinks) und die 4 konkreten Prompt-Hebel (Hard Lexical Constraints, orthogonale Domänenübertragung, morphem-basierte Dekonstruktion, Multi-Pass Evaluator-Generator Split).
+  - **4-Stufen Master-Workflow-Playbook:** End-to-End Orchestrierung von Divergenz über Synthese und Filterung bis zum Adversarial Stresstest.
+  - **🎯 Finale 360°-geprüfte Top-10-Namensauswahl (`DOCS/Markennamen_Strategie_Runde3_Final.md`):**
+  - 10 komplett neue, überregional skalierbare Namen ohne starre Schablonen (`Werk`, `Schmiede`, `Lotse`, `Bank`) und ohne IT-Anglizismen:
+    1. *Richtung A (Nutzen-Klarheit & Entlastung):* **Klarbund** (`klarbund-harz.de` & `klarbund.de` frei!), **Ruhebund** (`ruhebund-harz.de` & `ruhebund.de` frei!), **Zeitgriff** (`zeitgriff-harz.de` & `zeitgriff.de` frei!).
+    2. *Richtung B (Bildhafte & Mechanische Analogie):* **Kraftschluss** (`kraftschluss-harz.de` & `kraftschluss.de` frei!), **Masshalt** (`masshalt-harz.de` & `masshalt.de` frei!), **Klaranker** (`klaranker-harz.de` & `klaranker.de` frei!).
+    3. *Richtung C (Eigenständiger Neologismus / Kunstwörter):* **Ordalis** (`ordalis-harz.de` & `ordalis.de` frei!), **Logitakt** (`logitakt-harz.de` & `logitakt.de` frei! – ersetzt `Taktiva` nach adversarialer Aufdeckung einer Nizza-35-Kollision mit *Taktiva GzFr GmbH*).
+    4. *Richtung D (Bodenständige Pragmatik):* **Bürogriff** (`buerogriff-harz.de` & `buerogriff.de` frei!), **Festtakt** (`festtakt-harz.de` & `festtakt.de` frei!).
+  - **Ausführlicher 4-Stufen-Prüfbericht pro Name:**
+    1. *Tier 1 (Psychologie):* Resonanz beim Handwerksmeister (SHK/Elektro/Bau), partnerschaftliche Augenhöhe, Feierabend-Entlastung, Vertrauenssignal Einzelunternehmen `[Marke] – Inh. Robin Gornitzka`.
+    2. *Tier 2 (Baustellen- & Telefontauglichkeit):* Akustik >75 dB, Trochäus-Metrik, Meldeformel, Buchstabierbarkeit nach DIN 5009 (G = Goslar!), Kölner Phonetik DIN 31634 mit lückenloser Grenzfall-Korrektur (Klarbund `457162`, Ruhebund `7162`, Masshalt `6852`, Festtakt `38242`, Logitakt `54242`).
+    3. *Tier 3 (Domain-Vorprüfung):* Live-DNS-Status (`NXDOMAIN` / frei) für regionale und überregionale `.de`-Domains.
+    4. *Tier 4 (Markenrecht & Schutzstrategie):* Prüfung Nizza-Klassen 35 & 42, § 8 / § 9 MarkenG, BGH/EuGH-Verwechslungsgefahr gegen 40+ Wettbewerber inklusive rechtlicher Schutzhinweise (Wort-Bildmarken-Empfehlung für *Bürogriff* nach § 8 Abs. 2 Nr. 2 und *Masshalt* nach § 8 Abs. 2 Nr. 1; expliziter Ausschluss von Maschinenbau in Klasse 42 für *Kraftschluss*).
+- **🧪 Automatisierter Verifikations-Harness (`run_collision_tests_r3.py` & `empirical_adversarial_suite.py`):**
+  - Ausführbares Python-Prüfskript zur Validierung aller 10 Kandidaten gegen 40+ Wettbewerber (22 regionale Harz-Systemhäuser/Agenturen + 18 DACH-Wettbewerber).
+  - Berechnung der Kölner Phonetik Codes (DIN 31634), Levenshtein- und Jaro-Winkler-Distanzen (alle Peak-Werte mit max. 0.752 weit unter der Verwechslungsgrenze von 0.85).
+  - Bestätigung von 10/10 freien regionalen `.de`-Domains und 0 % Überschneidung mit Vorrunden.
+  - Didaktische Lektionen in `DOCS/KI_Naming_Methoden_und_Workflows.md` (Methode 3 & 8) zu den physikalischen Grenzen von BPE-Tokenizern bei Silben-/Buchstabenzählung und DIN-31634-Zustandsregeln.
+
 ### 1. Dashboard & Life OS Gamification -- *NEU UPGRADED!*
 - **🎙️ Voice Quick-Capture Studio:** 1-Tap Sprach- und Diktierstudio mit Web Audio API Synthesizer-Feedback, Live Wave-Puls, Tag-Pills (`#Wichtig`, `#Kunde`, `#Idee`...) und 1-Klick Multi-Routing direkt in *To-Do*, *Notiz*, *Tages-Fokus*, *CRM-Lead* oder *Termin*.
 - **📦 1-Klick Data Hub & Backup Manager:** Vollständiges Export- und Import-Center für alle 7 OS-Datenmodule (CRM, Prompts, Notizen, Gamification, Tasks, Roadmap, Settings) mit Drag & Drop, Schema-Inspektor und automatischem Notfall-Snapshot vor jedem Restore.

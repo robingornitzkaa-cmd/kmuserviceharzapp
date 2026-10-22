@@ -5,6 +5,26 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added & Strategic Rollout
+- **🏷️ Top-10-Markennamen-Strategie Runde 3, KI-Naming-Enzyklopädie & 360°-Validierungs-Suite (`DOCS/KI_Naming_Methoden_und_Workflows.md`, `DOCS/Markennamen_Strategie_Runde3_Final.md`, `run_collision_tests_r3.py`):**
+  - **📖 Methoden- & Prompt-Handbuch (`DOCS/KI_Naming_Methoden_und_Workflows.md`):**
+    - 10 wissenschaftlich und kognitionspsychologisch fundierte Prompting-Techniken (Linguistische Morphem-Matrizen, Archetypen-Rollenspiel, Negativ-Constraint-Prompting, Few-Shot mit Anti-Mustern, Lateral-Thinking-Ketten, Semantische Dekonstruktion, Rekursive Critic-Loops, Phonetische Resonanz-Filterung, Semiotische Quadranten, Hyper-spezifische Szenario-Simulation).
+    - Alle 10 Methoden enthalten sofort einsatzbereite, kopierbare Prompt-Vorlagen für den Handwerks- und B2B-Automatisierungskontext im Harz.
+    - Vollständige vergleichende Bewertungsmatrix (Kreativpotenzial, Marken-Präzision, Aufwand, Risiken, Best-Fit).
+    - Tiefgehende mathematisch-algorithmische Ursachenanalyse von LLM-Fehlern (Next-Token-Softmax, Unigramm-/Bigramm-Priors, Sampling-Dilemma $T \le 0.5$ vs $T \ge 1.2$, RLHF/DPO Safe-Zone Modus-Kollaps, Attention Sinks) und die 4 konkreten Prompt-Hebel (Hard Lexical Constraints, orthogonale Domänenübertragung, morphem-basierte Dekonstruktion, Multi-Pass Evaluator-Generator Split).
+    - 4-Stufen Master-Workflow-Playbook (End-to-End Orchestrierung von Divergenz bis Adversarial Stresstest).
+  - **🎯 Finale Top-10-Namensauswahl mit 4-Tier 360°-Validierung (`DOCS/Markennamen_Strategie_Runde3_Final.md`):**
+    - 10 komplett neue, überregional skalierbare Namen ohne starre Begriffs-Schablonen (`Werk`, `Schmiede`, `Lotse`, `Bank`) und ohne IT-Anglizismen:
+      1. *Richtung A (Nutzen & Entlastung):* **Klarbund** (`klarbund-harz.de` & `klarbund.de` frei), **Ruhebund** (`ruhebund-harz.de` & `ruhebund.de` frei), **Zeitgriff** (`zeitgriff-harz.de` & `zeitgriff.de` frei).
+      2. *Richtung B (Bildhafte & Mechanische Analogie):* **Kraftschluss** (`kraftschluss-harz.de` & `kraftschluss.de` frei), **Masshalt** (`masshalt-harz.de` & `masshalt.de` frei), **Klaranker** (`klaranker-harz.de` & `klaranker.de` frei).
+      3. *Richtung C (Eigenständiger Neologismus):* **Ordalis** (`ordalis-harz.de` & `ordalis.de` frei), **Logitakt** (`logitakt-harz.de` & `logitakt.de` frei! – ersetzt `Taktiva` nach Aufdeckung der EU-weiten Nizza-35-Kollision mit *Taktiva GzFr GmbH* / *taktiva.com*).
+      4. *Richtung D (Bodenständige Pragmatik):* **Bürogriff** (`buerogriff-harz.de` & `buerogriff.de` frei), **Festtakt** (`festtakt-harz.de` & `festtakt.de` frei).
+    - Lückenloser 4-Stufen-Prüfbericht pro Name: 1. Meister-Test & partnerschaftliche Augenhöhe, 2. Baustellenakustik >75 dB, Trochäus & Kölner Phonetik DIN 31634 (inkl. korrigierter Kodes: Klarbund `457162`, Ruhebund `7162`, Masshalt `6852`, Festtakt `38242`, Logitakt `54242`), 3. Live Multi-Record DNS `.de`, 4. Nizza-Klassen 35/42, MarkenG-Schutzstrategien (Wort-Bildmarken-Empfehlung für *Bürogriff* nach § 8 Abs. 2 Nr. 2 und *Masshalt* nach § 8 Abs. 2 Nr. 1; explizite Negativabgrenzung von Maschinenbau in Klasse 42 für *Kraftschluss*).
+  - **🧪 Empirisches Prüfskript & Test-Harness (`run_collision_tests_r3.py` & `empirical_adversarial_suite.py`):**
+    - Behebung des DIN-31634-Grenzfall-Bugs in `koelner_phonetik` (Absicherung von `next_char` und `prev_char` gegen Substring-Treffer bei Leerstrings `''`).
+    - Standard-Testvektoren der DIN 31634 (`Müller-Lüdenscheidt`, `Frankfurt`, `Xavier`, `Klarbund`, `Ruhebund`, `Masshalt`, `Festtakt`, `Logitakt`) vollständig verifiziert (0 Fehler).
+    - Berechnung der Kölner Phonetik Codes (DIN 31634), Levenshtein, Normalized Levenshtein und Jaro-Winkler Distanzen gegen 40+ regionale und überregionale Wettbewerber (Peak-Similarity bei max. 0.752, weit unter der Kollisionsgrenze 0.85).
+    - Nachweis von 10/10 freien regionalen `.de`-Domains und 0 % Überschneidung mit Vorrunden 1 und 2.
+    - Didaktische Infoboxen in `DOCS/KI_Naming_Methoden_und_Workflows.md` (Methode 3 & 8) zur physikalischen Unfähigkeit von BPE-Tokenizern bei Silben-/Buchstabenzählung sowie deterministischen Zustandslookaheads.
 - **🚀 B2B Marketing-Masterplan (Module 1 & 2) & Website-CRO/DSGVO-Upgrade (`marketing_masterplan/`, `src/constants/websiteContent.js`, `src/components/WebsiteView.jsx`, `public/website-export/index.html`):**
   - **📊 Zentrale Live-Dokumentation (`marketing_masterplan/00_MARKETING_LOGBUCH_UND_STATUS.md`):** Vollständiger Konflikt- & Bereinigungs-Report, Single Source of Truth und Fortschritts-Tracker für alle 9 Marketing-Module.
   - **🧠 Modul 1 (`01_Kaufpsychologie_Positionierung_und_Messaging.md`):** Psychologische Tiefenprofile für das Entscheider-Dreieck (Meister, „Gute Seele“ im Büro, Steuerberater), Anti-Systemhaus-Positionierung & Wording-Bible (*„Büro-Wochenende“*), Proof-of-Competence (*Live-Musterbetrieb „Mustermann Haustechnik Harz“* + *Doppelte Sicherheits-Garantie*) und 10-Punkte-Einwandbehandlungs-Matrix.
