@@ -1,5 +1,20 @@
 # TODO - Founder OS
 
+- [ ] **📋 [Master Backlog] Token-optimierte Entwicklungs-Roadmap (`master_backlog.md`):**
+  - [ ] **Sprint 1 (Architektur & Limit-Schutz):**
+    - [ ] `PR-01` Monolith-Entflechtung von `App.jsx` in modulare Router & Context-Provider (HIGH / P0)
+    - [ ] `QW-01` Asynchrones Code-Splitting via `React.lazy()` für schwere Views (LOW / P0)
+    - [ ] `PR-02` Prompt-Giganten (`godofprompt_library_export.json`) aus JS-Bundle auslagern (LOW / P1)
+  - [ ] **Sprint 2 (B2B-Akquise & Mandanten-Umsatz):**
+    - [ ] `WEB-01` Interaktiver 500-€-Audit Selbsttest mit Schattenkosten-Kalkulator auf Website (MEDIUM / P0)
+    - [ ] `CRM-01` Smarte 1-Klick WhatsApp/Mail Outreach-Kadenz mit Terminslots (LOW / P0)
+    - [ ] `MP-01` Token-basierter Magic-Link Mandantenzugang (`/?portal=xyz`) (LOW / P0)
+  - [ ] **Sprint 3 (Automatisierung & Operativ-Power):**
+    - [ ] `CF-01` E-Rechnungs Aktions-Pipeline (Make/n8n Webhook an DATEV/Lexoffice) (MEDIUM / P0)
+    - [ ] `GC-01` GoClean Objekt- & Schicht-Tourenplaner für Marcel (MEDIUM / P1)
+    - [ ] `GC-02` GoClean B2B-Kalkulator & automatische Rechnungserstellung (MEDIUM / P1)
+
+
 - [ ] **🚀 [9-Module B2B Marketing-Masterplan] Iterativer Co-Pilot-Ausbau (`marketing_masterplan/`):**
   - [x] `00_MARKETING_LOGBUCH_UND_STATUS.md` (Workspace-Scan, Konflikt-Report & Live-Tracker)
   - [x] **Modul 1:** `01_Kaufpsychologie_Positionierung_und_Messaging.md` (Entscheider-Dreieck, Wording-Bible „Büro-Wochenende“, Doppelte Sicherheits-Garantie, 10 Einwände)

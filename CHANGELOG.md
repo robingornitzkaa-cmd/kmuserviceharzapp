@@ -5,6 +5,11 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added & Strategic Rollout
+- **📋 Master Backlog (`master_backlog.md`):**
+  - Vollständiges, token-optimiertes Backlog für die zukünftige KI-Entwicklung mit Google Antigravity.
+  - Strukturierte Tabelle mit 15 priorisierten Maßnahmen über 4 Cluster (Architektur & Pruning, Quick Wins & Performance, B2B-Kernfeatures KMU Harz, GoClean Harz Operativ-Suite).
+  - Umfassende KI-Limit-Schätzung (LOW, MEDIUM, HIGH, CRITICAL) und strategischer 3-Sprint-Umsetzungsplan (Sprint 1: Fundament & Limit-Schutz, Sprint 2: B2B-Akquise, Sprint 3: Automatisierung).
+
 - **🏷️ Top-10-Markennamen-Strategie Runde 3, KI-Naming-Enzyklopädie & 360°-Validierungs-Suite (`DOCS/KI_Naming_Methoden_und_Workflows.md`, `DOCS/Markennamen_Strategie_Runde3_Final.md`, `run_collision_tests_r3.py`):**
   - **📖 Methoden- & Prompt-Handbuch (`DOCS/KI_Naming_Methoden_und_Workflows.md`):**
     - 10 wissenschaftlich und kognitionspsychologisch fundierte Prompting-Techniken (Linguistische Morphem-Matrizen, Archetypen-Rollenspiel, Negativ-Constraint-Prompting, Few-Shot mit Anti-Mustern, Lateral-Thinking-Ketten, Semantische Dekonstruktion, Rekursive Critic-Loops, Phonetische Resonanz-Filterung, Semiotische Quadranten, Hyper-spezifische Szenario-Simulation).
