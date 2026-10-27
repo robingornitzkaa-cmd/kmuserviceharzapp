@@ -69,7 +69,7 @@ import {
   INITIAL_DISCOVERY_LEADS
 } from './constants/initialData';
 import { KMU_HARZ_PROMPTS } from './constants/kmuPrompts';
-import { GOD_OF_PROMPT_LIBRARY } from './constants/godOfPromptLibrary';
+// GOD_OF_PROMPT_LIBRARY is now dynamically imported on-demand (PR-02)
 
 // SERVICES IMPORT
 import { 
@@ -107,17 +107,17 @@ import {
 // COMPONENTS IMPORT (Eager)
 import { Sidebar } from './components/Sidebar';
 import { DashboardView } from './components/DashboardView';
-import { ClientPortalView } from './components/ClientPortalView';
-import { CrmDrawer } from './components/CrmDrawer';
-import { DocumentEditorModal } from './components/DocumentEditorModal';
-import { LightboxModal } from './components/LightboxModal';
+// ClientPortalView and StickyNotePopoutView are lazy-loaded below (QW-01)
+// CrmDrawer is lazy-loaded below (QW-01)
+// DocumentEditorModal is lazy-loaded below (QW-01)
+// LightboxModal is lazy-loaded below (QW-01)
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { RewardShopModal } from './components/RewardShopModal';
 import { PenaltyModal } from './components/PenaltyModal';
-import { BackupManagerModal } from './components/BackupManagerModal';
-import { NotificationCenterModal } from './components/NotificationCenterModal';
-import { DiagnosticLogModal } from './components/DiagnosticLogModal';
-import StickyNotePopoutView from './components/StickyNotePopoutView';
+// BackupManagerModal is lazy-loaded below (QW-01)
+// NotificationCenterModal is lazy-loaded below (QW-01)
+// DiagnosticLogModal is lazy-loaded below (QW-01)
+// StickyNotePopoutView is lazy-loaded below (QW-01)
 import { 
   checkAndNotifyFollowUps, 
   checkAndNotifyDueTodos, 
@@ -134,7 +134,15 @@ import {
 } from './services/googleWorkspace';
 import { SkeletonLoader } from './components/common/SkeletonLoader';
 
-// Lazy Loaded Tab Views (Asynchronous Code Splitting)
+// Lazy Loaded Tab Views & Modals (Asynchronous Code Splitting - QW-01)
+const ClientPortalView = lazy(() => import('./components/ClientPortalView').then(m => ({ default: m.ClientPortalView })));
+const StickyNotePopoutView = lazy(() => import('./components/StickyNotePopoutView'));
+const CrmDrawer = lazy(() => import('./components/CrmDrawer').then(m => ({ default: m.CrmDrawer })));
+const DocumentEditorModal = lazy(() => import('./components/DocumentEditorModal').then(m => ({ default: m.DocumentEditorModal })));
+const LightboxModal = lazy(() => import('./components/LightboxModal').then(m => ({ default: m.LightboxModal })));
+const BackupManagerModal = lazy(() => import('./components/BackupManagerModal').then(m => ({ default: m.BackupManagerModal })));
+const NotificationCenterModal = lazy(() => import('./components/NotificationCenterModal').then(m => ({ default: m.NotificationCenterModal })));
+const DiagnosticLogModal = lazy(() => import('./components/DiagnosticLogModal').then(m => ({ default: m.DiagnosticLogModal })));
 const CommandCenter = lazy(() => import('./components/CommandCenter').then(m => ({ default: m.CommandCenter })));
 const KanbanBoard = lazy(() => import('./components/KanbanBoard').then(m => ({ default: m.KanbanBoard })));
 const CrmPipeline = lazy(() => import('./components/CrmPipeline').then(m => ({ default: m.CrmPipeline })));
@@ -3437,7 +3445,8 @@ Hier ist die Frage des Nutzers:
     showToast(`⚡ "${gopPrompt.title}" in deinen Tresor übernommen!`);
   };
 
-  const handleImportAllGopPrompts = () => {
+  const handleImportAllGopPrompts = async () => {
+    const { GOD_OF_PROMPT_LIBRARY } = await import('./constants/godOfPromptLibrary');
     const newItems = GOD_OF_PROMPT_LIBRARY.map(p => ({
       id: p.id || ('gop_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4)),
       title: p.title,
@@ -3456,7 +3465,8 @@ Hier ist die Frage des Nutzers:
     showToast(`⚡ Alle ${newItems.length} God of Prompt Vorlagen in deinen Tresor importiert!`);
   };
 
-  const handleDownloadGopExportJSON = () => {
+  const handleDownloadGopExportJSON = async () => {
+    const { GOD_OF_PROMPT_LIBRARY } = await import('./constants/godOfPromptLibrary');
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(GOD_OF_PROMPT_LIBRARY, null, 2));
     const downloadAnchor = document.createElement('a');
     downloadAnchor.setAttribute("href", dataStr);
@@ -4083,6 +4093,7 @@ Hier ist die Frage des Nutzers:
 
   if (isStickyPopout) {
     return (
+      <Suspense fallback={<div style={{ padding: '1rem', color: '#94a3b8' }}>Lade Notizzettel...</div>}>
       <StickyNotePopoutView
         dashNotes={dashNotes}
         setDashNotes={setDashNotes}
@@ -4099,6 +4110,7 @@ Hier ist die Frage des Nutzers:
         supabaseSyncStatus={supabaseSyncStatus}
         saveDashboardNow={saveDashboardNow}
       />
+      </Suspense>
     );
   }
 
@@ -4661,7 +4673,8 @@ Hier ist die Frage des Nutzers:
         
         {/* ==================== CLIENT PORTAL MODE VIEW ==================== */}
         {clientPortalMode ? (
-          <ClientPortalView
+          <Suspense fallback={<SkeletonLoader tabName="portal" />}>
+            <ClientPortalView
             currentUser={currentUser}
             clientData={contacts.find(c => c.company === selectedClientCompany) || contacts[0]}
             selectedClientCompany={selectedClientCompany}
@@ -4678,6 +4691,7 @@ Hier ist die Frage des Nutzers:
             mask={mask}
             showcaseMode={showcaseMode}
           />
+          </Suspense>
         ) : (
           <ErrorBoundary onReset={() => setActiveTab('dashboard')}>
             <Suspense fallback={<SkeletonLoader tabName={activeTab} />}>
@@ -4926,7 +4940,7 @@ Hier ist die Frage des Nutzers:
             kmuPrompts={KMU_HARZ_PROMPTS}
             handleAdoptKmuPrompt={handleAdoptKmuPrompt}
             handleRestorePromptVersion={handleRestorePromptVersion}
-            gopPrompts={GOD_OF_PROMPT_LIBRARY}
+// gopPrompts dynamically loaded inside PromptVault (PR-02)
             handleAdoptGopPrompt={handleAdoptGopPrompt}
             handleImportAllGopPrompts={handleImportAllGopPrompts}
             handleDownloadGopExportJSON={handleDownloadGopExportJSON}
@@ -5095,6 +5109,8 @@ Hier ist die Frage des Nutzers:
 
       </main>
 
+      {/* ==================== GLOBAL MODALS & DRAWERS (LAZY SPLITTING) ==================== */}
+      <Suspense fallback={null}>
       {/* Global Lightbox Modal for Fullscreen Presentation */}
       <LightboxModal
         isOpen={lightboxImage.isOpen}
@@ -5238,6 +5254,7 @@ Hier ist die Frage des Nutzers:
           setShowToast(true);
         }}
       />
+      </Suspense>
     </div>
   </div>
 );

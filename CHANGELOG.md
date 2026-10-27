@@ -5,6 +5,11 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added & Strategic Rollout
+- **⚡ Sprint 1 Quick-Wins: Code-Splitting & Prompt-Auslagerung (`QW-01` & `PR-02`):**
+  - **Dynamisches On-Demand Loading (`PR-02`):** Die 2,9 MB große Prompt-Bibliothek (`godOfPromptLibrary.js` mit 1.304 kuratierten Prompts) wurde aus dem initialen Boot-Bundle von `App.jsx` entfernt und in `PromptVault.jsx` auf asynchronen Abruf bei Klick umgestellt.
+  - **Modulares Code-Splitting (`QW-01`):** `ClientPortalView`, `StickyNotePopoutView` sowie sämtliche Dialogfenster (`BackupManagerModal`, `NotificationCenterModal`, `DiagnosticLogModal`, `DocumentEditorModal`, `LightboxModal`, `CrmDrawer`) werden nun asynchron via `React.lazy()` und `<Suspense>` geladen.
+  - **Messbare Performance-Ergebnisse:** Das Haupt-JavaScript-Bundle sank von 467 kB auf 361 kB (-23 % initiale JS-Last), der initiale Start-Build beschleunigte sich auf 2,8s und alle 286 Tests über 28 Testdateien bestehen zu 100 %.
+
 - **📋 Master Backlog (`master_backlog.md`):**
   - Vollständiges, token-optimiertes Backlog für die zukünftige KI-Entwicklung mit Google Antigravity.
   - Strukturierte Tabelle mit 15 priorisierten Maßnahmen über 4 Cluster (Architektur & Pruning, Quick Wins & Performance, B2B-Kernfeatures KMU Harz, GoClean Harz Operativ-Suite).

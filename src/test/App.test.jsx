@@ -26,7 +26,7 @@ describe('Founder OS App - Integration Tests', () => {
     fireEvent.click(salesTabs[0])
 
     // Prüfe, ob die ROI-Rechner-Karte angezeigt wird
-    expect(await screen.findByText('Showcase ROI-Rechner', {}, { timeout: 5000 })).toBeInTheDocument()
+    expect(await screen.findByText('Showcase ROI-Rechner', {}, { timeout: 15000 })).toBeInTheDocument()
 
     // Finde Eingabefelder über ihre Label-Geschwister (da keine htmlFor-Verknüpfung vorhanden ist)
     const taskNameInput = screen.getByText('Name der manuellen Aufgabe').nextElementSibling

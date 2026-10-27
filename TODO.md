@@ -3,8 +3,8 @@
 - [ ] **📋 [Master Backlog] Token-optimierte Entwicklungs-Roadmap (`master_backlog.md`):**
   - [ ] **Sprint 1 (Architektur & Limit-Schutz):**
     - [ ] `PR-01` Monolith-Entflechtung von `App.jsx` in modulare Router & Context-Provider (HIGH / P0)
-    - [ ] `QW-01` Asynchrones Code-Splitting via `React.lazy()` für schwere Views (LOW / P0)
-    - [ ] `PR-02` Prompt-Giganten (`godofprompt_library_export.json`) aus JS-Bundle auslagern (LOW / P1)
+    - [x] `QW-01` Asynchrones Code-Splitting via `React.lazy()` für schwere Views & Modals (LOW / P0)
+    - [x] `PR-02` Prompt-Giganten (`godOfPromptLibrary.js`) aus initialem JS-Bundle ausgelagert (LOW / P1)
   - [ ] **Sprint 2 (B2B-Akquise & Mandanten-Umsatz):**
     - [ ] `WEB-01` Interaktiver 500-€-Audit Selbsttest mit Schattenkosten-Kalkulator auf Website (MEDIUM / P0)
     - [ ] `CRM-01` Smarte 1-Klick WhatsApp/Mail Outreach-Kadenz mit Terminslots (LOW / P0)

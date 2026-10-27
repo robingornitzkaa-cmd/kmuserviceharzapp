@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   BrainCircuit, 
   Plus, 
@@ -67,7 +67,7 @@ export const PromptVault = ({
   kmuPrompts = [],
   handleAdoptKmuPrompt,
   handleRestorePromptVersion,
-  gopPrompts = [],
+  gopPrompts: externalGopPrompts = [],
   handleAdoptGopPrompt,
   handleImportAllGopPrompts,
   handleDownloadGopExportJSON
@@ -75,6 +75,32 @@ export const PromptVault = ({
   const [selectedOptMode, setSelectedOptMode] = useState('structured');
   const [historyModalData, setHistoryModalData] = useState({ isOpen: false, promptId: null, promptTitle: '', history: [] });
   const [selectedGopSubcategory, setSelectedGopSubcategory] = useState('all');
+  const [internalGopPrompts, setInternalGopPrompts] = useState([]);
+  const [isLoadingGop, setIsLoadingGop] = useState(false);
+
+  const gopPrompts = (externalGopPrompts && externalGopPrompts.length > 0)
+    ? externalGopPrompts 
+    : internalGopPrompts;
+
+  useEffect(() => {
+    if (
+      promptCategoryFilter === 'godofprompt' && 
+      (!externalGopPrompts || externalGopPrompts.length === 0) && 
+      internalGopPrompts.length === 0
+    ) {
+      setIsLoadingGop(true);
+      import('../constants/godOfPromptLibrary')
+        .then(mod => {
+          setInternalGopPrompts(mod.GOD_OF_PROMPT_LIBRARY || []);
+        })
+        .catch(err => {
+          console.error("Fehler beim dynamischen Laden der God of Prompt Bibliothek:", err);
+        })
+        .finally(() => {
+          setIsLoadingGop(false);
+        });
+    }
+  }, [promptCategoryFilter, externalGopPrompts, internalGopPrompts.length]);
 
   return (
     <div className="hub-grid" style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '1.5rem' }}>
@@ -633,7 +659,7 @@ export const PromptVault = ({
                 : cat.key === 'kmu_templates' 
                 ? kmuPrompts.length 
                 : cat.key === 'godofprompt'
-                ? gopPrompts.length
+                ? (gopPrompts.length || (isLoadingGop ? '...' : '1.304'))
                 : prompts.filter(p => p.category === cat.key).length;
               return (
                 <button
@@ -729,6 +755,13 @@ export const PromptVault = ({
 
         <div className="prompt-vault">
           {promptCategoryFilter === 'godofprompt' ? (
+            isLoadingGop ? (
+              <div style={{ textAlign: 'center', padding: '3rem 1rem', color: '#fde047' }}>
+                <Zap size={28} className="animate-pulse" style={{ margin: '0 auto 0.75rem auto' }} />
+                <p style={{ fontSize: '0.9rem', fontWeight: 600 }}>Lade 1.304 kuratierte God of Prompt Vorlagen...</p>
+                <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Dynamisches Nachladen schont Ladezeit und Bandbreite.</p>
+              </div>
+            ) : (
             gopPrompts
               .filter(p => {
                 const matchesSub = selectedGopSubcategory === 'all' || p.subcategory === selectedGopSubcategory;
@@ -789,7 +822,7 @@ export const PromptVault = ({
                     </div>
                   </div>
                 </div>
-              ))
+              )))
           ) : promptCategoryFilter === 'kmu_templates' ? (
             kmuPrompts
               .filter(p => p.title.toLowerCase().includes(promptSearch.toLowerCase()) || p.text.toLowerCase().includes(promptSearch.toLowerCase()))
