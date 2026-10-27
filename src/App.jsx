@@ -765,7 +765,13 @@ function App() {
   const [dashboardWidgets, setDashboardWidgets] = useState(() => {
     try {
       const saved = localStorage.getItem('f_dashboard_widgets');
-      return saved ? JSON.parse(saved) : {
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.scorecard === undefined) parsed.scorecard = true;
+        return parsed;
+      }
+      return {
+        scorecard: true,
         mediaDrop: true,
         financial: true,
         einvoice: true,
@@ -782,6 +788,7 @@ function App() {
       };
     } catch {
       return {
+        scorecard: true,
         mediaDrop: true,
         financial: true,
         einvoice: true,

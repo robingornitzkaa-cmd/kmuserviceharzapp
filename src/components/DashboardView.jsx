@@ -30,6 +30,7 @@ import {
 import { SettingsView, getWidgetOrder } from './SettingsView';
 import { VoiceQuickCaptureWidget } from './VoiceQuickCaptureWidget';
 import { MediaDropWidget } from './MediaDropWidget';
+import { WeeklyScorecardWidget } from './WeeklyScorecardWidget';
 
 export const DashboardView = ({
   mediaGallery = [],
@@ -640,9 +641,14 @@ export const DashboardView = ({
 
       <div className="dashboard-grid">
         {getWidgetOrder(dashboardWidgets).map(widgetKey => {
-          if (!dashboardWidgets[widgetKey]) return null;
+          if (!dashboardWidgets[widgetKey] && !(widgetKey === 'scorecard' && dashboardWidgets?.scorecard !== false)) return null;
 
           switch(widgetKey) {
+            case 'scorecard':
+              return (
+                <WeeklyScorecardWidget key="scorecard" />
+              );
+
             case 'mediaDrop':
               return (
                 <MediaDropWidget

@@ -2,6 +2,7 @@ import React from 'react';
 import { Settings, ArrowUp, ArrowDown, RotateCcw, Bell } from 'lucide-react';
 
 export const DEFAULT_WIDGET_ORDER = [
+  'scorecard',
   'mediaDrop',
   'quickcapture',
   'simpleNotes',
@@ -33,6 +34,7 @@ export const SettingsView = ({
   if (!isEditingDashboard) return null;
 
   const widgetDefinitions = {
+    scorecard: { label: '📊 15-Minuten Marketing Scorecard', desc: 'Wöchentlicher Input/Output KPI-Tracker für 10–15h/Woche' },
     mediaDrop: { label: '📷 Screenshot & Foto Drop', desc: 'Handy ↔ PC Bild- & Screenshot-Ablage' },
     quickcapture: { label: '🎙️ Voice Quick-Capture Studio', desc: 'Sprach- & Diktier-Studio mit Multi-Ziel-Routing' },
     financial: { label: 'Finanz-Cockpit & Pipeline', desc: 'Umsatzprognose & Ø Stundensätze' },

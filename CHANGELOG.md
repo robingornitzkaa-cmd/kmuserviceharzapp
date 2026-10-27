@@ -5,6 +5,27 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added & Strategic Rollout
+- **🚀 Marketing-Tiefenerweiterung (Module 10 bis 14) & In-App Wochen-Scorecard (`marketing_masterplan/`, `src/components/WeeklyScorecardWidget.jsx`, `src/test/features/weeklyScorecardWidget.test.jsx`):**
+  - **Modul 10 (`10_Automatisierte_Nurturing_und_FollowUp_Strecken.md`):**
+    - 5-teilige E-Mail-Nurturing-Sequenz nach Download des Lead-Magneten („5-Minuten Büro-Stress-Test“) ohne Verkaufskeule (Report-Auslieferung, 3 E-Rechnungs-Mythen, Altgeselle Klaus 58, DATEV RDS 1.0 Entlastung der Steuerkanzlei, 10-Stunden-Sicherheits-Garantie).
+    - 3 praxiserprobte WhatsApp/SMS-Follow-up-Leitfäden für qualifizierte Kontakte nach Handwerker-Brief, Ersttelefonat oder Audit-Bedenkzeit.
+    - Make.com Webhook- & Brevo-Automationsarchitektur mit 1-Klick-Opt-out nach DSGVO.
+  - **Modul 11 (`11_Gewerke_Spezifische_Tiefen_Editionen.md`):**
+    - Maßgeschneiderte Fachsprache, 45-Sekunden-Telefon-Opener (für Meister & Bürokraft) und spezifische Einwandbehandlung für:
+      - *SHK:* GC-Gruppe (Cordes & Graefe, Gienger), Notdienstzettel-Abrechnung, Datanorm-Preisänderungen, pds/KWP-Integration.
+      - *Elektro:* Sonepar/Rexel, Kleinmaterial-Nachkalkulation (WAGO-Klemmen, Kabelreste), Baumarkt-Bons (Hornbach Goslar, OBI Seesen), E-Check-Messprotokolle.
+      - *Dachdecker/Zimmerei:* Baustellen-Fotodokumentation von Sturmschäden per Sprachnachricht, nasse Regieberichte auf dem Steildach, DEG Fachhandel.
+  - **Modul 12 (`12_50_Betriebe_Recherche_und_Willkommens_Box.md`):**
+    - 50-Betriebe-Qualifizierungs- & CRM-Import-Raster für den Landkreis Goslar & Harz (Gewerke-Mix 20x SHK, 15x Elektro, 10x Dach, 5x KMU; Schwachstellen-Signale S1–S4).
+    - Haptische **„Handschlag-Willkommens-Box“** für Neukunden am Setup-Tag 1 (Alu-Klemmbrett für den Meister, 5x laminierte Bulli-Karten für Gesellen, regionaler Harzer Röstkaffee für die Bürokraft, GoBD-Notfall-Stick, Echtholz-Wandzertifikat; unter 36 € Kosten, >85 % Retainer-Quote).
+  - **Modul 13 (`13_Innungs_und_Banken_Kooperationspaket.md`):**
+    - 20-Folien-Präsentationsleitfaden für Innungsabende (Kreishandwerkerschaft Südostniedersachsen & Harz-Bode) inkl. Wortlaut-Redeskript und DIN-A5 Tisch-Rückmeldebogen (für 5–8 Audit-Termine pro Abend).
+    - Banken-Kooperationsmappe für Firmenkundenberater regionaler Sparkassen & Volksbanken (Liquiditätsbeschleunigung, pünktliche Rechnungsstellung, tagesaktuelle DATEV RDS 1.0 BWAs).
+  - **Modul 14 / Software-Feature (`src/components/WeeklyScorecardWidget.jsx`):**
+    - Neues, interaktives React-Widget für das Founder OS Dashboard zur Steuerung des 10–15h/Woche Nebenberufs-Fokus.
+    - Erfassung von Input-KPIs (15 Briefe, 20 Anrufe, 7 Entscheider, 3 Hof-Walk-Ins, 1 Multiplikator) und Output-KPIs (Audits, Setups, Retainer-MRR, Cashflow).
+    - Dynamische Wochen-Ampel (Grün/Gelb/Rot), KW-Navigation und Persistierung in `localStorage`.
+    - Vollständig integriert in `DashboardView.jsx` und `SettingsView.jsx`, getestet durch 6 neue Vitest-Tests (29 Test-Suiten, 292 Tests bestanden).
 - **⚡ Sprint 1 Quick-Wins: Code-Splitting & Prompt-Auslagerung (`QW-01` & `PR-02`):**
   - **Dynamisches On-Demand Loading (`PR-02`):** Die 2,9 MB große Prompt-Bibliothek (`godOfPromptLibrary.js` mit 1.304 kuratierten Prompts) wurde aus dem initialen Boot-Bundle von `App.jsx` entfernt und in `PromptVault.jsx` auf asynchronen Abruf bei Klick umgestellt.
   - **Modulares Code-Splitting (`QW-01`):** `ClientPortalView`, `StickyNotePopoutView` sowie sämtliche Dialogfenster (`BackupManagerModal`, `NotificationCenterModal`, `DiagnosticLogModal`, `DocumentEditorModal`, `LightboxModal`, `CrmDrawer`) werden nun asynchron via `React.lazy()` und `<Suspense>` geladen.

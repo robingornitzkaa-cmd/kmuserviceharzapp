@@ -1,8 +1,8 @@
 # 📊 ZENTRALE LIVE-DOKUMENTATION: MARKETING-MASTERPLAN & LOGBUCH
 **Projekt:** KMU Service Harz (Arbeitstitel / Platzhalter-Variable)  
 **Rolle & Architektur:** B2B-Growth-System, Copywriting & No-Code-Vertriebsmaschine für Handwerk & KMU im Harz  
-**Letztes Update:** 20.10.2026 (Abschluss Modul 7 + Bereinigung `B2B Vertriebsplan` & `Preistreppe` & Start Modul 8 – Phase A)  
-**Aktueller Status:** 🟢 **MODULE 1–7 FERTIG** | 🟡 **MODUL 8 IN ARBEIT (Phase A: Analyse, Blinde Flecken & Entscheidungsfragen)**
+**Letztes Update:** 27.10.2026 (Abschluss Module 10–14: Nurturing, Gewerke-Editionen, 50-Betriebe-Pipeline, Innungs-/Banken-Paket & In-App Scorecard)  
+**Aktueller Status:** 🟢 **ALLE MODULE 1–14 VOLLSTÄNDIG FERTIG, GETESTET & PRODUKTIONSREIF**
 
 ---
 
@@ -86,8 +86,13 @@ Während `foerdermittel_leitfaden_kmu_service_harz.md` (Zeile 20 & 56) völlig k
 | **Modul 5** | `05_Multiplikatoren_und_Steuerberater_Infiltration.md` | 🟢 **FERTIG** | **100 % ausgearbeitet + 2 Kanzlei-DOCS bereinigt (Phase C abgeschlossen)** |
 | **Modul 6** | `06_Social_Media_und_Faceless_Content_Maschine.md` | 🟢 **FERTIG** | **100 % ausgearbeitet + `initialData.js` Content/Prompts bereinigt (Phase C abgeschlossen)** |
 | **Modul 7** | `07_Werbung_Paid_Ads_Offline_Guerilla_und_PR.md` | 🟢 **FERTIG** | **100 % ausgearbeitet + 2 Strategie-DOCS bereinigt (Phase C abgeschlossen)** |
-| **Modul 8** | `08_Sales_Assets_Sandbox_und_Rechtliche_Fallstricke.md` | 🟡 **IN ARBEIT** | **Phase A (Analyse, Blinde Flecken & Entscheidungsfragen)** |
-| **Modul 9** | `09_90_Tage_Roadmap_KPI_Dashboard_und_Risiko_Management.md` | ⚪ Wartend | Startet nach Freigabe von Modul 8 |
+| **Modul 8** | `08_Sales_Assets_Sandbox_und_Rechtliche_Fallstricke.md` | 🟢 **FERTIG** | **100 % ausgearbeitet + Sandbox-Guide & Tisch-One-Pager (Phase C abgeschlossen)** |
+| **Modul 9** | `09_90_Tage_Roadmap_KPI_Dashboard_und_Risiko_Management.md` | 🟢 **FERTIG** | **100 % ausgearbeitet + 15-Min.-Scorecard & 5 Notfall-Pivots (Phase C abgeschlossen)** |
+| **Modul 10** | `10_Automatisierte_Nurturing_und_FollowUp_Strecken.md` | 🟢 **FERTIG** | **100 % ausgearbeitet + 5-teilige E-Mail-Serie & WhatsApp-Skripte** |
+| **Modul 11** | `11_Gewerke_Spezifische_Tiefen_Editionen.md` | 🟢 **FERTIG** | **100 % ausgearbeitet + SHK, Elektro, Dachdecker/Zimmerei Fachsprache** |
+| **Modul 12** | `12_50_Betriebe_Recherche_und_Willkommens_Box.md` | 🟢 **FERTIG** | **100 % ausgearbeitet + 50-Betriebe-Pipeline & Haptische Onboarding-Box** |
+| **Modul 13** | `13_Innungs_und_Banken_Kooperationspaket.md` | 🟢 **FERTIG** | **100 % ausgearbeitet + 20-Folien-Innungsdeck & Banken-Mappe** |
+| **Modul 14** | Software-Feature: `WeeklyScorecardWidget.jsx` | 🟢 **FERTIG** | **100 % implementiert im Founder OS Dashboard + Vitest Tests grün** |
 
 ---
 
@@ -207,4 +212,27 @@ Während `foerdermittel_leitfaden_kmu_service_harz.md` (Zeile 20 & 56) völlig k
    - *Notfall 5:* Retainer-Kündigungsschutz -> Monatlicher Erfolgs- & Stabilitäts-Report (gerettete Belege & Stunden) + Airbag-/Versicherungs-Framing gegen API-Updates.
 5. **Skalierungs-Kompass & Vollzeit-Sprung:**
    - Stufe 1: 1.000 € MRR (Monat 3, stabiler Nebenberuf) -> Stufe 2: 2.000 € MRR (erste 520-€-Minijob-Assistenz) -> Stufe 3: 3.000 € MRR (15 Kunden, sicherer Sprung in Vollzeit) -> Stufe 4: 5.000 €+ MRR (lokaler Marktführer).
-- **Status Masterplan:** **ALLE 9 MARKETING-MODULE (01 bis 09) SIND ZU 100 % VOLLSTÄNDIG, DRUCKFERTIG UND RECHTSSICHER ERSTELLT!**
+- **Status Masterplan:** **ALLE 9 KERN-MARKETING-MODULE (01 bis 09) SIND ZU 100 % VOLLSTÄNDIG, DRUCKFERTIG UND RECHTSSICHER ERSTELLT!**
+
+### [27.10.2026] Tiefenerweiterung: Module 10 bis 14 (Automatisierung, Gewerke, Pipeline, Innungen & Scorecard)
+1. **Modul 10 (`10_Automatisierte_Nurturing_und_FollowUp_Strecken.md`):**
+   - 5-teilige Value-First E-Mail-Serie nach Download des Büro-Stress-Tests (Report-Auslieferung, 3 E-Rechnungs-Mythen, Altgeselle Klaus 58, Steuerberater-Entlastung, 10-Stunden-Sicherheits-Garantie).
+   - 3 Vorlagen für WhatsApp/SMS-Follow-ups (nach Brief & Ersttelefonat, nach Audit mit Bedenkzeit, sanfter Reaktivierungs-Impuls nach 14 Tagen).
+   - Make.com 5-Modul Webhook- & Brevo/Resend-Architektur mit 1-Klick-Opt-out.
+2. **Modul 11 (`11_Gewerke_Spezifische_Tiefen_Editionen.md`):**
+   - Branchenspezifische Verkaufsargumente, Telefon-Opener und Einwandbehandlung für die drei ertragsstärksten Gewerke:
+     - **SHK:** GC-Gruppe (Cordes & Graefe, Gienger), Notdienst-Zettel vom Wochenende, Datanorm-Preisänderungen, pds/KWP-Brücke.
+     - **Elektro:** Sonepar/Rexel, Kleinmaterial-Verlust (WAGO-Klemmen, Kabelmeter), Baumarkt-Bons (Hornbach Goslar, OBI Seesen), E-Check-Messprotokolle.
+     - **Dachdecker/Zimmerei:** Nasse Regieberichte auf dem Steildach, Baustellen-Fotodokumentation von Sturmschäden per Sprachnachricht, DEG Fachhandel.
+3. **Modul 12 (`12_50_Betriebe_Recherche_und_Willkommens_Box.md`):**
+   - 50-Betriebe-Qualifizierungs- & CRM-Import-Raster für den Landkreis Goslar & Harz (Gewerke-Mix 20x SHK, 15x Elektro, 10x Dach, 5x KMU; Signale S1–S4).
+   - Haptische **„Handschlag-Willkommens-Box“** für Neukunden am Setup-Tag 1 (Alu-Klemmbrett für den Meister, 5x laminierte Bulli-Karten für Gesellen, regionaler Harzer Röstkaffee für die Bürokraft, GoBD-Notfall-Stick, Echtholz-Wandzertifikat; unter 36 € Kosten, >85 % Retainer-Quote).
+4. **Modul 13 (`13_Innungs_und_Banken_Kooperationspaket.md`):**
+   - 20-Folien-Präsentationsleitfaden für Innungsabende (Kreishandwerkerschaft Südostniedersachsen & Harz-Bode) inkl. Wortlaut-Redeskript und DIN-A5 Tisch-Rückmeldebogen (für 5–8 Audit-Termine pro Abend).
+   - Banken-Kooperationsmappe für Firmenkundenberater regionaler Sparkassen & Volksbanken (Liquiditätsbeschleunigung, pünktliche Rechnungsstellung, tagesaktuelle DATEV RDS 1.0 BWAs).
+5. **Modul 14 / Software-Feature (`src/components/WeeklyScorecardWidget.jsx`):**
+   - Interaktives React-Widget für das Founder OS Dashboard zur Steuerung des 10–15h/Woche Nebenberufs-Fokus.
+   - Erfassung von Input-KPIs (15 Briefe, 20 Anrufe, 7 Entscheider, 3 Hof-Walk-Ins, 1 Multiplikator) und Output-KPIs (Audits, Setups, Retainer-MRR, Cashflow).
+   - Dynamische Wochen-Ampel (Grün/Gelb/Rot), KW-Navigation und Persistierung in `localStorage`.
+   - Vollständig integriert in `DashboardView.jsx` und `SettingsView.jsx`, getestet durch 6 neue Vitest-Tests (29 Test-Suiten, 292 Tests bestanden).
+- **Status Gesamtsystem:** 🟢 **ALLE 14 MARKETING- UND EXPANSIONS-MODULE SIND ZU 100 % PRODUKTIONSREIF UND IM FOUNDER OS VERANKERT!**

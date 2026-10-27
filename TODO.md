@@ -15,8 +15,8 @@
     - [ ] `GC-02` GoClean B2B-Kalkulator & automatische Rechnungserstellung (MEDIUM / P1)
 
 
-- [ ] **🚀 [9-Module B2B Marketing-Masterplan] Iterativer Co-Pilot-Ausbau (`marketing_masterplan/`):**
-  - [x] `00_MARKETING_LOGBUCH_UND_STATUS.md` (Workspace-Scan, Konflikt-Report & Live-Tracker)
+- [x] **🚀 [14-Module B2B Marketing- & Wachstums-System] Iterativer Co-Pilot-Ausbau (`marketing_masterplan/`):**
+  - [x] `00_MARKETING_LOGBUCH_UND_STATUS.md` (Workspace-Scan, Konflikt-Report & Live-Tracker aller 14 Module)
   - [x] **Modul 1:** `01_Kaufpsychologie_Positionierung_und_Messaging.md` (Entscheider-Dreieck, Wording-Bible „Büro-Wochenende“, Doppelte Sicherheits-Garantie, 10 Einwände)
   - [x] **Modul 2:** `02_Website_CRO_LeadMagneten_und_Local_SEO.md` + Website-Code-Upgrade (DSGVO-Fix, Value-First E-Mail-Gate, PDF-Stress-Test, Schema.org JSON-LD, `?ref=`-Tracking)
   - [x] **Modul 3:** `03_PreLaunch_Validation_und_Gruender_Bonus_Playbook.md` + Update `customer_discovery_validierungs_leitfaden.md` (Gründer-Bonus, 3 Outreach-Kanäle, Bürokraft-Türöffner, 7 Diagnosefragen, Praxis-Partner-Vorzugsticket)
@@ -26,6 +26,11 @@
   - [x] **Modul 7:** `07_Werbung_Paid_Ads_Offline_Guerilla_und_PR.md` + Bereinigung `B2B Vertriebsplan KMU Harz.md` & `B2B Automatisierungs Agentur Preistreppe.md` (A6 Bulli-Spickzettel-Karte, Hof-Briefkasten-Spaziergang, Lokalpresse-Mitteilung, 5 Faceless Ad-Creatives, 3-€/Tag-Retargeting, Hyper-Local Ads & Google Search Ads mit 45 Negativ-Keywords)
   - [x] **Modul 8:** `08_Sales_Assets_Sandbox_und_Rechtliche_Fallstricke.md` + Bereinigung `pdfReportGenerator.js` & `initialData.js` (Mustermann Haustechnik Harz Live-Demo Sandbox, Tisch-One-Pager, 500-€-Audit-Ergebnisblatt, Altgesellen-Anti-Sabotage-Paket, § 7 UWG Ampel, Fördermittel-Falle gelöst & < 55 €/Monat Tech-Stack)
   - [x] **Modul 9:** `09_90_Tage_Roadmap_KPI_Dashboard_und_Risiko_Management.md` (90-Tage-Roadmap für 10–15h/Woche Nebenberuf, 5 Retainer-Kunden = 1.000 € MRR + ~9.500 € Cashflow, Wöchentliche 15-Minuten-Scorecard, 5 Notfall-Pivots & Skalierungs-Kompass)
+  - [x] **Modul 10:** `10_Automatisierte_Nurturing_und_FollowUp_Strecken.md` (5-teilige Value-First E-Mail-Serie nach Lead-Magnet + 3 WhatsApp/SMS-Follow-up-Vorlagen + Make.com-Architektur)
+  - [x] **Modul 11:** `11_Gewerke_Spezifische_Tiefen_Editionen.md` (SHK, Elektro und Dachdecker/Zimmerei Fachsprache, Telefon-Opener & Einwandbehandlung)
+  - [x] **Modul 12:** `12_50_Betriebe_Recherche_und_Willkommens_Box.md` (50-Betriebe-Qualifizierung für Goslar/Harz + Haptische Onboarding-Box mit Alu-Klemmbrett & Harzer Kaffee)
+  - [x] **Modul 13:** `13_Innungs_und_Banken_Kooperationspaket.md` (20-Folien-Präsentationsleitfaden für Innungsabende + Bankberater-Kreditschutz-Briefing)
+  - [x] **Modul 14:** In-App Software-Feature `src/components/WeeklyScorecardWidget.jsx` (Interaktives Wochen-Scorecard-Widget im Dashboard mit Input/Output-KPIs, Wochen-Ampel & localStorage-Persistierung)
 
 - [x] **🔥 [Coaching-Rollout Dennis Kauss] Himmel-Hölle-Prinzip, 5 FAB-Statements & 3 Website-Versionen (`WebsiteView.jsx`, `websiteContent.js`, `CoachingLivePortal.jsx`, `CustomerDiscoveryView.jsx`, `DOCS/`):**
   - *3-Versionen-Architektur ohne Datenverlust:* **Version 1 (Original)** bleibt zu 100 % unverändert; **Version 2 (Beleg-Fokus + Himmel/Hölle & FAB)** kombiniert den spitzen Beleg-Einstieg mit den 4 Himmel-Hölle-Ketten, den 5 FAB-Statements und Ausbau-Modulen; **Version 3 (3-Säulen Coaching-Edition)** präsentiert alle 3 Säulen (Proaktive Kundenkommunikation, Revisionssichere Verwaltung, DATEV-Konvertierung & schneller Jahresabschluss) gleichberechtigt.
