@@ -32,3 +32,8 @@ leads_master_harz*.csv
 # Desktop sticky notes local user storage
 desktop-widget/notes-data.json
 
+# Android build binaries
+*.apk
+android/app/build/
+
+
