@@ -1,0 +1,50 @@
+{
+  "type": "function",
+  "function": {
+    "name": "dispatch_harzblitz_job",
+    "description": "Erfasst und übermittelt einen neuen Notdienst- oder Serviceauftrag für die HarzBlitz Notdienst & Gebäudetechnik GmbH an das Einsatz-Backend (n8n & Supabase) und stößt den automatischen WhatsApp-Foto-Dispatch an.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "customer_name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Vollständiger Name des Anrufers bzw. Auftraggebers (Vor- und Nachname, z. B. 'Marc Meyer')."
+        },
+        "customer_phone": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^\\+?[0-9\\s\\-()\\/]{7,25}$",
+          "description": "Erreichbare Telefonnummer für den Rückruf des Notdienst-Meisters und für den Versand der WhatsApp-Fotoanforderung (z. B. '+491701234567' oder '05321-778890')."
+        },
+        "address": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Vollständige Einsatzadresse im Großraum Goslar / Landkreis Harz (Straße, Hausnummer, PLZ und Ort, z. B. 'Nordhäuser Str. 12, 38667 Bad Harzburg')."
+        },
+        "issue_description": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Detaillierte Schilderung des Schadens, der betroffenen Räume und bereits erfolgter Sofortmaßnahmen (z. B. 'Rohrbruch im Waschkeller, ca. 10 cm Wasserstand, Hauptwasserhahn abgedreht')."
+        },
+        "urgency": {
+          "type": "string",
+          "enum": [
+            "NOTFALL",
+            "DRINGEND",
+            "STANDARD"
+          ],
+          "description": "Dringlichkeitsstufe des Einsatzes: 'NOTFALL' (akute Sachbeschädigung oder Gefahr im Verzug, z. B. Überflutung), 'DRINGEND' (schwere Beeinträchtigung ohne akute Lebensgefahr), 'STANDARD' (reguläre Instandsetzung oder Wartung)."
+        }
+      },
+      "required": [
+        "customer_name",
+        "customer_phone",
+        "address",
+        "issue_description",
+        "urgency"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

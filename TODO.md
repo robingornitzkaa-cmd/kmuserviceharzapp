@@ -15,6 +15,13 @@
     - [ ] `GC-02` GoClean B2B-Kalkulator & automatische Rechnungserstellung (MEDIUM / P1)
 
 
+- [x] **⚡ [HarzBlitz Automatisierungskaskade] Front- & Back-Office Pipeline für HarzBlitz Notdienst & Gebäudetechnik GmbH (`harzblitz_automation/`):**
+  - [x] **R1 (Vapi Voice-Assistentin "Anna"):** System-Prompt für 05321-778890, Deeskalation, lebensrettende Sicherheitswarnung, transparente Konditionen, RFC-konformes `dispatch_harzblitz_job` JSON-Schema (`vapi/system_prompt_anna.md`, `vapi/tool_dispatch_harzblitz_job.json`).
+  - [x] **R2 (WhatsApp Foto-Dispatching):** Genehmigungsfähiges deutsches WhatsApp Business Template mit 5s Verzögerung & barrierefreier Fotoaufforderung (`whatsapp/360dialog_template_de.json`).
+  - [x] **R3 (Supabase PostgreSQL & Storage):** DDL-Schema `harzblitz_orders` mit UUIDv4, CHECK-Constraints, RLS-Policies und Storage-Bucket `harzblitz-damage-photos` (`supabase/01_schema_harzblitz_orders.sql`, `supabase/02_storage_harzblitz_damage_photos.sql`).
+  - [x] **R4 (n8n Workflow & Lexoffice/DATEV):** Importierbare n8n Workflow JSON (`n8n/harzblitz_e2e_workflow.json`), Kontaktanlage via Telefonnummer, Rechnungsentwurf (`voucherStatus: "draft"`, 211,50 € netto / 251,69 € brutto, 19% MwSt.) und DATEV Erlöskonto 8400.
+  - [x] **R5 (Testing & Walkthrough):** 3-Minuten Testdialog Herr Frank Meyer Bad Harzburg (`tests/simulated_dialog_meyer.md`), autonomes E2E-Prüfskript mit Exit Code 0 (`tests/e2e_simulation_test.py`), Schritt-für-Schritt Inbetriebnahmeanleitung (`docs/WALKTHROUGH.md`) und Gesamtübersicht (`README.md`).
+
 - [x] **🚀 [14-Module B2B Marketing- & Wachstums-System] Iterativer Co-Pilot-Ausbau (`marketing_masterplan/`):**
   - [x] `00_MARKETING_LOGBUCH_UND_STATUS.md` (Workspace-Scan, Konflikt-Report & Live-Tracker aller 14 Module)
   - [x] **Modul 1:** `01_Kaufpsychologie_Positionierung_und_Messaging.md` (Entscheider-Dreieck, Wording-Bible „Büro-Wochenende“, Doppelte Sicherheits-Garantie, 10 Einwände)

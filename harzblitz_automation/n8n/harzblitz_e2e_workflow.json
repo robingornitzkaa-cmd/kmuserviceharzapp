@@ -1,0 +1,476 @@
+{
+  "name": "HarzBlitz Notdienst & Gebäudetechnik - E2E Kaskade",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "dispatch-harzblitz-job",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "10000000-0000-4000-8000-000000000001",
+      "name": "Vapi Inbound Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [100, 200]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nconst body = item.body || item;\nconst message = body.message || {};\nconst functionCall = message.functionCall || (message.toolCalls && message.toolCalls[0] ? message.toolCalls[0].function : {}) || {};\nlet params = functionCall.parameters || functionCall.arguments || body;\n\nif (typeof params === 'string') {\n    try { params = JSON.parse(params); } catch (e) {}\n}\n\nlet customerPhone = String(params.customer_phone || params.phone || '').trim();\ncustomerPhone = customerPhone.replace(/[^0-9+]/g, '');\nif (customerPhone.startsWith('0')) {\n    customerPhone = '+49' + customerPhone.substring(1);\n} else if (!customerPhone.startsWith('+') && customerPhone.startsWith('49')) {\n    customerPhone = '+' + customerPhone;\n}\n\nlet customerName = String(params.customer_name || 'Unbekannter Anrufer').trim();\nlet address = String(params.address || 'Großraum Goslar / Harz').trim();\nlet issueDescription = String(params.issue_description || 'Notdienst-Einsatz').trim();\nlet urgency = String(params.urgency || 'NOTFALL').toUpperCase();\nif (!['NOTFALL', 'DRINGEND', 'STANDARD'].includes(urgency)) {\n    urgency = 'NOTFALL';\n}\n\nreturn [{\n    json: {\n        customer_name: customerName,\n        customer_phone: customerPhone,\n        address: address,\n        issue_description: issueDescription,\n        urgency: urgency,\n        status: 'NEU'\n    }\n}];"
+      },
+      "id": "10000000-0000-4000-8000-000000000002",
+      "name": "Normalize Vapi Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [320, 200]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.SUPABASE_URL }}/rest/v1/harzblitz_orders",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "={{ $env.SUPABASE_ANON_KEY }}" },
+            { "name": "Authorization", "value": "=Bearer {{ $env.SUPABASE_SERVICE_ROLE_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" },
+            { "name": "Prefer", "value": "return=representation" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ customer_name: $json.customer_name, customer_phone: $json.customer_phone, address: $json.address, issue_description: $json.issue_description, urgency: $json.urgency, status: 'NEU' }) }}"
+      },
+      "id": "10000000-0000-4000-8000-000000000003",
+      "name": "Supabase Insert Order",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [540, 200]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"dispatched\",\n  \"order_id\": \"{{ $json.id || $json[0].id }}\",\n  \"whatsapp_dispatched\": true,\n  \"message\": \"Notdienst-Auftrag erfolgreich angelegt und an Meister Marc Schneider übermittelt.\"\n}",
+        "options": {}
+      },
+      "id": "10000000-0000-4000-8000-000000000004",
+      "name": "Respond to Vapi Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [760, 100]
+    },
+    {
+      "parameters": {
+        "amount": 5,
+        "unit": "seconds"
+      },
+      "id": "10000000-0000-4000-8000-000000000005",
+      "name": "Wait 5 Seconds",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [760, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://waba-v2.360dialog.io/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "D360-API-KEY", "value": "={{ $env.D360_API_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"recipient_type\": \"individual\",\n  \"to\": \"{{ ($json.customer_phone || $json[0].customer_phone || $('Normalize Vapi Payload').item.json.customer_phone).replace(/[^0-9]/g, '') }}\",\n  \"type\": \"template\",\n  \"template\": {\n    \"name\": \"harzblitz_notdienst_foto_anforderung\",\n    \"language\": { \"code\": \"de\" },\n    \"components\": [\n      {\n        \"type\": \"body\",\n        \"parameters\": [\n          { \"type\": \"text\", \"text\": \"{{ $json.customer_name || $json[0].customer_name || $('Normalize Vapi Payload').item.json.customer_name }}\" },\n          { \"type\": \"text\", \"text\": \"{{ $json.address || $json[0].address || $('Normalize Vapi Payload').item.json.address }}\" }\n        ]\n      }\n    ]\n  }\n}"
+      },
+      "id": "10000000-0000-4000-8000-000000000006",
+      "name": "360dialog WhatsApp Dispatch",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [980, 300]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "whatsapp-media-inbound",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "20000000-0000-4000-8000-000000000001",
+      "name": "WhatsApp Media Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [100, 600]
+    },
+    {
+      "parameters": {
+        "jsCode": "const payload = $input.first().json.body || $input.first().json;\nconst entry = (payload.entry && payload.entry[0]) || {};\nconst changes = (entry.changes && entry.changes[0]) || {};\nconst val = changes.value || {};\nconst messages = val.messages || [];\n\nif (!messages.length) { return []; }\n\nconst msg = messages[0];\nconst msgType = msg.type;\nif (msgType !== 'image' && msgType !== 'video') { return []; }\n\nconst mediaObj = msg[msgType];\nconst rawPhone = msg.from || (val.contacts && val.contacts[0] ? val.contacts[0].wa_id : '');\nlet phoneSuffix = rawPhone.replace(/[^0-9]/g, '');\nif (phoneSuffix.length > 8) { phoneSuffix = phoneSuffix.slice(-8); }\n\nreturn [{\n    json: {\n        sender_phone: rawPhone,\n        phone_suffix: phoneSuffix,\n        media_id: mediaObj.id,\n        mime_type: mediaObj.mime_type || 'image/jpeg',\n        caption: mediaObj.caption || ''\n    }\n}];"
+      },
+      "id": "20000000-0000-4000-8000-000000000002",
+      "name": "Parse Inbound Media",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [320, 600]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.SUPABASE_URL }}/rest/v1/harzblitz_orders?customer_phone=like.*{{ $json.phone_suffix }}*&status=in.(NEU,IN_ARBEIT)&order=created_at.desc&limit=1",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "={{ $env.SUPABASE_ANON_KEY }}" },
+            { "name": "Authorization", "value": "=Bearer {{ $env.SUPABASE_SERVICE_ROLE_KEY }}" }
+          ]
+        }
+      },
+      "id": "20000000-0000-4000-8000-000000000003",
+      "name": "Find Active Order in Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [540, 600]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=https://waba-v2.360dialog.io/v1/media/{{ $('Parse Inbound Media').item.json.media_id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "D360-API-KEY", "value": "={{ $env.D360_API_KEY }}" }
+          ]
+        }
+      },
+      "id": "20000000-0000-4000-8000-000000000004",
+      "name": "Fetch 360dialog Media URL",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [760, 600]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $json.url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "D360-API-KEY", "value": "={{ $env.D360_API_KEY }}" }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "id": "20000000-0000-4000-8000-000000000005",
+      "name": "Download Media Binary",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [980, 600]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.SUPABASE_URL }}/storage/v1/object/harzblitz-damage-photos/{{ $('Find Active Order in Supabase').item.json[0]?.id || $('Find Active Order in Supabase').item.json?.id || 'unassigned' }}/{{ $('Parse Inbound Media').item.json.media_id }}.jpg",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.SUPABASE_SERVICE_ROLE_KEY }}" },
+            { "name": "Content-Type", "value": "image/jpeg" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "data"
+      },
+      "id": "20000000-0000-4000-8000-000000000006",
+      "name": "Upload to Supabase Storage",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1200, 600]
+    },
+    {
+      "parameters": {
+        "jsCode": "const activeOrderData = $('Find Active Order in Supabase').item.json;\nconst order = (Array.isArray(activeOrderData) && activeOrderData.length > 0) ? activeOrderData[0] : (activeOrderData && activeOrderData.id ? activeOrderData : null);\n\nif (!order || !order.id) {\n    return [{\n        json: {\n            orderId: null,\n            unassigned: true,\n            updated_photo_urls: [],\n            new_photo_url: null,\n            warning: 'No active order found in Supabase for sender'\n        }\n    }];\n}\n\nconst mediaMeta = $('Parse Inbound Media').item.json || {};\nconst orderId = order.id;\nconst supabaseUrl = $env.SUPABASE_URL || 'https://supabase-project.supabase.co';\nconst photoUrl = `${supabaseUrl}/storage/v1/object/harzblitz-damage-photos/${orderId}/${mediaMeta.media_id || 'unknown'}.jpg`;\n\nconst currentPhotos = Array.isArray(order.photo_urls) ? [...order.photo_urls] : [];\nif (photoUrl && !currentPhotos.includes(photoUrl)) {\n    currentPhotos.push(photoUrl);\n}\n\nreturn [{\n    json: {\n        orderId: orderId,\n        updated_photo_urls: currentPhotos,\n        new_photo_url: photoUrl\n    }\n}];"
+      },
+      "id": "20000000-0000-4000-8000-000000000007",
+      "name": "Prepare Photo URLs Update",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1420, 600]
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "={{ $env.SUPABASE_URL }}/rest/v1/harzblitz_orders?id=eq.{{ $json.orderId }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "={{ $env.SUPABASE_ANON_KEY }}" },
+            { "name": "Authorization", "value": "=Bearer {{ $env.SUPABASE_SERVICE_ROLE_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" },
+            { "name": "Prefer", "value": "return=representation" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"photo_urls\": {{ JSON.stringify($json.updated_photo_urls) }}\n}"
+      },
+      "id": "20000000-0000-4000-8000-000000000008",
+      "name": "Update Order in Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1640, 600]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "harzblitz-order-erledigt",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "30000000-0000-4000-8000-000000000001",
+      "name": "Order Erledigt Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [100, 1000]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=https://api.lexware.io/v1/contacts?name={{ encodeURIComponent($json.customer_name || $json.body.customer_name) }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.LEXOFFICE_API_KEY }}" },
+            { "name": "Accept", "value": "application/json" }
+          ]
+        }
+      },
+      "id": "30000000-0000-4000-8000-000000000002",
+      "name": "Lexoffice Search Contact",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [320, 1000]
+    },
+    {
+      "parameters": {
+        "jsCode": "const searchResult = $input.first().json;\nconst orderData = $('Order Erledigt Webhook').first().json.body || $('Order Erledigt Webhook').first().json;\nconst contacts = searchResult.content || [];\n\nlet matchedContactId = null;\nif (contacts.length > 0) {\n    matchedContactId = contacts[0].id;\n}\n\nconst fullName = (orderData.customer_name || 'Kunde').trim();\nconst nameParts = fullName.split(' ');\nconst firstName = nameParts.length > 1 ? nameParts.slice(0, -1).join(' ') : '';\nconst lastName = nameParts.length > 1 ? nameParts.slice(-1)[0] : fullName;\n\nconst rawAddress = (orderData.address || '').trim();\nlet street = rawAddress;\nlet zip = '38640';\nlet city = 'Goslar';\n\nconst zipMatch = rawAddress.match(/(\\d{5})\\s+([^,]+)/);\nif (zipMatch) {\n    zip = zipMatch[1];\n    city = zipMatch[2].trim();\n    street = rawAddress.split(zipMatch[0])[0].replace(/,$/, '').trim();\n}\n\nconst contactPayload = {\n    version: 0,\n    roles: { customer: {} },\n    person: {\n        salutation: 'Herr',\n        firstName: firstName || 'Herr',\n        lastName: lastName\n    },\n    phoneNumbers: {\n        mobile: [orderData.customer_phone || '+495321000000']\n    },\n    addresses: {\n        billing: [\n            {\n                street: street || 'Musterstraße 1',\n                zip: zip,\n                city: city,\n                countryCode: 'DE'\n            }\n        ]\n    }\n};\n\nreturn [{\n    json: {\n        needsCreate: !matchedContactId,\n        contactId: matchedContactId,\n        contactPayload: contactPayload,\n        orderData: orderData\n    }\n}];"
+      },
+      "id": "30000000-0000-4000-8000-000000000003",
+      "name": "Evaluate Contact Match",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [540, 1000]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+          "conditions": [
+            {
+              "id": "cond-needs-create",
+              "leftValue": "={{ $json.needsCreate }}",
+              "rightValue": true,
+              "operator": { "type": "boolean", "operation": "equals" }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "30000000-0000-4000-8000-000000000004",
+      "name": "If Contact Missing",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [760, 1000]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.lexware.io/v1/contacts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.LEXOFFICE_API_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" },
+            { "name": "Accept", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.contactPayload) }}"
+      },
+      "id": "30000000-0000-4000-8000-000000000005",
+      "name": "Lexoffice Create Contact",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [980, 920]
+    },
+    {
+      "parameters": {
+        "jsCode": "const prevItem = $input.first().json;\nconst evalNode = $('Evaluate Contact Match').first().json;\nconst contactId = prevItem.id || evalNode.contactId;\nconst orderData = evalNode.orderData || {};\n\nconst now = new Date();\nconst todayIso = now.toISOString().split('T')[0] + 'T00:00:00.000+01:00';\n\nconst netHours = 142.50;\nconst netPauschale = 69.00;\nconst totalNet = 211.50;\nconst totalTax = 40.19;\nconst totalGross = 251.69;\n\nconst invoicePayload = {\n    voucherDate: todayIso,\n    voucherStatus: \"draft\",\n    address: {\n        contactId: contactId\n    },\n    title: 'Rechnung (Notdienst-Einsatz)',\n    introduction: `Sehr geehrte Damen und Herren,\\nfür den Notdienst-Einsatz durch HarzBlitz Notdienst & Gebäudetechnik GmbH am Objekt ${orderData.address || 'vor Ort'} stellen wir Ihnen folgende Positionen in Rechnung:`,\n    remark: `HarzBlitz Notdienst-Auftrag ${orderData.id || ''} - Einsatzort: ${orderData.address || 'Großraum Goslar'} - DATEV Erlöskonto 8400 (19% USt) - Freigabe Meister Marc Schneider erforderlich.\\nZahlbar rein netto innerhalb von 14 Tagen. Bei Rückfragen: 05321-778890.`,\n    lineItems: [\n        {\n            type: 'custom',\n            name: 'Notdienst-Einsatz Rohrreinigung',\n            description: `Notdienst-Einsatz vor Ort (${orderData.issue_description || 'Störungsbeseitigung'}), Fachhandwerker-Arbeitszeit 1,5 Std. à 95,00 € zzgl. MwSt.`,\n            quantity: 1.5,\n            unitName: 'Stunden',\n            unitPrice: {\n                currency: 'EUR',\n                netAmount: 95.00,\n                taxRatePercentage: 19\n            }\n        },\n        {\n            type: 'custom',\n            name: 'Notdienstpauschale',\n            description: 'Bereitstellung Einsatzfahrzeug, Notdienst-Ausrüstung und 24/7 Notdienst-Einsatzpauschale',\n            quantity: 1,\n            unitName: 'Pauschale',\n            unitPrice: {\n                currency: 'EUR',\n                netAmount: 69.00,\n                taxRatePercentage: 19\n            }\n        }\n    ],\n    totalPrice: {\n        currency: 'EUR',\n        totalNetAmount: totalNet,\n        totalGrossAmount: totalGross,\n        totalTaxAmount: totalTax\n    },\n    taxAmounts: [\n        {\n            taxRatePercentage: 19,\n            taxAmount: totalTax,\n            netAmount: totalNet\n        }\n    ],\n    taxConditions: {\n        taxType: 'net'\n    },\n    shippingConditions: {\n        shippingDate: todayIso,\n        shippingType: 'service'\n    }\n};\n\nreturn [{\n    json: {\n        invoicePayload: invoicePayload,\n        orderId: orderData.id,\n        contactId: contactId\n    }\n}];"
+      },
+      "id": "30000000-0000-4000-8000-000000000006",
+      "name": "Build Lexoffice Invoice Draft Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1200, 1000]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.lexware.io/v1/invoices",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.LEXOFFICE_API_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" },
+            { "name": "Accept", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.invoicePayload) }}"
+      },
+      "id": "30000000-0000-4000-8000-000000000007",
+      "name": "Lexoffice Post Invoice Draft",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1420, 1000]
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "={{ $env.SUPABASE_URL }}/rest/v1/harzblitz_orders?id=eq.{{ $('Build Lexoffice Invoice Draft Payload').item.json.orderId }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "={{ $env.SUPABASE_ANON_KEY }}" },
+            { "name": "Authorization", "value": "=Bearer {{ $env.SUPABASE_SERVICE_ROLE_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" },
+            { "name": "Prefer", "value": "return=representation" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"status\": \"ERLEDIGT\",\n  \"lexoffice_id\": \"{{ $json.id }}\"\n}"
+      },
+      "id": "30000000-0000-4000-8000-000000000008",
+      "name": "Supabase Save Invoice Reference",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1640, 1000]
+    }
+  ],
+  "connections": {
+    "Vapi Inbound Webhook": {
+      "main": [
+        [{ "node": "Normalize Vapi Payload", "type": "main", "index": 0 }]
+      ]
+    },
+    "Normalize Vapi Payload": {
+      "main": [
+        [{ "node": "Supabase Insert Order", "type": "main", "index": 0 }]
+      ]
+    },
+    "Supabase Insert Order": {
+      "main": [
+        [
+          { "node": "Respond to Vapi Webhook", "type": "main", "index": 0 },
+          { "node": "Wait 5 Seconds", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Wait 5 Seconds": {
+      "main": [
+        [{ "node": "360dialog WhatsApp Dispatch", "type": "main", "index": 0 }]
+      ]
+    },
+    "WhatsApp Media Webhook": {
+      "main": [
+        [{ "node": "Parse Inbound Media", "type": "main", "index": 0 }]
+      ]
+    },
+    "Parse Inbound Media": {
+      "main": [
+        [{ "node": "Find Active Order in Supabase", "type": "main", "index": 0 }]
+      ]
+    },
+    "Find Active Order in Supabase": {
+      "main": [
+        [{ "node": "Fetch 360dialog Media URL", "type": "main", "index": 0 }]
+      ]
+    },
+    "Fetch 360dialog Media URL": {
+      "main": [
+        [{ "node": "Download Media Binary", "type": "main", "index": 0 }]
+      ]
+    },
+    "Download Media Binary": {
+      "main": [
+        [{ "node": "Upload to Supabase Storage", "type": "main", "index": 0 }]
+      ]
+    },
+    "Upload to Supabase Storage": {
+      "main": [
+        [{ "node": "Prepare Photo URLs Update", "type": "main", "index": 0 }]
+      ]
+    },
+    "Prepare Photo URLs Update": {
+      "main": [
+        [{ "node": "Update Order in Supabase", "type": "main", "index": 0 }]
+      ]
+    },
+    "Order Erledigt Webhook": {
+      "main": [
+        [{ "node": "Lexoffice Search Contact", "type": "main", "index": 0 }]
+      ]
+    },
+    "Lexoffice Search Contact": {
+      "main": [
+        [{ "node": "Evaluate Contact Match", "type": "main", "index": 0 }]
+      ]
+    },
+    "Evaluate Contact Match": {
+      "main": [
+        [{ "node": "If Contact Missing", "type": "main", "index": 0 }]
+      ]
+    },
+    "If Contact Missing": {
+      "main": [
+        [{ "node": "Lexoffice Create Contact", "type": "main", "index": 0 }],
+        [{ "node": "Build Lexoffice Invoice Draft Payload", "type": "main", "index": 0 }]
+      ]
+    },
+    "Lexoffice Create Contact": {
+      "main": [
+        [{ "node": "Build Lexoffice Invoice Draft Payload", "type": "main", "index": 0 }]
+      ]
+    },
+    "Build Lexoffice Invoice Draft Payload": {
+      "main": [
+        [{ "node": "Lexoffice Post Invoice Draft", "type": "main", "index": 0 }]
+      ]
+    },
+    "Lexoffice Post Invoice Draft": {
+      "main": [
+        [{ "node": "Supabase Save Invoice Reference", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f9b8c2d1-e3a4-4a5b-b6c7-d8e9f0a1b2c3",
+  "id": "harzblitz-e2e-workflow",
+  "tags": [
+    { "name": "HarzBlitz", "id": "harzblitz-tag" },
+    { "name": "Emergency", "id": "emergency-tag" }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "name": "harzblitz_notdienst_foto_anforderung",
+  "category": "UTILITY",
+  "language": "de",
+  "components": [
+    {
+      "type": "HEADER",
+      "format": "TEXT",
+      "text": "HarzBlitz 24/7 Notdienst Goslar"
+    },
+    {
+      "type": "BODY",
+      "text": "Guten Tag {{1}},\n\nIhr Notdienst-Einsatz wurde von unserer Zentrale aufgenommen (Einsatzort: {{2}}).\n\nDamit Meister Marc Schneider vor der Abfahrt sofort die passenden Ersatzteile, Dichtungen und Spezialpumpen einladen kann:\n\n📸 Bitte senden Sie uns jetzt 1 bis 3 Fotos oder ein kurzes Video der Schadensstelle direkt als Antwort hier im Chat.\n\nUnser Team ist bereits in der Vorbereitung für Sie!",
+      "example": {
+        "body_text": [
+          [
+            "Herr Meyer",
+            "Nordhäuser Str. 12, Bad Harzburg"
+          ]
+        ]
+      }
+    },
+    {
+      "type": "FOOTER",
+      "text": "HarzBlitz Notdienst & Gebäudetechnik GmbH • Tel. 05321-778890"
+    },
+    {
+      "type": "BUTTONS",
+      "buttons": [
+        {
+          "type": "PHONE_NUMBER",
+          "text": "Zentrale anrufen",
+          "phone_number": "+495321778890"
+        }
+      ]
+    }
+  ]
+}

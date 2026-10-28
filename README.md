@@ -115,6 +115,18 @@ Die Anwendung zeichnet sich durch ein futuristisches "Glassmorphic Dark Theme" a
   - Bestätigung von 10/10 freien regionalen `.de`-Domains und 0 % Überschneidung mit Vorrunden.
   - Didaktische Lektionen in `DOCS/KI_Naming_Methoden_und_Workflows.md` (Methode 3 & 8) zu den physikalischen Grenzen von BPE-Tokenizern bei Silben-/Buchstabenzählung und DIN-31634-Zustandsregeln.
 
+### 0f. ⚡ HarzBlitz Notdienst & Gebäudetechnik Automatisierungskaskade -- *NEU!*
+- **🚨 Schlüsselfertige Front- & Back-Office Pipeline (`harzblitz_automation/`):**
+  - **📞 Voice-KI „Anna von HarzBlitz“ (05321-778890):** 24/7 Notrufannahme via Vapi.ai, Deeskalation bei Rohrbruch/Wasserschaden, lebensrettende Stromwarnung, transparente Konditionen (kein Festpreis-Risiko) und RFC-konformer Function Call `dispatch_harzblitz_job` (`vapi/system_prompt_anna.md`, `vapi/tool_dispatch_harzblitz_job.json`).
+  - **💬 360dialog WhatsApp Foto-Dispatching:** Automatisiertes deutsches WhatsApp Business Template mit exakt 5 Sekunden Verzögerung zur barrierefreien Anforderung von 1–3 Schadensfotos direkt im Chat (`whatsapp/360dialog_template_de.json`).
+  - **🗄️ Supabase PostgreSQL & Storage Frankfurt:** Tabelle `harzblitz_orders` mit UUIDv4-Schlüsseln, Dringlichkeits- und Status-CHECK-Constraints, RLS-Sicherheits-Policies und Storage-Bucket `harzblitz-damage-photos` (`supabase/01_schema_harzblitz_orders.sql`, `supabase/02_storage_harzblitz_damage_photos.sql`).
+  - **🔄 n8n E2E Workflow-Kaskade:** Direkt importierbare n8n Workflow-Spezifikation (`n8n/harzblitz_e2e_workflow.json`) zur Kopplung von Inbound-Webhook, 5s Delay, Supabase-Persistierung, Media Handler und Lexoffice-Rechnungserstellung.
+  - **💼 Lexoffice API v1 & DATEV Unternehmen online:** Automatischer Kontakt-Abgleich per Telefonnummer, Rechnungsentwurf (`voucherStatus: "draft"`, 211,50 € netto / 251,69 € brutto, 19% MwSt.) mit DATEV-Erlöskonto 8400 zur 1-Klick-Freigabe durch Meister Marc Schneider.
+  - **🧪 Autonome Test- & Walkthrough-Suite (`tests/`, `docs/`):**
+    - `tests/simulated_dialog_meyer.md`: Vollständiger 3-Minuten Notfall-Testdialog Herr Meyer (Bad Harzburg, „Keller unter Wasser“).
+    - `tests/e2e_simulation_test.py`: Eigenständiges Python E2E-Prüfskript (Standard-Bibliothek only, zero 3rd-party pip packages), das alle 5 Hops der Pipeline testet und mit 44/44 bestandenen Assertions und Exit Code 0 abschließt.
+    - `docs/WALKTHROUGH.md` & `README.md`: Detaillierte Schritt-für-Schritt Inbetriebnahmeanleitung und Architekturübersicht.
+
 ### 1. Dashboard & Life OS Gamification -- *NEU UPGRADED!*
 - **🎙️ Voice Quick-Capture Studio:** 1-Tap Sprach- und Diktierstudio mit Web Audio API Synthesizer-Feedback, Live Wave-Puls, Tag-Pills (`#Wichtig`, `#Kunde`, `#Idee`...) und 1-Klick Multi-Routing direkt in *To-Do*, *Notiz*, *Tages-Fokus*, *CRM-Lead* oder *Termin*.
 - **📦 1-Klick Data Hub & Backup Manager:** Vollständiges Export- und Import-Center für alle 7 OS-Datenmodule (CRM, Prompts, Notizen, Gamification, Tasks, Roadmap, Settings) mit Drag & Drop, Schema-Inspektor und automatischem Notfall-Snapshot vor jedem Restore.

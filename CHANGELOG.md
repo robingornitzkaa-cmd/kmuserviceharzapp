@@ -5,6 +5,31 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 
 ### Added & Strategic Rollout
+- **⚡ HarzBlitz Notdienst & Gebäudetechnik — Hybride Front- & Back-Office Automatisierungskaskade (`harzblitz_automation/`):**
+  - **📞 Voice-Assistentin „Anna von HarzBlitz“ (`harzblitz_automation/vapi/`):**
+    - Produktionsfertiger System-Prompt für die Goslarer Festnetznummer `05321-778890` mit empathischer Deeskalation bei Notfällen, lebensrettender Sicherheitswarnung (Stromschlaggefahr im Wasser, Absperrhahn) und verbindlicher WhatsApp-Überleitungsformel.
+    - RFC-konformes OpenAPI/JSON-Schema für den Vapi Function Call `dispatch_harzblitz_job` mit Typ-, MinLength- und Pattern-Validierung sowie Dringlichkeits-Enum (`NOTFALL`, `DRINGEND`, `STANDARD`).
+  - **💬 WhatsApp Foto-Dispatching via 360dialog (`harzblitz_automation/whatsapp/`):**
+    - Genehmigungsfähiges WhatsApp Business Template `harzblitz_notdienst_foto_anforderung` (Kategorie UTILITY, Sprache DE) mit parametrisierten Textbausteinen.
+    - Präziser 5-Sekunden-Dispatch-Timer nach Gesprächsende zur barrierefreien Anforderung von 1–3 Schadensfotos/Videos direkt im WhatsApp-Chat.
+    - Inbound-Media-Handler zur automatischen Übernahme empfangener Fotos in den Cloud Storage.
+  - **🗄️ Supabase PostgreSQL & Cloud Storage Frankfurt (`harzblitz_automation/supabase/`):**
+    - DDL-Schema für `harzblitz_orders` mit automatischer UUIDv4-Generierung (`gen_random_uuid()`), Status- und Urgency-CHECK-Constraints sowie ISO-8601 Zeitstempeln.
+    - Row Level Security (RLS) mit Service-Role-Bypass und geschützten API-Leserechten.
+    - Supabase Storage Bucket `harzblitz-damage-photos` mit Mime-Type- und Größenbeschränkung zur sicheren Ablage der Schadensbilder.
+  - **🔄 n8n End-to-End Workflow-Kaskade (`harzblitz_automation/n8n/`):**
+    - Vollständige, direkt importierbare n8n Workflow-Spezifikation (`harzblitz_e2e_workflow.json`) zur nahtlosen Kopplung von Vapi Inbound-Webhook, Supabase-Persistierung, 5s Delay, WhatsApp Dispatching, Media Handler und Lexoffice Trigger.
+    - Zustandsautomat: Strikte Blockierung von Abrechnungsschritten im Status `NEU` und `IN_ARBEIT`; Triggerung der Rechnungsstellung erst bei meisterlichem Statuswechsel auf `ERLEDIGT`.
+  - **💼 Lexoffice API v1 & DATEV Unternehmen online Schnittstelle:**
+    - Automatisierte Kontaktermittlung bzw. Neuanlage via `POST /v1/contacts` anhand der Kundenmobilnummer.
+    - Rechnungsentwurfs-Payload mit zwingendem Status `voucherStatus: "draft"` (kein unkontrollierter Versand ohne Meisterfreigabe).
+    - Mathematisch exakte Netto/Brutto-Kalkulation: 1,5 Std. Facharbeit à 95,00 € (142,50 €) + Notdienstpauschale (69,00 €) = 211,50 € netto, 19% MwSt. = 40,19 €, 251,69 € brutto.
+    - Direkte buchhalterische Zuordnung zum Standard-DATEV-Erlöskonto 8400 (19% USt) im Buchungsvermerk für die 1-Klick-Freigabe durch Meister Marc Schneider.
+  - **🧪 3-Minuten Testdialog & Autonomes Python E2E-Prüfskript (`harzblitz_automation/tests/`):**
+    - `simulated_dialog_meyer.md`: Vollständiger, 180-sekündiger Testdialog mit Herrn Frank Meyer aus Bad Harzburg („Keller unter Wasser“, akuter Rohrbruch nachts um 22:15 Uhr) über 4 Phasen.
+    - `e2e_simulation_test.py`: Vollständig eigenständiges, installationsfreies E2E-Prüfskript strictly Python Standard Library (zero 3rd-party pip packages), das alle 5 Hops der Pipeline automatisiert validiert und mit 44/44 bestandenen Checks und Exit Code 0 abschließt.
+  - **📖 Walkthrough-Leitfaden & System-Dokumentation (`harzblitz_automation/docs/WALKTHROUGH.md`, `harzblitz_automation/README.md`):**
+    - Umfassende Anleitung zur Einrichtung von Vapi, Supabase, 360dialog, n8n und Lexoffice mit Umgebungsvariablen-Raster, ASCII-Architekturdiagramm und Fehlersuch-Matrix im Mentoren-Stil.
 - **🚀 Marketing-Tiefenerweiterung (Module 10 bis 14) & In-App Wochen-Scorecard (`marketing_masterplan/`, `src/components/WeeklyScorecardWidget.jsx`, `src/test/features/weeklyScorecardWidget.test.jsx`):**
   - **Modul 10 (`10_Automatisierte_Nurturing_und_FollowUp_Strecken.md`):**
     - 5-teilige E-Mail-Nurturing-Sequenz nach Download des Lead-Magneten („5-Minuten Büro-Stress-Test“) ohne Verkaufskeule (Report-Auslieferung, 3 E-Rechnungs-Mythen, Altgeselle Klaus 58, DATEV RDS 1.0 Entlastung der Steuerkanzlei, 10-Stunden-Sicherheits-Garantie).

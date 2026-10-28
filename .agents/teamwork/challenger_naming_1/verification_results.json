@@ -1,0 +1,315 @@
+﻿{
+    "Timestamp":  "2026-10-12T14:02:43.5191526+02:00",
+    "OverallVerdict":  "APPROVE",
+    "Test1_TableIntegrity":  true,
+    "Test2_ZeroBuzzwords":  true,
+    "Test3_ClaimWordCount":  true,
+    "Test4_DnsAvailability":  true,
+    "Test5_CompetitorCollision":  true,
+    "TableRows":  [
+                      {
+                          "RowIndex":  1,
+                          "Kernname":  "Prozesswerk",
+                          "RegionalVariante":  "Prozesswerk Harz",
+                          "Kategorie":  "Handwerk / Pragmatismus",
+                          "Claim":  "Abläufe im Griff. Feste Preise.",
+                          "Begruendung":  "Verbindet handwerkliche Werkstatt-Solidität mit kaufmännischer Ordnung. Meister assoziieren sofort Wertarbeit und greifbare Ergebnisse statt Berater-Theorie.",
+                          "Domain":  "prozesswerk-harz.de"
+                      },
+                      {
+                          "RowIndex":  2,
+                          "Kernname":  "Büroschmiede",
+                          "RegionalVariante":  "Büroschmiede Harz",
+                          "Kategorie":  "Handwerk / Pragmatismus",
+                          "Claim":  "Schluss mit dem Büro-Sonntag.",
+                          "Begruendung":  "Schmiede steht für Maßarbeit, Schweiß und ehrliche Problemlösung. Nimmt dem verhassten Büro den Schrecken, indem es wie eine handwerkliche Fertigung behandelt wird.",
+                          "Domain":  "bueroschmiede-harz.de"
+                      },
+                      {
+                          "RowIndex":  3,
+                          "Kernname":  "Ablaufwerk",
+                          "RegionalVariante":  "Ablaufwerk Harz",
+                          "Kategorie":  "Handwerk / Pragmatismus",
+                          "Claim":  "Abläufe, die einfach laufen.",
+                          "Begruendung":  "Spricht direkt das Kernziel an: reibungslose Betriebsabläufe ohne Reibungsverluste. Wirkt kaufmännisch fundiert, bodenständig und unaufgeregt verlässlich.",
+                          "Domain":  "ablaufwerk-harz.de"
+                      },
+                      {
+                          "RowIndex":  4,
+                          "Kernname":  "Klarzeit",
+                          "RegionalVariante":  "Klarzeit Harz",
+                          "Kategorie":  "Nutzen / Ergebnis",
+                          "Claim":  "Ihr Büro im Reinen.",
+                          "Begruendung":  "Adressiert die doppelte Sehnsucht: Ordnung im Belegchaos („Klarheit“) und die Rückgewinnung unbezahlter Lebenszeit („Zeit“). Für Steuerberater ein Inbegriff von GoBD-Sauberkeit.",
+                          "Domain":  "klarzeit-harz.de"
+                      },
+                      {
+                          "RowIndex":  5,
+                          "Kernname":  "Ruhetakt",
+                          "RegionalVariante":  "Ruhetakt Harz",
+                          "Kategorie":  "Nutzen / Ergebnis",
+                          "Claim":  "Pünktlicher Feierabend. Geordnete Belege.",
+                          "Begruendung":  "Bringt Ruhe in den hektischen Betriebsalltag und beendet die Angst vor Betriebsprüfungen. Vermittelt das beruhigende Gefühl eines Motors, der perfekt schnurrt.",
+                          "Domain":  "ruhetakt-harz.de"
+                      },
+                      {
+                          "RowIndex":  6,
+                          "Kernname":  "Bürofreiraum",
+                          "RegionalVariante":  "Bürofreiraum Harz",
+                          "Kategorie":  "Nutzen / Ergebnis",
+                          "Claim":  "Mehr Feierabend. Weniger Papierkram.",
+                          "Begruendung":  "Trifft direkt den Nerv der Büroleitung und des Meisters: Schafft physischen und mentalen Freiraum durch Beseitigung von Zettelwirtschaft und Doppelarbeit.",
+                          "Domain":  "buerofreiraum-harz.de"
+                      },
+                      {
+                          "RowIndex":  7,
+                          "Kernname":  "Taktos",
+                          "RegionalVariante":  "Taktos Harz",
+                          "Kategorie":  "Kunstwort / Abstraktion",
+                          "Claim":  "Präzise Abläufe. Lautloser Betrieb.",
+                          "Begruendung":  "Klingt wie ein traditionsreiches deutsches Werkzeugfabrikat (wie Festool oder Knipex). Kurz, phonetisch hart, seriös und überregional unbegrenzt skalierbar.",
+                          "Domain":  "taktos-harz.de"
+                      },
+                      {
+                          "RowIndex":  8,
+                          "Kernname":  "Struktus",
+                          "RegionalVariante":  "Struktus Harz",
+                          "Kategorie":  "Kunstwort / Abstraktion",
+                          "Claim":  "Klare Struktur für Betriebe.",
+                          "Begruendung":  "Neologismus aus Struktur und Konstruktion. Vermittelt statische Stabilität, Revisionssicherheit und geordnete Schnittstellen ohne modische Anglizismen.",
+                          "Domain":  "struktus-harz.de"
+                      },
+                      {
+                          "RowIndex":  9,
+                          "Kernname":  "Taktwerk",
+                          "RegionalVariante":  "Taktwerk Harz",
+                          "Kategorie":  "Hybride Modelle",
+                          "Claim":  "Ihr Betrieb im Takt.",
+                          "Begruendung":  "Die perfekte Symbiose aus Nutzen (Takt = geregelter Rhythmus, Ruhe) und Handwerk (Werk = solide Substanz, Werkbank). Maximal kaufmännisch und meistertauglich.",
+                          "Domain":  "taktwerk-harz.de"
+                      },
+                      {
+                          "RowIndex":  10,
+                          "Kernname":  "Klarwerk",
+                          "RegionalVariante":  "Klarwerk Harz",
+                          "Kategorie":  "Hybride Modelle",
+                          "Claim":  "Saubere Belege. Feste Preise.",
+                          "Begruendung":  "Verschmilzt das Ergebnis (Klar = Transparenz, GoBD-Konformität, Klartext) mit handwerklicher Tatkraft (Werk). Klingt wie ein verlässliches, präzises Fachbüro.",
+                          "Domain":  "klarwerk-harz.de"
+                      }
+                  ],
+    "ClaimReports":  [
+                         {
+                             "Row":  1,
+                             "Name":  "Prozesswerk",
+                             "Claim":  "Abläufe im Griff. Feste Preise.",
+                             "WordsWhitespace":  5,
+                             "WordsRegex":  5,
+                             "Status":  "PASS (\u003c= 5)"
+                         },
+                         {
+                             "Row":  2,
+                             "Name":  "Büroschmiede",
+                             "Claim":  "Schluss mit dem Büro-Sonntag.",
+                             "WordsWhitespace":  4,
+                             "WordsRegex":  4,
+                             "Status":  "PASS (\u003c= 5)"
+                         },
+                         {
+                             "Row":  3,
+                             "Name":  "Ablaufwerk",
+                             "Claim":  "Abläufe, die einfach laufen.",
+                             "WordsWhitespace":  4,
+                             "WordsRegex":  4,
+                             "Status":  "PASS (\u003c= 5)"
+                         },
+                         {
+                             "Row":  4,
+                             "Name":  "Klarzeit",
+                             "Claim":  "Ihr Büro im Reinen.",
+                             "WordsWhitespace":  4,
+                             "WordsRegex":  4,
+                             "Status":  "PASS (\u003c= 5)"
+                         },
+                         {
+                             "Row":  5,
+                             "Name":  "Ruhetakt",
+                             "Claim":  "Pünktlicher Feierabend. Geordnete Belege.",
+                             "WordsWhitespace":  4,
+                             "WordsRegex":  4,
+                             "Status":  "PASS (\u003c= 5)"
+                         },
+                         {
+                             "Row":  6,
+                             "Name":  "Bürofreiraum",
+                             "Claim":  "Mehr Feierabend. Weniger Papierkram.",
+                             "WordsWhitespace":  4,
+                             "WordsRegex":  4,
+                             "Status":  "PASS (\u003c= 5)"
+                         },
+                         {
+                             "Row":  7,
+                             "Name":  "Taktos",
+                             "Claim":  "Präzise Abläufe. Lautloser Betrieb.",
+                             "WordsWhitespace":  4,
+                             "WordsRegex":  4,
+                             "Status":  "PASS (\u003c= 5)"
+                         },
+                         {
+                             "Row":  8,
+                             "Name":  "Struktus",
+                             "Claim":  "Klare Struktur für Betriebe.",
+                             "WordsWhitespace":  4,
+                             "WordsRegex":  4,
+                             "Status":  "PASS (\u003c= 5)"
+                         },
+                         {
+                             "Row":  9,
+                             "Name":  "Taktwerk",
+                             "Claim":  "Ihr Betrieb im Takt.",
+                             "WordsWhitespace":  4,
+                             "WordsRegex":  4,
+                             "Status":  "PASS (\u003c= 5)"
+                         },
+                         {
+                             "Row":  10,
+                             "Name":  "Klarwerk",
+                             "Claim":  "Saubere Belege. Feste Preise.",
+                             "WordsWhitespace":  4,
+                             "WordsRegex":  4,
+                             "Status":  "PASS (\u003c= 5)"
+                         }
+                     ],
+    "DnsReports":  [
+                       {
+                           "Row":  1,
+                           "Domain":  "prozesswerk-harz.de",
+                           "LocalA":  "",
+                           "GoogleA":  "",
+                           "CloudflareA":  "",
+                           "AAAA":  "",
+                           "CNAME":  "",
+                           "NS":  "",
+                           "HTTP":  false,
+                           "ActiveWebsite":  false,
+                           "Verdict":  "FREE / NO ACTIVE HOST"
+                       },
+                       {
+                           "Row":  2,
+                           "Domain":  "bueroschmiede-harz.de",
+                           "LocalA":  "",
+                           "GoogleA":  "",
+                           "CloudflareA":  "",
+                           "AAAA":  "",
+                           "CNAME":  "",
+                           "NS":  "",
+                           "HTTP":  false,
+                           "ActiveWebsite":  false,
+                           "Verdict":  "FREE / NO ACTIVE HOST"
+                       },
+                       {
+                           "Row":  3,
+                           "Domain":  "ablaufwerk-harz.de",
+                           "LocalA":  "",
+                           "GoogleA":  "",
+                           "CloudflareA":  "",
+                           "AAAA":  "",
+                           "CNAME":  "",
+                           "NS":  "",
+                           "HTTP":  false,
+                           "ActiveWebsite":  false,
+                           "Verdict":  "FREE / NO ACTIVE HOST"
+                       },
+                       {
+                           "Row":  4,
+                           "Domain":  "klarzeit-harz.de",
+                           "LocalA":  "",
+                           "GoogleA":  "",
+                           "CloudflareA":  "",
+                           "AAAA":  "",
+                           "CNAME":  "",
+                           "NS":  "",
+                           "HTTP":  false,
+                           "ActiveWebsite":  false,
+                           "Verdict":  "FREE / NO ACTIVE HOST"
+                       },
+                       {
+                           "Row":  5,
+                           "Domain":  "ruhetakt-harz.de",
+                           "LocalA":  "",
+                           "GoogleA":  "",
+                           "CloudflareA":  "",
+                           "AAAA":  "",
+                           "CNAME":  "",
+                           "NS":  "",
+                           "HTTP":  false,
+                           "ActiveWebsite":  false,
+                           "Verdict":  "FREE / NO ACTIVE HOST"
+                       },
+                       {
+                           "Row":  6,
+                           "Domain":  "buerofreiraum-harz.de",
+                           "LocalA":  "",
+                           "GoogleA":  "",
+                           "CloudflareA":  "",
+                           "AAAA":  "",
+                           "CNAME":  "",
+                           "NS":  "",
+                           "HTTP":  false,
+                           "ActiveWebsite":  false,
+                           "Verdict":  "FREE / NO ACTIVE HOST"
+                       },
+                       {
+                           "Row":  7,
+                           "Domain":  "taktos-harz.de",
+                           "LocalA":  "",
+                           "GoogleA":  "",
+                           "CloudflareA":  "",
+                           "AAAA":  "",
+                           "CNAME":  "",
+                           "NS":  "",
+                           "HTTP":  false,
+                           "ActiveWebsite":  false,
+                           "Verdict":  "FREE / NO ACTIVE HOST"
+                       },
+                       {
+                           "Row":  8,
+                           "Domain":  "struktus-harz.de",
+                           "LocalA":  "",
+                           "GoogleA":  "",
+                           "CloudflareA":  "",
+                           "AAAA":  "",
+                           "CNAME":  "",
+                           "NS":  "",
+                           "HTTP":  false,
+                           "ActiveWebsite":  false,
+                           "Verdict":  "FREE / NO ACTIVE HOST"
+                       },
+                       {
+                           "Row":  9,
+                           "Domain":  "taktwerk-harz.de",
+                           "LocalA":  "",
+                           "GoogleA":  "",
+                           "CloudflareA":  "",
+                           "AAAA":  "",
+                           "CNAME":  "",
+                           "NS":  "",
+                           "HTTP":  false,
+                           "ActiveWebsite":  false,
+                           "Verdict":  "FREE / NO ACTIVE HOST"
+                       },
+                       {
+                           "Row":  10,
+                           "Domain":  "klarwerk-harz.de",
+                           "LocalA":  "",
+                           "GoogleA":  "",
+                           "CloudflareA":  "",
+                           "AAAA":  "",
+                           "CNAME":  "",
+                           "NS":  "",
+                           "HTTP":  false,
+                           "ActiveWebsite":  false,
+                           "Verdict":  "FREE / NO ACTIVE HOST"
+                       }
+                   ]
+}
