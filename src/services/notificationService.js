@@ -3,26 +3,37 @@ import { Capacitor } from '@capacitor/core';
 // Dynamischer Import oder Fallback für Capacitor-Plugins
 let LocalNotifications = null;
 let PushNotifications = null;
+let pluginsInitPromise = null;
 
-const initCapacitorPlugins = async () => {
-  if (Capacitor.isNativePlatform()) {
-    try {
-      const ln = await import('@capacitor/local-notifications');
-      LocalNotifications = ln.LocalNotifications;
-    } catch (e) {
-      console.warn('[NotificationService] LocalNotifications Plugin nicht verfügbar:', e);
-    }
-    try {
-      const pn = await import('@capacitor/push-notifications');
-      PushNotifications = pn.PushNotifications;
-    } catch (e) {
-      console.warn('[NotificationService] PushNotifications Plugin nicht verfügbar:', e);
-    }
+const ensureCapacitorPlugins = async () => {
+  if (!Capacitor.isNativePlatform()) {
+    return { LocalNotifications: null, PushNotifications: null };
   }
+  if (LocalNotifications) {
+    return { LocalNotifications, PushNotifications };
+  }
+  if (!pluginsInitPromise) {
+    pluginsInitPromise = (async () => {
+      try {
+        const ln = await import('@capacitor/local-notifications');
+        LocalNotifications = ln.LocalNotifications;
+      } catch (e) {
+        console.warn('[NotificationService] LocalNotifications Plugin nicht verfügbar:', e);
+      }
+      try {
+        const pn = await import('@capacitor/push-notifications');
+        PushNotifications = pn.PushNotifications;
+      } catch (e) {
+        console.warn('[NotificationService] PushNotifications Plugin nicht verfügbar:', e);
+      }
+      return { LocalNotifications, PushNotifications };
+    })();
+  }
+  return pluginsInitPromise;
 };
 
-// Initialisierungs-Versuch
-initCapacitorPlugins();
+// Hintergrund-Start
+ensureCapacitorPlugins();
 
 const SETTINGS_KEY = 'founder_notification_settings';
 
@@ -81,9 +92,10 @@ export const saveNotificationSettings = (newSettings) => {
  */
 export const checkNotificationPermission = async () => {
   if (Capacitor.isNativePlatform()) {
-    if (LocalNotifications) {
+    const { LocalNotifications: ln } = await ensureCapacitorPlugins();
+    if (ln) {
       try {
-        const status = await LocalNotifications.checkPermissions();
+        const status = await ln.checkPermissions();
         return status.display === 'granted';
       } catch (e) {
         console.warn('[NotificationService] checkPermissions Fehler:', e);
@@ -104,24 +116,25 @@ export const checkNotificationPermission = async () => {
  */
 export const requestNotificationPermission = async () => {
   if (Capacitor.isNativePlatform()) {
+    const { LocalNotifications: ln, PushNotifications: pn } = await ensureCapacitorPlugins();
     let localGranted = false;
     let pushGranted = false;
 
-    if (LocalNotifications) {
+    if (ln) {
       try {
-        const res = await LocalNotifications.requestPermissions();
+        const res = await ln.requestPermissions();
         localGranted = res.display === 'granted';
       } catch (e) {
         console.warn('[NotificationService] LocalNotifications Permission Error:', e);
       }
     }
 
-    if (PushNotifications) {
+    if (pn) {
       try {
-        const res = await PushNotifications.requestPermissions();
+        const res = await pn.requestPermissions();
         pushGranted = res.receive === 'granted';
         if (pushGranted) {
-          await PushNotifications.register();
+          await pn.register().catch(() => {});
         }
       } catch (e) {
         console.warn('[NotificationService] PushNotifications Permission Error:', e);
@@ -153,30 +166,46 @@ export const sendImmediateNotification = async ({ title, body, icon = '/favicon.
   if (!settings.enabled) return false;
 
   // 1. Native Capacitor Local Notifications
-  if (Capacitor.isNativePlatform() && LocalNotifications) {
-    try {
-      const hasPerm = await checkNotificationPermission();
-      if (!hasPerm) {
-        const granted = await requestNotificationPermission();
-        if (!granted) return false;
-      }
+  if (Capacitor.isNativePlatform()) {
+    const { LocalNotifications: ln } = await ensureCapacitorPlugins();
+    if (ln) {
+      try {
+        // Android 8.0+ / 13+ Notification Channel anlegen (High Importance)
+        try {
+          await ln.createChannel({
+            id: 'founder_alerts',
+            name: 'Founder OS Benachrichtigungen',
+            description: 'Wichtige Erinnerungen, CRM und Fokus-Alarme',
+            importance: 5,
+            visibility: 1,
+            vibration: true
+          });
+        } catch (chanErr) {
+          console.warn('[NotificationService] Channel creation warning:', chanErr);
+        }
 
-      await LocalNotifications.schedule({
-        notifications: [
-          {
-            id: Math.floor(Math.random() * 1000000) + 1,
-            title: title || 'Founder OS',
-            body: body || '',
-            schedule: { at: new Date(Date.now() + 100) },
-            sound: settings.sound ? 'beep.wav' : undefined,
-            smallIcon: 'ic_launcher',
-            extra: data
-          }
-        ]
-      });
-      return true;
-    } catch (e) {
-      console.warn('[NotificationService] Native LocalNotification failed, fallback to Web:', e);
+        const hasPerm = await checkNotificationPermission();
+        if (!hasPerm) {
+          const granted = await requestNotificationPermission();
+          if (!granted) return false;
+        }
+
+        await ln.schedule({
+          notifications: [
+            {
+              id: Math.floor(Math.random() * 1000000) + 1,
+              title: title || 'Founder OS',
+              body: body || '',
+              schedule: { at: new Date(Date.now() + 200) },
+              channelId: 'founder_alerts',
+              extra: data
+            }
+          ]
+        });
+        return true;
+      } catch (e) {
+        console.warn('[NotificationService] Native LocalNotification failed, fallback to Web:', e);
+      }
     }
   }
 
@@ -266,25 +295,29 @@ export const scheduleMorningFocus = async (focusGoal) => {
 
   const goalText = focusGoal && focusGoal.trim() ? `🎯 Hauptziel: "${focusGoal}"` : 'Starte stark in den Tag & prüfe deine Prioritäten.';
 
-  if (Capacitor.isNativePlatform() && LocalNotifications) {
-    try {
-      await LocalNotifications.schedule({
-        notifications: [
-          {
-            id: 1001, // Reservierte ID für Morgen-Fokus
-            title: '☀️ Guten Morgen Founder!',
-            body: goalText,
-            schedule: {
-              at: scheduleTime,
-              repeats: true,
-              every: 'day'
-            },
-            extra: { type: 'morning_focus' }
-          }
-        ]
-      });
-    } catch (e) {
-      console.warn('[NotificationService] Morgen-Fokus Schedule fehlgeschlagen:', e);
+  if (Capacitor.isNativePlatform()) {
+    const { LocalNotifications: ln } = await ensureCapacitorPlugins();
+    if (ln) {
+      try {
+        await ln.schedule({
+          notifications: [
+            {
+              id: 1001, // Reservierte ID für Morgen-Fokus
+              title: '☀️ Guten Morgen Founder!',
+              body: goalText,
+              schedule: {
+                at: scheduleTime,
+                repeats: true,
+                every: 'day'
+              },
+              channelId: 'founder_alerts',
+              extra: { type: 'morning_focus' }
+            }
+          ]
+        });
+      } catch (e) {
+        console.warn('[NotificationService] Morgen-Fokus Schedule fehlgeschlagen:', e);
+      }
     }
   }
 };

@@ -18,22 +18,26 @@ public class QuickCaptureWidgetProvider extends AppWidgetProvider {
     }
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
-        SharedPreferences sharedPref = context.getSharedPreferences("WidgetPrefs", Context.MODE_PRIVATE);
-        String notes = sharedPref.getString("notes", "🎙️ Tippe hier zum sofortigen Diktieren oder Erfassen einer Sprach-Notiz.");
-        if (notes.trim().isEmpty()) {
-            notes = "🎙️ Tippe hier zum sofortigen Diktieren oder Erfassen einer Sprach-Notiz.";
+        try {
+            SharedPreferences sharedPref = context.getSharedPreferences("WidgetPrefs", Context.MODE_PRIVATE);
+            String notes = sharedPref.getString("notes", "🎙️ Tippe hier zum sofortigen Diktieren oder Erfassen einer Sprach-Notiz.");
+            if (notes == null || notes.trim().isEmpty()) {
+                notes = "🎙️ Tippe hier zum sofortigen Diktieren oder Erfassen einer Sprach-Notiz.";
+            }
+
+            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_quick_capture_layout);
+            views.setTextViewText(R.id.widget_qc_notes_preview, notes);
+
+            Intent intent = new Intent(context, MainActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(
+                context, 0, intent, 
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+            );
+            views.setOnClickPendingIntent(R.id.widget_qc_container, pendingIntent);
+
+            appWidgetManager.updateAppWidget(appWidgetId, views);
+        } catch (Throwable t) {
+            android.util.Log.e("FounderOS_Widget", "Error updating QuickCapture widget " + appWidgetId, t);
         }
-
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_quick_capture_layout);
-        views.setTextViewText(R.id.widget_qc_notes_preview, notes);
-
-        Intent intent = new Intent(context, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(
-            context, 0, intent, 
-            PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
-        );
-        views.setOnClickPendingIntent(R.id.widget_qc_container, pendingIntent);
-
-        appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 }
