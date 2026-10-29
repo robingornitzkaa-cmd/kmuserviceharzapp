@@ -1,5 +1,11 @@
 # TODO - Founder OS
 
+- [x] **📱 [Android Mobile Widgets & Notification Hardening]:**
+  - [x] *RemoteViews `<View>` ActionException behoben:* Ersatz aller verbotenen `<View>`-Tags durch zulässige `<ImageView>`-Komponenten in allen 4 Layouts (`widget_layout.xml`, `widget_todo_layout.xml`, `widget_crm_layout.xml`, `widget_quick_capture_layout.xml`).
+  - [x] *Provider Null-Safety & Error-Handling:* Alle 4 Java-Provider mit `try/catch Throwable` abgesichert.
+  - [x] *Notification Channel & Lifecycle:* Robuste `ensureCapacitorPlugins()` Initialisierung, Channel `founder_alerts` angelegt und frische `FounderOS-latest.apk` gebaut.
+
+
 - [ ] **📋 [Master Backlog] Token-optimierte Entwicklungs-Roadmap (`master_backlog.md`):**
   - [ ] **Sprint 1 (Architektur & Limit-Schutz):**
     - [ ] `PR-01` Monolith-Entflechtung von `App.jsx` in modulare Router & Context-Provider (HIGH / P0)

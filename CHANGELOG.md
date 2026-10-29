@@ -4,6 +4,17 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 
 ## [Unreleased]
 
+### Fixed & Android Mobile Hardening
+- **📱 Android RemoteViews & Homescreen-Widgets Fix:**
+  - Behebung des System-Absturzes („Fehler beim Laden des Widgets“) bei allen 4 nativen Android-Widgets (`MyWidgetProvider`, `TodoWidgetProvider`, `CrmWidgetProvider`, `QuickCaptureWidgetProvider`).
+  - Ursache behoben: Die Basiskomponente `<View>` ist in Android `RemoteViews` strikt unzulässig und löst eine `ActionException` / `InflateException` aus. Alle Trennlinien und Status-Punkte in den Layouts (`widget_layout.xml`, `widget_todo_layout.xml`, `widget_crm_layout.xml`, `widget_quick_capture_layout.xml`) wurden durch voll kompatible `<ImageView>`-Komponenten ersetzt.
+  - Globale Fehlerbehandlung (`try/catch Throwable`) in allen 4 Java-Providern integriert, um Abstürze des Android-Widget-Hosts bei fehlerhaften Werten zu verhindern.
+- **🔔 Android Notification Channel & Permission Lifecycle Fix (`src/services/notificationService.js`):**
+  - Asynchrone Absicherung via `ensureCapacitorPlugins()`: Verhindert Race Conditions beim Plugin-Laden unter nativem Android.
+  - Automatisches Anlegen des Android Notification Channels `founder_alerts` (Wichtigkeit: High/5, Vibration: true) für verlässliche Heads-Up-Alarme ab Android 8.0 / Android 13+.
+  - Entfernung ungültiger lokaler Audio-Asset-Referenzen (`beep.wav`) und Bereitstellung der frischen `FounderOS-latest.apk`.
+
+
 ### Added & Strategic Rollout
 - **⚡ HarzBlitz Notdienst & Gebäudetechnik — Hybride Front- & Back-Office Automatisierungskaskade (`harzblitz_automation/`):**
   - **📞 Voice-Assistentin „Anna von HarzBlitz“ (`harzblitz_automation/vapi/`):**
