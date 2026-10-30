@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KMU Service Harz – Interview- & Validierungs-Ablauf (15–20 Min)</title>
+  <style>
+    :root {
+      --bg-dark: #0b1120;
+      --card-bg: #111827;
+      --card-border: #1f2937;
+      --text-main: #f9fafb;
+      --text-muted: #9ca3af;
+      --accent-cyan: #06b6d4;
+      --cyan-glow: rgba(6, 182, 212, 0.2);
+      --accent-emerald: #10b981;
+      --emerald-glow: rgba(16, 185, 129, 0.2);
+      --accent-amber: #f59e0b;
+      --accent-purple: #8b5cf6;
+      --accent-blue: #3b82f6;
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-family);
+      line-height: 1.6;
+      padding-bottom: 5rem;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+
+    /* Header / Hero */
+    header.hero {
+      background: linear-gradient(135deg, rgba(17, 24, 39, 0.95), rgba(30, 41, 59, 0.9));
+      border: 1px solid var(--card-border);
+      border-radius: 1rem;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header.hero::after {
+      content: "";
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, var(--cyan-glow) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .badge-bar {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .badge-cyan {
+      background: rgba(6, 182, 212, 0.15);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+    }
+
+    .badge-emerald {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent-emerald);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .badge-purple {
+      background: rgba(139, 92, 246, 0.15);
+      color: #c084fc;
+      border: 1px solid rgba(139, 92, 246, 0.3);
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(to right, #ffffff, #67e8f9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p.subtitle {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 800px;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Key Metrics Grid */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .metric-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--card-border);
+      border-radius: 0.75rem;
+      padding: 1rem;
+    }
+
+    .metric-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+      margin-bottom: 0.25rem;
+    }
+
+    .metric-value {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    /* Sticky Navigation & Live Timer */
+    .nav-bar {
+      position: sticky;
+      top: 1rem;
+      z-index: 100;
+      background: rgba(17, 24, 39, 0.95);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      border-radius: 0.75rem;
+      padding: 0.75rem 1.25rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+    }
+
+    .nav-steps {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 0.4rem 0.75rem;
+      border-radius: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .nav-btn:hover {
+      color: #ffffff;
+      background: rgba(6, 182, 212, 0.15);
+      border-color: var(--accent-cyan);
+    }
+
+    .timer-widget {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 0.35rem 0.75rem;
+      border-radius: 0.5rem;
+      border: 1px solid var(--card-border);
+    }
+
+    .timer-display {
+      font-family: monospace;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent-emerald);
+      letter-spacing: 0.05em;
+    }
+
+    .timer-btn {
+      background: var(--accent-cyan);
+      color: #000;
+      border: none;
+      padding: 0.25rem 0.6rem;
+      border-radius: 0.35rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .timer-btn.reset {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+
+    /* Mindset Box */
+    .mindset-card {
+      background: linear-gradient(135deg, rgba(30, 27, 75, 0.5), rgba(17, 24, 39, 0.8));
+      border: 1px solid rgba(139, 92, 246, 0.4);
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .mindset-title {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #c084fc;
+      margin-bottom: 0.75rem;
+    }
+
+    .mindset-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+
+    .mindset-item {
+      font-size: 0.88rem;
+      color: #d1d5db;
+    }
+
+    .mindset-item strong {
+      color: #ffffff;
+    }
+
+    /* Phase Sections */
+    .phase-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 1rem;
+      padding: 1.75rem;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .phase-card.active-phase {
+      border-color: rgba(6, 182, 212, 0.4);
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.1);
+    }
+
+    .phase-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.25rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .phase-number {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--accent-cyan);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .phase-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-top: 0.2rem;
+    }
+
+    .phase-timing {
+      font-size: 0.8rem;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      padding: 0.35rem 0.75rem;
+      border-radius: 0.5rem;
+      color: #a5f3fc;
+    }
+
+    /* Dialogue & Script Boxes */
+    .dialogue-box {
+      background: rgba(15, 23, 42, 0.8);
+      border-left: 4px solid var(--accent-cyan);
+      border-radius: 0 0.5rem 0.5rem 0;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      font-size: 0.95rem;
+      color: #e2e8f0;
+      position: relative;
+    }
+
+    .dialogue-box.alternate {
+      border-left-color: var(--accent-purple);
+    }
+
+    .dialogue-box.highlight {
+      border-left-color: var(--accent-emerald);
+      background: rgba(6, 78, 59, 0.2);
+    }
+
+    .speaker-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .speaker-tag.cyan { color: var(--accent-cyan); }
+    .speaker-tag.purple { color: #c084fc; }
+    .speaker-tag.emerald { color: var(--accent-emerald); }
+
+    /* Branching / Tabs in Phase 3 */
+    .paths-tabs {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin: 1rem 0;
+    }
+
+    .path-tab-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 0.5rem 0.85rem;
+      border-radius: 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .path-tab-btn.active {
+      background: rgba(6, 182, 212, 0.15);
+      border-color: var(--accent-cyan);
+      color: #ffffff;
+    }
+
+    .path-content-card {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(6, 182, 212, 0.25);
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+      margin-top: 0.5rem;
+    }
+
+    .path-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #67e8f9;
+      margin-bottom: 0.75rem;
+    }
+
+    .question-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .question-item {
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+      font-size: 0.92rem;
+      color: #cbd5e1;
+    }
+
+    .q-badge {
+      background: rgba(6, 182, 212, 0.2);
+      color: var(--accent-cyan);
+      font-weight: 700;
+      font-size: 0.7rem;
+      padding: 0.2rem 0.45rem;
+      border-radius: 0.3rem;
+      flex-shrink: 0;
+      margin-top: 0.15rem;
+    }
+
+    /* Objection Cards */
+    .objection-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .objection-card {
+      background: rgba(30, 41, 59, 0.5);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 0.5rem;
+      padding: 1rem;
+    }
+
+    .objection-header {
+      color: var(--accent-amber);
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .objection-body {
+      font-size: 0.88rem;
+      color: #e2e8f0;
+    }
+
+    /* Price / Offer Highlight */
+    .deal-box {
+      background: linear-gradient(135deg, rgba(6, 78, 59, 0.3), rgba(17, 24, 39, 0.9));
+      border: 2px solid var(--accent-emerald);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      margin: 1.25rem 0;
+    }
+
+    .deal-badge {
+      display: inline-block;
+      background: var(--accent-emerald);
+      color: #064e3b;
+      font-weight: 800;
+      font-size: 0.75rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 0.35rem;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .deal-heading {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.75rem;
+    }
+
+    /* Table for Protocol Sheet */
+    .protocol-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      font-size: 0.85rem;
+    }
+
+    .protocol-table th, .protocol-table td {
+      border: 1px solid var(--card-border);
+      padding: 0.75rem 1rem;
+      text-align: left;
+    }
+
+    .protocol-table th {
+      background: rgba(30, 41, 59, 0.7);
+      color: #67e8f9;
+      font-weight: 700;
+    }
+
+    .protocol-table td {
+      background: rgba(15, 23, 42, 0.5);
+      color: #cbd5e1;
+    }
+
+    /* Print styling */
+    @media print {
+      body {
+        background-color: #fff !important;
+        color: #000 !important;
+      }
+      .nav-bar, .timer-widget, .timer-btn, .print-btn {
+        display: none !important;
+      }
+      .phase-card, header.hero, .mindset-card, .deal-box {
+        background: #fff !important;
+        color: #000 !important;
+        border: 1px solid #ccc !important;
+        box-shadow: none !important;
+        page-break-inside: avoid;
+      }
+      h1, .phase-title, .path-title {
+        color: #000 !important;
+        -webkit-text-fill-color: initial !important;
+      }
+      .dialogue-box {
+        background: #f4f4f5 !important;
+        color: #000 !important;
+        border-left: 4px solid #333 !important;
+      }
+      .protocol-table td, .protocol-table th {
+        color: #000 !important;
+        border: 1px solid #ddd !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- Hero Header -->
+    <header class="hero">
+      <div class="badge-bar">
+        <span class="badge badge-cyan">🧭 KMU Service Harz</span>
+        <span class="badge badge-emerald">Master-Interview Ablauf</span>
+        <span class="badge badge-purple">Coaching-Präsentation</span>
+      </div>
+      <h1>15–20-Minuten Customer-Discovery & Validierung</h1>
+      <p class="subtitle">
+        Vollständiger, modularer Gesprächsleitfaden für Inhaber von Handwerksbetrieben & Dienstleistern im Landkreis Goslar und Harz.
+      </p>
+
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-label">Zielgruppe</div>
+          <div class="metric-value">3–20 Mitarbeiter</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem;">SHK, Elektro, Dach, Bau, Reinigung, GaLaBau</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Format & Dauer</div>
+          <div class="metric-value">15 bis 20 Minuten</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem;">Telefonisch oder vor Ort beim Meister</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Kern-Angebot</div>
+          <div class="metric-value">500 € Büro-Audit</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem;">Mit Doppelter Sicherheits-Garantie</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Ziel-Zahl</div>
+          <div class="metric-value">50 Validierungs-Calls</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem;">Vor offiziellem Gewerbestart</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Sticky Navigation & Live Timer Demo -->
+    <nav class="nav-bar">
+      <div class="nav-steps">
+        <a href="#mindset" class="nav-btn">🧭 Mindset</a>
+        <a href="#phase1" class="nav-btn">1️⃣ Türöffner (01:30)</a>
+        <a href="#phase2" class="nav-btn">2️⃣ Kontext (03:00)</a>
+        <a href="#phase3" class="nav-btn">3️⃣ Diagnose (09:30)</a>
+        <a href="#phase4" class="nav-btn">4️⃣ Pitch (13:30)</a>
+        <a href="#phase5" class="nav-btn">5️⃣ Preistest (17:30)</a>
+        <a href="#phase6" class="nav-btn">6️⃣ Vorzugsticket (20:00)</a>
+        <a href="#protokoll" class="nav-btn">📋 CRM-Bogen</a>
+      </div>
+
+      <div style="display: flex; gap: 0.5rem; align-items: center;">
+        <div class="timer-widget">
+          <span style="font-size: 0.75rem; color: var(--text-muted);">⏱️ Timer:</span>
+          <span id="timerDisplay" class="timer-display">00:00</span>
+          <button id="toggleTimerBtn" class="timer-btn" onclick="toggleTimer()">Start</button>
+          <button class="timer-btn reset" onclick="resetTimer()">Reset</button>
+        </div>
+        <button class="nav-btn print-btn" onclick="window.print()" title="Als PDF speichern oder drucken">🖨️ PDF</button>
+      </div>
+    </nav>
+
+    <!-- Das Mindset vor dem Anruf -->
+    <section id="mindset" class="mindset-card">
+      <div class="mindset-title">
+        <span>🧠</span> Das Mindset vor dem Telefonat (Die 3 Erfolgs-Regeln)
+      </div>
+      <div class="mindset-grid">
+        <div class="mindset-item">
+          <strong>1. Der „Gründer-Bonus“:</strong><br>
+          Du verkaufst heute absolut nichts. Du bist Gründer aus der Region (Langelsheim/Harz), der von gestandenen Praktikern lernen will, um praxisnahe Lösungen zu bauen.
+        </div>
+        <div class="mindset-item">
+          <strong>2. Keine Sackgassen (Reframing):</strong><br>
+          Sagt der Chef <em>„Rechnungen schreiben wir in 5 Minuten, da haben wir kein Problem“</em>, ist das kein K.-o., sondern deine Chance: <em>„Stark, dann gehören Sie zu den Vorreitern! Wo staut es sich stattdessen am meisten?“</em>
+        </div>
+        <div class="mindset-item">
+          <strong>3. Wortwörtlich mitschreiben:</strong><br>
+          Notiere exakt seine Begriffe (<em>„Sonntags am Küchentisch“</em>, <em>„Monteure vergessen Fotos“</em>, <em>„Telefon-Terror“</em>). Das ist dein späterer Vertriebswortschatz!
+        </div>
+      </div>
+    </section>
+
+    <!-- PHASE 1 -->
+    <section id="phase1" class="phase-card active-phase">
+      <div class="phase-header">
+        <div>
+          <div class="phase-number">Phase 1 von 6</div>
+          <h2 class="phase-title">Der Telefon-Türöffner</h2>
+        </div>
+        <div class="phase-timing">⏱️ 00:00 – 01:30 Min.</div>
+      </div>
+
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+        <strong>Ziel:</strong> Gesprächserlaubnis sichern – ohne jede Abwehrhaltung oder Verkaufswiderstand.
+      </p>
+
+      <!-- Variante A: Gute Seele im Büro -->
+      <div class="dialogue-box">
+        <div class="speaker-tag cyan">🅰️ Wenn die Bürokraft / Ehefrau abnimmt:</div>
+        <p>„Schönen guten Tag! Hier ist Robin Gornitzka aus Langelsheim. Sagen Sie, bin ich bei Ihnen direkt in der Schaltzentrale im Büro von <em>[Firmenname]</em> gelandet?</p>
+        <p style="margin-top: 0.5rem;">Perfekt, dann sind Sie wahrscheinlich genau die Richtige – und direkt vorweg zur Beruhigung: <strong>Ich verkaufe Ihnen heute absolut nichts, ich habe noch nicht mal mein Gewerbe offiziell angemeldet.</strong></p>
+        <p style="margin-top: 0.5rem;">Ich baue hier in Langelsheim gerade einen regionalen Service speziell für Handwerksbetriebe im Harz auf, um das leidige <strong>Büro-Wochenende</strong>, die Zettelwirtschaft aus den Transportern und das Abtippen für den Steuerberater abzuschaffen. Bevor ich starte, spreche ich mit 50 Betrieben im Landkreis Goslar, um aus erster Hand zu hören, was im Handwerks-Büro wirklich nervt – und die Damen im Büro wissen das oft zehnmal besser als der Meister auf dem Gerüst. Hätten Sie jetzt kurz 4 Minuten für drei ehrliche Praxis-Fragen – oder wann passt es am besten?“</p>
+      </div>
+
+      <!-- Variante B: Meister direkt -->
+      <div class="dialogue-box alternate">
+        <div class="speaker-tag purple">🅱️ Wenn der Meister / Inhaber direkt abnimmt:</div>
+        <p>„Guten Tag Herr/Frau <em>[Nachname]</em>, mein Name ist Robin Gornitzka aus Langelsheim.<br>
+        Direkt vorab zur Beruhigung: <strong>Das ist absolut kein Verkaufsanruf – ich habe noch nicht einmal ein Gewerbe angemeldet.</strong></p>
+        <p style="margin-top: 0.5rem;">Ich bereite aktuell meine Existenzgründung (<em>KMU Service Harz</em>) im Landkreis Goslar vor. Mein Gründungscoach hat mir die klare Hausaufgabe gegeben, mit 50 echten Praktikern aus den Betrieben zu sprechen, statt mir am Schreibtisch Theorien auszudenken.</p>
+        <p style="margin-top: 0.5rem;">Hätten Sie nächste Woche 15 Minuten Zeit für ein kurzes Feedback-Gespräch an einen regionalen Gründer?“</p>
+      </div>
+
+      <!-- Die 3 Reaktions-Weichen -->
+      <div class="objection-grid">
+        <div class="objection-card">
+          <div class="objection-header">✅ Reaktion: „Schießen Sie los, bin gerade im Auto“</div>
+          <div class="objection-body">Sofort Stoppuhr starten und direkt in <strong>Phase 2 (Betriebskontext)</strong> einsteigen!</div>
+        </div>
+        <div class="objection-card">
+          <div class="objection-header">⏳ Reaktion: „Keine Zeit!“</div>
+          <div class="objection-body"><em>„Verstehe ich vollkommen. Wann passt es für kurze 10–15 Minuten am besten – morgens um 07:15 Uhr vor der Baustelle oder freitags ab 13:00 Uhr?“</em></div>
+        </div>
+        <div class="objection-card">
+          <div class="objection-header">❓ Reaktion: „Worum geht’s denn genau?“</div>
+          <div class="objection-body"><em>„Um zeitraubende Reibungsverluste zwischen Baustelle, Kunden und Büro (das klassische Büro-Wochenende). Ich möchte verstehen, wo bei Betrieben Ihrer Größe am meisten Zeit verbrannt wird.“</em></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PHASE 2 -->
+    <section id="phase2" class="phase-card">
+      <div class="phase-header">
+        <div>
+          <div class="phase-number">Phase 2 von 6</div>
+          <h2 class="phase-title">Framing & Betriebskontext</h2>
+        </div>
+        <div class="phase-timing">⏱️ 01:30 – 03:00 Min.</div>
+      </div>
+
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+        <strong>Ziel:</strong> Verkaufsdruck komplett abbauen und die Betriebsstruktur sauber erfassen.
+      </p>
+
+      <div class="dialogue-box">
+        <div class="speaker-tag cyan">1. Vertrauen festigen:</div>
+        <p>„Vielen Dank für Ihre Zeit! Wie versprochen: Ich habe heute weder ein Produkt noch einen Vertrag in der Tasche. Es geht rein um Ihre Praxiserfahrung.“</p>
+      </div>
+
+      <div class="dialogue-box">
+        <div class="speaker-tag cyan">2. Betriebsrahmen erfassen:</div>
+        <p>„Damit ich Ihren Betrieb kurz einordnen kann: Wie viele Mitarbeiter sind Sie aktuell bei <em>[Firmenname]</em>, und wer kümmert sich primär um das Büro und die Kundenorganisation?“</p>
+      </div>
+
+      <div style="background: rgba(15, 23, 42, 0.5); border: 1px solid var(--card-border); border-radius: 0.5rem; padding: 1rem; margin-top: 1rem;">
+        <strong style="font-size: 0.85rem; color: #a5f3fc;">Schnellerfassungs-Checkliste im Telefonat:</strong>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem; margin-top: 0.5rem; font-size: 0.85rem; color: #cbd5e1;">
+          <div>👥 Gesellen im Feld: <strong>[ z. B. 6 ]</strong></div>
+          <div>💻 Büropersonal: <strong>[ z. B. 1 Teilzeit ]</strong></div>
+          <div>📁 Software: <strong>[ DATEV, Lexoffice, etc. ]</strong></div>
+          <div>📱 Kommunikation: <strong>[ WhatsApp / Zettel ]</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PHASE 3 -->
+    <section id="phase3" class="phase-card">
+      <div class="phase-header">
+        <div>
+          <div class="phase-number">Phase 3 von 6</div>
+          <h2 class="phase-title">Die Diagnose-Weiche (5 Erkundungs-Pfade)</h2>
+        </div>
+        <div class="phase-timing">⏱️ 03:00 – 09:30 Min.</div>
+      </div>
+
+      <div class="dialogue-box highlight">
+        <div class="speaker-tag emerald">Radar-Einstiegsfrage (Die Weiche):</div>
+        <p style="font-size: 1.05rem; font-weight: 600;">
+          „Wenn Sie auf die letzten Wochen in Ihrem Betrieb schauen: In welchem Bereich verbrennen Sie oder Ihr Büro aktuell die meiste unproduktive Arbeitszeit?“
+        </p>
+      </div>
+
+      <!-- Klickbare Pfad-Navigation -->
+      <div class="paths-tabs">
+        <button class="path-tab-btn active" onclick="switchPath('A')">Pfad A: Rechnungen & E-Rechnung</button>
+        <button class="path-tab-btn" onclick="switchPath('B')">Pfad B: Telefon & Termine</button>
+        <button class="path-tab-btn" onclick="switchPath('C')">Pfad C: Kundenportal & Status</button>
+        <button class="path-tab-btn" onclick="switchPath('D')">Pfad D: Baustelle & Fotobeweise</button>
+        <button class="path-tab-btn" onclick="switchPath('E')">Pfad E: Zeiterfassung & Lohn</button>
+      </div>
+
+      <!-- Pfad A -->
+      <div id="pathA" class="path-content-card">
+        <div class="path-title">Pfad A: Rechnungen, Buchhaltung & Steuerberater (Der Klassiker)</div>
+        <ul class="question-list">
+          <li class="question-item">
+            <span class="q-badge">Faktura</span>
+            <span>„Vom Moment, in dem die Baustelle fertig ist, bis das Geld auf dem Konto landet: Wie viele Tage vergehen da bei Ihnen im Schnitt, und wer tippt die Rechnungsdaten ab?“</span>
+          </li>
+          <li class="question-item">
+            <span class="q-badge">Wochenende</span>
+            <span>„Gibt es bei Ihnen das klassische ‚Büro-Wochenende‘, an dem eigentlich Freizeit wäre, aber Belege, Quittungen und Ordner gewälzt werden müssen?“</span>
+          </li>
+          <li class="question-item">
+            <span class="q-badge">Gesetz</span>
+            <span>„Haben Sie sich schon mit der B2B-E-Rechnungspflicht (ZUGFeRD / XRechnung) auseinandergesetzt, oder sorgt das eher für Stirnrunzeln?“</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Pfad B -->
+      <div id="pathB" class="path-content-card" style="display: none;">
+        <div class="path-title">Pfad B: Kundenfront, Telefonüberlastung & Termine</div>
+        <ul class="question-list">
+          <li class="question-item">
+            <span class="q-badge">Telefon-Terror</span>
+            <span>„Kommen Anfragen bei Ihnen noch per Telefon und Zettel rein? Wie oft kommt es vor, dass Sie auf der Baustelle stehen, das Handy klingelt und man abends erst mühsam zurückrufen muss?“</span>
+          </li>
+          <li class="question-item">
+            <span class="q-badge">Termine</span>
+            <span>„Bieten Sie Kunden schon an, Termine (Besichtigungen, Wartungen) direkt online verbindlich einzubuchen, oder geht da viel Arbeitszeit für ‚Wann passt es Ihnen denn?‘ drauf?“</span>
+          </li>
+          <li class="question-item">
+            <span class="q-badge">Verlust</span>
+            <span>„Passiert es im Trubel manchmal, dass eine Anfrage liegen bleibt und der Kunde verärgert zur Konkurrenz abwandert?“</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Pfad C -->
+      <div id="pathC" class="path-content-card" style="display: none;">
+        <div class="path-title">Pfad C: Kundenportal & Auftrags-Transparenz</div>
+        <ul class="question-list">
+          <li class="question-item">
+            <span class="q-badge">Rückfragen</span>
+            <span>„Wie oft rufen Auftraggeber an und fragen: ‚Wann kommt der Monteur?‘, ‚Wo bleibt das Angebot?‘ oder ‚Können Sie mir den Prüfbericht nochmal schicken?‘“</span>
+          </li>
+          <li class="question-item">
+            <span class="q-badge">Portal</span>
+            <span>„Wäre es eine Entlastung, wenn Stammkunden oder Hausverwaltungen ein einfaches Online-Portal hätten, wo sie Auftragsstatus, Wartungsprotokolle und Rechnungen selbst einsehen können?“</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Pfad D -->
+      <div id="pathD" class="path-content-card" style="display: none;">
+        <div class="path-title">Pfad D: Baustelle, Baudokumentation & Fotobeweise</div>
+        <ul class="question-list">
+          <li class="question-item">
+            <span class="q-badge">Fotos</span>
+            <span>„Wenn Ihre Mitarbeiter vor Ort fertig sind: Wie landen Vorher-Nachher-Fotos, Lieferscheine oder Abnahmeunterschriften im Büro?“</span>
+          </li>
+          <li class="question-item">
+            <span class="q-badge">WhatsApp</span>
+            <span>„Liegen die Fotos auf privaten WhatsApp-Handys der Gesellen verstreut? Wie lange suchen Sie, wenn ein Kunde nach drei Monaten eine Reklamation meldet?“</span>
+          </li>
+          <li class="question-item">
+            <span class="q-badge">Geldverlust</span>
+            <span>„Hatten Sie schon mal den Fall, dass geleistete Stunden oder Materialien nicht abgerechnet werden konnten, weil der Zettel auf der Baustelle verschollen ist?“</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Pfad E -->
+      <div id="pathE" class="path-content-card" style="display: none;">
+        <div class="path-title">Pfad E: Zeiterfassung, Monteur-Planung & Compliance</div>
+        <ul class="question-list">
+          <li class="question-item">
+            <span class="q-badge">Stundenzettel</span>
+            <span>„Schreiben Ihre Gesellen die Stundenzettel noch freitags aus dem Kopf auf Papier, oder läuft das komplett digital per Smartphone?“</span>
+          </li>
+          <li class="question-item">
+            <span class="q-badge">Abtippen</span>
+            <span>„Wie viele Stunden pro Monat verbringt das Büro damit, unleserliche Stundenzettel zu entziffern und für das Lohnbüro abzutippen?“</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Universelle Zauberstab-Abschlussfrage -->
+      <div class="dialogue-box highlight" style="margin-top: 1.5rem;">
+        <div class="speaker-tag emerald">✨ Die universelle Abschlussfrage für Phase 3:</div>
+        <p style="font-size: 1rem; font-style: italic;">
+          „Wenn Sie einen Zauberstab hätten und eine einzige administrative Nerv-Aufgabe in Ihrem Betrieb ab morgen nie wieder machen müssten: Welche wäre das?“
+        </p>
+      </div>
+    </section>
+
+    <!-- PHASE 4 -->
+    <section id="phase4" class="phase-card">
+      <div class="phase-header">
+        <div>
+          <div class="phase-number">Phase 4 von 6</div>
+          <h2 class="phase-title">Der zielgerichtete Lösungs-Pitch</h2>
+        </div>
+        <div class="phase-timing">⏱️ 09:30 – 13:30 Min.</div>
+      </div>
+
+      <div class="dialogue-box">
+        <div class="speaker-tag cyan">Das Framing („Handwerker für digitale Abläufe“):</div>
+        <p>„Herr/Frau <em>[Nachname]</em>, genau an dieser Bruchstelle setzt meine geplante Gründung an: Ich gründe keinen klassischen IT-Laden, der Ihnen teure Server oder neue Riesen-Software verkauft. Ich verstehe mich als <strong>‚Handwerker für digitale Abläufe‘</strong>...“</p>
+      </div>
+
+      <div class="objection-grid" style="margin: 1rem 0;">
+        <div class="objection-card" style="border-color: rgba(6, 182, 212, 0.4);">
+          <strong style="color: #67e8f9;">...bei Rechnungs-Schmerz (Pfad A):</strong>
+          <p style="font-size: 0.85rem; margin-top: 0.25rem;">„...wir sorgen dafür, dass Belege und Stundenzettel ohne manuelles Abtippen direkt in Ihre Rechnungssoftware und fehlerfrei zum Steuerberater fließen.“</p>
+        </div>
+        <div class="objection-card" style="border-color: rgba(6, 182, 212, 0.4);">
+          <strong style="color: #67e8f9;">...bei Terminen & Telefon (Pfad B):</strong>
+          <p style="font-size: 0.85rem; margin-top: 0.25rem;">„...wir richten für Ihre Website ein einfaches Buchungs- und Anfrage-System ein, das Aufträge vorfiltert und Termine direkt in Ihren Kalender legt – ohne Telefon-Pingpong.“</p>
+        </div>
+        <div class="objection-card" style="border-color: rgba(6, 182, 212, 0.4);">
+          <strong style="color: #67e8f9;">...bei Kundenportal (Pfad C):</strong>
+          <p style="font-size: 0.85rem; margin-top: 0.25rem;">„...wir bauen schlanke Kunden-Dashboards, in denen Ihre Auftraggeber Termine, Dokumente und Statusberichte mit einem Klick abrufen können – Ihr Telefon steht sofort still.“</p>
+        </div>
+        <div class="objection-card" style="border-color: rgba(6, 182, 212, 0.4);">
+          <strong style="color: #67e8f9;">...bei Baudoku & Fotos (Pfad D):</strong>
+          <p style="font-size: 0.85rem; margin-top: 0.25rem;">„...wir sorgen dafür, dass Monteure Baustellen-Fotos und Regieberichte mit zwei Klicks per Smartphone erfassen und diese automatisch projektbezogen im Büro archiviert werden.“</p>
+        </div>
+      </div>
+
+      <div class="dialogue-box highlight">
+        <div class="speaker-tag emerald">Brückenschlag zum Audit:</div>
+        <p>„Bevor man da aber irgendetwas umsetzt, plane ich als festen ersten Schritt ein <strong>60- bis 90-minütiges Büro-Audit vor Ort</strong> an. Wir schauen uns die Abläufe an, decken die Zeitfresser auf und berechnen schwarz auf weiß, wie viele Stunden Sie pro Woche sparen können.“</p>
+      </div>
+    </section>
+
+    <!-- PHASE 5 -->
+    <section id="phase5" class="phase-card">
+      <div class="phase-header">
+        <div>
+          <div class="phase-number">Phase 5 von 6</div>
+          <h2 class="phase-title">Kritisches Feedback, Einwände & Preistest</h2>
+        </div>
+        <div class="phase-timing">⏱️ 13:30 – 17:30 Min.</div>
+      </div>
+
+      <div class="dialogue-box">
+        <div class="speaker-tag cyan">1. Realitäts-Check:</div>
+        <p>„Klingt so ein Ansatz nach einer echten Entlastung für Ihren Betrieb, oder sagen Sie: ‚Das brauchen wir nicht, wir machen das lieber auf dem gewohnten Weg‘?“</p>
+      </div>
+
+      <div class="dialogue-box">
+        <div class="speaker-tag cyan">2. Größte Befürchtung aufdecken:</div>
+        <p>„Was wäre Ihre größte Skepsis gegenüber so einer Zusammenarbeit? Dass die Monteure streiken? Dass die Technik ausfällt? Oder dass es am Ende nur teuer wird und nichts bringt?“</p>
+      </div>
+
+      <!-- Der 500 € Deal mit Garantie -->
+      <div class="deal-box">
+        <span class="deal-badge">Das Kernangebot & Preistest</span>
+        <div class="deal-heading">90-minütiges Büro-Potenzial-Audit vor Ort für 500 € Festpreis</div>
+        <p style="font-size: 0.95rem; color: #d1fae5; margin-bottom: 0.75rem;">
+          „Wir wollen bewusst nicht nach offenen IT-Stundenzetteln abrechnen, sondern starten mit einem 90-minütigen Büro-Potenzial-Audit vor Ort für 500 Euro Festpreis – mit einer <strong>Doppelten Sicherheits-Garantie</strong>:
+        </p>
+        <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem; color: #ecfdf5;">
+          <li>🛡️ <strong>1. Anrechnungs-Garantie:</strong> Die 500 € werden bei einer späteren Umsetzung zu 100 % auf das Setup angerechnet.</li>
+          <li>🛡️ <strong>2. Null-Risiko-Garantie:</strong> Das Audit kostet exakt <strong>0 €</strong>, wenn wir nicht schwarz auf weiß mindestens <strong>10 Stunden Zeitersparnis pro Monat</strong> aufdecken.</li>
+        </ul>
+        <p style="margin-top: 1rem; font-weight: 600; color: #ffffff;">
+          „Ist das aus Ihrer Sicht als Handwerksmeister ein fairer, handfester Deal?“
+        </p>
+      </div>
+    </section>
+
+    <!-- PHASE 6 -->
+    <section id="phase6" class="phase-card">
+      <div class="phase-header">
+        <div>
+          <div class="phase-number">Phase 6 von 6</div>
+          <h2 class="phase-title">Verbindlicher Abschluss & Multiplikator</h2>
+        </div>
+        <div class="phase-timing">⏱️ 17:30 – 20:00 Min.</div>
+      </div>
+
+      <div class="dialogue-box">
+        <div class="speaker-tag cyan">1. Dankbarkeit:</div>
+        <p>„Herr/Frau <em>[Nachname]</em>, vielen Dank. Das waren genau die praxisnahen Einblicke, die mir unglaublich helfen.“</p>
+      </div>
+
+      <div class="dialogue-box highlight">
+        <div class="speaker-tag emerald">2. Das „Praxis-Partner-Vorzugsticket“ (Waitlist-to-Audit Brücke):</div>
+        <p>„Weil Sie sich heute die 15 Minuten für mich genommen haben, möchte ich Ihnen etwas zurückgeben: Wir vergeben zum offiziellen Start im Landkreis Goslar genau <strong>10 ‚Praxis-Partner-Vorzugstickets‘</strong> (100 % unverbindlich).</p>
+        <p style="margin-top: 0.5rem;">Ich schicke Ihnen heute schon kostenlos unseren <strong>5-Minuten Büro-Stress-Test & E-Rechnungs-Check</strong> zu und baue Ihren genannten Engpass in unserer Langelsheimer Test-Umgebung (<em>Mustermann Haustechnik Harz</em>) fertig nach. Sobald mein Startschuss gefallen ist, <strong>darf ich Ihnen diesen fertigen Ablauf kurz für 15 Minuten an Ihrem Beispiel zeigen</strong> – mit Vorrang auf unsere Doppelte Sicherheits-Garantie?“</p>
+      </div>
+
+      <div class="dialogue-box alternate">
+        <div class="speaker-tag purple">3. Die Multiplikator-Empfehlungsfrage:</div>
+        <p>„Kennen Sie einen befreundeten Kollegenbetrieb hier in Goslar, Langelsheim oder Umgebung, der beim Bierchen am meisten über sein Büro-Wochenende oder den Steuerberater flucht und dem ich 2–3 dieser Fragen stellen könnte?“</p>
+      </div>
+    </section>
+
+    <!-- PROTOKOLLBOGEN -->
+    <section id="protokoll" class="phase-card">
+      <div class="phase-header">
+        <div>
+          <div class="phase-number">Dokumentation</div>
+          <h2 class="phase-title">Strukturierter CRM-Protokollbogen</h2>
+        </div>
+        <div class="phase-timing">📋 Für Coach & CRM</div>
+      </div>
+
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+        Diese Daten fließen nach jedem Anruf automatisch in dein Founder-OS CRM und können per CSV-Export direkt mit deinem Coach Dennis Kauss geteilt werden.
+      </p>
+
+      <table class="protocol-table">
+        <thead>
+          <tr>
+            <th style="width: 30%;">Feld / Dimension</th>
+            <th>Erfasste Information / Kriterien</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Betriebsname & Inhaber</strong></td>
+            <td>Firma, Ansprechpartner, Ort (Landkreis Goslar / Harz), Telefonnummer</td>
+          </tr>
+          <tr>
+            <td><strong>Gewerk / Branche</strong></td>
+            <td>SHK | Elektro | Dach/Bau | Gebäudereinigung | GaLaBau | Sonstiges</td>
+          </tr>
+          <tr>
+            <td><strong>Mitarbeiter</strong></td>
+            <td>Anzahl Gesellen im Feld & Personal im Büro</td>
+          </tr>
+          <tr>
+            <td><strong>Primärer Engpass</strong></td>
+            <td>Pfad A (Rechnungen/DATEV) | Pfad B (Anfragen/Termine) | Pfad C (Kundenportal) | Pfad D (Baudoku) | Pfad E (Zeiten)</td>
+          </tr>
+          <tr>
+            <td><strong>Größter Zeitfresser (Original-Zitat)</strong></td>
+            <td>Wortwörtliche Aussage des Meisters (z. B. <em>„Sonntags 3 Stunden am Küchentisch Belege sortieren“</em>)</td>
+          </tr>
+          <tr>
+            <td><strong>Büro-Wochenende?</strong></td>
+            <td>Ja (wie viele Stunden?) / Nein (unter der Woche erledigt)</td>
+          </tr>
+          <tr>
+            <td><strong>Bestehende Software</strong></td>
+            <td>Buchhaltungssoftware, Kommunikationswege (WhatsApp, Zettel)</td>
+          </tr>
+          <tr>
+            <td><strong>Reaktion auf Lösungs-Pitch</strong></td>
+            <td>Sehr interessiert | Verhaltener Zuspruch | Kein Bedarf</td>
+          </tr>
+          <tr>
+            <td><strong>Größter Einwand / Befürchtung</strong></td>
+            <td>z. B. <em>„Monteure streiken“</em>, <em>„Keine Zeit für Einführung“</em>, <em>„Angst vor hohen IT-Kosten“</em></td>
+          </tr>
+          <tr>
+            <td><strong>Zahlungsbereitschaft (500 € Audit)</strong></td>
+            <td>500 € problemlos | 200–300 € Schmerzgrenze | Nur kostenlos</td>
+          </tr>
+          <tr>
+            <td><strong>Wiedervorlage erlaubt?</strong></td>
+            <td>Ja (Praxis-Partner Vorzugsticket vergeben) | Nein</td>
+          </tr>
+          <tr>
+            <td><strong>Empfehlungs-Kontakt</strong></td>
+            <td>Name des befreundeten Meisterbetriebs im Harz</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+  </div>
+
+  <script>
+    // Live Timer Script
+    let timerSeconds = 0;
+    let timerRunning = false;
+    let timerInterval = null;
+
+    function formatTime(totalSec) {
+      const mins = Math.floor(totalSec / 60);
+      const secs = totalSec % 60;
+      return String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+    }
+
+    function toggleTimer() {
+      const btn = document.getElementById('toggleTimerBtn');
+      const display = document.getElementById('timerDisplay');
+      if (!timerRunning) {
+        timerRunning = true;
+        btn.textContent = 'Pause';
+        btn.style.background = '#f59e0b';
+        timerInterval = setInterval(() => {
+          timerSeconds++;
+          display.textContent = formatTime(timerSeconds);
+          if (timerSeconds > 1200) {
+            display.style.color = '#f87171'; // Rot ab 20 Min
+          }
+        }, 1000);
+      } else {
+        timerRunning = false;
+        btn.textContent = 'Weiter';
+        btn.style.background = '#06b6d4';
+        clearInterval(timerInterval);
+      }
+    }
+
+    function resetTimer() {
+      timerRunning = false;
+      clearInterval(timerInterval);
+      timerSeconds = 0;
+      const display = document.getElementById('timerDisplay');
+      const btn = document.getElementById('toggleTimerBtn');
+      display.textContent = '00:00';
+      display.style.color = '#10b981';
+      btn.textContent = 'Start';
+      btn.style.background = '#06b6d4';
+    }
+
+    // Tab Switcher for Phase 3
+    function switchPath(pathId) {
+      const paths = ['A', 'B', 'C', 'D', 'E'];
+      paths.forEach(p => {
+        const el = document.getElementById('path' + p);
+        if (el) el.style.display = (p === pathId) ? 'block' : 'none';
+      });
+
+      const buttons = document.querySelectorAll('.path-tab-btn');
+      buttons.forEach(b => {
+        if (b.textContent.includes('Pfad ' + pathId)) {
+          b.classList.add('active');
+        } else {
+          b.classList.remove('active');
+        }
+      });
+    }
+  </script>
+</body>
+</html>

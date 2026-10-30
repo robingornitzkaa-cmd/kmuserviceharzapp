@@ -4,6 +4,20 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 
 ## [Unreleased]
 
+### Added & Coaching Tools
+- **🧭 Standalone Interview-Präsentations-Website (`interview_ablauf_praesentation.html`, `public/interview_praesentation.html`, `public/interview-leitfaden/index.html`):**
+  - Vollständige, interaktive Single-File HTML-Präsentation des 15–20-Minuten Customer-Discovery- und Validierungsablaufs für den anstehenden Coachingtermin mit Dennis Kauss.
+  - Enthält:
+    - ⏱️ **Interaktiver Timer & Phasen-Navigation:** Live-Stoppuhr mit Warnfarbe ab Minute 20 und Schnell-Sprungmarken zu allen Gesprächsphasen.
+    - 🧠 **Mindset vor dem Anruf:** Gründer-Bonus, Reframing-Technik (*„Rechnungen in 5 Min? Stark! Wo staut es sich stattdessen?“*) und wörtliche Zitat-Erfassung.
+    - 🗣️ **Wort-für-Wort-Skripte:** Umschaltbar für Bürokraft/Ehefrau vs. Inhaber/Meister inkl. 3 Reaktionspfaden (*„Schießen Sie los“*, *„Keine Zeit“*, *„Worum geht’s?“*).
+    - 🔀 **Die 5 Diagnose-Pfade (A bis E):** Interaktive Tabs für Rechnungen/DATEV, Telefon & Termine, Kundenportal, Baudokumentation & Zeiterfassung sowie die universelle Zauberstab-Abschlussfrage.
+    - 🎯 **Dynamischer Lösungs-Pitch:** Modulare Bausteine als „Handwerker für digitale Abläufe“ mit Überleitung zum 90-Minuten Büro-Audit vor Ort.
+    - 🛡️ **Preistest mit Doppelter Sicherheits-Garantie:** 500 € Festpreis (100 % Anrechnung bei Umsetzung + 0 € Risiko bei weniger als 10 Std./Monat Ersparnis).
+    - 🎫 **Praxis-Partner-Vorzugsticket & Multiplikator:** Limitierte Waitlist-Plätze und Weiterempfehlungsfrage für befreundete Harzer Meisterbetriebe.
+    - 📋 **CRM-Protokollbogen:** Strukturierte Matrix aller Kriterien und Datenpunkte für Coach & Founder OS.
+    - 🖨️ **PDF- & Druck-Optimierung:** Sauberes Layout via `@media print` für Beamer, Handouts oder PDF-Export.
+
 ### Fixed & Android Mobile Hardening
 - **📱 Android RemoteViews & Homescreen-Widgets Fix:**
   - Behebung des System-Absturzes („Fehler beim Laden des Widgets“) bei allen 4 nativen Android-Widgets (`MyWidgetProvider`, `TodoWidgetProvider`, `CrmWidgetProvider`, `QuickCaptureWidgetProvider`).
