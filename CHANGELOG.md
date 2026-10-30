@@ -4,6 +4,13 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 
 ## [Unreleased]
 
+### Changed & Customer-Discovery Overhaul (Forschungs-Edition)
+- **🧠 100% Forschungs- & Erkenntnis-Fokus (Mom-Test-Prinzip) für Discovery-Interviews (`customer_discovery_validierungs_leitfaden.md`, `src/components/CustomerDiscoveryView.jsx`, `interview_ablauf_praesentation.html`):**
+  - **Radikal offene Verhaltensfragen:** Umbau aller 5 Diagnose-Pfade (A bis E) von geschlossenen Leitfragen auf offene Fragen zu realen Vergangenheits-Ereignissen (z. B. *„Erzählen Sie mal: Vom Moment, in dem die Baustelle fertig ist, bis das Geld auf dem Konto landet: Wie lief die Abrechnung bei Ihrem letzten größeren Projekt ab?“*).
+  - **Phase 4 (Konzept-Reflexion statt Verkaufs-Pitch):** Der bisherige Verkaufs-Monolog wurde in ein partnerschaftliches Sparring umgewandelt. Der Meister wird zum Co-Entwickler (*„Was müsste so eine Lösung können, damit sie bei Ihren Gesellen und im Büro wirklich genutzt wird und nicht nach 2 Wochen in der Ecke landet?“*).
+  - **Phase 5 (Neutrale Marktforschung statt Audit-Verkauf):** Entkoppelung des 500-€-Audit-Preistests von persönlichem Kaufdruck (*„Wenn ein regionaler Gründer dafür 500 € aufruft – ist das aus Meistersicht ein fairer Marktpreis oder völlig an der Realität vorbei?“*).
+  - **Phase 6 (Reiner Dank & Erkenntnis-Teilen statt Abschluss-Druck):** Vollständige Streichung des verbindlichen Vorzugstickets und Vorverkaufs. Stattdessen echter Mehrwert durch das Angebot zur kostenlosen Zusendung des anonymen *50-Betriebe-Praxisreports* per E-Mail sowie die Multiplikator-Empfehlungsfrage.
+
 ### Added & Coaching Tools
 - **🧭 Standalone Interview-Präsentations-Website (`interview_ablauf_praesentation.html`, `public/interview_praesentation.html`, `public/interview-leitfaden/index.html`):**
   - Vollständige, interaktive Single-File HTML-Präsentation des 15–20-Minuten Customer-Discovery- und Validierungsablaufs für den anstehenden Coachingtermin mit Dennis Kauss.

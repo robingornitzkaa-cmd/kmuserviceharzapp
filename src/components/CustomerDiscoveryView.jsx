@@ -155,27 +155,28 @@ export const INITIAL_DISCOVERY_LEADS = [
 
 /**
  * Definition der 5 Diagnose-Pfade aus customer_discovery_validierungs_leitfaden.md
+ * (Forschungs-Edition mit offenen Verhaltensfragen nach dem Mom-Test-Prinzip)
  */
 const DISCOVERY_PATHS = [
   {
     id: 'A',
     shortTitle: 'Pfad A: Rechnungen & DATEV',
-    title: '🔀 Pfad A: Rechnungen, Buchhaltung & Steuerberater (Der Klassiker)',
+    title: '🔀 Pfad A: Rechnungen, Buchhaltung & Steuerberater (Der Faktura-Weg)',
     whenToUse: 'Nutzen, wenn der Inhaber über Papierberge, Belege oder den Steuerberater stöhnt.',
     color: '#8b5cf6',
     transition: null,
     questions: [
       {
-        label: 'Frage',
-        text: '„Vom Moment, in dem die Baustelle fertig ist, bis das Geld auf dem Konto landet: Wie viele Tage vergehen da bei Ihnen im Schnitt, und wer tippt die Rechnungsdaten ab?“'
+        label: 'Offene Verhaltensfrage',
+        text: '„Erzählen Sie mal: Vom Moment, in dem die Baustelle fertig ist, bis das Geld auf dem Konto landet: Wie viele Tage vergehen da bei Ihnen im Schnitt, und wer tippt die Rechnungsdaten ab?“'
       },
       {
-        label: 'Vertiefung',
-        text: '„Gibt es bei Ihnen den klassischen ‚Bürosonntag‘, an dem eigentlich Freizeit wäre, aber Belege und Ordner gewälzt werden müssen?“'
+        label: 'Alltag & Wochenende',
+        text: '„Wie sieht das bei Ihnen am Monatsende aus – gibt es bei Ihnen den klassischen ‚Bürosonntag‘, an dem eigentlich Freizeit wäre, aber Belege und Ordner gewälzt werden müssen?“'
       },
       {
-        label: 'Gesetzesdruck',
-        text: '„Haben Sie sich schon mit der B2B-E-Rechnungspflicht auseinandergesetzt, oder sorgt das eher für Stirnrunzeln?“'
+        label: 'E-Rechnungspflicht',
+        text: '„Welche Gedanken oder Erfahrungen haben Sie sich schon mit der B2B-E-Rechnungspflicht auseinandergesetzt, oder sorgt das eher für Stirnrunzeln?“'
       }
     ],
     pitchText: '„...wir sorgen dafür, dass Belege und Stundenzettel ohne manuelles Abtippen direkt in Ihre Rechnungssoftware und fehlerfrei zum Steuerberater fließen.“'
@@ -189,16 +190,16 @@ const DISCOVERY_PATHS = [
     transition: '„Klasse, dass Ihre Faktura steht! Wie sieht es an der Kundenfront aus?“',
     questions: [
       {
-        label: 'Frage',
-        text: '„Kommen Anfragen bei Ihnen noch klassisch per Telefon und Zettel rein? Wie oft kommt es vor, dass Sie auf der Baustelle stehen, das Handy klingelt und man abends erst mühsam zurückrufen muss?“'
+        label: 'Offene Kundenkontakt-Frage',
+        text: '„Erzählen Sie mal: Kommen Anfragen bei Ihnen noch klassisch per Telefon und Zettel rein? Wie oft kommt es vor, dass Sie auf der Baustelle stehen, das Handy klingelt und man abends erst mühsam zurückrufen muss?“'
       },
       {
-        label: 'Vertiefung',
-        text: '„Bieten Sie Kunden schon an, Termine (z. B. für Besichtigungen oder Wartungen) direkt online verbindlich einzubuchen, oder geht da viel Arbeitszeit für ‚Wann passt es Ihnen denn?‘ drauf?“'
+        label: 'Terminkoordination',
+        text: '„Bieten Sie Kunden schon an, Termine (z. B. für Besichtigungen oder Wartungen) direkt online verbindlich einzubuchen, oder wie viel Arbeitszeit geht dafür bei Ihnen drauf?“'
       },
       {
-        label: 'Schmerz-Check',
-        text: '„Passiert es im Trubel manchmal, dass eine Anfrage liegen bleibt und der Kunde verärgert zur Konkurrenz abwandert?“'
+        label: 'Stress- & Verlust-Check',
+        text: '„Wann ist es im Trubel das letzte Mal vorgekommen, dass eine Anfrage liegen bleibt und der Kunde verärgert zur Konkurrenz abwandert?“'
       }
     ],
     pitchText: '„...wir richten für Ihre Website ein einfaches Buchungs- und Anfrage-System ein, das Aufträge automatisch vorfiltert und Termine direkt in Ihren Kalender legt – ohne Telefon-Pingpong.“'
@@ -212,16 +213,16 @@ const DISCOVERY_PATHS = [
     transition: '„Wie läuft denn bei Ihnen die Kommunikation während laufender Projekte ab?“',
     questions: [
       {
-        label: 'Frage',
-        text: '„Wie oft rufen Auftraggeber an und fragen: ‚Wann kommt der Monteur?‘, ‚Wo bleibt das Angebot?‘ oder ‚Können Sie mir den Prüfbericht nochmal schicken?‘“'
+        label: 'Rückfragen im Alltag',
+        text: '„Wegen welcher Dinge rufen Auftraggeber oder Hausverwaltungen tagsüber am häufigsten an und fragen: ‚Wann kommt der Monteur?‘, ‚Wo bleibt das Angebot?‘ oder ‚Können Sie mir den Prüfbericht nochmal schicken?‘“'
       },
       {
-        label: 'Vertiefung',
+        label: 'Portal-Potenzial',
         text: '„Wäre es für Ihren Betrieb eine Entlastung, wenn Stammkunden oder Hausverwaltungen ein einfaches Online-Portal hätten, wo sie den Status ihrer Aufträge, Wartungsprotokolle und Rechnungen selbst einsehen können, ohne Ihr Büro anzurufen?“'
       },
       {
-        label: 'Hürden-Check',
-        text: '„Haben Sie sowas schon mal angedacht, oder fürchten Sie, dass Ihre Kunden das nicht annehmen würden?“'
+        label: 'Praxishürden',
+        text: '„Haben Sie sowas schon mal angedacht, oder fürchten Sie, dass Ihre Kunden oder Monteure das im Alltag nicht annehmen würden?“'
       }
     ],
     pitchText: '„...wir bauen schlanke Kunden-Dashboards, in denen Ihre Auftraggeber Termine, Dokumente und Statusberichte mit einem Klick abrufen können – Ihr Telefon steht sofort still.“'
@@ -235,15 +236,15 @@ const DISCOVERY_PATHS = [
     transition: '„Wie sichern Sie eigentlich Ihre Arbeit auf der Baustelle bzw. beim Kunden ab?“',
     questions: [
       {
-        label: 'Frage',
-        text: '„Wenn Ihre Mitarbeiter vor Ort fertig sind: Wie landen Vorher-Nachher-Fotos, Lieferscheine oder Abnahmeunterschriften im Büro?“'
+        label: 'Dokumentations-Weg',
+        text: '„Erzählen Sie mal: Wenn Ihre Mitarbeiter vor Ort fertig sind: Wie landen Vorher-Nachher-Fotos, Lieferscheine oder Abnahmeunterschriften heute konkret im Büro?“'
       },
       {
-        label: 'Vertiefung',
+        label: 'Suchaufwand & WhatsApp',
         text: '„Liegen die Fotos auf privaten WhatsApp-Handys der Gesellen verstreut? Wie lange suchen Sie, wenn ein Kunde nach drei Monaten eine Reklamation meldet und Sie den Nachweis brauchen?“'
       },
       {
-        label: 'Sicherheits-Check',
+        label: 'Reale Ausfälle',
         text: '„Hatten Sie schon mal den Fall, dass geleistete Stunden oder Materialien nicht abgerechnet werden konnten, weil der Zettel auf der Baustelle verschollen ist?“'
       }
     ],
@@ -258,11 +259,11 @@ const DISCOVERY_PATHS = [
     transition: '„Wie läuft bei Ihnen aktuell die Erfassung der Monteur-Stunden ab?“',
     questions: [
       {
-        label: 'Frage',
-        text: '„Schreiben Ihre Gesellen die Stundenzettel noch freitags aus dem Kopf auf Papier, oder läuft das komplett digital per Smartphone?“'
+        label: 'Weg der Stunden',
+        text: '„Erzählen Sie mal: Schreiben Ihre Gesellen die Stundenzettel noch freitags aus dem Kopf auf Papier, oder wie läuft das aktuell bei Ihnen ab?“'
       },
       {
-        label: 'Vertiefung',
+        label: 'Büro-Aufwand am Monatsende',
         text: '„Wie viele Stunden pro Monat verbringt das Büro damit, unleserliche Stundenzettel zu entziffern und für das Lohnbüro abzutippen?“'
       }
     ],
@@ -2364,12 +2365,12 @@ ${c.generalNotes || 'Keine weiteren Notizen.'}
                   </div>
                 )}
 
-                {/* ==================== PHASE 4: DER ZIELGERICHTETE LÖSUNGS-PITCH ==================== */}
+                {/* ==================== PHASE 4: KONZEPT-REFLEXION (MEISTER ALS CO-ENTWICKLER) ==================== */}
                 {activePhase === 4 && (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     <div style={{ background: 'rgba(16, 185, 129, 0.08)', border: '1px solid rgba(16, 185, 129, 0.35)', borderRadius: '0.65rem', padding: '1rem' }}>
                       <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#34d399', textTransform: 'uppercase', marginBottom: '0.45rem' }}>
-                        ⏱️ [09:30 - 13:30] Phase 4: Der zielgerichtete Lösungs-Pitch (Passend zum erkannten Schmerz)
+                        ⏱️ [09:30 - 13:30] Phase 4: Konzept-Reflexion statt Verkaufs-Pitch (Meister als Co-Entwickler)
                       </div>
 
                       <blockquote
@@ -2383,9 +2384,9 @@ ${c.generalNotes || 'Keine weiteren Notizen.'}
                           color: 'white'
                         }}
                       >
-                        „Herr/Frau <strong style={{ color: '#34d399' }}>{getLastName(activeContact)}</strong>, genau an dieser Bruchstelle setzt meine geplante Gründung an:
+                        „Herr/Frau <strong style={{ color: '#34d399' }}>{getLastName(activeContact)}</strong>, genau an dieser Bruchstelle forschen wir aktuell:
                         <br />
-                        Ich gründe keinen klassischen IT-Laden, der Ihnen teure Server oder neue Riesen-Software verkauft. Ich verstehe mich als <strong>‚Handwerker für digitale Abläufe‘</strong>...“
+                        Ich gründe keinen klassischen IT-Laden, der Ihnen teure Server oder neue Riesen-Software verkauft. Ich verstehe mich als <strong>‚Handwerker für digitale Abläufe‘</strong> – wir wollen genau diese Brücken so einfach machen wie einen Lichtschalter...“
                       </blockquote>
 
                       {/* Pitch-Bausteine (Ausgewählte Pfade aus Phase 3 werden automatisch grün hervorgehoben!) */}
@@ -2404,7 +2405,7 @@ ${c.generalNotes || 'Keine weiteren Notizen.'}
                               }}
                             >
                               <div style={{ fontSize: '0.72rem', fontWeight: 700, color: p.color, marginBottom: '0.2rem' }}>
-                                {isMatched ? '🎯 EMPFOHLENER PITCH FÜR DIESEN BETRIEB — ' : ''}{p.shortTitle}:
+                                {isMatched ? '🎯 IDEEN-SKIZZE ZUM ERKANNTEN ENG PASS — ' : ''}{p.shortTitle}:
                               </div>
                               <div style={{ fontSize: '0.88rem', color: 'white', fontStyle: 'italic' }}>{p.pitchText}</div>
                             </div>
@@ -2412,13 +2413,16 @@ ${c.generalNotes || 'Keine weiteren Notizen.'}
                         })}
                       </div>
 
-                      {/* Brückenschlag zum 60-90 Min Büro-Audit */}
-                      <div style={{ padding: '0.8rem 1rem', background: 'rgba(6, 182, 212, 0.14)', border: '1px solid #06b6d4', borderRadius: '0.5rem', marginBottom: '0.85rem' }}>
-                        <div style={{ fontSize: '0.74rem', fontWeight: 700, color: '#22d3ee', marginBottom: '0.25rem' }}>
-                          🌉 Der Brückenschlag zum Audit:
+                      {/* Die offene Co-Entwickler Frage */}
+                      <div style={{ padding: '0.85rem 1rem', background: 'rgba(6, 182, 212, 0.15)', border: '1px solid #06b6d4', borderRadius: '0.5rem', marginBottom: '0.85rem' }}>
+                        <div style={{ fontSize: '0.75rem', fontWeight: 800, color: '#67e8f9', textTransform: 'uppercase', marginBottom: '0.35rem' }}>
+                          🛠️ Die offene Co-Entwickler-Frage (Hypothesen-Test):
                         </div>
-                        <div style={{ fontSize: '0.9rem', color: 'white', fontStyle: 'italic' }}>
-                          „Bevor man da aber irgendetwas umsetzt, plane ich als festen ersten Schritt ein <strong>60- bis 90-minütiges Büro-Audit vor Ort</strong> an. Wir schauen uns die Abläufe an, decken die Zeitfresser auf und berechnen schwarz auf weiß, wie viele Stunden Sie pro Woche sparen können.“
+                        <div style={{ fontSize: '0.92rem', color: 'white', fontStyle: 'italic', marginBottom: '0.5rem' }}>
+                          „Wenn Sie sich vorstellen, jemand baut eine einfache digitale Brücke für genau dieses Problem: <strong>Was müsste so eine Lösung können, damit sie bei Ihren Gesellen und im Büro wirklich genutzt wird und nicht nach zwei Wochen in der Ecke landet?</strong>“
+                        </div>
+                        <div style={{ fontSize: '0.82rem', color: '#a5f3fc', fontStyle: 'italic' }}>
+                          <strong>Nachhaken zum Enttäuschungs-Check:</strong> „Was war in der Vergangenheit die größte Enttäuschung, wenn Sie oder befreundete Kollegen eine neue Software oder ein digitales Tool ausprobiert haben?“
                         </div>
                       </div>
 
@@ -2426,7 +2430,7 @@ ${c.generalNotes || 'Keine weiteren Notizen.'}
                       <div style={{ padding: '0.85rem 1rem', background: 'rgba(139, 92, 246, 0.1)', border: '1px solid rgba(139, 92, 246, 0.4)', borderRadius: '0.55rem' }}>
                         <div style={{ fontSize: '0.75rem', fontWeight: 800, color: '#c4b5fd', textTransform: 'uppercase', marginBottom: '0.45rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.4rem' }}>
                           <span>💎 Coaching-Spickzettel (Kauss): Die 5 FAB-Nutzen-Ketten (Blau ➔ Lila ➔ Grün)</span>
-                          <span style={{ fontSize: '0.68rem', color: '#86efac', fontWeight: 700 }}>Für Pitch & Einwände in Phase 4/5</span>
+                          <span style={{ fontSize: '0.68rem', color: '#86efac', fontWeight: 700 }}>Hintergrundwissen für Resonanz & Einwände</span>
                         </div>
                         <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)', gap: '0.45rem', fontSize: '0.76rem' }}>
                           <div style={{ padding: '0.45rem 0.6rem', background: 'rgba(15, 23, 42, 0.7)', borderRadius: '0.4rem', borderLeft: '3px solid #3b82f6' }}>
@@ -2445,10 +2449,10 @@ ${c.generalNotes || 'Keine weiteren Notizen.'}
                       </div>
                     </div>
 
-                    {/* Reaktion auf den Lösungs-Pitch erfassen */}
+                    {/* Resonanz auf den Lösungs-Ansatz erfassen */}
                     <div>
                       <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: 'white', marginBottom: '0.4rem' }}>
-                        🎯 Wie reagiert der Inhaber auf diesen Lösungs-Pitch?
+                        🎯 Wie schätzt der Meister die Praxistauglichkeit so eines Lösungs-Ansatzes ein?
                       </label>
                       <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', gap: '0.5rem' }}>
                         {[
@@ -2482,18 +2486,18 @@ ${c.generalNotes || 'Keine weiteren Notizen.'}
                   </div>
                 )}
 
-                {/* ==================== PHASE 5: KRITISCHES FEEDBACK, EINWÄNDE & PREISTEST ==================== */}
+                {/* ==================== PHASE 5: KRITISCHES FEEDBACK, EINWÄNDE & NEUTRALE MARKTFORSCHUNG ==================== */}
                 {activePhase === 5 && (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     <div style={{ background: 'rgba(245, 158, 11, 0.08)', border: '1px solid rgba(245, 158, 11, 0.35)', borderRadius: '0.65rem', padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
                       <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#fbbf24', textTransform: 'uppercase' }}>
-                        ⏱️ [13:30 - 17:30] Phase 5: Kritisches Feedback, Einwände & Audit-Preistest
+                        ⏱️ [13:30 - 17:30] Phase 5: Kritisches Feedback, Einwände & Neutrale Marktforschung (500 € Audit Preistest)
                       </div>
 
                       {/* 1. Realitäts-Check */}
                       <div>
                         <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#fde68a', marginBottom: '0.25rem' }}>
-                          1. Realitäts-Check:
+                          1. Resonanz- & Realitäts-Check:
                         </div>
                         <div style={{ fontSize: '0.86rem', color: 'white', fontStyle: 'italic', marginBottom: '0.4rem' }}>
                           „Klingt so ein Ansatz nach einer echten Entlastung für Ihren Betrieb, oder sagen Sie: ‚Das brauchen wir nicht, wir machen das lieber auf dem gewohnten Weg‘?“
@@ -2510,7 +2514,7 @@ ${c.generalNotes || 'Keine weiteren Notizen.'}
                       {/* 2. Größte Befürchtung aufdecken */}
                       <div>
                         <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#fde68a', marginBottom: '0.25rem' }}>
-                          2. Größte Befürchtung / Einwand aufdecken:
+                          2. Größte Befürchtung / Skepsis aufdecken:
                         </div>
                         <div style={{ fontSize: '0.86rem', color: 'white', fontStyle: 'italic', marginBottom: '0.4rem' }}>
                           „Was wäre Ihre größte Skepsis gegenüber so einer Zusammenarbeit? Dass die Monteure streiken? Dass die Technik ausfällt? Oder dass es am Ende nur teuer wird und nichts bringt?“
@@ -2553,13 +2557,13 @@ ${c.generalNotes || 'Keine weiteren Notizen.'}
                         />
                       </div>
 
-                      {/* 3. Preistest für das Audit */}
+                      {/* 3. Preistest für das Audit (Neutrale Marktforschung) */}
                       <div>
                         <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#fde68a', marginBottom: '0.25rem' }}>
-                          3. Preistest für das Diagnose-Audit (300 bis 500 € Festpreis):
+                          3. Neutrale Marktforschung: Preistest für das 90-Minuten-Audit (500 € Festpreis):
                         </div>
                         <div style={{ fontSize: '0.86rem', color: 'white', fontStyle: 'italic', marginBottom: '0.25rem' }}>
-                          „Angenommen, jemand analysiert diesen Engpass vor Ort im Detail und liefert Ihnen einen glasklaren Fahrplan inklusive Zeitersparnis: Wäre ein Betrieb wie Ihrer bereit, für so ein Diagnose-Audit <strong>300 bis 500 Euro Festpreis</strong> zu investieren – oder wo liegt im Handwerk die Schmerzgrenze?“
+                          „Wir wollen im Rahmen unserer Vorbereitung prüfen, ob unsere Dienstleistung betriebswirtschaftlich realistisch kalkuliert ist: Wenn ein regionaler Gründer ein <strong>90-minütiges Büro-Audit vor Ort für 500 Euro Festpreis</strong> anbietet – inklusive schriftlicher Auswertung der Zeitfresser und einer Geld-zurück-Garantie, falls nicht mindestens 10 Stunden Ersparnis im Monat belegt werden: <strong>Ist das aus Ihrer Sicht als Meister ein fairer, handfester Marktpreis – oder ist das völlig an der Realität vorbei?</strong>“
                         </div>
                         <div style={{ fontSize: '0.8rem', color: '#cbd5e1', fontStyle: 'italic', marginBottom: '0.5rem' }}>
                           <strong>Nachhaken:</strong> „Ab welchem Betrag würden Sie sofort sagen: ‚Das ist mir ein reines Audit auf keinen Fall wert‘?“
@@ -2610,25 +2614,29 @@ ${c.generalNotes || 'Keine weiteren Notizen.'}
                   </div>
                 )}
 
-                {/* ==================== PHASE 6: VERBINDLICHER ABSCHLUSS & MULTIPLIKATOR ==================== */}
+                {/* ==================== PHASE 6: REINER DANK, ERKENNTNIS-TEILEN & MULTIPLIKATOR ==================== */}
                 {activePhase === 6 && (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     <div style={{ background: 'rgba(16, 185, 129, 0.08)', border: '1px solid rgba(16, 185, 129, 0.35)', borderRadius: '0.65rem', padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
                       <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#34d399', textTransform: 'uppercase' }}>
-                        ⏱️ [17:30 - 20:00] Phase 6: Verbindlicher Abschluss & Brücke zum Go-to-Market
+                        ⏱️ [17:30 - 20:00] Phase 6: Reiner Dank, Erkenntnis-Teilen (50-Betriebe-Report) & Multiplikator
+                      </div>
+
+                      <div style={{ background: 'rgba(245, 158, 11, 0.12)', border: '1px solid rgba(245, 158, 11, 0.35)', borderRadius: '0.45rem', padding: '0.55rem 0.85rem', fontSize: '0.78rem', color: '#fbbf24' }}>
+                        ⚠️ <strong>STRIKT KEIN VERKAUF:</strong> Kein Vorzugsticket-Verkauf, kein Drängen auf Umsetzung, kein Vertrag! Reiner Dank und Angebot zur Wissens-Rückgabe.
                       </div>
 
                       {/* 1. Dankbarkeit */}
                       <div style={{ padding: '0.65rem 0.85rem', background: 'rgba(0,0,0,0.25)', borderRadius: '0.4rem', borderLeft: '3px solid #10b981', fontSize: '0.88rem', color: 'white' }}>
-                        <strong>1. Dankbarkeit:</strong><br />
-                        „Herr/Frau <strong style={{ color: '#34d399' }}>{getLastName(activeContact)}</strong>, vielen Dank. Das waren genau die praxisnahen Einblicke, die mir unglaublich helfen.“
+                        <strong>1. Ehrliche Dankbarkeit:</strong><br />
+                        „Herr/Frau <strong style={{ color: '#34d399' }}>{getLastName(activeContact)}</strong>, ein riesiges Dankeschön für Ihre offenen Worte. Das waren genau die Praxis-Einblicke aus erster Hand, die kein Lehrbuch der Welt liefern kann.“
                       </div>
 
-                      {/* 2. Follow-up vereinbaren (Warm-Lead sichern) */}
+                      {/* 2. Erkenntnis-Teilen (Der anonyme 50-Betriebe-Report) */}
                       <div style={{ padding: '0.65rem 0.85rem', background: 'rgba(0,0,0,0.25)', borderRadius: '0.4rem', borderLeft: '3px solid #06b6d4' }}>
                         <div style={{ fontSize: '0.88rem', color: 'white', marginBottom: '0.5rem' }}>
-                          <strong>2. Follow-up vereinbaren (Warm-Lead sichern):</strong><br />
-                          „Wenn ich in ein paar Monaten mein Gewerbe angemeldet habe und die ersten Lösungen für die Region startklar sind: <strong>Darf ich mich dann ganz kurz noch einmal bei Ihnen melden</strong>, um Ihnen unverbindlich zu zeigen, was aus Ihrem Feedback geworden ist?“
+                          <strong>2. Mehrwert-Rückgabe (Der anonyme 50-Betriebe-Praxisbericht):</strong><br />
+                          „Ich fasse die spannendsten Erkenntnisse und häufigsten Büro-Fallen aus allen 50 Gesprächen mit Betrieben im Landkreis Goslar in einem kurzen, anonymen Praxisbericht zusammen. <strong>Darf ich Ihnen diese Zusammenfassung einfach unverbindlich per E-Mail rüberschicken, sobald die Auswertung fertig ist?</strong>“
                         </div>
                         <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                           <button
@@ -2645,7 +2653,7 @@ ${c.generalNotes || 'Keine weiteren Notizen.'}
                               cursor: 'pointer'
                             }}
                           >
-                            🔥 Ja, nach Gründung melden (Warm-Lead!)
+                            📊 Ja, 50-Betriebe-Report per E-Mail zusenden (Erkenntnis-Interesse!)
                           </button>
                           <button
                             type="button"
@@ -2661,7 +2669,7 @@ ${c.generalNotes || 'Keine weiteren Notizen.'}
                               cursor: 'pointer'
                             }}
                           >
-                            ❌ Nein, kein Interesse
+                            ❌ Nein, kein Bedarf
                           </button>
                         </div>
                       </div>
@@ -2670,7 +2678,7 @@ ${c.generalNotes || 'Keine weiteren Notizen.'}
                       <div style={{ padding: '0.65rem 0.85rem', background: 'rgba(0,0,0,0.25)', borderRadius: '0.4rem', borderLeft: '3px solid #f59e0b' }}>
                         <div style={{ fontSize: '0.88rem', color: 'white', marginBottom: '0.5rem' }}>
                           <strong>3. Multiplikator (Empfehlungs-Frage):</strong><br />
-                          „Kennen Sie einen befreundeten Kollegenbetrieb hier in der Region, der mit ähnlichen Büro-Hürden kämpft und dem ich 2–3 dieser Fragen stellen könnte?“
+                          „Kennen Sie einen befreundeten Kollegenbetrieb hier in der Region, der beim Feierabendbier auch ab und zu über sein Büro oder den Zettelkram flucht und dem ich ebenfalls 2–3 dieser offenen Fragen stellen könnte?“
                         </div>
                         <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr auto', gap: '0.5rem', alignItems: 'center' }}>
                           <input

@@ -2,8 +2,8 @@
 
 - [x] **🧭 [Interview-Ablauf Präsentations-Website & Coaching Hub]:**
   - [x] *Single-File HTML-Präsentation erstellt:* `interview_ablauf_praesentation.html` (im Root-Verzeichnis) sowie `public/interview_praesentation.html` und `public/interview-leitfaden/index.html`.
-  - [x] *Umfang & Funktionen:* 15–20 Min. Live-Timer mit 20-Min-Warnstufe, Phasen 1 bis 6 + CRM-Protokollbogen, Umschalter für Bürokraft vs. Meister, 5 Diagnose-Pfade (A-E), Zauberstab-Frage, 500-€-Audit mit doppelter Sicherheitsgarantie und Druck/PDF-Optimierung.
-  - [x] *Build & Integration validiert:* `npm run build` erfolgreich ohne Fehler.
+  - [x] *Mom-Test & Forschungs-Overhaul abgeschlossen:* Umstellung aller Fragen auf offene Verhaltensfragen, Umbau von Phase 4 zu Co-Entwicklung, Phase 5 zu neutraler Marktforschung, Phase 6 zu 50-Betriebe-Report (strikt null Verkaufsdruck) in Leitfaden, React-Komponente und Präsentations-Website.
+  - [x] *Build & Lint validiert:* `npm run build` und `npm run lint` mit 0 Fehlern.
 
 - [x] **📱 [Android Mobile Widgets & Notification Hardening]:**
   - [x] *RemoteViews `<View>` ActionException behoben:* Ersatz aller verbotenen `<View>`-Tags durch zulässige `<ImageView>`-Komponenten in allen 4 Layouts (`widget_layout.xml`, `widget_todo_layout.xml`, `widget_crm_layout.xml`, `widget_quick_capture_layout.xml`).

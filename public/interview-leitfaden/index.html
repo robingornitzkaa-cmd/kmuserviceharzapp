@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KMU Service Harz – Interview- & Validierungs-Ablauf (15–20 Min)</title>
+  <title>KMU Service Harz – Interview- & Problem-Validierungsablauf (Forschungs-Edition)</title>
   <style>
     :root {
       --bg-dark: #0b1120;
@@ -35,7 +35,6 @@
       padding-bottom: 5rem;
     }
 
-    /* Container */
     .container {
       max-width: 1100px;
       margin: 0 auto;
@@ -96,10 +95,10 @@
       border: 1px solid rgba(16, 185, 129, 0.3);
     }
 
-    .badge-purple {
-      background: rgba(139, 92, 246, 0.15);
-      color: #c084fc;
-      border: 1px solid rgba(139, 92, 246, 0.3);
+    .badge-amber {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.3);
     }
 
     h1 {
@@ -115,7 +114,7 @@
     p.subtitle {
       font-size: 1.1rem;
       color: var(--text-muted);
-      max-width: 800px;
+      max-width: 850px;
       margin-bottom: 1.5rem;
     }
 
@@ -332,6 +331,11 @@
       background: rgba(6, 78, 59, 0.2);
     }
 
+    .dialogue-box.amber {
+      border-left-color: var(--accent-amber);
+      background: rgba(245, 158, 11, 0.08);
+    }
+
     .speaker-tag {
       font-size: 0.75rem;
       font-weight: 700;
@@ -346,6 +350,7 @@
     .speaker-tag.cyan { color: var(--accent-cyan); }
     .speaker-tag.purple { color: #c084fc; }
     .speaker-tag.emerald { color: var(--accent-emerald); }
+    .speaker-tag.amber { color: var(--accent-amber); }
 
     /* Branching / Tabs in Phase 3 */
     .paths-tabs {
@@ -443,7 +448,7 @@
 
     /* Price / Offer Highlight */
     .deal-box {
-      background: linear-gradient(135deg, rgba(6, 78, 59, 0.3), rgba(17, 24, 39, 0.9));
+      background: linear-gradient(135deg, rgba(6, 78, 59, 0.25), rgba(17, 24, 39, 0.9));
       border: 2px solid var(--accent-emerald);
       border-radius: 0.75rem;
       padding: 1.5rem;
@@ -534,12 +539,12 @@
     <header class="hero">
       <div class="badge-bar">
         <span class="badge badge-cyan">🧭 KMU Service Harz</span>
-        <span class="badge badge-emerald">Master-Interview Ablauf</span>
-        <span class="badge badge-purple">Coaching-Präsentation</span>
+        <span class="badge badge-emerald">Forschungs- & Erkenntnis-Edition</span>
+        <span class="badge badge-amber">100% Zuhören · 0% Verkauf</span>
       </div>
-      <h1>15–20-Minuten Customer-Discovery & Validierung</h1>
+      <h1>15–20-Minuten Customer-Discovery & Problem-Validierung</h1>
       <p class="subtitle">
-        Vollständiger, modularer Gesprächsleitfaden für Inhaber von Handwerksbetrieben & Dienstleistern im Landkreis Goslar und Harz.
+        Überarbeiteter Gesprächsleitfaden nach dem <strong>Mom-Test-Prinzip</strong>: Reale Verhaltensweisen erforschen, den Meister als Co-Entwickler einbinden und Zahlungsbereitschaft neutral testen – ohne Verkaufsdruck.
       </p>
 
       <div class="metrics-grid">
@@ -549,19 +554,19 @@
           <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem;">SHK, Elektro, Dach, Bau, Reinigung, GaLaBau</div>
         </div>
         <div class="metric-card">
-          <div class="metric-label">Format & Dauer</div>
-          <div class="metric-value">15 bis 20 Minuten</div>
-          <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem;">Telefonisch oder vor Ort beim Meister</div>
+          <div class="metric-label">Gesprächs-Fokus</div>
+          <div class="metric-value">Offene Verhaltensfragen</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem;">Vergangenheit & reale Abläufe statt Meinungen</div>
         </div>
         <div class="metric-card">
-          <div class="metric-label">Kern-Angebot</div>
-          <div class="metric-value">500 € Büro-Audit</div>
-          <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem;">Mit Doppelter Sicherheits-Garantie</div>
+          <div class="metric-label">Preistest</div>
+          <div class="metric-value">500 € Audit (Neutral)</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem;">Aus Sicht der Marktforschung validiert</div>
         </div>
         <div class="metric-card">
-          <div class="metric-label">Ziel-Zahl</div>
-          <div class="metric-value">50 Validierungs-Calls</div>
-          <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem;">Vor offiziellem Gewerbestart</div>
+          <div class="metric-label">Abschluss-Haltung</div>
+          <div class="metric-value">Kein Verkaufsabschluss</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem;">Dank, Erkenntnis-Report & Empfehlungsfrage</div>
         </div>
       </div>
     </header>
@@ -569,13 +574,13 @@
     <!-- Sticky Navigation & Live Timer Demo -->
     <nav class="nav-bar">
       <div class="nav-steps">
-        <a href="#mindset" class="nav-btn">🧭 Mindset</a>
+        <a href="#mindset" class="nav-btn">🧠 Mindset</a>
         <a href="#phase1" class="nav-btn">1️⃣ Türöffner (01:30)</a>
         <a href="#phase2" class="nav-btn">2️⃣ Kontext (03:00)</a>
-        <a href="#phase3" class="nav-btn">3️⃣ Diagnose (09:30)</a>
-        <a href="#phase4" class="nav-btn">4️⃣ Pitch (13:30)</a>
-        <a href="#phase5" class="nav-btn">5️⃣ Preistest (17:30)</a>
-        <a href="#phase6" class="nav-btn">6️⃣ Vorzugsticket (20:00)</a>
+        <a href="#phase3" class="nav-btn">3️⃣ Offene Weiche (09:30)</a>
+        <a href="#phase4" class="nav-btn">4️⃣ Co-Entwicklung (13:30)</a>
+        <a href="#phase5" class="nav-btn">5️⃣ Marktforschung (17:30)</a>
+        <a href="#phase6" class="nav-btn">6️⃣ Dank & Multiplikator (20:00)</a>
         <a href="#protokoll" class="nav-btn">📋 CRM-Bogen</a>
       </div>
 
@@ -593,20 +598,20 @@
     <!-- Das Mindset vor dem Anruf -->
     <section id="mindset" class="mindset-card">
       <div class="mindset-title">
-        <span>🧠</span> Das Mindset vor dem Telefonat (Die 3 Erfolgs-Regeln)
+        <span>🧠</span> Das Mindset vor dem Telefonat (Die 3 goldenen Forschungs-Regeln)
       </div>
       <div class="mindset-grid">
         <div class="mindset-item">
-          <strong>1. Der „Gründer-Bonus“:</strong><br>
-          Du verkaufst heute absolut nichts. Du bist Gründer aus der Region (Langelsheim/Harz), der von gestandenen Praktikern lernen will, um praxisnahe Lösungen zu bauen.
+          <strong>1. Der 100%ige „Gründer-Bonus“:</strong><br>
+          Du verkaufst heute absolut gar nichts. Du bist Gründer aus der Region (Langelsheim/Harz), der von gestandenen Praktikern lernen will, um praxisnahe Lösungen für den Harz zu entwickeln.
         </div>
         <div class="mindset-item">
-          <strong>2. Keine Sackgassen (Reframing):</strong><br>
-          Sagt der Chef <em>„Rechnungen schreiben wir in 5 Minuten, da haben wir kein Problem“</em>, ist das kein K.-o., sondern deine Chance: <em>„Stark, dann gehören Sie zu den Vorreitern! Wo staut es sich stattdessen am meisten?“</em>
+          <strong>2. Radikal offene Fragen (Mom-Test):</strong><br>
+          Frage niemals: <em>„Haben Sie ein Problem mit Rechnungen?“</em> (Er sagt sofort: <em>„Nein, läuft.“</em>). Frage stattdessen: <em>„Erzählen Sie mal: Wie lief die Abrechnung bei Ihrem letzten größeren Projekt vom letzten Hammerschlag bis zum Geldeingang ab?“</em>
         </div>
         <div class="mindset-item">
           <strong>3. Wortwörtlich mitschreiben:</strong><br>
-          Notiere exakt seine Begriffe (<em>„Sonntags am Küchentisch“</em>, <em>„Monteure vergessen Fotos“</em>, <em>„Telefon-Terror“</em>). Das ist dein späterer Vertriebswortschatz!
+          Notiere exakt seine Ausdrücke (<em>„Sonntags am Küchentisch“</em>, <em>„Monteure vergessen Fotos“</em>, <em>„Telefon-Terror“</em>). Das ist dein späterer Praxisschatz.
         </div>
       </div>
     </section>
@@ -616,21 +621,21 @@
       <div class="phase-header">
         <div>
           <div class="phase-number">Phase 1 von 6</div>
-          <h2 class="phase-title">Der Telefon-Türöffner</h2>
+          <h2 class="phase-title">Der Telefon-Türöffner (Forschungs-Einstieg)</h2>
         </div>
         <div class="phase-timing">⏱️ 00:00 – 01:30 Min.</div>
       </div>
 
       <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
-        <strong>Ziel:</strong> Gesprächserlaubnis sichern – ohne jede Abwehrhaltung oder Verkaufswiderstand.
+        <strong>Ziel:</strong> Gesprächserlaubnis sichern – ohne jede Abwehrhaltung oder Werbeblockade.
       </p>
 
       <!-- Variante A: Gute Seele im Büro -->
       <div class="dialogue-box">
-        <div class="speaker-tag cyan">🅰️ Wenn die Bürokraft / Ehefrau abnimmt:</div>
+        <div class="speaker-tag cyan">🅰️ Wenn die Bürokraft / Ehefrau abnimmt („Gute Seele im Büro“):</div>
         <p>„Schönen guten Tag! Hier ist Robin Gornitzka aus Langelsheim. Sagen Sie, bin ich bei Ihnen direkt in der Schaltzentrale im Büro von <em>[Firmenname]</em> gelandet?</p>
         <p style="margin-top: 0.5rem;">Perfekt, dann sind Sie wahrscheinlich genau die Richtige – und direkt vorweg zur Beruhigung: <strong>Ich verkaufe Ihnen heute absolut nichts, ich habe noch nicht mal mein Gewerbe offiziell angemeldet.</strong></p>
-        <p style="margin-top: 0.5rem;">Ich baue hier in Langelsheim gerade einen regionalen Service speziell für Handwerksbetriebe im Harz auf, um das leidige <strong>Büro-Wochenende</strong>, die Zettelwirtschaft aus den Transportern und das Abtippen für den Steuerberater abzuschaffen. Bevor ich starte, spreche ich mit 50 Betrieben im Landkreis Goslar, um aus erster Hand zu hören, was im Handwerks-Büro wirklich nervt – und die Damen im Büro wissen das oft zehnmal besser als der Meister auf dem Gerüst. Hätten Sie jetzt kurz 4 Minuten für drei ehrliche Praxis-Fragen – oder wann passt es am besten?“</p>
+        <p style="margin-top: 0.5rem;">Ich baue hier in Langelsheim gerade einen regionalen Service speziell für Handwerksbetriebe im Harz auf, um das leidige <strong>Büro-Wochenende</strong>, die Zettelwirtschaft aus den Transportern und das zeitraubende Abtippen für den Steuerberater zu lösen. Bevor ich an den Start gehe, spreche ich mit 50 Betrieben im Landkreis Goslar, um aus erster Hand zu verstehen, was im Büro-Alltag wirklich die meisten Nerven frisst – und die Damen im Büro wissen das oft zehnmal besser als der Meister auf dem Gerüst. Hätten Sie kurz 4 Minuten für drei ehrliche Praxis-Fragen – oder wann passt es am besten?“</p>
       </div>
 
       <!-- Variante B: Meister direkt -->
@@ -650,11 +655,11 @@
         </div>
         <div class="objection-card">
           <div class="objection-header">⏳ Reaktion: „Keine Zeit!“</div>
-          <div class="objection-body"><em>„Verstehe ich vollkommen. Wann passt es für kurze 10–15 Minuten am besten – morgens um 07:15 Uhr vor der Baustelle oder freitags ab 13:00 Uhr?“</em></div>
+          <div class="objection-body"><em>„Verstehe ich vollkommen. Wann passt es für kurze 10–15 Minuten am besten – morgens um 07:15 Uhr vor der Baustelle oder freitags ab 13:00 Uhr zum Feierabend?“</em></div>
         </div>
         <div class="objection-card">
           <div class="objection-header">❓ Reaktion: „Worum geht’s denn genau?“</div>
-          <div class="objection-body"><em>„Um zeitraubende Reibungsverluste zwischen Baustelle, Kunden und Büro (das klassische Büro-Wochenende). Ich möchte verstehen, wo bei Betrieben Ihrer Größe am meisten Zeit verbrannt wird.“</em></div>
+          <div class="objection-body"><em>„Um zeitraubende Reibungsverluste zwischen Baustelle, Kunden und Büro (das klassische Büro-Wochenende). Ich möchte verstehen, wo bei Betrieben Ihrer Größe am meisten Zeit verbrannt wird, um später nichts am Alltag vorbeizubauen.“</em></div>
         </div>
       </div>
     </section>
@@ -669,18 +674,14 @@
         <div class="phase-timing">⏱️ 01:30 – 03:00 Min.</div>
       </div>
 
-      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
-        <strong>Ziel:</strong> Verkaufsdruck komplett abbauen und die Betriebsstruktur sauber erfassen.
-      </p>
-
       <div class="dialogue-box">
-        <div class="speaker-tag cyan">1. Vertrauen festigen:</div>
-        <p>„Vielen Dank für Ihre Zeit! Wie versprochen: Ich habe heute weder ein Produkt noch einen Vertrag in der Tasche. Es geht rein um Ihre Praxiserfahrung.“</p>
+        <div class="speaker-tag cyan">1. Vertrauen festigen (Null Verkaufsdruck):</div>
+        <p>„Vielen Dank für Ihre Zeit! Wie versprochen: Ich habe heute weder ein Produkt noch einen Vertrag in der Tasche. Es geht mir zu 100 % darum, von Ihrer Praxiserfahrung zu lernen.“</p>
       </div>
 
       <div class="dialogue-box">
-        <div class="speaker-tag cyan">2. Betriebsrahmen erfassen:</div>
-        <p>„Damit ich Ihren Betrieb kurz einordnen kann: Wie viele Mitarbeiter sind Sie aktuell bei <em>[Firmenname]</em>, und wer kümmert sich primär um das Büro und die Kundenorganisation?“</p>
+        <div class="speaker-tag cyan">2. Alltags-Aufteilung offen erfragen:</div>
+        <p>„Damit ich Ihren Betrieb einordnen kann: Wie viele Mitarbeiter sind Sie aktuell bei <em>[Firmenname]</em>, und wie teilt sich bei Ihnen im Alltag die Arbeit zwischen Baustelle, Kundenkontakt und Büro auf?“</p>
       </div>
 
       <div style="background: rgba(15, 23, 42, 0.5); border: 1px solid var(--card-border); border-radius: 0.5rem; padding: 1rem; margin-top: 1rem;">
@@ -689,7 +690,7 @@
           <div>👥 Gesellen im Feld: <strong>[ z. B. 6 ]</strong></div>
           <div>💻 Büropersonal: <strong>[ z. B. 1 Teilzeit ]</strong></div>
           <div>📁 Software: <strong>[ DATEV, Lexoffice, etc. ]</strong></div>
-          <div>📱 Kommunikation: <strong>[ WhatsApp / Zettel ]</strong></div>
+          <div>📱 Kommunikation: <strong>[ WhatsApp / Papier ]</strong></div>
         </div>
       </div>
     </section>
@@ -699,15 +700,22 @@
       <div class="phase-header">
         <div>
           <div class="phase-number">Phase 3 von 6</div>
-          <h2 class="phase-title">Die Diagnose-Weiche (5 Erkundungs-Pfade)</h2>
+          <h2 class="phase-title">Die Diagnose-Weiche (Offene Verhaltensfragen)</h2>
         </div>
         <div class="phase-timing">⏱️ 03:00 – 09:30 Min.</div>
       </div>
 
       <div class="dialogue-box highlight">
-        <div class="speaker-tag emerald">Radar-Einstiegsfrage (Die Weiche):</div>
+        <div class="speaker-tag emerald">Breite Radar-Frage (Offener Einstieg):</div>
         <p style="font-size: 1.05rem; font-weight: 600;">
-          „Wenn Sie auf die letzten Wochen in Ihrem Betrieb schauen: In welchem Bereich verbrennen Sie oder Ihr Büro aktuell die meiste unproduktive Arbeitszeit?“
+          „Wenn Sie auf die letzten Wochen in Ihrem Betrieb schauen: An welcher Stelle im Büro verbrennen Sie oder Ihr Team aktuell die meiste unproduktive Arbeitszeit und die meisten Nerven?“
+        </p>
+      </div>
+
+      <div class="dialogue-box amber">
+        <div class="speaker-tag amber">Reframing bei Einwand („Bei uns läuft alles super, Rechnungen schreiben wir in 5 Minuten“):</div>
+        <p>
+          <em>„Stark, dann gehört Ihr Betrieb da schon zu den wenigen Vorreitern! Wo staut es sich stattdessen im Alltag am ehesten – eher bei den Rückfragen der Kunden, bei der Baustellendokumentation oder bei den Stundenzetteln?“</em>
         </p>
       </div>
 
@@ -722,19 +730,19 @@
 
       <!-- Pfad A -->
       <div id="pathA" class="path-content-card">
-        <div class="path-title">Pfad A: Rechnungen, Buchhaltung & Steuerberater (Der Klassiker)</div>
+        <div class="path-title">Pfad A: Rechnungen, Belege & Steuerberater (Der Faktura-Weg)</div>
         <ul class="question-list">
           <li class="question-item">
-            <span class="q-badge">Faktura</span>
-            <span>„Vom Moment, in dem die Baustelle fertig ist, bis das Geld auf dem Konto landet: Wie viele Tage vergehen da bei Ihnen im Schnitt, und wer tippt die Rechnungsdaten ab?“</span>
+            <span class="q-badge">Verhaltensfrage</span>
+            <span>„Erzählen Sie mal: Wie lief die Abrechnung bei Ihrem letzten größeren Projekt vom letzten Hammerschlag auf der Baustelle bis zum Geldeingang auf dem Konto ab?“</span>
           </li>
           <li class="question-item">
-            <span class="q-badge">Wochenende</span>
-            <span>„Gibt es bei Ihnen das klassische ‚Büro-Wochenende‘, an dem eigentlich Freizeit wäre, aber Belege, Quittungen und Ordner gewälzt werden müssen?“</span>
+            <span class="q-badge">Alltag</span>
+            <span>„Wie genau sieht das bei Ihnen aus, wenn am Monatsende die Belege für den Steuerberater vorbereitet werden müssen – wer sitzt wann daran?“</span>
           </li>
           <li class="question-item">
-            <span class="q-badge">Gesetz</span>
-            <span>„Haben Sie sich schon mit der B2B-E-Rechnungspflicht (ZUGFeRD / XRechnung) auseinandergesetzt, oder sorgt das eher für Stirnrunzeln?“</span>
+            <span class="q-badge">E-Rechnung</span>
+            <span>„Welche Erfahrungen oder Gedanken haben Sie sich bisher zur kommenden B2B-E-Rechnungspflicht gemacht – was löst das aktuell bei Ihnen im Betrieb aus?“</span>
           </li>
         </ul>
       </div>
@@ -744,16 +752,16 @@
         <div class="path-title">Pfad B: Kundenfront, Telefonüberlastung & Termine</div>
         <ul class="question-list">
           <li class="question-item">
-            <span class="q-badge">Telefon-Terror</span>
-            <span>„Kommen Anfragen bei Ihnen noch per Telefon und Zettel rein? Wie oft kommt es vor, dass Sie auf der Baustelle stehen, das Handy klingelt und man abends erst mühsam zurückrufen muss?“</span>
+            <span class="q-badge">Kundenkontakt</span>
+            <span>„Wie genau erreicht eine typische Kundenanfrage Ihren Betrieb – und wie wandert diese vom ersten Klingeln bis zum Kalendereintrag?“</span>
           </li>
           <li class="question-item">
-            <span class="q-badge">Termine</span>
-            <span>„Bieten Sie Kunden schon an, Termine (Besichtigungen, Wartungen) direkt online verbindlich einzubuchen, oder geht da viel Arbeitszeit für ‚Wann passt es Ihnen denn?‘ drauf?“</span>
+            <span class="q-badge">Stress-Test</span>
+            <span>„Was passiert aktuell, wenn Sie oder Ihre Monteure voll auf der Baustelle im Einsatz sind und das Telefon im Büro sturmläuft?“</span>
           </li>
           <li class="question-item">
-            <span class="q-badge">Verlust</span>
-            <span>„Passiert es im Trubel manchmal, dass eine Anfrage liegen bleibt und der Kunde verärgert zur Konkurrenz abwandert?“</span>
+            <span class="q-badge">Verlust-Check</span>
+            <span>„Wann ist es im Trubel das letzte Mal vorgekommen, dass eine Kundenanfrage liegen geblieben ist – und wie hat der Kunde reagiert?“</span>
           </li>
         </ul>
       </div>
@@ -764,11 +772,15 @@
         <ul class="question-list">
           <li class="question-item">
             <span class="q-badge">Rückfragen</span>
-            <span>„Wie oft rufen Auftraggeber an und fragen: ‚Wann kommt der Monteur?‘, ‚Wo bleibt das Angebot?‘ oder ‚Können Sie mir den Prüfbericht nochmal schicken?‘“</span>
+            <span>„Wegen welcher Dinge rufen Auftraggeber, Hausverwaltungen oder Privatkunden tagsüber am häufigsten an, während Sie eigentlich mitten im Projekt stecken?“</span>
           </li>
           <li class="question-item">
-            <span class="q-badge">Portal</span>
-            <span>„Wäre es eine Entlastung, wenn Stammkunden oder Hausverwaltungen ein einfaches Online-Portal hätten, wo sie Auftragsstatus, Wartungsprotokolle und Rechnungen selbst einsehen können?“</span>
+            <span class="q-badge">Status</span>
+            <span>„Wie halten Sie Kunden heute über den aktuellen Stand eines Auftrags oder Termins auf dem Laufenden – wie viel Zeit geht dafür pro Woche drauf?“</span>
+          </li>
+          <li class="question-item">
+            <span class="q-badge">Kundenportal</span>
+            <span>„Haben Kunden schon mal nach einer Möglichkeit gefragt, Rechnungen oder Wartungsberichte selbst online einzusehen?“</span>
           </li>
         </ul>
       </div>
@@ -778,16 +790,16 @@
         <div class="path-title">Pfad D: Baustelle, Baudokumentation & Fotobeweise</div>
         <ul class="question-list">
           <li class="question-item">
-            <span class="q-badge">Fotos</span>
-            <span>„Wenn Ihre Mitarbeiter vor Ort fertig sind: Wie landen Vorher-Nachher-Fotos, Lieferscheine oder Abnahmeunterschriften im Büro?“</span>
+            <span class="q-badge">Doku-Weg</span>
+            <span>„Wie wandern Vorher-Nachher-Fotos, Lieferscheine oder Abnahmeberichte heute konkret von der Baustelle zu Ihnen ins Büro?“</span>
+          </li>
+          <li class="question-item">
+            <span class="q-badge">Reklamation</span>
+            <span>„Erzählen Sie mal von einer Situation in den letzten Monaten, wo ein Kunde eine Leistung reklamiert hat oder ein Zettel unauffindbar war: Wie haben Sie das damals gelöst?“</span>
           </li>
           <li class="question-item">
             <span class="q-badge">WhatsApp</span>
-            <span>„Liegen die Fotos auf privaten WhatsApp-Handys der Gesellen verstreut? Wie lange suchen Sie, wenn ein Kunde nach drei Monaten eine Reklamation meldet?“</span>
-          </li>
-          <li class="question-item">
-            <span class="q-badge">Geldverlust</span>
-            <span>„Hatten Sie schon mal den Fall, dass geleistete Stunden oder Materialien nicht abgerechnet werden konnten, weil der Zettel auf der Baustelle verschollen ist?“</span>
+            <span>„Liegen die Fotos eher verstreut auf privaten Handys der Gesellen, und wie lange suchen Sie im Ernstfall danach?“</span>
           </li>
         </ul>
       </div>
@@ -798,20 +810,20 @@
         <ul class="question-list">
           <li class="question-item">
             <span class="q-badge">Stundenzettel</span>
-            <span>„Schreiben Ihre Gesellen die Stundenzettel noch freitags aus dem Kopf auf Papier, oder läuft das komplett digital per Smartphone?“</span>
+            <span>„Wie erfassen Ihre Gesellen heute ihre geleisteten Arbeitsstunden – und wie sieht der konkrete Weg vom Stundenzettel bis zur Lohnabrechnung aus?“</span>
           </li>
           <li class="question-item">
-            <span class="q-badge">Abtippen</span>
-            <span>„Wie viele Stunden pro Monat verbringt das Büro damit, unleserliche Stundenzettel zu entziffern und für das Lohnbüro abzutippen?“</span>
+            <span class="q-badge">Reibung</span>
+            <span>„Wie viel Zeit verbringt das Büro am Monatsende damit, unleserliche Zettel zu entziffern oder fehlende Zeiten nachzutelefonieren?“</span>
           </li>
         </ul>
       </div>
 
       <!-- Universelle Zauberstab-Abschlussfrage -->
       <div class="dialogue-box highlight" style="margin-top: 1.5rem;">
-        <div class="speaker-tag emerald">✨ Die universelle Abschlussfrage für Phase 3:</div>
+        <div class="speaker-tag emerald">✨ Die universelle Zauberstab-Abschlussfrage für Phase 3:</div>
         <p style="font-size: 1rem; font-style: italic;">
-          „Wenn Sie einen Zauberstab hätten und eine einzige administrative Nerv-Aufgabe in Ihrem Betrieb ab morgen nie wieder machen müssten: Welche wäre das?“
+          „Wenn Sie einen Zauberstab hätten und eine einzige administrative Nerv-Aufgabe in Ihrem Betrieb ab morgen nie wieder machen müssten: Welche wäre das und warum?“
         </p>
       </div>
     </section>
@@ -821,38 +833,29 @@
       <div class="phase-header">
         <div>
           <div class="phase-number">Phase 4 von 6</div>
-          <h2 class="phase-title">Der zielgerichtete Lösungs-Pitch</h2>
+          <h2 class="phase-title">Konzept-Reflexion (Meister als Co-Entwickler)</h2>
         </div>
         <div class="phase-timing">⏱️ 09:30 – 13:30 Min.</div>
       </div>
 
       <div class="dialogue-box">
-        <div class="speaker-tag cyan">Das Framing („Handwerker für digitale Abläufe“):</div>
-        <p>„Herr/Frau <em>[Nachname]</em>, genau an dieser Bruchstelle setzt meine geplante Gründung an: Ich gründe keinen klassischen IT-Laden, der Ihnen teure Server oder neue Riesen-Software verkauft. Ich verstehe mich als <strong>‚Handwerker für digitale Abläufe‘</strong>...“</p>
+        <div class="speaker-tag cyan">Kurze Konzept-Skizze (Max. 30 Sek., kein Verkaufsmonolog):</div>
+        <p>„Herr/Frau <em>[Nachname]</em>, genau an dieser Bruchstelle forschen wir aktuell: Wir gründen keinen klassischen IT-Laden mit teuren Großsystemen, sondern verstehen uns als <strong>‚Handwerker für digitale Abläufe‘</strong> – wir wollen genau diese Brücken (z. B. zwischen Transporter-Zetteln und Steuerberater) so einfach machen wie einen Lichtschalter.“</p>
       </div>
 
-      <div class="objection-grid" style="margin: 1rem 0;">
-        <div class="objection-card" style="border-color: rgba(6, 182, 212, 0.4);">
-          <strong style="color: #67e8f9;">...bei Rechnungs-Schmerz (Pfad A):</strong>
-          <p style="font-size: 0.85rem; margin-top: 0.25rem;">„...wir sorgen dafür, dass Belege und Stundenzettel ohne manuelles Abtippen direkt in Ihre Rechnungssoftware und fehlerfrei zum Steuerberater fließen.“</p>
-        </div>
-        <div class="objection-card" style="border-color: rgba(6, 182, 212, 0.4);">
-          <strong style="color: #67e8f9;">...bei Terminen & Telefon (Pfad B):</strong>
-          <p style="font-size: 0.85rem; margin-top: 0.25rem;">„...wir richten für Ihre Website ein einfaches Buchungs- und Anfrage-System ein, das Aufträge vorfiltert und Termine direkt in Ihren Kalender legt – ohne Telefon-Pingpong.“</p>
-        </div>
-        <div class="objection-card" style="border-color: rgba(6, 182, 212, 0.4);">
-          <strong style="color: #67e8f9;">...bei Kundenportal (Pfad C):</strong>
-          <p style="font-size: 0.85rem; margin-top: 0.25rem;">„...wir bauen schlanke Kunden-Dashboards, in denen Ihre Auftraggeber Termine, Dokumente und Statusberichte mit einem Klick abrufen können – Ihr Telefon steht sofort still.“</p>
-        </div>
-        <div class="objection-card" style="border-color: rgba(6, 182, 212, 0.4);">
-          <strong style="color: #67e8f9;">...bei Baudoku & Fotos (Pfad D):</strong>
-          <p style="font-size: 0.85rem; margin-top: 0.25rem;">„...wir sorgen dafür, dass Monteure Baustellen-Fotos und Regieberichte mit zwei Klicks per Smartphone erfassen und diese automatisch projektbezogen im Büro archiviert werden.“</p>
-        </div>
-      </div>
-
+      <!-- Die Co-Entwickler Fragen -->
       <div class="dialogue-box highlight">
-        <div class="speaker-tag emerald">Brückenschlag zum Audit:</div>
-        <p>„Bevor man da aber irgendetwas umsetzt, plane ich als festen ersten Schritt ein <strong>60- bis 90-minütiges Büro-Audit vor Ort</strong> an. Wir schauen uns die Abläufe an, decken die Zeitfresser auf und berechnen schwarz auf weiß, wie viele Stunden Sie pro Woche sparen können.“</p>
+        <div class="speaker-tag emerald">Die offene Co-Entwickler-Frage (Hypothesen-Test):</div>
+        <p style="font-size: 1rem; font-weight: 600;">
+          „Wenn Sie sich vorstellen, jemand baut eine einfache digitale Brücke für genau dieses [genannter Engpass]-Problem: Was müsste so eine Lösung können, damit sie bei Ihren Gesellen und im Büro wirklich genutzt wird und nicht nach zwei Wochen in der Ecke landet?“
+        </p>
+      </div>
+
+      <div class="dialogue-box alternate">
+        <div class="speaker-tag purple">Der Enttäuschungs- & Hürden-Check:</div>
+        <p>
+          „Was war in der Vergangenheit die größte Enttäuschung, wenn Sie oder befreundete Kollegen eine neue Software oder ein digitales Tool ausprobiert haben?“
+        </p>
       </div>
     </section>
 
@@ -861,35 +864,32 @@
       <div class="phase-header">
         <div>
           <div class="phase-number">Phase 5 von 6</div>
-          <h2 class="phase-title">Kritisches Feedback, Einwände & Preistest</h2>
+          <h2 class="phase-title">Neutrale Marktforschung & Preistest</h2>
         </div>
         <div class="phase-timing">⏱️ 13:30 – 17:30 Min.</div>
       </div>
 
-      <div class="dialogue-box">
-        <div class="speaker-tag cyan">1. Realitäts-Check:</div>
-        <p>„Klingt so ein Ansatz nach einer echten Entlastung für Ihren Betrieb, oder sagen Sie: ‚Das brauchen wir nicht, wir machen das lieber auf dem gewohnten Weg‘?“</p>
-      </div>
-
-      <div class="dialogue-box">
-        <div class="speaker-tag cyan">2. Größte Befürchtung aufdecken:</div>
-        <p>„Was wäre Ihre größte Skepsis gegenüber so einer Zusammenarbeit? Dass die Monteure streiken? Dass die Technik ausfällt? Oder dass es am Ende nur teuer wird und nichts bringt?“</p>
-      </div>
-
-      <!-- Der 500 € Deal mit Garantie -->
+      <!-- Der 500 € Deal mit Garantie - Als neutrale Marktforschungsfrage formuliert -->
       <div class="deal-box">
-        <span class="deal-badge">Das Kernangebot & Preistest</span>
-        <div class="deal-heading">90-minütiges Büro-Potenzial-Audit vor Ort für 500 € Festpreis</div>
+        <span class="deal-badge">Neutrale Marktforschungs-Perspektive</span>
+        <div class="deal-heading">Preistest für das 90-minütige Büro-Audit (500 € Festpreis)</div>
         <p style="font-size: 0.95rem; color: #d1fae5; margin-bottom: 0.75rem;">
-          „Wir wollen bewusst nicht nach offenen IT-Stundenzetteln abrechnen, sondern starten mit einem 90-minütigen Büro-Potenzial-Audit vor Ort für 500 Euro Festpreis – mit einer <strong>Doppelten Sicherheits-Garantie</strong>:
+          „Wir wollen im Rahmen unserer Vorbereitung prüfen, ob unsere Dienstleistung betriebswirtschaftlich realistisch kalkuliert ist:<br>
+          Wenn ein regionaler Gründer ein <strong>90-minütiges Büro-Potenzial-Audit vor Ort für 500 Euro Festpreis</strong> anbietet – inklusive schriftlicher Auswertung der Zeitfresser und einer Geld-zurück-Garantie, falls nicht mindestens 10 Stunden Ersparnis im Monat belegt werden:
         </p>
-        <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem; color: #ecfdf5;">
-          <li>🛡️ <strong>1. Anrechnungs-Garantie:</strong> Die 500 € werden bei einer späteren Umsetzung zu 100 % auf das Setup angerechnet.</li>
-          <li>🛡️ <strong>2. Null-Risiko-Garantie:</strong> Das Audit kostet exakt <strong>0 €</strong>, wenn wir nicht schwarz auf weiß mindestens <strong>10 Stunden Zeitersparnis pro Monat</strong> aufdecken.</li>
-        </ul>
-        <p style="margin-top: 1rem; font-weight: 600; color: #ffffff;">
-          „Ist das aus Ihrer Sicht als Handwerksmeister ein fairer, handfester Deal?“
+        <p style="margin-top: 1rem; font-weight: 700; color: #ffffff; font-size: 1.05rem;">
+          „Ist das aus Ihrer Sicht als Handwerksmeister ein fairer, handfester Marktpreis – oder ist das völlig an der Realität vorbei?“
         </p>
+      </div>
+
+      <div class="dialogue-box">
+        <div class="speaker-tag cyan">Vertiefende Wert-Frage:</div>
+        <p>„Was müsste in so einem 90-Minuten-Audit schwarz auf weiß herauskommen, damit ein Betriebschef sagt: ‚Die 500 Euro haben sich sofort bezahlt gemacht‘?“</p>
+      </div>
+
+      <div class="dialogue-box alternate">
+        <div class="speaker-tag purple">Größte Befürchtung aufdecken:</div>
+        <p>„Was wäre aus Ihrer Sicht die größte Hürde oder Befürchtung eines Handwerkers, wenn sich jemand externes die Büroabläufe anschaut? (Datenschutz, Angst vor Kontrollen oder dass Monteure streiken?)“</p>
       </div>
     </section>
 
@@ -898,25 +898,31 @@
       <div class="phase-header">
         <div>
           <div class="phase-number">Phase 6 von 6</div>
-          <h2 class="phase-title">Verbindlicher Abschluss & Multiplikator</h2>
+          <h2 class="phase-title">Reiner Dank, Erkenntnis-Teilen & Multiplikator</h2>
         </div>
         <div class="phase-timing">⏱️ 17:30 – 20:00 Min.</div>
       </div>
 
+      <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 0.5rem; padding: 0.75rem 1rem; margin-bottom: 1rem; font-size: 0.85rem; color: #fbbf24;">
+        ⚠️ <strong>STRIKT KEIN VERKAUF:</strong> Kein Vorzugsticket-Verkauf, kein Drängen auf Umsetzung, kein Vertrag! Du bleibst der dankbare Forscher.
+      </div>
+
       <div class="dialogue-box">
-        <div class="speaker-tag cyan">1. Dankbarkeit:</div>
-        <p>„Herr/Frau <em>[Nachname]</em>, vielen Dank. Das waren genau die praxisnahen Einblicke, die mir unglaublich helfen.“</p>
+        <div class="speaker-tag cyan">1. Ehrliche Dankbarkeit:</div>
+        <p>„Herr/Frau <em>[Nachname]</em>, ein riesiges Dankeschön für Ihre offenen Worte. Das waren genau die Praxis-Einblicke aus erster Hand, die kein Lehrbuch der Welt liefern kann.“</p>
       </div>
 
       <div class="dialogue-box highlight">
-        <div class="speaker-tag emerald">2. Das „Praxis-Partner-Vorzugsticket“ (Waitlist-to-Audit Brücke):</div>
-        <p>„Weil Sie sich heute die 15 Minuten für mich genommen haben, möchte ich Ihnen etwas zurückgeben: Wir vergeben zum offiziellen Start im Landkreis Goslar genau <strong>10 ‚Praxis-Partner-Vorzugstickets‘</strong> (100 % unverbindlich).</p>
-        <p style="margin-top: 0.5rem;">Ich schicke Ihnen heute schon kostenlos unseren <strong>5-Minuten Büro-Stress-Test & E-Rechnungs-Check</strong> zu und baue Ihren genannten Engpass in unserer Langelsheimer Test-Umgebung (<em>Mustermann Haustechnik Harz</em>) fertig nach. Sobald mein Startschuss gefallen ist, <strong>darf ich Ihnen diesen fertigen Ablauf kurz für 15 Minuten an Ihrem Beispiel zeigen</strong> – mit Vorrang auf unsere Doppelte Sicherheits-Garantie?“</p>
+        <div class="speaker-tag emerald">2. Erkenntnis-Teilen (Der anonyme 50-Betriebe-Report):</div>
+        <p>„Ich möchte Ihnen gerne etwas zurückgeben: Ich fasse die spannendsten Erkenntnisse und häufigsten Büro-Fallen aus allen 50 Gesprächen mit Betrieben im Landkreis Goslar in einem kurzen, anonymen Praxisbericht zusammen.</p>
+        <p style="margin-top: 0.5rem; font-weight: 600;">
+          Darf ich Ihnen diese Zusammenfassung einfach unverbindlich per E-Mail rüberschicken, sobald die Auswertung fertig ist?“
+        </p>
       </div>
 
       <div class="dialogue-box alternate">
         <div class="speaker-tag purple">3. Die Multiplikator-Empfehlungsfrage:</div>
-        <p>„Kennen Sie einen befreundeten Kollegenbetrieb hier in Goslar, Langelsheim oder Umgebung, der beim Bierchen am meisten über sein Büro-Wochenende oder den Steuerberater flucht und dem ich 2–3 dieser Fragen stellen könnte?“</p>
+        <p>„Kennen Sie einen befreundeten Kollegenbetrieb hier in der Region (Goslar, Langelsheim oder Umgebung), der beim Feierabendbier auch ab und zu über sein Büro oder den Zettelkram flucht und dem ich ebenfalls 2–3 dieser offenen Fragen stellen könnte?“</p>
       </div>
     </section>
 
@@ -929,10 +935,6 @@
         </div>
         <div class="phase-timing">📋 Für Coach & CRM</div>
       </div>
-
-      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
-        Diese Daten fließen nach jedem Anruf automatisch in dein Founder-OS CRM und können per CSV-Export direkt mit deinem Coach Dennis Kauss geteilt werden.
-      </p>
 
       <table class="protocol-table">
         <thead>
@@ -956,38 +958,38 @@
           </tr>
           <tr>
             <td><strong>Primärer Engpass</strong></td>
-            <td>Pfad A (Rechnungen/DATEV) | Pfad B (Anfragen/Termine) | Pfad C (Kundenportal) | Pfad D (Baudoku) | Pfad E (Zeiten)</td>
+            <td>Pfad A (Faktura/Belege) | Pfad B (Anfragen/Telefon) | Pfad C (Kundenportal) | Pfad D (Baudoku) | Pfad E (Zeiten)</td>
           </tr>
           <tr>
             <td><strong>Größter Zeitfresser (Original-Zitat)</strong></td>
             <td>Wortwörtliche Aussage des Meisters (z. B. <em>„Sonntags 3 Stunden am Küchentisch Belege sortieren“</em>)</td>
           </tr>
           <tr>
-            <td><strong>Büro-Wochenende?</strong></td>
-            <td>Ja (wie viele Stunden?) / Nein (unter der Woche erledigt)</td>
+            <td><strong>Bestehende Behelfslösung (Workaround)</strong></td>
+            <td>Wie das Problem heute improvisiert wird (WhatsApp-Gruppen, Zettel im Auto, Excel)</td>
           </tr>
           <tr>
-            <td><strong>Bestehende Software</strong></td>
-            <td>Buchhaltungssoftware, Kommunikationswege (WhatsApp, Zettel)</td>
+            <td><strong>Zauberstab-Wunsch</strong></td>
+            <td>Die administrative Aufgabe, die er sofort für immer abschaffen würde</td>
           </tr>
           <tr>
-            <td><strong>Reaktion auf Lösungs-Pitch</strong></td>
-            <td>Sehr interessiert | Verhaltener Zuspruch | Kein Bedarf</td>
+            <td><strong>Feedback zum Lösungs-Konzept</strong></td>
+            <td>Sehr praxisnah | Skeptisch | Kein Bedarf</td>
           </tr>
           <tr>
-            <td><strong>Größter Einwand / Befürchtung</strong></td>
-            <td>z. B. <em>„Monteure streiken“</em>, <em>„Keine Zeit für Einführung“</em>, <em>„Angst vor hohen IT-Kosten“</em></td>
+            <td><strong>Bedingung für Praxistauglichkeit (Zitat)</strong></td>
+            <td>Was die Lösung zwingend können muss, damit sie im Betrieb nicht in der Ecke landet</td>
           </tr>
           <tr>
-            <td><strong>Zahlungsbereitschaft (500 € Audit)</strong></td>
-            <td>500 € problemlos | 200–300 € Schmerzgrenze | Nur kostenlos</td>
+            <td><strong>Preistest-Einschätzung (500 € Audit)</strong></td>
+            <td>Fairer Marktpreis | Zu teuer (Grenze: _____ €) | Nur kostenfrei</td>
           </tr>
           <tr>
-            <td><strong>Wiedervorlage erlaubt?</strong></td>
-            <td>Ja (Praxis-Partner Vorzugsticket vergeben) | Nein</td>
+            <td><strong>Erkenntnis-Report gewünscht?</strong></td>
+            <td>Ja, per Mail zusenden | Nein</td>
           </tr>
           <tr>
-            <td><strong>Empfehlungs-Kontakt</strong></td>
+            <td><strong>Empfehlungs-Kontakt (Multiplikator)</strong></td>
             <td>Name des befreundeten Meisterbetriebs im Harz</td>
           </tr>
         </tbody>
