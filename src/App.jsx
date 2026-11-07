@@ -471,14 +471,17 @@ function App() {
   const [googleClientId, setGoogleClientId] = useState(() => {
     const saved = localStorage.getItem('f_google_client_id');
     const envId = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_GOOGLE_CLIENT_ID) || '';
-    const oldId = '481297122516-m7hgprfvc28si5cj3cuqd6aocgogsv9q.apps.googleusercontent.com';
-    if (saved && saved.trim() !== '' && saved !== oldId) {
+    const oldIds = [
+      '481297122516-m7hgprfvc28si5cj3cuqd6aocgogsv9q.apps.googleusercontent.com',
+      '505623531185-f42t71ranm5u57uort8o4tl4r181rvd4.apps.googleusercontent.com'
+    ];
+    if (saved && saved.trim() !== '' && !oldIds.includes(saved)) {
       return saved;
     }
-    if (envId && envId.trim() !== '') {
+    if (envId && envId.trim() !== '' && !oldIds.includes(envId)) {
       return envId;
     }
-    return '505623531185-f42t71ranm5u57uort8o4tl4r181rvd4.apps.googleusercontent.com';
+    return '838130295381-59tqfjvhstid3ej788l1v3ctiu9c8shq.apps.googleusercontent.com';
   });
   const [isConnectingGoogle, setIsConnectingGoogle] = useState(false);
   const [isGoogleSyncing, setIsGoogleSyncing] = useState(false);
