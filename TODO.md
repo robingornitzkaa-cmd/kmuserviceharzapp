@@ -1,5 +1,12 @@
 # TODO - Founder OS
 
+- [x] **⚡ [Google Workspace & Realtime Notizen-Sync]:**
+  - [x] *Supabase Realtime WebSockets:* `dashboard_state` in Supabase zur Publication `supabase_realtime` hinzugefügt und `REPLICA IDENTITY FULL` gesetzt.
+  - [x] *Client-seitige Realtime-Subscription:* `subscribeToDashboardState()` in `src/services/supabase.js` mit Heartbeat und automatischem Reconnect implementiert; in `src/App.jsx` angebunden.
+  - [x] *Echte Google Workspace & Drive Anbindung:* Scopes erweitert (Kalender schreiben/lesen, Gmail verwalten/lesen, Drive `drive.file`), Demo-Modus eliminiert und echte Fehlerberichte aktiviert.
+  - [x] *Windows Desktop-Widget Sync-Beschleunigung:* Intervall auf 10 Sekunden verkürzt und Sofort-Sync beim Anklicken / Fokus (`Add_Activated`) eingebaut.
+  - [x] *Hybrid Client-ID Konfiguration:* `VITE_GOOGLE_CLIENT_ID` in `.env` und `.env.example` verankert.
+
 - [x] **🧭 [Interview-Ablauf Präsentations-Website & Coaching Hub]:**
   - [x] *Single-File HTML-Präsentation erstellt:* `interview_ablauf_praesentation.html` (im Root-Verzeichnis) sowie `public/interview_praesentation.html` und `public/interview-leitfaden/index.html`.
   - [x] *Mom-Test & Forschungs-Overhaul abgeschlossen:* Umstellung aller Fragen auf offene Verhaltensfragen, Umbau von Phase 4 zu Co-Entwicklung, Phase 5 zu neutraler Marktforschung, Phase 6 zu 50-Betriebe-Report (strikt null Verkaufsdruck) in Leitfaden, React-Komponente und Präsentations-Website.

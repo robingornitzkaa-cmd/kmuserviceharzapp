@@ -4,6 +4,21 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 
 ## [Unreleased]
 
+### Added & Realtime Cloud Sync
+- **⚡ Supabase Realtime 2-Wege Notizen-Synchronisation (`src/services/supabase.js`, `src/App.jsx`):**
+  - Live WebSocket-Verbindung (`subscribeToDashboardState`) via Phoenix Protocol zur Supabase Cloud.
+  - Notizen und To-Dos werden sofort bei Änderung zwischen Smartphone und PC ohne Neuladen übertragen.
+  - PostgreSQL-Tabelle `dashboard_state` in die `supabase_realtime`-Publication aufgenommen und mit `REPLICA IDENTITY FULL` abgesichert.
+  - Tippschutz: Lokale Eingaben im Textfeld werden während des Schreibens vor Überschreiben geschützt.
+- **📅 Google Workspace & Drive Integration (Gmail, Kalender, Drive) (`src/services/googleWorkspace.js`, `src/App.jsx`):**
+  - Erweiterte Berechtigungs-Scopes: Kalender (Erstellen & Lesen), Gmail (Lesen & Verwalten) und Google Drive (`drive.file`).
+  - Neue Service-Methoden `createGoogleCalendarEvent` und `markGmailMessageAsRead`.
+  - Entfernung des bisherigen Demo-/Fake-Modus bei Google-Sync: Klare Statusanzeige und echte Daten.
+  - Hybrid-Konfiguration der `VITE_GOOGLE_CLIENT_ID` in `.env`, `.env.example` und App-Einstellungen.
+- **🖥️ Windows Desktop Notizzettel Performance-Upgrade (`desktop-widget/FounderOS-StickyNote.ps1`):**
+  - Hintergrund-Polling von 25 auf 10 Sekunden verkürzt.
+  - Neuer Event-Handler `$window.Add_Activated`: Lädt sofort die neuesten Handy-Notizen, sobald das Notizzettel-Fenster am PC angeklickt wird.
+
 ### Changed & Customer-Discovery Overhaul (Forschungs-Edition)
 - **🧠 100% Forschungs- & Erkenntnis-Fokus (Mom-Test-Prinzip) für Discovery-Interviews (`customer_discovery_validierungs_leitfaden.md`, `src/components/CustomerDiscoveryView.jsx`, `interview_ablauf_praesentation.html`):**
   - **Radikal offene Verhaltensfragen:** Umbau aller 5 Diagnose-Pfade (A bis E) von geschlossenen Leitfragen auf offene Fragen zu realen Vergangenheits-Ereignissen (z. B. *„Erzählen Sie mal: Vom Moment, in dem die Baustelle fertig ist, bis das Geld auf dem Konto landet: Wie lief die Abrechnung bei Ihrem letzten größeren Projekt ab?“*).

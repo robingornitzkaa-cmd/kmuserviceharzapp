@@ -362,3 +362,108 @@ export const flushOfflineQueueWithSupabase = async (supabaseConfig) => {
     }
   });
 };
+
+/**
+ * Abonniert Echtzeit-Aenderungen der dashboard_state Tabelle via Supabase Realtime WebSocket
+ * @param {Object} supabaseConfig
+ * @param {Function} onUpdate Callback bei geaenderten Daten
+ * @returns {Function} Unsubscribe-Funktion
+ */
+export const subscribeToDashboardState = (supabaseConfig, onUpdate) => {
+  if (typeof window === 'undefined' || typeof WebSocket === 'undefined') {
+    return () => {};
+  }
+
+  const url = getUrl(supabaseConfig);
+  const key = getKey(supabaseConfig);
+  if (!url || !key) return () => {};
+
+  let isSubscribed = true;
+  let socket = null;
+  let heartbeatInterval = null;
+  let reconnectTimeout = null;
+  let refCounter = 1;
+
+  const connect = () => {
+    if (!isSubscribed) return;
+
+    try {
+      const wsUrl = url.replace(/^http/i, 'ws') + '/realtime/v1/websocket?apikey=' + encodeURIComponent(key) + '&vsn=1.0.0';
+      socket = new WebSocket(wsUrl);
+
+      socket.onopen = () => {
+        const joinMsg = {
+          topic: 'realtime:public:dashboard_state',
+          event: 'phx_join',
+          payload: {
+            config: {
+              postgres_changes: [
+                { event: '*', schema: 'public', table: 'dashboard_state' }
+              ]
+            }
+          },
+          ref: String(refCounter++)
+        };
+        socket.send(JSON.stringify(joinMsg));
+
+        clearInterval(heartbeatInterval);
+        heartbeatInterval = setInterval(() => {
+          if (socket && socket.readyState === WebSocket.OPEN) {
+            socket.send(JSON.stringify({
+              topic: 'phoenix',
+              event: 'heartbeat',
+              payload: {},
+              ref: String(refCounter++)
+            }));
+          }
+        }, 25000);
+      };
+
+      socket.onmessage = (event) => {
+        try {
+          const msg = JSON.parse(event.data);
+          if (msg.event === 'postgres_changes' && msg.payload?.data?.record) {
+            const record = msg.payload.data.record;
+            if (record.id === 'main' && typeof onUpdate === 'function') {
+              onUpdate(record);
+            }
+          }
+        } catch (e) {
+          console.debug('[Supabase Realtime] Parse error:', e);
+        }
+      };
+
+      socket.onerror = () => {};
+
+      socket.onclose = () => {
+        clearInterval(heartbeatInterval);
+        if (isSubscribed) {
+          clearTimeout(reconnectTimeout);
+          reconnectTimeout = setTimeout(connect, 4000);
+        }
+      };
+    } catch (err) {
+      console.warn('[Supabase Realtime] Connection error:', err);
+      if (isSubscribed) {
+        clearTimeout(reconnectTimeout);
+        reconnectTimeout = setTimeout(connect, 5000);
+      }
+    }
+  };
+
+  connect();
+
+  return () => {
+    isSubscribed = false;
+    clearInterval(heartbeatInterval);
+    clearTimeout(reconnectTimeout);
+    if (socket && (socket.readyState === WebSocket.OPEN || socket.readyState === WebSocket.CONNECTING)) {
+      try {
+        socket.close();
+      } catch {
+        // Ignorieren
+      }
+    }
+  };
+};
+

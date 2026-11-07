@@ -8,6 +8,17 @@ Die Anwendung zeichnet sich durch ein futuristisches "Glassmorphic Dark Theme" a
 
 ## 🚀 Wichtigste Funktionen & Tab-Struktur
 
+### 0c. ⚡ Google Workspace & Supabase Realtime Notizen-Sync (Handy ⟷ PC) -- *NEU!*
+- **🔄 Supabase Realtime WebSockets:**
+  - Automatische 2-Wege-Echtzeitsynchronisation der Sticky Notes und To-Dos zwischen Smartphone-App und PC-Browser/Desktop-Widget.
+  - PostgreSQL-Tabelle `dashboard_state` ist in der `supabase_realtime`-Publication registriert (`REPLICA IDENTITY FULL`).
+- **📅 Echter Google Workspace & Drive Live-Radar:**
+  - Direkte OAuth 2.0 Integration für Gmail, Google Kalender und Google Drive (`drive.file`).
+  - Berechtigungen: Kalender-Termine lesen & anlegen, Gmail-Nachrichten prüfen & verwalten, Google Drive Dokumente synchronisieren.
+  - Kein Schein-Modus mehr: Reine, authentische Daten aus deinem Google-Konto.
+- **🖥️ Windows Desktop Notizzettel:**
+  - Optimiertes 10s Hintergrund-Polling und Sofort-Sync beim Anklicken / Fokus (`FounderOS-StickyNote.ps1`).
+
 ### 0. 🧼 GoClean Harz VIP-Wachstums- & Produktivitäts-Suite -- *NEU!*
 - **🚀 Dashboard Pilotprojekt & Onboarding-Zentrale (`src/components/DashboardView.jsx`):**
   - Prominenter VIP-Banner direkt auf dem Haupt-Dashboard des Founder OS.

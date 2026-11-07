@@ -86,6 +86,7 @@ import {
   fetchDashboardStateFromSupabase,
   saveDashboardStateToSupabase,
   flushOfflineQueueWithSupabase,
+  subscribeToDashboardState,
   signInWithEmail,
   signUpWithEmail,
   signOut,
@@ -447,11 +448,15 @@ function App() {
   });
   const [googleClientId, setGoogleClientId] = useState(() => {
     const saved = localStorage.getItem('f_google_client_id');
+    const envId = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_GOOGLE_CLIENT_ID) || '';
     const oldId = '481297122516-m7hgprfvc28si5cj3cuqd6aocgogsv9q.apps.googleusercontent.com';
-    if (!saved || saved.trim() === '' || saved === oldId) {
-      return '505623531185-f42t71ranm5u57uort8o4tl4r181rvd4.apps.googleusercontent.com';
+    if (saved && saved.trim() !== '' && saved !== oldId) {
+      return saved;
     }
-    return saved;
+    if (envId && envId.trim() !== '') {
+      return envId;
+    }
+    return '505623531185-f42t71ranm5u57uort8o4tl4r181rvd4.apps.googleusercontent.com';
   });
   const [isConnectingGoogle, setIsConnectingGoogle] = useState(false);
   const [isGoogleSyncing, setIsGoogleSyncing] = useState(false);
@@ -1285,6 +1290,90 @@ function App() {
     window.addEventListener('focus', handleFocus);
     return () => window.removeEventListener('focus', handleFocus);
   }, [supabaseConfig, isOnline]);
+
+  // Supabase Realtime WebSocket Subscription (Handy <-> PC Sofort-Sync)
+  useEffect(() => {
+    if (!supabaseConfig?.url || !isOnline) return;
+
+    const unsubscribe = subscribeToDashboardState(supabaseConfig, (remoteState) => {
+      if (!remoteState) return;
+
+      const activeElem = typeof document !== 'undefined' ? document.activeElement : null;
+      const isUserTypingNotes = activeElem && (activeElem.id === 'dash-scratchpad' || activeElem.tagName === 'TEXTAREA');
+
+      if (Array.isArray(remoteState.dash_notes_list) && remoteState.dash_notes_list.length > 0) {
+        setDashNotesList(remoteState.dash_notes_list);
+        localStorage.setItem('f_dash_notes_list', JSON.stringify(remoteState.dash_notes_list));
+        
+        const currentActive = remoteState.dash_notes_list.find(n => n.id === activeNoteId) || remoteState.dash_notes_list[0];
+        if (currentActive && !isUserTypingNotes) {
+          setDashNotes(currentActive.content || '');
+          setStickyNoteColor(currentActive.color || '#fef08a');
+        }
+      } else if (!isUserTypingNotes && remoteState.dash_notes !== undefined && remoteState.dash_notes !== null) {
+        setDashNotes(remoteState.dash_notes);
+        if (remoteState.sticky_note_color) {
+          setStickyNoteColor(remoteState.sticky_note_color);
+        }
+      }
+
+      if (Array.isArray(remoteState.dash_todos)) {
+        setDashTodos(remoteState.dash_todos);
+        localStorage.setItem('f_dash_todos', JSON.stringify(remoteState.dash_todos));
+      }
+
+      const nowStr = new Date().toLocaleString('de-DE');
+      setSupabaseLastSync(nowStr);
+      localStorage.setItem('f_sb_last_sync', nowStr);
+      setSupabaseSyncStatus('connected');
+    });
+
+    return () => {
+      if (typeof unsubscribe === 'function') unsubscribe();
+    };
+  }, [supabaseConfig, isOnline, activeNoteId]);
+
+  // Supabase Realtime WebSocket Subscription (Handy <-> PC Sofort-Sync)
+  useEffect(() => {
+    if (!supabaseConfig?.url || !isOnline) return;
+
+    const unsubscribe = subscribeToDashboardState(supabaseConfig, (remoteState) => {
+      if (!remoteState) return;
+
+      const activeElem = typeof document !== 'undefined' ? document.activeElement : null;
+      const isUserTypingNotes = activeElem && (activeElem.id === 'dash-scratchpad' || activeElem.tagName === 'TEXTAREA');
+
+      if (Array.isArray(remoteState.dash_notes_list) && remoteState.dash_notes_list.length > 0) {
+        setDashNotesList(remoteState.dash_notes_list);
+        localStorage.setItem('f_dash_notes_list', JSON.stringify(remoteState.dash_notes_list));
+        
+        const currentActive = remoteState.dash_notes_list.find(n => n.id === activeNoteId) || remoteState.dash_notes_list[0];
+        if (currentActive && !isUserTypingNotes) {
+          setDashNotes(currentActive.content || '');
+          setStickyNoteColor(currentActive.color || '#fef08a');
+        }
+      } else if (!isUserTypingNotes && remoteState.dash_notes !== undefined && remoteState.dash_notes !== null) {
+        setDashNotes(remoteState.dash_notes);
+        if (remoteState.sticky_note_color) {
+          setStickyNoteColor(remoteState.sticky_note_color);
+        }
+      }
+
+      if (Array.isArray(remoteState.dash_todos)) {
+        setDashTodos(remoteState.dash_todos);
+        localStorage.setItem('f_dash_todos', JSON.stringify(remoteState.dash_todos));
+      }
+
+      const nowStr = new Date().toLocaleString('de-DE');
+      setSupabaseLastSync(nowStr);
+      localStorage.setItem('f_sb_last_sync', nowStr);
+      setSupabaseSyncStatus('connected');
+    });
+
+    return () => {
+      if (typeof unsubscribe === 'function') unsubscribe();
+    };
+  }, [supabaseConfig, isOnline, activeNoteId]);
 
   // Periodic background polling sync every 30 seconds
   useEffect(() => {
@@ -2907,27 +2996,12 @@ Hier ist die Frage des Nutzers:
 
         setGoogleSyncLogs(prev => [...prev, "🚀 Google Workspace Live-Radar aktiv!"]);
       } else {
-        // Fallback / Demo Modus wenn ohne interaktives Popup aufgerufen
+        setGoogleConnected(false);
         setGoogleSyncLogs(prev => [
           ...prev,
-          "ℹ️ Verbinde Google Live-Radar (Demo/Preview)...",
-          "📅 2 Termine synchronisiert (Kanzlei Harz, Handwerker-Audit)",
-          "✉️ Posteingang synchronisiert (1 neue Kundenanfrage)",
-          "✅ Google Live-Radar synchronisiert!"
+          "⚠️ Keine Google-Autorisierung erteilt oder Pop-up blockiert.",
+          "👉 Bitte erlaube Pop-ups im Browser und prüfe deine Google Client-ID in den Einstellungen."
         ]);
-        const demoEvent = {
-          id: 'ev_google_demo_' + Date.now(),
-          time: '14:00 - 15:00',
-          title: 'Google Meeting: Malerbetrieb Harz Onboarding',
-          desc: 'Automatisch aus Google Kalender importiert',
-          date: new Date().toISOString().split('T')[0],
-          start: new Date(Date.now() + 15 * 60 * 1000).toISOString(),
-          isGoogle: true
-        };
-        setCalendarEvents(prev => {
-          if (prev.some(ev => ev.title === demoEvent.title)) return prev;
-          return [...prev, demoEvent];
-        });
       }
     } catch (err) {
       setGoogleSyncLogs(prev => [...prev, `❌ Fehler: ${err.message}`]);

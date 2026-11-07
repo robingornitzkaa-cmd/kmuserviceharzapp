@@ -5,9 +5,10 @@
 let tokenClient = null;
 let googleAccessToken = null;
 
-const SCOPES = [
+export const SCOPES = [
+  'https://www.googleapis.com/auth/calendar.events',
   'https://www.googleapis.com/auth/calendar.readonly',
-  'https://www.googleapis.com/auth/gmail.readonly',
+  'https://www.googleapis.com/auth/gmail.modify',
   'https://www.googleapis.com/auth/drive.file'
 ].join(' ');
 
@@ -198,6 +199,60 @@ export const fetchUnreadGmailMessages = async (token) => {
   }
 
   return emailDetails;
+};
+
+/**
+ * Erstellt einen neuen Termin im Google Kalender
+ */
+export const createGoogleCalendarEvent = async (token, eventData) => {
+  if (!token) throw new Error('Kein Google Access Token vorhanden.');
+
+  const body = {
+    summary: eventData.title || eventData.summary || 'Neuer Termin',
+    description: eventData.description || '',
+    location: eventData.location || '',
+    start: eventData.start?.dateTime ? eventData.start : { dateTime: eventData.start || new Date().toISOString() },
+    end: eventData.end?.dateTime ? eventData.end : { dateTime: eventData.end || new Date(Date.now() + 3600000).toISOString() }
+  };
+
+  const response = await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  });
+
+  if (!response.ok) {
+    throw new Error(`Google Calendar Event erstellen fehlgeschlagen: ${response.status} ${response.statusText}`);
+  }
+
+  return await response.json();
+};
+
+/**
+ * Markiert eine Gmail-Nachricht als gelesen (entfernt Label UNREAD)
+ */
+export const markGmailMessageAsRead = async (token, messageId) => {
+  if (!token) throw new Error('Kein Google Access Token vorhanden.');
+
+  const response = await fetch(`https://gmail.googleapis.com/gmail/v1/users/me/messages/${messageId}/modify`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      removeLabelIds: ['UNREAD']
+    })
+  });
+
+  if (!response.ok) {
+    throw new Error(`Gmail Nachricht als gelesen markieren fehlgeschlagen: ${response.status}`);
+  }
+
+  return await response.json();
 };
 
 /**

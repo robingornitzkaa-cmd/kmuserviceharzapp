@@ -469,9 +469,9 @@ $script:LastUserKeystroke = [DateTime]::MinValue
 $script:AutoSaveTimer = New-Object System.Windows.Threading.DispatcherTimer
 $script:AutoSaveTimer.Interval = [TimeSpan]::FromMilliseconds(850)
 
-# Cloud-Polling-Timer (Hintergrund-Abgleich alle 25 Sekunden)
+# Cloud-Polling-Timer (Hintergrund-Abgleich alle 10 Sekunden)
 $script:CloudPollTimer = New-Object System.Windows.Threading.DispatcherTimer
-$script:CloudPollTimer.Interval = [TimeSpan]::FromSeconds(25)
+$script:CloudPollTimer.Interval = [TimeSpan]::FromSeconds(10)
 
 # Funktion: Aktive Notiz ermitteln
 function Get-ActiveNote {
@@ -779,8 +779,21 @@ if ($initialSyncOk) {
     $txtStatus.Text = "Lokal gespeichert"
 }
 
-# Starte Hintergrund-Abgleich
+# Starte Hintergrund-Abgleich (alle 10s)
 $script:CloudPollTimer.Start()
+
+# Sofort-Sync beim Anklicken / Fokus des Fensters
+$window.Add_Activated({
+    $timeSinceKey = ([DateTime]::UtcNow - $script:LastUserKeystroke).TotalSeconds
+    if ($timeSinceKey -gt 2 -and -not $script:IsUpdatingUi) {
+        $syncOk = Sync-FromCloud -Silent $true
+        if ($syncOk) {
+            Render-ActiveNote
+            $statusDot.Fill = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#22C55E")
+            $txtStatus.Text = "Mit Founder OS synchron " + (Get-Date).ToString("HH:mm:ss")
+        }
+    }
+})
 
 # Fenster anzeigen
 [void]$window.ShowDialog()
