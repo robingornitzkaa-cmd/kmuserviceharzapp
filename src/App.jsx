@@ -131,7 +131,9 @@ import {
   fetchGoogleCalendarEvents, 
   fetchUnreadGmailMessages, 
   getGoogleAccessToken, 
-  logoutGoogle 
+  logoutGoogle,
+  requestGoogleAccountAuth,
+  fetchGoogleUserInfo
 } from './services/googleWorkspace';
 import { SkeletonLoader } from './components/common/SkeletonLoader';
 
@@ -446,6 +448,26 @@ function App() {
   const [googleConnected, setGoogleConnected] = useState(() => {
     return localStorage.getItem('f_google_connected') === 'true';
   });
+  const [googleAccounts, setGoogleAccounts] = useState(() => {
+    try {
+      const saved = localStorage.getItem('f_google_accounts');
+      if (saved) return JSON.parse(saved);
+      if (localStorage.getItem('f_google_connected') === 'true') {
+        return [{ email: 'Hauptkonto', name: 'Google Workspace' }];
+      }
+      return [];
+    } catch {
+      return [];
+    }
+  });
+  const [selectedGmailAccount, setSelectedGmailAccount] = useState('all');
+
+  useEffect(() => {
+    localStorage.setItem('f_google_accounts', JSON.stringify(googleAccounts));
+    const isConn = googleAccounts.length > 0;
+    setGoogleConnected(isConn);
+    localStorage.setItem('f_google_connected', String(isConn));
+  }, [googleAccounts]);
   const [googleClientId, setGoogleClientId] = useState(() => {
     const saved = localStorage.getItem('f_google_client_id');
     const envId = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_GOOGLE_CLIENT_ID) || '';
@@ -1291,48 +1313,90 @@ function App() {
     return () => window.removeEventListener('focus', handleFocus);
   }, [supabaseConfig, isOnline]);
 
-  // Supabase Realtime WebSocket Subscription (Handy <-> PC Sofort-Sync)
-  useEffect(() => {
-    if (!supabaseConfig?.url || !isOnline) return;
-
-    const unsubscribe = subscribeToDashboardState(supabaseConfig, (remoteState) => {
-      if (!remoteState) return;
-
-      const activeElem = typeof document !== 'undefined' ? document.activeElement : null;
-      const isUserTypingNotes = activeElem && (activeElem.id === 'dash-scratchpad' || activeElem.tagName === 'TEXTAREA');
-
-      if (Array.isArray(remoteState.dash_notes_list) && remoteState.dash_notes_list.length > 0) {
-        setDashNotesList(remoteState.dash_notes_list);
-        localStorage.setItem('f_dash_notes_list', JSON.stringify(remoteState.dash_notes_list));
-        
-        const currentActive = remoteState.dash_notes_list.find(n => n.id === activeNoteId) || remoteState.dash_notes_list[0];
-        if (currentActive && !isUserTypingNotes) {
-          setDashNotes(currentActive.content || '');
-          setStickyNoteColor(currentActive.color || '#fef08a');
-        }
-      } else if (!isUserTypingNotes && remoteState.dash_notes !== undefined && remoteState.dash_notes !== null) {
-        setDashNotes(remoteState.dash_notes);
-        if (remoteState.sticky_note_color) {
-          setStickyNoteColor(remoteState.sticky_note_color);
-        }
-      }
-
-      if (Array.isArray(remoteState.dash_todos)) {
-        setDashTodos(remoteState.dash_todos);
-        localStorage.setItem('f_dash_todos', JSON.stringify(remoteState.dash_todos));
-      }
-
-      const nowStr = new Date().toLocaleString('de-DE');
-      setSupabaseLastSync(nowStr);
-      localStorage.setItem('f_sb_last_sync', nowStr);
-      setSupabaseSyncStatus('connected');
-    });
-
-    return () => {
-      if (typeof unsubscribe === 'function') unsubscribe();
-    };
-  }, [supabaseConfig, isOnline, activeNoteId]);
-
+  // Supabase Realtime WebSocket Subscription (Handy <-> PC Sofort-Sync)
+
+  useEffect(() => {
+
+    if (!supabaseConfig?.url || !isOnline) return;
+
+
+
+    const unsubscribe = subscribeToDashboardState(supabaseConfig, (remoteState) => {
+
+      if (!remoteState) return;
+
+
+
+      const activeElem = typeof document !== 'undefined' ? document.activeElement : null;
+
+      const isUserTypingNotes = activeElem && (activeElem.id === 'dash-scratchpad' || activeElem.tagName === 'TEXTAREA');
+
+
+
+      if (Array.isArray(remoteState.dash_notes_list) && remoteState.dash_notes_list.length > 0) {
+
+        setDashNotesList(remoteState.dash_notes_list);
+
+        localStorage.setItem('f_dash_notes_list', JSON.stringify(remoteState.dash_notes_list));
+
+        
+
+        const currentActive = remoteState.dash_notes_list.find(n => n.id === activeNoteId) || remoteState.dash_notes_list[0];
+
+        if (currentActive && !isUserTypingNotes) {
+
+          setDashNotes(currentActive.content || '');
+
+          setStickyNoteColor(currentActive.color || '#fef08a');
+
+        }
+
+      } else if (!isUserTypingNotes && remoteState.dash_notes !== undefined && remoteState.dash_notes !== null) {
+
+        setDashNotes(remoteState.dash_notes);
+
+        if (remoteState.sticky_note_color) {
+
+          setStickyNoteColor(remoteState.sticky_note_color);
+
+        }
+
+      }
+
+
+
+      if (Array.isArray(remoteState.dash_todos)) {
+
+        setDashTodos(remoteState.dash_todos);
+
+        localStorage.setItem('f_dash_todos', JSON.stringify(remoteState.dash_todos));
+
+      }
+
+
+
+      const nowStr = new Date().toLocaleString('de-DE');
+
+      setSupabaseLastSync(nowStr);
+
+      localStorage.setItem('f_sb_last_sync', nowStr);
+
+      setSupabaseSyncStatus('connected');
+
+    });
+
+
+
+    return () => {
+
+      if (typeof unsubscribe === 'function') unsubscribe();
+
+    };
+
+  }, [supabaseConfig, isOnline, activeNoteId]);
+
+
+
   // Supabase Realtime WebSocket Subscription (Handy <-> PC Sofort-Sync)
   useEffect(() => {
     if (!supabaseConfig?.url || !isOnline) return;
@@ -2945,64 +3009,108 @@ Hier ist die Frage des Nutzers:
     setDashTodos(prev => prev.filter(t => t.id !== id));
   };
 
+  const handleAddGoogleAccount = async () => {
+    if (isConnectingGoogle) return;
+    setIsConnectingGoogle(true);
+    setGoogleSyncLogs(prev => [...prev, "🔄 Öffne Google Kontoauswahl..."]);
+
+    try {
+      await loadGoogleApiScripts();
+      const res = await requestGoogleAccountAuth(googleClientId, 'select_account');
+      if (res?.token) {
+        const userInfo = res.userInfo || {};
+        const email = userInfo.email || `konto_${Date.now()}@gmail.com`;
+        const name = userInfo.name || email.split('@')[0];
+        const picture = userInfo.picture || '';
+
+        sessionStorage.setItem(`f_google_token_${email}`, res.token);
+        sessionStorage.setItem('f_google_access_token', res.token);
+
+        setGoogleAccounts(prev => {
+          const filtered = prev.filter(a => a.email !== email && a.email !== 'Hauptkonto');
+          return [...filtered, { email, name, picture, connectedAt: new Date().toISOString() }];
+        });
+
+        setGoogleSyncLogs(prev => [...prev, `✅ Google-Konto "${email}" erfolgreich verbunden!`]);
+        setTimeout(() => triggerGoogleSync(), 300);
+      }
+    } catch (err) {
+      console.warn("[GoogleAuth] Kontoauswahl abgebrochen:", err);
+      setGoogleSyncLogs(prev => [...prev, `⚠️ Anmeldung nicht abgeschlossen: ${err.message || 'Pop-up geschlossen'}`]);
+    } finally {
+      setIsConnectingGoogle(false);
+    }
+  };
+
+  const handleRemoveGoogleAccount = (emailToRemove) => {
+    setGoogleAccounts(prev => prev.filter(a => a.email !== emailToRemove));
+    sessionStorage.removeItem(`f_google_token_${emailToRemove}`);
+    setCalendarEvents(prev => prev.filter(ev => ev.accountEmail !== emailToRemove));
+    setGmailMessages(prev => prev.filter(m => m.accountEmail !== emailToRemove));
+    setGoogleSyncLogs(prev => [...prev, `ℹ️ Konto "${emailToRemove}" getrennt.`]);
+  };
+
   const triggerGoogleSync = async () => {
     if (isGoogleSyncing) return;
-    setGoogleSyncLogs([]);
     setIsGoogleSyncing(true);
+    setGoogleSyncLogs([]);
 
     try {
       setGoogleSyncLogs(prev => [...prev, "🔄 Initialisiere Google Workspace Identity Services..."]);
       await loadGoogleApiScripts();
 
-      setGoogleSyncLogs(prev => [...prev, "🔑 Fordere OAuth2 Zugriff (Kalender & Gmail) an..."]);
-      let token = null;
-      try {
-        token = await getGoogleAccessToken(googleClientId);
-      } catch (authErr) {
-        console.warn("[GoogleWorkspace] OAuth popup was cancelled or failed:", authErr);
+      const accountsToSync = googleAccounts.length > 0 ? googleAccounts : [{ email: 'primary', name: 'Google Konto' }];
+      setGoogleSyncLogs(prev => [...prev, `🔍 Synchronisiere ${accountsToSync.length} Google-Konto/Konten...`]);
+
+      let allEvents = [];
+      let allMails = [];
+
+      for (const acc of accountsToSync) {
+        const token = sessionStorage.getItem(`f_google_token_${acc.email}`) || sessionStorage.getItem('f_google_access_token');
+        if (token) {
+          try {
+            const events = await fetchGoogleCalendarEvents(token, acc.email, acc.name);
+            if (Array.isArray(events)) allEvents.push(...events);
+          } catch (calErr) {
+            setGoogleSyncLogs(prev => [...prev, `⚠️ Kalender (${acc.email}): ${calErr.message}`]);
+          }
+
+          try {
+            const mails = await fetchUnreadGmailMessages(token, acc.email, acc.name);
+            if (Array.isArray(mails)) allMails.push(...mails);
+          } catch (mailErr) {
+            setGoogleSyncLogs(prev => [...prev, `⚠️ Gmail (${acc.email}): ${mailErr.message}`]);
+          }
+        } else {
+          setGoogleSyncLogs(prev => [...prev, `ℹ️ Sitzung für ${acc.email} abgelaufen. Bitte auf '+ Konto' klicken.`]);
+        }
       }
 
-      if (token) {
-        setGoogleConnected(true);
-        setGoogleSyncLogs(prev => [...prev, "📅 Synchronisiere Termine aus Google Kalender..."]);
-        try {
-          const events = await fetchGoogleCalendarEvents(token);
-          if (Array.isArray(events) && events.length > 0) {
-            setCalendarEvents(events);
-            localStorage.setItem('f_calendar_events', JSON.stringify(events));
-            checkAndNotifyCalendarEvents(events);
-            setGoogleSyncLogs(prev => [...prev, `✅ ${events.length} Kalender-Termine synchronisiert.`]);
-          } else {
-            setGoogleSyncLogs(prev => [...prev, "ℹ️ Keine anstehenden Termine in Google Kalender gefunden."]);
-          }
-        } catch (calErr) {
-          setGoogleSyncLogs(prev => [...prev, `⚠️ Kalender-Sync: ${calErr.message}`]);
-        }
-
-        setGoogleSyncLogs(prev => [...prev, "✉️ Prüfe Gmail Posteingang auf ungelesene Mails..."]);
-        try {
-          const unreadMails = await fetchUnreadGmailMessages(token);
-          if (Array.isArray(unreadMails) && unreadMails.length > 0) {
-            setGmailMessages(unreadMails);
-            localStorage.setItem('f_gmail_messages', JSON.stringify(unreadMails));
-            checkAndNotifyNewEmails(unreadMails);
-            setGoogleSyncLogs(prev => [...prev, `✅ ${unreadMails.length} ungelesene Gmail-Nachricht(en) synchronisiert.`]);
-          } else {
-            setGoogleSyncLogs(prev => [...prev, "ℹ️ Posteingang ist sauber (0 ungelesene Mails)."]);
-          }
-        } catch (mailErr) {
-          setGoogleSyncLogs(prev => [...prev, `⚠️ Gmail-Sync: ${mailErr.message}`]);
-        }
-
-        setGoogleSyncLogs(prev => [...prev, "🚀 Google Workspace Live-Radar aktiv!"]);
-      } else {
-        setGoogleConnected(false);
-        setGoogleSyncLogs(prev => [
-          ...prev,
-          "⚠️ Keine Google-Autorisierung erteilt oder Pop-up blockiert.",
-          "👉 Bitte erlaube Pop-ups im Browser und prüfe deine Google Client-ID in den Einstellungen."
-        ]);
+      if (allEvents.length > 0) {
+        const uniqueMap = new Map();
+        allEvents.forEach(e => uniqueMap.set(e.id, e));
+        const sorted = Array.from(uniqueMap.values()).sort((a, b) => new Date(a.start || a.date) - new Date(b.start || b.date));
+        setCalendarEvents(sorted);
+        localStorage.setItem('f_calendar_events', JSON.stringify(sorted));
+        checkAndNotifyCalendarEvents(sorted);
+        setGoogleSyncLogs(prev => [...prev, `✅ ${sorted.length} Kalender-Termine synchronisiert.`]);
       }
+
+      if (allMails.length > 0) {
+        const uniqueMails = new Map();
+        allMails.forEach(m => uniqueMails.set(m.id, m));
+        const sortedM = Array.from(uniqueMails.values());
+        setGmailMessages(sortedM);
+        localStorage.setItem('f_gmail_messages', JSON.stringify(sortedM));
+        checkAndNotifyNewEmails(sortedM);
+        setGoogleSyncLogs(prev => [...prev, `✅ ${sortedM.length} ungelesene E-Mails synchronisiert.`]);
+      } else if (accountsToSync.some(a => sessionStorage.getItem(`f_google_token_${a.email}`) || sessionStorage.getItem('f_google_access_token'))) {
+        setGmailMessages([]);
+        localStorage.setItem('f_gmail_messages', '[]');
+        setGoogleSyncLogs(prev => [...prev, "ℹ️ Alle Posteingänge sind sauber (0 ungelesene Mails)."]);
+      }
+
+      setGoogleSyncLogs(prev => [...prev, "🚀 Google Workspace Live-Radar synchronisiert!"]);
     } catch (err) {
       setGoogleSyncLogs(prev => [...prev, `❌ Fehler: ${err.message}`]);
     } finally {
@@ -4852,6 +4960,11 @@ Hier ist die Frage des Nutzers:
             onVoiceCaptureDispatch={handleVoiceCaptureDispatch}
             googleConnected={googleConnected}
             setGoogleConnected={setGoogleConnected}
+            googleAccounts={googleAccounts}
+            handleAddGoogleAccount={handleAddGoogleAccount}
+            handleRemoveGoogleAccount={handleRemoveGoogleAccount}
+            selectedGmailAccount={selectedGmailAccount}
+            setSelectedGmailAccount={setSelectedGmailAccount}
             isConnectingGoogle={isConnectingGoogle}
             setIsConnectingGoogle={setIsConnectingGoogle}
             triggerGoogleSync={triggerGoogleSync}

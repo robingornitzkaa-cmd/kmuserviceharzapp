@@ -122,6 +122,11 @@ export const DashboardView = ({
   onVoiceCaptureDispatch,
   googleConnected,
   setGoogleConnected,
+  googleAccounts = [],
+  handleAddGoogleAccount,
+  handleRemoveGoogleAccount,
+  selectedGmailAccount = 'all',
+  setSelectedGmailAccount,
   isConnectingGoogle,
   setIsConnectingGoogle,
   triggerGoogleSync,
@@ -1397,41 +1402,81 @@ export const DashboardView = ({
       );
 
     case 'calendar':
+      const displayedMails = selectedGmailAccount === 'all' 
+        ? gmailMessages 
+        : gmailMessages.filter(m => m.accountEmail === selectedGmailAccount);
+
       return (
         <div key="calendar" className="card" style={{ padding: '1rem' }}>
-        <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
-          <h2 className="card-title" style={{ fontSize: '1rem' }}><Calendar size={20} className="text-cyan-500" /> Google Kalender (NLP)</h2>
+        <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '0.5rem' }}>
           <div>
-            {!googleConnected ? (
+            <h2 className="card-title" style={{ fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+              <Calendar size={20} className="text-cyan-500" /> Google Workspace Radar
+            </h2>
+            <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>
+              Multi-Account Kalender & Gmail
+            </div>
+          </div>
+          
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
+            {googleAccounts.map((acc, idx) => {
+              const badgeColor = idx === 0 ? 'var(--accent-cyan)' : idx === 1 ? 'var(--accent-purple)' : '#f59e0b';
+              return (
+                <span 
+                  key={acc.email} 
+                  style={{ 
+                    display: 'inline-flex', 
+                    alignItems: 'center', 
+                    gap: '0.25rem', 
+                    fontSize: '0.68rem', 
+                    padding: '0.15rem 0.45rem', 
+                    borderRadius: '1rem', 
+                    background: 'rgba(255,255,255,0.04)', 
+                    border: `1px solid ${badgeColor}`,
+                    color: '#ffffff'
+                  }}
+                  title={`Google-Konto: ${acc.email}`}
+                >
+                  <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: badgeColor }}></span>
+                  <span style={{ maxWidth: '110px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {acc.email.split('@')[0]}
+                  </span>
+                  {handleRemoveGoogleAccount && (
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveGoogleAccount(acc.email)}
+                      style={{ background: 'transparent', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: 0, fontSize: '0.75rem', lineHeight: 1 }}
+                      title={`${acc.email} trennen`}
+                    >
+                      ×
+                    </button>
+                  )}
+                </span>
+              );
+            })}
+
+            <button
+              type="button"
+              onClick={handleAddGoogleAccount || triggerGoogleSync}
+              className="btn btn-secondary"
+              style={{ padding: '0.15rem 0.5rem', fontSize: '0.7rem', height: '26px', display: 'flex', alignItems: 'center', gap: '0.25rem' }}
+              disabled={isConnectingGoogle}
+              title="Neues oder weiteres Google-Konto verknüpfen"
+            >
+              <Plus size={12} /> {googleAccounts.length === 0 ? '🔗 Google verbinden' : '+ Konto'}
+            </button>
+
+            {googleAccounts.length > 0 && (
               <button
                 type="button"
-                onClick={() => {
-                  setIsConnectingGoogle(true);
-                  setTimeout(() => {
-                    setGoogleConnected(true);
-                    setIsConnectingGoogle(false);
-                    alert("🔗 Google-Konto erfolgreich verknüpft! Kalender- & Drive-Berechtigungen erteilt.");
-                  }, 1200);
-                }}
+                onClick={triggerGoogleSync}
                 className="btn btn-secondary"
-                style={{ padding: '0.2rem 0.5rem', fontSize: '0.7rem', height: '26px', display: 'flex', alignItems: 'center', gap: '0.25rem' }}
-                disabled={isConnectingGoogle}
+                style={{ padding: '0.15rem 0.5rem', fontSize: '0.7rem', height: '26px', display: 'flex', alignItems: 'center', gap: '0.25rem' }}
+                disabled={isGoogleSyncing}
+                title="Alle Konten jetzt synchronisieren"
               >
-                {isConnectingGoogle ? 'Verbinde...' : '🔗 Google verknüpfen'}
+                <RefreshCw size={12} className={isGoogleSyncing ? 'spin' : ''} />
               </button>
-            ) : (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <span style={{ display: 'inline-flex', width: '6px', height: '6px', borderRadius: '50%', background: 'var(--accent-green)' }} title="Google Live-Sync aktiv"></span>
-                <button
-                  type="button"
-                  onClick={triggerGoogleSync}
-                  className="btn btn-secondary"
-                  style={{ padding: '0.2rem 0.5rem', fontSize: '0.7rem', height: '26px', display: 'flex', alignItems: 'center', gap: '0.25rem' }}
-                  disabled={isGoogleSyncing}
-                >
-                  {isGoogleSyncing ? 'Sync läuft...' : '🔄 Jetzt Synch.'}
-                </button>
-              </div>
             )}
           </div>
         </div>
@@ -1457,22 +1502,42 @@ export const DashboardView = ({
         </form>
 
         <div className="calendar-list" style={{ maxHeight: '220px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-          {calendarEvents.map(ev => (
-            <div key={ev.id} className="calendar-event" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 0.65rem', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: '0.5rem' }}>
-              <div style={{ flexGrow: 1, minWidth: 0 }}>
-                <div className="event-time" style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--accent-cyan)' }}>
-                  {ev.time} ({new Date(ev.date).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' })})
+          {calendarEvents.map(ev => {
+            const accIdx = googleAccounts.findIndex(a => a.email === ev.accountEmail);
+            const badgeColor = accIdx === 0 ? 'var(--accent-cyan)' : accIdx === 1 ? 'var(--accent-purple)' : '#f59e0b';
+
+            return (
+              <div key={ev.id} className="calendar-event" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 0.65rem', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: '0.5rem' }}>
+                <div style={{ flexGrow: 1, minWidth: 0 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
+                    <span className="event-time" style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--accent-cyan)' }}>
+                      {ev.time} ({new Date(ev.date).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' })})
+                    </span>
+                    {ev.accountEmail && (
+                      <span style={{ 
+                        fontSize: '0.6rem', 
+                        padding: '0.05rem 0.35rem', 
+                        borderRadius: '0.25rem', 
+                        background: 'rgba(255,255,255,0.05)', 
+                        border: `1px solid ${badgeColor}`, 
+                        color: badgeColor, 
+                        fontWeight: 600 
+                      }} title={ev.accountEmail}>
+                        {ev.accountEmail.split('@')[0]}
+                      </span>
+                    )}
+                  </div>
+                  <div>
+                    <div className="event-title" style={{ fontSize: '0.8rem', fontWeight: 600, wordBreak: 'break-word', overflowWrap: 'anywhere' }}>{mask(ev.title, "calendar")}</div>
+                    {ev.desc && <div className="event-desc" style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{ev.desc}</div>}
+                  </div>
                 </div>
-                <div>
-                  <div className="event-title" style={{ fontSize: '0.8rem', fontWeight: 600, wordBreak: 'break-word', overflowWrap: 'anywhere' }}>{mask(ev.title, "calendar")}</div>
-                  <div className="event-desc" style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{ev.desc}</div>
-                </div>
+                <button type="button" onClick={() => deleteCalendarEvent(ev.id)} className="btn-icon-only" style={{ padding: '0.35rem', minWidth: '32px', minHeight: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <Trash2 size={13} className="text-red-500" />
+                </button>
               </div>
-              <button type="button" onClick={() => deleteCalendarEvent(ev.id)} className="btn-icon-only" style={{ padding: '0.35rem', minWidth: '32px', minHeight: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                <Trash2 size={13} className="text-red-500" />
-              </button>
-            </div>
-          ))}
+            );
+          })}
           {calendarEvents.length === 0 && (
             <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textAlign: 'center', padding: '1rem' }}>
               Keine Termine geplant.
@@ -1480,10 +1545,10 @@ export const DashboardView = ({
           )}
         </div>
 
-        {/* Gmail Live Posteingangs-Radar */}
+        {/* Gmail Live Posteingangs-Radar mit Multi-Account Umschalter */}
         {googleConnected && (
           <div style={{ marginTop: '0.85rem', borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '0.75rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '0.4rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-primary)' }}>
                 <Mail size={15} style={{ color: '#ef4444' }} />
                 <span>Gmail Posteingangs-Radar</span>
@@ -1493,28 +1558,91 @@ export const DashboardView = ({
               </span>
             </div>
 
-            {gmailMessages.length > 0 ? (
+            {/* Filter-Tabs fuer verbundene Konten */}
+            {googleAccounts.length > 1 && (
+              <div style={{ display: 'flex', gap: '0.3rem', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
+                <button
+                  type="button"
+                  onClick={() => setSelectedGmailAccount('all')}
+                  style={{
+                    fontSize: '0.65rem',
+                    padding: '0.15rem 0.4rem',
+                    borderRadius: '0.3rem',
+                    border: selectedGmailAccount === 'all' ? '1px solid var(--accent-cyan)' : '1px solid var(--border-color)',
+                    background: selectedGmailAccount === 'all' ? 'rgba(6, 182, 212, 0.15)' : 'transparent',
+                    color: selectedGmailAccount === 'all' ? 'var(--accent-cyan)' : 'var(--text-muted)',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Alle ({gmailMessages.length})
+                </button>
+                {googleAccounts.map(acc => {
+                  const count = gmailMessages.filter(m => m.accountEmail === acc.email).length;
+                  const isSel = selectedGmailAccount === acc.email;
+                  return (
+                    <button
+                      key={acc.email}
+                      type="button"
+                      onClick={() => setSelectedGmailAccount(acc.email)}
+                      style={{
+                        fontSize: '0.65rem',
+                        padding: '0.15rem 0.4rem',
+                        borderRadius: '0.3rem',
+                        border: isSel ? '1px solid var(--accent-purple)' : '1px solid var(--border-color)',
+                        background: isSel ? 'rgba(168, 85, 247, 0.15)' : 'transparent',
+                        color: isSel ? 'var(--accent-purple)' : 'var(--text-muted)',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      {acc.email.split('@')[0]} ({count})
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+
+            {displayedMails.length > 0 ? (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', maxHeight: '160px', overflowY: 'auto' }}>
-                {gmailMessages.map(mail => (
-                  <div key={mail.id} style={{ padding: '0.45rem 0.6rem', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: '0.4rem', fontSize: '0.72rem' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem' }}>
-                      <span style={{ fontWeight: 700, color: 'var(--accent-cyan)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '60%' }}>
-                        {mail.from}
-                      </span>
-                      <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>
-                        {mail.date ? new Date(mail.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
-                      </span>
-                    </div>
-                    <div style={{ fontWeight: 600, color: 'var(--text-primary)', marginTop: '0.15rem' }}>
-                      {mail.subject}
-                    </div>
-                    {mail.snippet && (
-                      <div style={{ color: 'var(--text-muted)', fontSize: '0.68rem', marginTop: '0.1rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                        {mail.snippet}
+                {displayedMails.map(mail => {
+                  const accIdx = googleAccounts.findIndex(a => a.email === mail.accountEmail);
+                  const badgeColor = accIdx === 0 ? 'var(--accent-cyan)' : accIdx === 1 ? 'var(--accent-purple)' : '#f59e0b';
+
+                  return (
+                    <div key={mail.id} style={{ padding: '0.45rem 0.6rem', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: '0.4rem', fontSize: '0.72rem' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', maxWidth: '70%', overflow: 'hidden' }}>
+                          <span style={{ fontWeight: 700, color: 'var(--accent-cyan)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                            {mail.from}
+                          </span>
+                          {mail.accountEmail && (
+                            <span style={{ 
+                              fontSize: '0.58rem', 
+                              padding: '0.05rem 0.25rem', 
+                              borderRadius: '0.2rem', 
+                              background: 'rgba(255,255,255,0.05)', 
+                              border: `1px solid ${badgeColor}`, 
+                              color: badgeColor, 
+                              flexShrink: 0 
+                            }}>
+                              {mail.accountEmail.split('@')[0]}
+                            </span>
+                          )}
+                        </div>
+                        <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', flexShrink: 0 }}>
+                          {mail.date ? new Date(mail.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
+                        </span>
                       </div>
-                    )}
-                  </div>
-                ))}
+                      <div style={{ fontWeight: 600, color: 'var(--text-primary)', marginTop: '0.15rem' }}>
+                        {mail.subject}
+                      </div>
+                      {mail.snippet && (
+                        <div style={{ color: 'var(--text-muted)', fontSize: '0.68rem', marginTop: '0.1rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          {mail.snippet}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             ) : (
               <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textAlign: 'center', padding: '0.4rem' }}>

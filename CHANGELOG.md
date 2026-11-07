@@ -4,6 +4,14 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 
 ## [Unreleased]
 
+### Added & Multi-Account Google Workspace Integration
+- **👥 Multi-Account Support für Google Kalender & Gmail (`src/services/googleWorkspace.js`, `src/App.jsx`, `src/components/DashboardView.jsx`):**
+  - **Parallele Google-Konten:** Beliebig viele Google-Konten (z. B. Haupt-/Privatkonto + AI-Pro-/Firmenkonto) können gleichzeitig für Kalender & Gmail verknüpft werden.
+  - **Account-Badges im Kalender:** Jeder Termin zeigt ein farbcodiertes Label mit dem zugehörigen Google-Konto.
+  - **Gmail-Filter & Tabs:** Umschalter über dem Posteingang (`[Alle]` sowie Pills für jedes verbundene Konto) mit Zähler der ungelesenen Nachrichten.
+  - **Konto-Verwaltung:** Dynamische Chips im Dashboard mit Status, Schnelltrennung (`✕`) und `+ Konto` Button mit Google `select_account` Flow.
+  - **Isolierter Google Drive Token:** Google Drive (`googleDrive.js`) nutzt einen separaten Token-Schlüssel (`f_google_drive_token`), sodass das dedizierte AI-Pro-Konto für NotebookLM unangetastet bleibt.
+
 ### Added & Realtime Cloud Sync
 - **⚡ Supabase Realtime 2-Wege Notizen-Synchronisation (`src/services/supabase.js`, `src/App.jsx`):**
   - Live WebSocket-Verbindung (`subscribeToDashboardState`) via Phoenix Protocol zur Supabase Cloud.

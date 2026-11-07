@@ -94,9 +94,54 @@ export const getGoogleAccessToken = (clientId) => {
 };
 
 /**
+ * Ruft Profil-Informationen des Google-Kontos ab (E-Mail, Name, Bild)
+ */
+export const fetchGoogleUserInfo = async (token) => {
+  if (!token) return null;
+  try {
+    const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (res.ok) {
+      return await res.json();
+    }
+  } catch (err) {
+    console.warn('[Google] fetchGoogleUserInfo failed:', err);
+  }
+  return null;
+};
+
+/**
+ * Fordert einen Access-Token mit Kontoauswahl-Popup (select_account) an
+ * und liefert direkt Token + Profil-Daten (E-Mail, Name) zurueck.
+ */
+export const requestGoogleAccountAuth = (clientId, prompt = 'select_account') => {
+  return new Promise((resolve, reject) => {
+    if (typeof window === 'undefined' || !window.google?.accounts?.oauth2) {
+      return reject(new Error('Google Identity Services Bibliothek ist nicht initialisiert.'));
+    }
+
+    const client = window.google.accounts.oauth2.initTokenClient({
+      client_id: clientId,
+      scope: SCOPES,
+      callback: async (tokenResponse) => {
+        if (tokenResponse.error !== undefined) {
+          return reject(tokenResponse);
+        }
+        const token = tokenResponse.access_token;
+        const userInfo = await fetchGoogleUserInfo(token);
+        resolve({ token, userInfo });
+      },
+    });
+
+    client.requestAccessToken({ prompt });
+  });
+};
+
+/**
  * Ruft anstehende Google-Kalender-Termine für heute und die nächsten 7 Tage ab
  */
-export const fetchGoogleCalendarEvents = async (token) => {
+export const fetchGoogleCalendarEvents = async (token, accountEmail = '', accountName = '') => {
   if (!token) throw new Error('Kein Google Access Token vorhanden.');
 
   const now = new Date();
@@ -140,7 +185,9 @@ export const fetchGoogleCalendarEvents = async (token) => {
       date: dateFormatted,
       time: timeFormatted,
       isGoogle: true,
-      htmlLink: ev.htmlLink
+      htmlLink: ev.htmlLink,
+      accountEmail: accountEmail || '',
+      accountName: accountName || (accountEmail ? accountEmail.split('@')[0] : '')
     };
   });
 };
@@ -148,11 +195,11 @@ export const fetchGoogleCalendarEvents = async (token) => {
 /**
  * Ruft die neuesten ungelesenen E-Mails aus Gmail ab
  */
-export const fetchUnreadGmailMessages = async (token) => {
+export const fetchUnreadGmailMessages = async (token, accountEmail = '', accountName = '') => {
   if (!token) throw new Error('Kein Google Access Token vorhanden.');
 
   // 1. Liste ungelesener Messages abrufen
-  const listUrl = 'https://gmail.googleapis.com/gmail/v1/users/me/messages?q=is:unread&maxResults=5';
+  const listUrl = 'https://gmail.googleapis.com/gmail/v1/users/me/messages?q=is:unread&maxResults=10';
   const listRes = await fetch(listUrl, {
     headers: { Authorization: `Bearer ${token}` }
   });
@@ -190,7 +237,9 @@ export const fetchUnreadGmailMessages = async (token) => {
           from: fromHeader ? fromHeader.value : 'Unbekannter Absender',
           date: dateHeader ? dateHeader.value : '',
           snippet: d.snippet || '',
-          unread: true
+          unread: true,
+          accountEmail: accountEmail || '',
+          accountName: accountName || (accountEmail ? accountEmail.split('@')[0] : '')
         });
       }
     } catch {

@@ -51,6 +51,7 @@ export const initTokenClient = (clientId, onTokenReceived, onError) => {
       }
       googleAccessToken = tokenResponse.access_token;
       // Session storage to keep login token alive during session
+      sessionStorage.setItem('f_google_drive_token', googleAccessToken);
       sessionStorage.setItem('f_google_access_token', googleAccessToken);
       if (onTokenReceived) onTokenReceived(googleAccessToken);
     },
@@ -70,8 +71,8 @@ export const getAccessToken = (clientId) => {
       return;
     }
     
-    // Check sessionStorage
-    const savedToken = sessionStorage.getItem('f_google_access_token');
+    // Check sessionStorage (first dedicated drive token, then fallback)
+    const savedToken = sessionStorage.getItem('f_google_drive_token') || sessionStorage.getItem('f_google_access_token');
     if (savedToken) {
       googleAccessToken = savedToken;
       resolve(googleAccessToken);
