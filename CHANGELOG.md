@@ -4,6 +4,9 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 
 ## [Unreleased]
 
+### Fixed
+- **DashboardView Icon-Import (`src/components/DashboardView.jsx`):** Fehlenden Import für `RefreshCw` aus `lucide-react` behoben, der nach erfolgreicher Google-Konto-Verbindung beim Rendern des Synchronisations-Buttons im Dashboard-Radar zu einem `ReferenceError` führte.
+
 ### Added & Standalone Kalender- & Mails-Cockpits
 - **📅 Eigenständiger Kalender-Tab (`src/components/CalendarView.jsx`, `src/components/Sidebar.jsx`, `src/App.jsx`):**
   - **Neuer Menüeintrag links:** `📅 Kalender` direkt unter dem Dashboard platziert, inklusive dynamischem Live-Badge für anstehende Termine.

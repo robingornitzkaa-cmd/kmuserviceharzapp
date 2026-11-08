@@ -25,7 +25,8 @@ import {
   BedDouble,
   Award,
   Bell,
-  Mail
+  Mail,
+  RefreshCw
 } from 'lucide-react';
 import { SettingsView, getWidgetOrder } from './SettingsView';
 import { VoiceQuickCaptureWidget } from './VoiceQuickCaptureWidget';
