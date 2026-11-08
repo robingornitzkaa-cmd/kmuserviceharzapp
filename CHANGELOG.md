@@ -4,6 +4,18 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 
 ## [Unreleased]
 
+### Added & Standalone Kalender- & Mails-Cockpits
+- **📅 Eigenständiger Kalender-Tab (`src/components/CalendarView.jsx`, `src/components/Sidebar.jsx`, `src/App.jsx`):**
+  - **Neuer Menüeintrag links:** `📅 Kalender` direkt unter dem Dashboard platziert, inklusive dynamischem Live-Badge für anstehende Termine.
+  - **Hybrid-Umschalter:** Wechsel zwischen *📊 Gründer-Cockpit* (Tages- & Wochenagenda, farbcodierte Account-Badges, NLP-Schnelleintrag, Termin-Filter) und *🌐 Google Kalender Web* (eingebettete offizielle Google Kalender Webansicht per iFrame + Schnellzugriff auf neuen Tab).
+  - **Account- & Zeitfilter:** Filterung nach verbundenen Google-Konten oder lokalen Planungen sowie Umschaltung zwischen `Alle`, `Heute` und `Nächste 7 Tage`.
+- **✉️ Eigenständiger Mails-Tab (`src/components/MailsView.jsx`, `src/components/Sidebar.jsx`, `src/App.jsx`):**
+  - **Neuer Menüeintrag links:** `✉️ Mails` mit rotem Posteingangs-Zähler direkt im Menü.
+  - **Multi-Account Cockpit:** Direkte Filter-Pills über alle verbundenen Google-Konten (`Alle`, `Hauptkonto`, `AI-Pro`), Live-Suchleiste nach Absender, Betreff und Inhalt.
+  - **E-Mail-Aktionen:** 1-Klick-Link „In Gmail öffnen“ (öffnet direkt den Posteingang des Kontos) sowie „Als gelesen markieren“ (setzt die Mail via Google API auf gelesen und entfernt sie aus der Liste).
+- **🎛️ Dashboard-Customizer Anpassung (`src/components/SettingsView.jsx`):**
+  - Das kompakte Google-Radar-Widget auf dem Haupt-Dashboard kann über „Layout anpassen“ als `🛰️ Google Workspace Radar (Kalender & Mails)` flexibel ein- und ausgeblendet und in der Reihenfolge verschoben werden.
+
 ### Added & Multi-Account Google Workspace Integration
 - **👥 Multi-Account Support für Google Kalender & Gmail (`src/services/googleWorkspace.js`, `src/App.jsx`, `src/components/DashboardView.jsx`):**
   - **Parallele Google-Konten:** Beliebig viele Google-Konten (z. B. Haupt-/Privatkonto + AI-Pro-/Firmenkonto) können gleichzeitig für Kalender & Gmail verknüpft werden.

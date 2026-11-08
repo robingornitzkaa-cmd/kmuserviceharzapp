@@ -1,5 +1,11 @@
 # TODO - Founder OS
 
+- [x] **📅 [Standalone Kalender- & Mails-Cockpits]:**
+  - [x] *Menü-Erweiterung:* 2 neue Navigations-Tabs `📅 Kalender` und `✉️ Mails` in Sidebar (Desktop & Mobil) mit dynamischen Badge-Zählern.
+  - [x] *Kalender-Cockpit (`CalendarView.jsx`):* Hybrid-Umschalter zwischen Dark-Mode Gründer-Cockpit und Google Kalender Web (iFrame/Direktlink), NLP-Schnelleingabe, Multi-Account Badges und Zeitfilter.
+  - [x] *Mails-Cockpit (`MailsView.jsx`):* Posteingangs-Übersicht über alle verknüpften Konten, Live-Suche, Konto-Filter-Pills, „Als gelesen markieren“ und „In Gmail öffnen“.
+  - [x] *Dashboard-Radar Anpassbarkeit:* Radar-Widget im Dashboard-Customizer (`SettingsView.jsx`) als optionales Widget konfigurierbar.
+
 - [x] **⚡ [Google Workspace & Realtime Notizen-Sync]:**
   - [x] *Supabase Realtime WebSockets:* `dashboard_state` in Supabase zur Publication `supabase_realtime` hinzugefügt und `REPLICA IDENTITY FULL` gesetzt.
   - [x] *Client-seitige Realtime-Subscription:* `subscribeToDashboardState()` in `src/services/supabase.js` mit Heartbeat und automatischem Reconnect implementiert; in `src/App.jsx` angebunden.

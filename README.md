@@ -8,6 +8,17 @@ Die Anwendung zeichnet sich durch ein futuristisches "Glassmorphic Dark Theme" a
 
 ## 🚀 Wichtigste Funktionen & Tab-Struktur
 
+### 0d. 📅 Eigenständige Kalender- & Mails-Cockpits (Sidebar-Navigation) -- *NEU!*
+- **📅 Neuer Menü-Tab `Kalender` (`src/components/CalendarView.jsx`):**
+  - Vollbild-Zentrale für alle privaten und geschäftlichen Termine direkt links im Hauptmenü erreichbar.
+  - **Hybrid-Umschalter:** Wechsel zwischen *Gründer-Cockpit* (Tages- & Wochenansicht mit farbigen Account-Badges) und *Google Kalender Web* (offizielle Oberfläche per iFrame & 1-Klick-Tab).
+  - NLP-Schnelleingabe für Termine, Multi-Account Filterung und Terminzähler als Badge im Menü.
+- **✉️ Neuer Menü-Tab `Mails` (`src/components/MailsView.jsx`):**
+  - Vollwertiges Posteingangs-Cockpit für alle verknüpften Google-Konten mit rotem Zähler im Menü.
+  - Multi-Account Filter-Pills (`[Alle]`, `[Hauptkonto]`, `[AI-Pro]`), Live-Suchleiste nach Absender, Betreff und Text.
+  - Direkte Aktionen: „In Gmail öffnen“ und „Als gelesen markieren“.
+- **🛰️ Dashboard-Radar flexibel:** Das Schnell-Radar auf dem Haupt-Dashboard bleibt erhalten und kann im Dashboard-Customizer (`SettingsView.jsx`) ein- und ausgeblendet werden.
+
 ### 0c. ⚡ Google Workspace & Supabase Realtime Notizen-Sync (Handy ⟷ PC) -- *NEU!*
 - **🔄 Supabase Realtime WebSockets:**
   - Automatische 2-Wege-Echtzeitsynchronisation der Sticky Notes und To-Dos zwischen Smartphone-App und PC-Browser/Desktop-Widget.

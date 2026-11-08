@@ -18,7 +18,9 @@ import {
   Sparkles,
   Bell,
   Terminal,
-  Compass
+  Compass,
+  Calendar,
+  Mail
 } from 'lucide-react';
 
 export const Sidebar = ({
@@ -31,7 +33,9 @@ export const Sidebar = ({
   setActiveTab,
   clientPortalMode,
   onOpenNotificationCenter,
-  onOpenDiagnosticLogs
+  onOpenDiagnosticLogs,
+  calendarEvents = [],
+  gmailMessages = []
 }) => {
   if (clientPortalMode) return null;
 
@@ -56,6 +60,54 @@ export const Sidebar = ({
             >
               <LayoutDashboard size={18} />
               <span className="sidebar-nav-label">Dashboard</span>
+            </button>
+            <button 
+              className={`sidebar-nav-item ${activeTab === 'calendar' ? 'active' : ''}`}
+              onClick={() => setActiveTab('calendar')}
+              title="Terminkalender & Agenda"
+            >
+              <Calendar size={18} />
+              <span className="sidebar-nav-label">Kalender</span>
+              {!sidebarCollapsed && calendarEvents.length > 0 && (
+                <span 
+                  className="sidebar-badge"
+                  style={{ 
+                    marginLeft: 'auto', 
+                    fontSize: '0.65rem', 
+                    background: 'rgba(56, 189, 248, 0.15)', 
+                    color: '#38bdf8', 
+                    padding: '0.1rem 0.4rem', 
+                    borderRadius: '1rem', 
+                    fontWeight: 700 
+                  }}
+                >
+                  {calendarEvents.length}
+                </span>
+              )}
+            </button>
+            <button 
+              className={`sidebar-nav-item ${activeTab === 'mails' ? 'active' : ''}`}
+              onClick={() => setActiveTab('mails')}
+              title="Gmail Posteingangs-Cockpit"
+            >
+              <Mail size={18} />
+              <span className="sidebar-nav-label">Mails</span>
+              {!sidebarCollapsed && gmailMessages.length > 0 && (
+                <span 
+                  className="sidebar-badge"
+                  style={{ 
+                    marginLeft: 'auto', 
+                    fontSize: '0.65rem', 
+                    background: 'rgba(239, 68, 68, 0.2)', 
+                    color: '#f87171', 
+                    padding: '0.1rem 0.4rem', 
+                    borderRadius: '1rem', 
+                    fontWeight: 700 
+                  }}
+                >
+                  {gmailMessages.length}
+                </span>
+              )}
             </button>
             <button 
               className={`sidebar-nav-item ${activeTab === 'goclean' ? 'active' : ''}`}
@@ -238,6 +290,30 @@ export const Sidebar = ({
               >
                 <LayoutDashboard size={18} />
                 <span>Dashboard</span>
+              </button>
+              <button 
+                className={`sidebar-nav-item ${activeTab === 'calendar' ? 'active' : ''}`} 
+                onClick={() => { setActiveTab('calendar'); setMobileMenuOpen(false); }}
+              >
+                <Calendar size={18} />
+                <span>Kalender</span>
+                {calendarEvents.length > 0 && (
+                  <span style={{ marginLeft: 'auto', fontSize: '0.7rem', background: 'rgba(56, 189, 248, 0.2)', color: '#38bdf8', padding: '0.1rem 0.45rem', borderRadius: '1rem', fontWeight: 700 }}>
+                    {calendarEvents.length}
+                  </span>
+                )}
+              </button>
+              <button 
+                className={`sidebar-nav-item ${activeTab === 'mails' ? 'active' : ''}`} 
+                onClick={() => { setActiveTab('mails'); setMobileMenuOpen(false); }}
+              >
+                <Mail size={18} />
+                <span>Mails</span>
+                {gmailMessages.length > 0 && (
+                  <span style={{ marginLeft: 'auto', fontSize: '0.7rem', background: 'rgba(239, 68, 68, 0.25)', color: '#f87171', padding: '0.1rem 0.45rem', borderRadius: '1rem', fontWeight: 700 }}>
+                    {gmailMessages.length}
+                  </span>
+                )}
               </button>
               <button 
                 className={`sidebar-nav-item ${activeTab === 'goclean' ? 'active' : ''}`} 

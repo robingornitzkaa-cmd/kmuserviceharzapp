@@ -39,7 +39,7 @@ export const SettingsView = ({
     quickcapture: { label: '🎙️ Voice Quick-Capture Studio', desc: 'Sprach- & Diktier-Studio mit Multi-Ziel-Routing' },
     financial: { label: 'Finanz-Cockpit & Pipeline', desc: 'Umsatzprognose & Ø Stundensätze' },
     einvoice: { label: 'E-Rechnung (ZUGFeRD)', desc: 'B2B Rechnungs- & XML Generator' },
-    calendar: { label: 'Google Kalender', desc: 'Tagestermine & Meetings' },
+    calendar: { label: '🛰️ Google Workspace Radar (Kalender & Mails)', desc: 'Kompakte Vorschau von Terminen & Posteingang auf dem Dashboard' },
     habits: { label: 'Habit Tracker & Streak', desc: 'Gewohnheiten & CSS-Konfetti' },
     weekly: { label: 'Wochen-Review & Archiv', desc: 'Reflexionen & PDF-Wochenbericht' },
     notes: { label: 'Offline-Notizen & Aufgaben', desc: '100% lokale Notizen & Checkliste' },

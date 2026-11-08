@@ -133,11 +133,14 @@ import {
   getGoogleAccessToken, 
   logoutGoogle,
   requestGoogleAccountAuth,
-  fetchGoogleUserInfo
+  fetchGoogleUserInfo,
+  markGmailMessageAsRead
 } from './services/googleWorkspace';
 import { SkeletonLoader } from './components/common/SkeletonLoader';
 
 // Lazy Loaded Tab Views & Modals (Asynchronous Code Splitting - QW-01)
+const CalendarView = lazy(() => import('./components/CalendarView').then(m => ({ default: m.CalendarView })));
+const MailsView = lazy(() => import('./components/MailsView').then(m => ({ default: m.MailsView })));
 const ClientPortalView = lazy(() => import('./components/ClientPortalView').then(m => ({ default: m.ClientPortalView })));
 const StickyNotePopoutView = lazy(() => import('./components/StickyNotePopoutView'));
 const CrmDrawer = lazy(() => import('./components/CrmDrawer').then(m => ({ default: m.CrmDrawer })));
@@ -3121,6 +3124,23 @@ Hier ist die Frage des Nutzers:
     }
   };
 
+  const handleMarkMailAsRead = async (mailId, accountEmail) => {
+    const token = (accountEmail && sessionStorage.getItem(`f_google_token_${accountEmail}`)) 
+      || sessionStorage.getItem('f_google_access_token');
+    if (token) {
+      try {
+        await markGmailMessageAsRead(token, mailId);
+        showToast('E-Mail als gelesen markiert ✅', 'success');
+      } catch (err) {
+        console.warn('Fehler beim Markieren der Mail als gelesen:', err);
+        showToast('Fehler bei Google API, lokal ausgeblendet', 'warning');
+      }
+    } else {
+      showToast('E-Mail lokal als gelesen markiert', 'info');
+    }
+    setGmailMessages(prev => prev.filter(m => m.id !== mailId));
+  };
+
   // Handle WhatsApp simulation process (Feature 2a)
   const triggerWhatsAppSimulation = async (e) => {
     e.preventDefault();
@@ -4606,6 +4626,8 @@ Hier ist die Frage des Nutzers:
         clientPortalMode={clientPortalMode}
         onOpenNotificationCenter={() => setIsNotificationCenterOpen(true)}
         onOpenDiagnosticLogs={() => setIsDiagnosticModalOpen(true)}
+        calendarEvents={calendarEvents}
+        gmailMessages={gmailMessages}
       />
 
       {/* Main Container */}
@@ -5297,6 +5319,41 @@ Hier ist die Frage des Nutzers:
         {activeTab === 'einvoice' && (
           <EInvoiceValidator
             onBackToDashboard={() => setActiveTab('dashboard')}
+          />
+        )}
+
+        {activeTab === 'calendar' && (
+          <CalendarView
+            calendarEvents={calendarEvents}
+            deleteCalendarEvent={deleteCalendarEvent}
+            googleAccounts={googleAccounts}
+            handleAddGoogleAccount={handleAddGoogleAccount}
+            handleRemoveGoogleAccount={handleRemoveGoogleAccount}
+            isConnectingGoogle={isConnectingGoogle}
+            triggerGoogleSync={triggerGoogleSync}
+            isGoogleSyncing={isGoogleSyncing}
+            googleSyncLogs={googleSyncLogs}
+            nlpCalendarInput={nlpCalendarInput}
+            setNlpCalendarInput={setNlpCalendarInput}
+            handleNlpCalendarSubmit={handleNlpCalendarSubmit}
+            mask={mask}
+          />
+        )}
+
+        {activeTab === 'mails' && (
+          <MailsView
+            gmailMessages={gmailMessages}
+            setGmailMessages={setGmailMessages}
+            googleAccounts={googleAccounts}
+            handleAddGoogleAccount={handleAddGoogleAccount}
+            handleRemoveGoogleAccount={handleRemoveGoogleAccount}
+            isConnectingGoogle={isConnectingGoogle}
+            triggerGoogleSync={triggerGoogleSync}
+            isGoogleSyncing={isGoogleSyncing}
+            googleSyncLogs={googleSyncLogs}
+            onMarkMailAsRead={handleMarkMailAsRead}
+            selectedGmailAccount={selectedGmailAccount}
+            setSelectedGmailAccount={setSelectedGmailAccount}
           />
         )}
             </>
